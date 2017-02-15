@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/sub_margin"
+    android:layout_marginTop="@dimen/sub_margin"
+    android:background="#00000000"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="#00000000"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingTop="40dp">
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:gravity="center"
+            android:text="@string/add_dependency"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_main" />
+
+
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/sub_margin"
+            android:background="@drawable/button_with_border"
+            android:gravity="left"
+            android:hint="@string/reg_username"
+            android:inputType="text"
+            android:padding="@dimen/sub_margin" />
+
+        <EditText
+            android:id="@+id/et_mem_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/sub_margin"
+            android:background="@drawable/button_with_border"
+            android:gravity="left"
+            android:hint="@string/member_account"
+            android:inputType="number"
+            android:padding="@dimen/sub_margin" />
+
+
+        <Button
+
+            android:id="@+id/btn_accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/sub_margin"
+            android:background="@color/colorPrimaryDark"
+            android:text="REGISTER ACCOUNT"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/sub_margin"
+            android:background="@color/colorPrimaryDark"
+            android:text="CLOSE"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="80dp"
+        android:weightSum="1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+
+            android:id="@+id/ci_error_image"
+            android:layout_width="@dimen/alert_circle_width"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_person_add_purple"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_width="10px" />
+
+    </LinearLayout>
+
+</RelativeLayout>

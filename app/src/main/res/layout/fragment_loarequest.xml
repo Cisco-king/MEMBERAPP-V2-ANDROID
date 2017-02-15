@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="v2.fragment_loaRequest">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_weight="1"
+        android:id="@+id/rv_loa_request"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal">
+
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/btn_sort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="@dimen/sub_margin"
+            android:layout_weight="1"
+            android:padding="@dimen/sub_margin"
+            android:text="@string/sort"
+            android:textColor="@android:color/white"
+            fancy:fb_defaultColor="@color/colorPrimaryLight"
+            fancy:fb_focusColor="@color/colorPrimaryDark" />
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/btn_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="@dimen/sub_margin"
+            android:layout_weight="1"
+            android:padding="@dimen/sub_margin"
+            android:text="@string/reset_filter"
+            android:textColor="@android:color/white"
+            fancy:fb_defaultColor="@color/colorPrimaryLight"
+            fancy:fb_focusColor="@color/colorPrimaryDark" />
+
+    </LinearLayout>
+</LinearLayout>

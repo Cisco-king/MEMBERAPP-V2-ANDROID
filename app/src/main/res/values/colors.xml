@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3D44AC</color>
+    <color name="colorPrimaryBlueDark">#2a3086</color>
+    <color name="colorPrimaryLight">#A35398</color>
+    <color name="colorPrimaryDark">#823978</color>
+    <color name="colorAccent">#464545</color>
+    <color name="transparent">#00000000</color>
+
+    <array name="dot_colors">
+        <item>#3D44AC</item>
+        <item>#8943bf</item>
+        <item>#A35398</item>
+    </array>
+
+    <color name="semiDark">#cc000000</color>
+    <color name="light_grey">#ddd</color>
+    <color name="grey">#808080</color>
+    <color name="BLACK">#231F20</color>
+    <color name="l_gray">#ddd</color>
+    <color name="l_gray_bg">#e7e5e5</color>
+    <color name="white">#ffffff</color>
+</resources>

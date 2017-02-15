@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_doctor_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/l_gray_bg"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="v2.DoctorListActivity"
+    tools:showIn="@layout/activity_hospital_list_acitivity">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:focusableInTouchMode="true">
+
+
+        <EditText
+            android:id="@+id/ed_searchHosp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/sub_margin"
+            android:layout_weight="1"
+            android:background="@drawable/button_border"
+            android:hint="Search..."
+            android:inputType="text"
+            android:padding="@dimen/sub_margin"
+            android:paddingLeft="@dimen/sub_margin"
+            android:textColor="@color/BLACK"
+            android:textSize="@dimen/text_small" />
+
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_doctor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textView2"
+        android:visibility="gone"
+        android:layout_above="@+id/btn_sort" />
+
+    <TextView
+        android:id="@+id/tv_hosp_not_found"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/hosp_not_found"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_main"
+        android:visibility="gone" />
+
+
+    <TextView
+
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:padding="@dimen/sub_margin"
+        android:text="@string/select_hospital"
+        android:textColor="@color/BLACK"
+        android:textSize="@dimen/text_main" />
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:textSize="@dimen/text_main"
+        android:id="@+id/btn_sort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        fancy:fb_defaultColor="@color/colorPrimary"
+        fancy:fb_focusColor="@color/colorPrimaryBlueDark"
+
+        fancy:fb_text="SORT AND FILTER"  />
+
+</RelativeLayout>

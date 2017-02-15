@@ -1,0 +1,648 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/l_gray"
+    tools:context="fragments.ConsultationResult">
+
+    <ScrollView
+        android:id="@+id/sv_whole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:background="@color/l_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/content_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sub_margin"
+
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/margin">
+
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sub_margin"
+                    android:gravity="center"
+                    android:text="@string/hospital_clinic"
+                    android:textColor="@color/BLACK"
+                    android:textSize="@dimen/text_max"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_sub_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sub_margin"
+                    android:gravity="center"
+                    android:text="@string/this_request_is"
+                    android:textColor="@color/BLACK"
+                    android:textSize="@dimen/text_main"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/sub_margin"
+                    android:layout_marginTop="@dimen/sub_margin">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/sub_margin">
+
+                        <LinearLayout
+                            android:id="@+id/ll_ref_code_details"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_disclaimer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/sub_margin"
+                                android:layout_marginLeft="@dimen/sub_margin"
+                                android:layout_marginRight="@dimen/sub_margin"
+                                android:gravity="center"
+                                android:text="@string/this_approval_shall" />
+
+
+                            <ImageView
+
+                                android:id="@+id/img_qrcode"
+                                android:layout_width="200dp"
+                                android:layout_height="200dp"
+                                android:layout_margin="@dimen/sub_margin"
+                                android:src="@drawable/card" />
+
+
+                            <TextView
+                                android:id="@+id/tv_ref_code"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/sub_margin"
+                                android:text="@string/ref_code"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:textSize="@dimen/text_small"
+                                android:textStyle="bold" />
+
+
+
+                            <TextView
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:text="( CONSULTATION )"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_approved_validity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/this_req_is_valid_from"
+                                android:textSize="@dimen/text_small" />
+
+                            <TextView
+                                android:id="@+id/tv_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="10/26/2016 to 10/28/2016"
+                                android:textSize="@dimen/text_small" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/ll_pending"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ref_code"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:textSize="@dimen/text_small" />
+
+                            <TextView
+                                android:id="@+id/tv_ref_code2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:gravity="end"
+                                android:text="@string/hospital_clinic"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_disapproved_req"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:orientation="horizontal">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/date_requested"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:textSize="@dimen/text_small" />
+
+                            <TextView
+                                android:id="@+id/tv_date_requested"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:gravity="end"
+                                android:text="@string/hospital_clinic"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/member_code_"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:textSize="@dimen/text_small" />
+
+
+                            <TextView
+                                android:id="@+id/tv_member_code"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:gravity="end"
+                                android:text="@string/hospital_clinic"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/member_name_"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:textSize="@dimen/text_small" />
+
+
+                            <TextView
+                                android:id="@+id/tv_member_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:text="@string/hospital_clinic"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:orientation="horizontal">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/age_"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:textSize="@dimen/text_small" />
+
+
+                            <TextView
+                                android:id="@+id/tv_age"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:text="@string/hospital_clinic"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:orientation="horizontal">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/gender_"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:textSize="@dimen/text_small" />
+
+
+                            <TextView
+                                android:id="@+id/tv_gender"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:gravity="end"
+                                android:text="@string/hospital_clinic"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:orientation="horizontal">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/company_name_"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:textSize="@dimen/text_small" />
+
+                            <TextView
+                                android:id="@+id/tv_company"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:text="@string/hospital_clinic"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/ll_approved_validity_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:orientation="horizontal">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/validity_date_"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:textSize="@dimen/text_small" />
+
+                            <TextView
+                                android:id="@+id/tv_validity_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:gravity="end"
+                                android:text="@string/hospital_clinic"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_approved_effective_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:orientation="horizontal">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/effective_Date_"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:textSize="@dimen/text_small" />
+
+                            <TextView
+                                android:id="@+id/tv_effective_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:gravity="end"
+                                android:text="@string/hospital_clinic"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_approved_req"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:orientation="horizontal">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/date_approved_"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:textSize="@dimen/text_small" />
+
+                            <TextView
+                                android:id="@+id/tv_date_approved"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+
+                                android:gravity="end"
+                                android:text="@string/hospital_clinic"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/remarks_"
+                                android:textColor="@color/colorPrimaryLight"
+                                android:textSize="@dimen/text_small" />
+
+
+                            <TextView
+                                android:id="@+id/tv_remarks"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:text="@string/hospital_clinic"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/sub_margin"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:text="@string/hospital_clinic"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_small" />
+
+                        <TextView
+                            android:id="@+id/tv_hospName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/hospital_clinic"
+                            android:textColor="@color/BLACK"
+                            android:textSize="@dimen/text_small"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_hospAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:text="@string/hospital_clinic"
+                            android:textColor="@color/BLACK"
+                            android:textSize="@dimen/text_mini" />
+
+
+                        <TextView
+                            android:id="@+id/tv_contact"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:text="@string/hospital_clinic"
+                            android:textColor="@color/BLACK"
+                            android:textSize="@dimen/text_mini" />
+
+                        <TextView
+                            android:id="@+id/tv_contact_person"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:text="@string/hospital_clinic"
+                            android:textColor="@color/BLACK"
+                            android:textSize="@dimen/text_mini" />
+
+                        <TextView
+                            android:id="@+id/tv_sched"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:text="@string/hospital_clinic"
+                            android:textColor="@color/BLACK"
+                            android:textSize="@dimen/text_mini" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sub_margin">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/sub_margin"
+                        android:layout_marginRight="@dimen/sub_margin"
+                        android:orientation="vertical">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:text="@string/doctor"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_small" />
+
+                        <TextView
+                            android:id="@+id/tv_doc_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/hospital_clinic"
+                            android:textColor="@color/BLACK"
+                            android:textSize="@dimen/text_small"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_doc_det"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+
+                            android:text="@string/hospital_clinic"
+                            android:textColor="@color/BLACK"
+                            android:textSize="@dimen/text_mini" />
+
+
+                        <TextView
+                            android:id="@+id/tv_spec"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+
+                            android:text="@string/hospital_clinic"
+                            android:textColor="@color/BLACK"
+                            android:textSize="@dimen/text_mini" />
+
+                        <TextView
+                            android:id="@+id/tv_sched_doctor"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+
+                            android:text="@string/hospital_clinic"
+                            android:textColor="@color/BLACK"
+                            android:textSize="@dimen/text_mini" />
+
+                        <TextView
+                            android:id="@+id/tv_doc_app"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:gravity="center"
+
+                            android:text="@string/doctor_has_no"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:textSize="@dimen/text_small" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sub_margin">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/sub_margin"
+                            android:text="@string/prob_cond"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_small" />
+
+
+                        <TextView
+                            android:id="@+id/tv_condition"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sub_margin"
+                            android:layout_marginLeft="@dimen/margin"
+                            android:layout_marginRight="@dimen/margin"
+                            android:text="@string/prob_cond"
+                            android:textColor="@color/BLACK"
+                            android:textSize="@dimen/text_small" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/btn_shot"
+                                android:layout_width="225dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/sub_margin"
+                                android:background="@color/colorPrimary"
+                                android:text="@string/screenshot"
+                                android:textColor="@android:color/white" />
+
+
+                            <Button
+                                android:id="@+id/btn_ok"
+                                android:layout_width="225dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/sub_margin"
+                                android:background="@color/colorPrimary"
+                                android:text="@string/ok"
+                                android:textColor="@android:color/white" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

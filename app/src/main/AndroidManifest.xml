@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="android.medicard.com.medicard">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED" />
+
+
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="false" />
+
+    <application
+        android:name="utilities.ShowTermsNCondition"
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".SignInActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RegistrationActivity"
+            android:label="@string/title_activity_registration"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AccountActivity"
+            android:label="@string/title_activity_account"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NavigationActivity"
+            android:label="@string/title_activity_navigation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MemberAccountActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_member_info"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".QrCodeActivity"
+            android:label="@string/title_activity_qr_code"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TermsActivity"
+            android:label="@string/title_activity_terms"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".RequestChangePassword"
+            android:label="@string/title_activity_request_change_password"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".SplashScreen.SplashScreenActivity"
+            android:label="@string/title_activity_splash_screen"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ChangePassword.ChangePasswordActivity"
+            android:label="@string/title_activity_change_password"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="v2.RequestButtonsActivity"
+            android:label="@string/title_activity_request_buttons"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="v2.DoctorListActivity"
+            android:label="@string/title_activity_doctor_list"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="v2.HospitalListAcitivity"
+            android:label="@string/title_activity_hospital_list_acitivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="v2.DetailsActivity"
+            android:label="@string/title_activity_details"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="v2.ResultActivity"
+            android:label="@string/title_activity_result"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="v2.SortHospitalActivity"
+            android:label="@string/title_activity_sort"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="v2.SelectProvinceActivity"
+            android:label="@string/title_activity_select_province"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="v2.SortDoctorActivity"
+            android:label="@string/title_activity_sort_doctor"
+            android:theme="@style/AppTheme"></activity>
+    </application>
+
+</manifest>

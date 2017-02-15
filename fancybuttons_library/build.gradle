@@ -1,0 +1,28 @@
+apply plugin: 'com.android.library'
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.1'
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.1"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+}
+
+repositories {
+    maven { url '// ...' }
+    maven { url 'https://jitpack.io' }
+    jcenter()
+    maven { url 'https://dl.bintray.com/drummer-aidan/maven' }
+}
