@@ -7,6 +7,4 @@ package InterfaceService;
 public interface LOARequestCallback {
 
 
-    void onSuccess();
-    void onError();
 }

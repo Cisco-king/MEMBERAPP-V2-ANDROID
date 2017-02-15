@@ -7,6 +7,7 @@ import model.City;
 import model.Doctors;
 import model.Exclusions;
 import model.Hospital;
+import model.Loa;
 import model.Pin;
 import model.Pinned;
 import model.Province;
@@ -118,4 +119,7 @@ public interface AppInterface {
 
     @POST("/v2/updatePin/")
     Observable<Pinned> updatePin(@Body UpdatePin updatePin);
+
+    @GET("/v2/getLoaByMemberCode/?")
+    Observable<Loa> getLoaList(@Query("memberCode") String memberCode);
 }

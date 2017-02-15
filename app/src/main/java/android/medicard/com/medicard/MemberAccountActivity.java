@@ -220,7 +220,6 @@ public class MemberAccountActivity extends AppCompatActivity implements View.OnC
         tv_account_status.setText(statusSetter.setStatus(getIntent().getExtras().getString("STATUS")));
         tv_member_code.setText(MEMBER_ID);
         tv_member_type.setText(getIntent().getExtras().getString("MEMTYPE"));
-        tv_member_type.setText(getIntent().getExtras().getString("MEMTYPE"));
         tv_effective_date.setText(getIntent().getExtras().getString("EFFECTIVE"));
         tv_validity_date.setText(getIntent().getExtras().getString("VALIDITY"));
         tv_plan.setText(getIntent().getExtras().getString("PLAN"));

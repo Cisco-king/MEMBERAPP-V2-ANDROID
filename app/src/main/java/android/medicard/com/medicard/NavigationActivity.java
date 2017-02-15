@@ -157,14 +157,14 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.tv_loa_req:
 
-//                tv_header.setText(getString(R.string.my_loa_req));
-//                fragment = null;
-//                fragment = new fragment_loaRequest();
-//                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//                fragmentTransaction.replace(R.id.container_body, fragment);
-//                fragmentTransaction.commit();
-//
-//                closeDrawer() ;
+                tv_header.setText(getString(R.string.my_loa_req));
+                fragment = null;
+                fragment = new fragment_loaRequest();
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment);
+                fragmentTransaction.commit();
+
+                closeDrawer() ;
                 break;
         }
     }

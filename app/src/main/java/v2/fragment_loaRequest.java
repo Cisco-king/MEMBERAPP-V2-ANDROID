@@ -21,7 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
-import model.LoaRequest;
+import model.Loa;
+
 
 public class fragment_loaRequest extends Fragment implements LOARequestCallback {
 
@@ -34,9 +35,10 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     LinearLayoutManager llm;
     LoaRequestAdapter adapter;
-    ArrayList<LoaRequest> arrayList = new ArrayList<>();
+    ArrayList<Loa> arrayList = new ArrayList<>();
 
     LoaRequestRerieve implement;
+    LOARequestCallback callback;
 
     private Context context;
     private static final String ARG_PARAM1 = "param1";
@@ -81,34 +83,23 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     }
 
     private void init() {
+        callback = this;
         context = getActivity();
         implement = new LoaRequestRerieve(context);
         llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rv_loa_request.setLayoutManager(llm);
 
+        rv_loa_request.setLayoutManager(llm);
+        adapter = new LoaRequestAdapter(context, arrayList);
+        rv_loa_request.setAdapter(adapter);
 
 //        implement.changeButtonColorDeselect(btn_filter);
 //        implement.changeButtonColorSelected(btn_sort);
 
-        addData();
-        adapter = new LoaRequestAdapter(context, arrayList);
-        rv_loa_request.setAdapter(adapter);
-    }
-
-    private void addData() {
-
-
-        for (int x = 0; x < 10; x++) {
-
-
-            LoaRequest loa = new LoaRequest("John, The " + x, "Oct 1,200" + x, "PENDING");
-            arrayList.add(loa);
-
-        }
 
 
     }
+
 
     @OnClick({R.id.btn_sort, R.id.btn_filter})
     public void onClick(View v) {
@@ -142,13 +133,5 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     }
 
-    @Override
-    public void onSuccess() {
 
-    }
-
-    @Override
-    public void onError() {
-
-    }
 }
