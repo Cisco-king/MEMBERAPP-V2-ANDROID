@@ -5,26 +5,35 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.medicard.com.medicard.R;
-import android.widget.Button;
 
 import java.util.ArrayList;
 
 import InterfaceService.LOARequestCallback;
-import InterfaceService.LoaRequestRerieve;
+import InterfaceService.LoaRequestRetrieve;
+import Sqlite.DatabaseHandler;
 import adapter.LoaRequestAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.Loa;
+import model.LoaList;
+import utilities.AlertDialogCustom;
+import utilities.SharedPref;
 
 
 public class fragment_loaRequest extends Fragment implements LOARequestCallback {
+
+
+    /**
+     * ADD LOADING
+     */
 
     @BindView(R.id.rv_loa_request)
     RecyclerView rv_loa_request;
@@ -35,39 +44,24 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     LinearLayoutManager llm;
     LoaRequestAdapter adapter;
-    ArrayList<Loa> arrayList = new ArrayList<>();
+    ArrayList<LoaList> arrayList = new ArrayList<>();
 
-    LoaRequestRerieve implement;
+    LoaRequestRetrieve implement;
     LOARequestCallback callback;
 
+    AlertDialogCustom alertDialogCustom;
+    DatabaseHandler databaseHandler;
     private Context context;
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
 
     public fragment_loaRequest() {
-        // Required empty public constructor
+
     }
 
-    public static fragment_loaRequest newInstance(String param1, String param2) {
-        fragment_loaRequest fragment = new fragment_loaRequest();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -85,17 +79,23 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     private void init() {
         callback = this;
         context = getActivity();
-        implement = new LoaRequestRerieve(context);
+        databaseHandler = new DatabaseHandler(context);
+        implement = new LoaRequestRetrieve(context, callback);
+        alertDialogCustom = new AlertDialogCustom();
         llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
         rv_loa_request.setLayoutManager(llm);
-        adapter = new LoaRequestAdapter(context, arrayList);
+        adapter = new LoaRequestAdapter(context, arrayList, databaseHandler, callback);
         rv_loa_request.setAdapter(adapter);
+
+        databaseHandler.dropLoa();
+        arrayList.addAll(databaseHandler.retrieveLoa());
+        //  implement.testDataDownLoadRequirement(arrayList , databaseHandler);
+        implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context));
 
 //        implement.changeButtonColorDeselect(btn_filter);
 //        implement.changeButtonColorSelected(btn_sort);
-
 
 
     }
@@ -134,4 +134,22 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     }
 
 
+    @Override
+    public void onErrorLoaListener(String message) {
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+    }
+
+    @Override
+    public void onSuccessLoaListener(Loa loa) {
+        Log.d("LOA_SUCCESS", loa.toString());
+
+        implement.getData(loa, databaseHandler);
+    }
+
+    @Override
+    public void onDbLoaSuccessListener() {
+        arrayList.clear();
+        arrayList.addAll(databaseHandler.retrieveLoa());
+        adapter.notifyDataSetChanged();
+    }
 }

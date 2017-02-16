@@ -74,6 +74,43 @@ public class LoaList implements Parcelable {
 
     private String room;
 
+
+    public LoaList(String procedureCode, String batchCode, String reason, String memCompany, String diagnosis, String remarks, String diagnosisCode, String type, String updatedBy, String callTypeId, String id, String runningBill, String memMi, String memberCode, String memFname, String memLname, String doctorCode, String actionTaken, String status, String updatedDate, String terminalNo, String approvalNo, String procedureAmount, String callDate, String companyCode, String category, String callerId, String approvalDate, String hospitalCode, String procedureDesc, String notes, String dateAdmitted, String room) {
+        this.procedureCode = procedureCode;
+        this.batchCode = batchCode;
+        this.reason = reason;
+        this.memCompany = memCompany;
+        this.diagnosis = diagnosis;
+        this.remarks = remarks;
+        this.diagnosisCode = diagnosisCode;
+        this.type = type;
+        this.updatedBy = updatedBy;
+        this.callTypeId = callTypeId;
+        this.id = id;
+        this.runningBill = runningBill;
+        this.memMi = memMi;
+        this.memberCode = memberCode;
+        this.memFname = memFname;
+        this.memLname = memLname;
+        this.doctorCode = doctorCode;
+        this.actionTaken = actionTaken;
+        this.status = status;
+        this.updatedDate = updatedDate;
+        this.terminalNo = terminalNo;
+        this.approvalNo = approvalNo;
+        this.procedureAmount = procedureAmount;
+        this.callDate = callDate;
+        this.companyCode = companyCode;
+        this.category = category;
+        this.callerId = callerId;
+        this.approvalDate = approvalDate;
+        this.hospitalCode = hospitalCode;
+        this.procedureDesc = procedureDesc;
+        this.notes = notes;
+        this.dateAdmitted = dateAdmitted;
+        this.room = room;
+    }
+
     public String getProcedureCode ()
     {
         return procedureCode;

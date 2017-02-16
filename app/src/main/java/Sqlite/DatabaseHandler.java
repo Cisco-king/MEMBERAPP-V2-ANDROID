@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.medicard.com.medicard.NavigationActivity;
 import android.util.Log;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -19,6 +20,8 @@ import model.CitiesAdapter;
 import model.GetDoctorsToHospital;
 import model.Hospital;
 import model.HospitalList;
+import model.Loa;
+import model.LoaList;
 import model.Provinces;
 import model.SpecializationList;
 import model.Specializations;
@@ -99,10 +102,85 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private String specializationCode = "specializationCode";
     private String specializationDescription = "specializationDescription";
 
+
+    private String loaTable = "LOAREQUEST";
+    private String procedureCode = "procedureCode";
+    private String batchCode = "batchCode";
+    private String reason = "reason";
+    private String diagnosis = "diagnosis";
+    // private String remarks = "remarks";
+    private String diagnosisCode = "diagnosisCode";
+    private String type = "type";
+    private String updatedBy = "updatedBy";
+    private String callTypeId = "callTypeId";
+    private String id = "id";
+    private String runningBill = "runningBill";
+    private String memMi = "memMi";
+    private String memberCode = "memberCode";
+    private String memFname = "memFname";
+    private String memLname = "memLname";
+    // private String doctorCode = "doctorCode";
+    private String actionTaken = "actionTaken";
+    private String status = "status";
+    private String updatedDate = "updatedDate";
+    private String terminalNo = "terminalNo";
+    private String approvalNo = "approvalNo";
+    private String procedureAmount = "procedureAmount";
+    private String callDate = "callDate";
+    private String companyCode = "companyCode";
+    //private String category= "category";
+    private String callerId = "callerId";
+    private String approvalDate = "approvalDate";
+    //private String hospitalCode = "hospitalCode";
+    private String procedureDesc = "procedureDesc";
+    private String notes = "notes";
+    private String dateAdmitted = "dateAdmitted";
+    private String memCompany = "memCompany";
+    //private String room = "room";
+
+
     protected static final String databaseName = "Medicard";
     private String hospTable = "hospital";
 
     private static final int version = 1;
+
+
+    private String createLoaRequest = " CREATE TABLE " +
+            loaTable + " ( " +
+            memCompany + " TEXT ," +
+            procedureCode + " TEXT ," +
+            batchCode + " TEXT ," +
+            reason + " TEXT ," +
+            diagnosis + " TEXT ," +
+            remarks + " TEXT ," +
+            diagnosisCode + " TEXT ," +
+            type + " TEXT ," +
+            updatedBy + " TEXT ," +
+            callTypeId + " TEXT ," +
+            id + " TEXT ," +
+            runningBill + " TEXT ," +
+            memMi + " TEXT ," +
+            memberCode + " TEXT ," +
+            memFname + " TEXT ," +
+            memLname + " TEXT ," +
+            doctorCode + " TEXT ," +
+            actionTaken + " TEXT ," +
+            status + " TEXT ," +
+            updatedDate + " TEXT ," +
+            terminalNo + " TEXT ," +
+            approvalNo + " TEXT ," +
+            procedureAmount + " TEXT ," +
+            callDate + " TEXT ," +
+            companyCode + " TEXT ," +
+            category + " TEXT ," +
+            callerId + " TEXT ," +
+            approvalDate + " TEXT ," +
+            hospitalCode + " TEXT ," +
+            procedureDesc + " TEXT ," +
+            notes + " TEXT ," +
+            dateAdmitted + " TEXT ," +
+            room + " TEXT )  ";
+
 
     private String createSpecialization = " CREATE TABLE " +
             specTable + " ( " +
@@ -118,7 +196,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             countryCode + " TEXT ," +
             cityCode + " TEXT ," +
             countryName + " TEXT )  ";
-
 
     private String createProvinceStatement = "CREATE TABLE " +
             provinceTable + " ( " +
@@ -187,6 +264,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(createDoctorStatement);
         Log.e(TAG, createDoctorStatement);
 
+        db.execSQL(createLoaRequest);
+        Log.e(TAG, createLoaRequest);
+
         String data = "";
         String filterNull = "";
         try {
@@ -218,6 +298,55 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+
+    public void insertLoa(LoaList loa) {
+        boolean createSuccessful = false;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(id, loa.getId());
+        values.put(approvalNo, loa.getApprovalNo());
+        values.put(batchCode, loa.getBatchCode());
+        values.put(callerId, loa.getCallerId());
+        values.put(callTypeId, loa.getCallerId());
+        values.put(memberCode, loa.getMemberCode());
+        values.put(hospitalCode, loa.getHospitalCode());
+        values.put(companyCode, loa.getCompanyCode());
+        values.put(doctorCode, loa.getDoctorCode());
+        values.put(diagnosisCode, loa.getDiagnosisCode());
+        values.put(procedureCode, loa.getProcedureCode());
+        values.put(type, loa.getType());
+        values.put(room, loa.getRoom());
+        values.put(dateAdmitted, loa.getDateAdmitted());
+        values.put(diagnosis, loa.getDiagnosis());
+        values.put(procedureDesc, loa.getProcedureDesc());
+        values.put(procedureAmount, loa.getProcedureAmount());
+        values.put(actionTaken, loa.getActionTaken());
+        values.put(updatedBy, loa.getUpdatedBy());
+        values.put(updatedDate, loa.getUpdatedDate());
+        values.put(remarks, loa.getRemarks());
+        values.put(runningBill, loa.getRunningBill());
+        values.put(notes, loa.getNotes());
+        values.put(reason, loa.getReason());
+        values.put(category, loa.getCategory());
+        values.put(memLname, loa.getMemLname());
+        values.put(memFname, loa.getMemFname());
+        values.put(memMi, loa.getMemMi());
+        values.put(memCompany, loa.getMemCompany());
+        values.put(terminalNo, loa.getTerminalNo());
+        values.put(callDate, loa.getCallDate());
+        values.put(status, loa.getStatus());
+        values.put(approvalDate, loa.getApprovalDate());
+
+        createSuccessful = db.insert(loaTable, null, values) > 0;
+        db.close();
+
+        if (createSuccessful) {
+            Log.e("LOAD_LOA", loa.getId() + " created.");
+        }
     }
 
 
@@ -360,6 +489,81 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Log.e(TAG, docLname + " created.");
         }
 
+    }
+
+
+    public ArrayList<LoaList> retrieveLoa() {
+        ArrayList<LoaList> array = new ArrayList<>();
+        String sql = "SELECT * FROM " + loaTable;
+        sql += " ORDER BY " + dateAdmitted + " ASC ";
+        database = getReadableDatabase();
+        cursor = database.rawQuery(sql, null);
+        Log.e(TAG, cursor.getCount() + "");
+        Log.e(TAG, sql + "");
+
+        array.addAll(getDataLoa(cursor));
+
+
+        cursor.close();
+        database.close();
+        return array;
+    }
+
+    private ArrayList<LoaList> getDataLoa(Cursor cursor) {
+        ArrayList<LoaList> loa = new ArrayList<>();
+
+
+        if (cursor.moveToFirst()) {
+            do {
+                LoaList p = new LoaList(
+                        getCursor(cursor, procedureCode),
+                        getCursor(cursor, batchCode),
+                        getCursor(cursor, reason),
+                        getCursor(cursor, memCompany),
+                        getCursor(cursor, diagnosis),
+                        getCursor(cursor, remarks),
+                        getCursor(cursor, diagnosisCode),
+                        getCursor(cursor, type),
+                        getCursor(cursor, updatedBy),
+                        getCursor(cursor, callTypeId),
+                        getCursor(cursor, id),
+                        getCursor(cursor, runningBill),
+                        getCursor(cursor, memMi),
+                        getCursor(cursor, memberCode),
+                        getCursor(cursor, memFname),
+                        getCursor(cursor, memLname),
+                        getCursor(cursor, doctorCode),
+                        getCursor(cursor, actionTaken),
+                        getCursor(cursor, status),
+                        getCursor(cursor, updatedBy),
+                        getCursor(cursor, terminalNo),
+                        getCursor(cursor, approvalNo),
+                        getCursor(cursor, procedureAmount),
+                        getCursor(cursor, callDate),
+                        getCursor(cursor, companyCode),
+                        getCursor(cursor, category),
+                        getCursor(cursor, callerId),
+                        getCursor(cursor, approvalDate),
+                        getCursor(cursor, hospitalCode),
+                        getCursor(cursor, procedureDesc),
+                        getCursor(cursor, notes),
+                        getCursor(cursor, dateAdmitted),
+                        getCursor(cursor, room)
+
+                );
+
+                loa.add(p);
+                Log.d("LOAD_DATE", getCursor(cursor, id));
+            } while (cursor.moveToNext());
+
+        }
+
+
+        return loa;
+    }
+
+    private String getCursor(Cursor cursor, String data) {
+        return cursor.getString(cursor.getColumnIndex(data));
     }
 
 
@@ -618,6 +822,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void dropLoa() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql = "DELETE FROM " + loaTable;
+
+        db.execSQL(sql);
+        db.close();
+    }
+
     public void dropSpecialization() {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -795,4 +1008,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
+    public String getHospitalName(String searchCode) {
+        String sql = " SELECT * FROM " + hospTable +
+                " WHERE " + hospitalCode + " = '" + searchCode + "'";
+        database = getReadableDatabase();
+        cursor = database.rawQuery(sql, null);
+
+        String gHosp = "";
+        if (cursor.moveToFirst()) {
+
+
+            do {
+                gHosp = cursor.getString(cursor.getColumnIndex(hospitalName));
+                Log.d("HOSP-ID", gHosp);
+            } while (cursor.moveToNext());
+
+
+        }
+
+        cursor.close();
+        database.close();
+        return gHosp;
+    }
 }

@@ -22,6 +22,7 @@ import model.ReturnRequestPassword;
 import model.SendLoa;
 import model.SignInDetails;
 import model.SpecializationList;
+import model.TheDoctor;
 import model.UpdatePin;
 import model.VerifyMemberData;
 import okhttp3.RequestBody;
@@ -122,4 +123,7 @@ public interface AppInterface {
 
     @GET("/v2/getLoaByMemberCode/?")
     Observable<Loa> getLoaList(@Query("memberCode") String memberCode);
+
+    @GET("/listing/getDoctorByCode/?")
+    Observable<TheDoctor> getDoctorData(@Query("doctorCode") String doctorCode);
 }
