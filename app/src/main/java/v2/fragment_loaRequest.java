@@ -1,6 +1,7 @@
 package v2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,8 +24,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.Loa;
+import model.LoaFetch;
 import model.LoaList;
 import utilities.AlertDialogCustom;
+import utilities.Constant;
+import utilities.NetworkTest;
 import utilities.SharedPref;
 
 
@@ -44,7 +48,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     LinearLayoutManager llm;
     LoaRequestAdapter adapter;
-    ArrayList<LoaList> arrayList = new ArrayList<>();
+    ArrayList<LoaFetch> arrayList = new ArrayList<>();
 
     LoaRequestRetrieve implement;
     LOARequestCallback callback;
@@ -92,8 +96,11 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         databaseHandler.dropLoa();
         arrayList.addAll(databaseHandler.retrieveLoa());
         //  implement.testDataDownLoadRequirement(arrayList , databaseHandler);
-        implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context));
 
+        if (NetworkTest.isOnline(context)) {
+            implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context));
+        } else
+            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.NO_Internet, 1);
 //        implement.changeButtonColorDeselect(btn_filter);
 //        implement.changeButtonColorSelected(btn_sort);
 
@@ -151,5 +158,13 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         arrayList.clear();
         arrayList.addAll(databaseHandler.retrieveLoa());
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void gotoLoaPage(ArrayList<LoaFetch> arrayList, int adapterPosition) {
+        Intent gotoLoa = new Intent(context, LoaPageActivity.class);
+        gotoLoa.putParcelableArrayListExtra(Constant.DATA_SEARCHED, arrayList);
+        gotoLoa.putExtra(Constant.POSITION, adapterPosition + "");
+        startActivity(gotoLoa);
     }
 }

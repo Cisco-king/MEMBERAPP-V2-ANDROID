@@ -58,6 +58,9 @@ public class Constant {
     public static String HOSP_U = "SORT_BY" ;
     public static String SEARCH_STRING = "SEARCH_STRING";
 
+    public static String DATA_SEARCHED = "DATA_SEARCHED";
+    public static String POSITION = "POSITION";
+
 
 
 }

@@ -2,6 +2,7 @@ package adapter;
 
 import android.content.Context;
 import android.medicard.com.medicard.R;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -19,7 +21,7 @@ import Sqlite.DatabaseHandler;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.Doctor;
-import model.LoaList;
+import model.LoaFetch;
 import model.TheDoctor;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -36,10 +38,11 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
 
     DatabaseHandler databaseHandler;
     private Context context;
-    private ArrayList<LoaList> arrayList;
+    private ArrayList<LoaFetch> arrayList;
     LOARequestCallback callback;
 
-    public LoaRequestAdapter(Context context, ArrayList<LoaList> arrayList, DatabaseHandler databaseHandler, LOARequestCallback callback) {
+
+    public LoaRequestAdapter(Context context, ArrayList<LoaFetch> arrayList, DatabaseHandler databaseHandler, LOARequestCallback callback) {
         this.arrayList = arrayList;
         this.context = context;
         this.databaseHandler = databaseHandler;
@@ -47,37 +50,58 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
     }
 
     @Override
-    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LoaRequestAdapter.Holder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.row_loa_request, parent, false);
+        View view = null;
+
+        view = LayoutInflater.from(context).inflate(R.layout.row_loa_request, parent, false);
         return new Holder(view);
+
     }
 
     @Override
-    public void onBindViewHolder(Holder holder, final int position) {
+    public void onBindViewHolder(LoaRequestAdapter.Holder viewHolder, final int position) {
 
 
+        final Holder holder = (Holder) viewHolder;
         getDataAndDisplay(holder.tv_hospname, arrayList.get(position).getHospitalCode(), databaseHandler);
         holder.tv_remark.setText(arrayList.get(position).getRemarks());
         holder.tv_req_date.setText(arrayList.get(position).getApprovalDate());
         holder.tv_room.setText(arrayList.get(position).getRoom());
         holder.tv_sched.setVisibility(View.GONE);
         holder.tv_status.setText(arrayList.get(position).getStatus());
-        getDoctorData(holder.tv_doctor, holder.tv_spec, arrayList.get(position).getDoctorCode());
-//        holder.gotoRequest.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d("LOAD_REQ", "CLICKED" + position);
-//            }
-//        });
+        getDoctorData(holder.tv_doctor, holder.tv_spec, arrayList.get(position).getDoctorCode(), position, holder.loading1, holder.loading2);
+
 
     }
 
-    private void getDoctorData(TextView tv_doctor, TextView tv_spec, String doctorCode) {
-        fetchData(doctorCode, tv_doctor, tv_spec);
+
+    @Override
+    public int getItemCount() {
+        return arrayList.size();
     }
 
-    private void fetchData(final String doctorCode, final TextView tv_doctor, final TextView tv_spec) {
+
+    private void getDoctorData(TextView tv_doctor, TextView tv_spec, String doctorCode, int position, ProgressBar loading1, ProgressBar loading2) {
+        if (arrayList.get(position).getDoctorSpec().equals(""))
+            fetchData(doctorCode, tv_doctor, tv_spec, arrayList, position, loading1, loading2);
+        else
+            dataFetchAndReadyToDisp(tv_doctor, tv_spec, arrayList, position , loading1 , loading2);
+
+    }
+
+    private void dataFetchAndReadyToDisp(TextView tv_doctor, TextView tv_spec, ArrayList<LoaFetch> arrayList, int position, ProgressBar loading2, ProgressBar loading1) {
+        tv_doctor.setText(arrayList.get(position).getDoctorName());
+        tv_spec.setText(arrayList.get(position).getDoctorSpec());
+
+
+        tv_doctor.setVisibility(View.VISIBLE);
+        tv_spec.setVisibility(View.VISIBLE);
+        loading1.setVisibility(View.GONE);
+        loading2.setVisibility(View.GONE);
+    }
+
+    private void fetchData(final String doctorCode, final TextView tv_doctor, final TextView tv_spec, final ArrayList<LoaFetch> arrayList, final int position, final ProgressBar loading1, final ProgressBar loading2) {
 
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
@@ -93,19 +117,32 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
 
                     @Override
                     public void onError(Throwable e) {
-
-                        Log.d("DOCTOR_CODE", doctorCode);
                         Log.d("DOCTOR_CODE", e.getMessage());
-                        doctorNotFound(doctorCode, tv_doctor, tv_spec);
+
+                        if (e.getMessage().contains("Expected BEGIN_OBJECT but was STRING")) {
+                            doctorNotFound(doctorCode, tv_doctor, tv_spec, arrayList, position);
+                        } else {
+                            onErrorListener(tv_doctor, tv_spec);
+                        }
+
+                        tv_doctor.setVisibility(View.VISIBLE);
+                        tv_spec.setVisibility(View.VISIBLE);
+                        loading1.setVisibility(View.GONE);
+                        loading2.setVisibility(View.GONE);
+
                     }
 
                     @Override
                     public void onNext(TheDoctor theDoctor) {
 
                         if (theDoctor.getResponseCode().equals("210")) {
-                            doctorNotFound(doctorCode, tv_doctor, tv_spec);
+                            doctorNotFound(doctorCode, tv_doctor, tv_spec, arrayList, position);
+                            tv_doctor.setVisibility(View.VISIBLE);
+                            tv_spec.setVisibility(View.VISIBLE);
+                            loading1.setVisibility(View.GONE);
+                            loading2.setVisibility(View.GONE);
                         } else {
-                            onSuccessListener(theDoctor.getDoctor(), tv_doctor, tv_spec);
+                            onSuccessListener(theDoctor.getDoctor(), tv_doctor, tv_spec, arrayList, position, loading1, loading2);
                         }
                     }
                 });
@@ -116,11 +153,20 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
     }
 
 
-    public void onSuccessListener(Doctor theDoctor, TextView tv_doctor, TextView tv_spec) {
-        tv_doctor.setText("---" + theDoctor.getDocFname() + " " +
+    public void onSuccessListener(Doctor theDoctor, TextView tv_doctor, TextView tv_spec, ArrayList<LoaFetch> arrayList, int position, ProgressBar loading1, ProgressBar loading2) {
+        tv_doctor.setText(theDoctor.getDocFname() + " " +
                 theDoctor.getDocLname());
 
-        tv_spec.setText("---" + theDoctor.getSpecDesc());
+        tv_spec.setText(theDoctor.getSpecDesc());
+        arrayList.get(position).setDoctorName(theDoctor.getDocFname() + " " +
+                theDoctor.getDocLname());
+        arrayList.get(position).setDoctorSpec(theDoctor.getSpecDesc());
+        arrayList.get(position).setDoctorSpecCode(theDoctor.getSpecCode());
+
+        tv_doctor.setVisibility(View.VISIBLE);
+        tv_spec.setVisibility(View.VISIBLE);
+        loading1.setVisibility(View.GONE);
+        loading2.setVisibility(View.GONE);
     }
 
 
@@ -130,16 +176,33 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
     }
 
 
-    public void doctorNotFound(String doctorCode, TextView tv_doctor, TextView tv_spec) {
+    public void doctorNotFound(String doctorCode, TextView tv_doctor, TextView tv_spec, ArrayList<LoaFetch> arrayList, int position) {
         tv_doctor.setText(doctorCode);
         tv_spec.setText("Not Specified");
+
+        arrayList.get(position).setDoctorName(doctorCode);
+        arrayList.get(position).setDoctorSpec("Not Specified");
+        arrayList.get(position).setDoctorSpecCode("Not Specified");
+
     }
 
-    @Override
-    public int getItemCount() {
-        return arrayList.size();
-    }
 
+//    public class Holder_unLoad extends RecyclerView.ViewHolder {
+//
+//        @BindView(R.id.tv_remark)
+//        TextView tv_remark;
+//
+//        @BindView(R.id.loading)
+//        ProgressBar loading;
+//
+//        @BindView(R.id.tv_status)
+//        TextView tv_status;
+//
+//        public Holder_unLoad(View itemView) {
+//            super(itemView);
+//            ButterKnife.bind(this, itemView);
+//        }
+//    }
 
     public class Holder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_req_date)
@@ -166,9 +229,25 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
         @BindView(R.id.tv_sched)
         TextView tv_sched;
 
+        @BindView(R.id.cv_account)
+        CardView cv_account;
+
+        @BindView(R.id.loading1)
+        ProgressBar loading1;
+        @BindView(R.id.loading2)
+        ProgressBar loading2;
+
         public Holder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+
+            cv_account.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callback.gotoLoaPage(arrayList, getAdapterPosition());
+                }
+            });
         }
     }
 

@@ -7,7 +7,7 @@ package utilities;
 public class AgeCorrector {
 
 
-    public String age(String myAge) {
+    public  static  String age(String myAge) {
 
         if (myAge.contains(".") && myAge.length() > 1) {
 

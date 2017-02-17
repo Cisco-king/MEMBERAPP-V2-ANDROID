@@ -88,7 +88,7 @@
     <string name="member_type">Member Type</string>
     <string name="effective_Date">Effectivity date</string>
     <string name="validity_date">Validity Date</string>
- <string name="effective_Date_">Effectivity date:</string>
+    <string name="effective_Date_">Effectivity date:</string>
     <string name="validity_date_">Validity Date:</string>
 
     <string name="remarks">Remarks</string>
@@ -205,5 +205,9 @@
 
     <string name="picture_title">Consultation</string>
     <string name="picture_description">Consultation Information</string>
+    <string name="title_activity_loa_page">LoaPageActivity</string>
+    <string name="approval_code">Approval Code:</string>
+    <string name="requesting_doctor">Requesting Doctor:</string>
+    <string name="procedure">Procedure</string>
 
 </resources>

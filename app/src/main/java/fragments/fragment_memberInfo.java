@@ -189,7 +189,10 @@ public class fragment_memberInfo extends Fragment implements View.OnClickListene
                     public void onNext(GetUSER memberInfo) {
                         Log.d(TAG, memberInfo.toString());
                         Log.d(TAG, memberInfo.getMemberInfo().getPRIN_CODE());
-                        header.add(memberInfo.getMemberInfo());
+                               header.add(memberInfo.getMemberInfo());
+                        SharedPref.setStringValue(SharedPref.USER , SharedPref.AGE , header.get(0).getAGE() ,getActivity());
+                        SharedPref.setStringValue(SharedPref.USER , SharedPref.GENDER , header.get(0).getMEM_SEX() ,getActivity());
+
                         arrayAccounts.addAll(memberInfo.getDependents());
 
                         progressDialog.dismiss();

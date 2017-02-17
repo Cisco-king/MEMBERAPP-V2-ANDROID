@@ -21,6 +21,7 @@ import model.GetDoctorsToHospital;
 import model.Hospital;
 import model.HospitalList;
 import model.Loa;
+import model.LoaFetch;
 import model.LoaList;
 import model.Provinces;
 import model.SpecializationList;
@@ -137,7 +138,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private String dateAdmitted = "dateAdmitted";
     private String memCompany = "memCompany";
     //private String room = "room";
-
+    private String docName = "docName";
+    private String docSpec = "docSpec";
+    private String docSpecCode = "docSpecCode";
 
     protected static final String databaseName = "Medicard";
     private String hospTable = "hospital";
@@ -179,6 +182,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             procedureDesc + " TEXT ," +
             notes + " TEXT ," +
             dateAdmitted + " TEXT ," +
+            docName + " TEXT ," +
+            docSpec + " TEXT ," +
+            docSpecCode + " TEXT ," +
             room + " TEXT )  ";
 
 
@@ -341,6 +347,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(status, loa.getStatus());
         values.put(approvalDate, loa.getApprovalDate());
 
+
+        values.put(docName, "");
+        values.put(docSpec, "");
+        values.put(docSpecCode, "");
+
         createSuccessful = db.insert(loaTable, null, values) > 0;
         db.close();
 
@@ -492,8 +503,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<LoaList> retrieveLoa() {
-        ArrayList<LoaList> array = new ArrayList<>();
+    public ArrayList<LoaFetch> retrieveLoa() {
+        ArrayList<LoaFetch> array = new ArrayList<>();
         String sql = "SELECT * FROM " + loaTable;
         sql += " ORDER BY " + dateAdmitted + " ASC ";
         database = getReadableDatabase();
@@ -509,13 +520,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return array;
     }
 
-    private ArrayList<LoaList> getDataLoa(Cursor cursor) {
-        ArrayList<LoaList> loa = new ArrayList<>();
+    private ArrayList<LoaFetch> getDataLoa(Cursor cursor) {
+        ArrayList<LoaFetch> loa = new ArrayList<>();
 
 
         if (cursor.moveToFirst()) {
             do {
-                LoaList p = new LoaList(
+                LoaFetch p = new LoaFetch(
                         getCursor(cursor, procedureCode),
                         getCursor(cursor, batchCode),
                         getCursor(cursor, reason),
@@ -548,7 +559,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         getCursor(cursor, procedureDesc),
                         getCursor(cursor, notes),
                         getCursor(cursor, dateAdmitted),
-                        getCursor(cursor, room)
+                        getCursor(cursor, room),
+                        getCursor(cursor, docName),
+                        getCursor(cursor, docSpec),
+                        getCursor(cursor, docSpecCode)
 
                 );
 

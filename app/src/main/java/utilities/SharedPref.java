@@ -43,6 +43,8 @@ public class SharedPref {
     public static String EFF_DATE = "EFF_DATE";
         public static String PIN_IS_AVAILABLE = "PIN_IS_AVAILABLE" ;
     public static String PROVINCE_CODE = "PROVINCE_CODE" ;
+    public static String AGE = "AGE" ;
+    public static String GENDER = "GENDER" ;
 
 
 
