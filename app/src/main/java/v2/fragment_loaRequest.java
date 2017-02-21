@@ -41,10 +41,9 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @BindView(R.id.rv_loa_request)
     RecyclerView rv_loa_request;
+
     @BindView(R.id.btn_sort)
     FancyButton btn_sort;
-    @BindView(R.id.btn_filter)
-    FancyButton btn_filter;
 
     LinearLayoutManager llm;
     LoaRequestAdapter adapter;
@@ -56,6 +55,8 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     AlertDialogCustom alertDialogCustom;
     DatabaseHandler databaseHandler;
     private Context context;
+
+    private final int CALL_SORT_LOA = 100;
 
     public fragment_loaRequest() {
 
@@ -95,32 +96,26 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
         databaseHandler.dropLoa();
         arrayList.addAll(databaseHandler.retrieveLoa());
-        //  implement.testDataDownLoadRequirement(arrayList , databaseHandler);
+
 
         if (NetworkTest.isOnline(context)) {
             implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context));
         } else
             alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.NO_Internet, 1);
-//        implement.changeButtonColorDeselect(btn_filter);
-//        implement.changeButtonColorSelected(btn_sort);
-
 
     }
 
 
-    @OnClick({R.id.btn_sort, R.id.btn_filter})
+    @OnClick({R.id.btn_sort})
     public void onClick(View v) {
 
         switch (v.getId()) {
 
             case R.id.btn_sort:
-//                implement.changeButtonColorDeselect(btn_filter);
-//                implement.changeButtonColorSelected(btn_sort);
-                break;
-
-            case R.id.btn_filter:
-//                implement.changeButtonColorDeselect(btn_sort);
-//                implement.changeButtonColorSelected(btn_filter);
+                Intent gotoSort = new Intent(context, SortLoaReqActivity.class);
+                gotoSort.putParcelableArrayListExtra(Constant.LOA_REQUEST, arrayList);
+                Log.d("HOSP_GET_NAME", arrayList.get(0).getHospitalName());
+                startActivityForResult(gotoSort, CALL_SORT_LOA);
                 break;
 
 
@@ -157,7 +152,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     public void onDbLoaSuccessListener() {
         arrayList.clear();
         arrayList.addAll(databaseHandler.retrieveLoa());
-        adapter.notifyDataSetChanged();
+        implement.getDoctorCreds(arrayList, databaseHandler);
     }
 
     @Override
@@ -166,5 +161,26 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         gotoLoa.putParcelableArrayListExtra(Constant.DATA_SEARCHED, arrayList);
         gotoLoa.putExtra(Constant.POSITION, adapterPosition + "");
         startActivity(gotoLoa);
+    }
+
+    @Override
+    public void onErrorFetchingDoctorCreds(String message) {
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+    }
+
+    @Override
+    public void doneFetchingDoctorData() {
+        arrayList.clear();
+        arrayList.addAll(databaseHandler.retrieveLoa());
+        implement.updateHospitals(arrayList, databaseHandler);
+
+
+    }
+
+    @Override
+    public void doneUpdatingHosp() {
+        arrayList.clear();
+        arrayList.addAll(databaseHandler.retrieveLoa());
+        adapter.notifyDataSetChanged();
     }
 }

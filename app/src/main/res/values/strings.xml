@@ -209,5 +209,18 @@
     <string name="approval_code">Approval Code:</string>
     <string name="requesting_doctor">Requesting Doctor:</string>
     <string name="procedure">Procedure</string>
+    <string name="title_activity_sort_loa_req">SortLoaReqActivity</string>
+    <string name="service_type">Service Type</string>
+    <string name="test">Test</string>
+    <string name="diagnosis">Diagnosis</string>
+    <string name="request_date">Request Date</string>
+    <string name="availed">Availed</string>
+    <string name="expired">Expired</string>
+    <string name="approved">Approved</string>
+    <string name="pending">Pending</string>
+    <string name="cancelled">cancelled</string>
+    <string name="disapproved_">disapproved</string>
+    <string name="basic_test">Basic Test</string>
+    <string name="other_test_proc">Other Test/Procedures</string>
 
 </resources>

@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import mehdi.sakout.fancybuttons.FancyButton;
 import model.Loa;
 import model.LoaFetch;
 import utilities.AgeCorrector;
+import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.DateConverter;
 import utilities.GenderPicker;
@@ -74,6 +76,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
     @BindView(R.id.tv_problem)
     TextView tv_problem;
+
     @BindView(R.id.tv_header)
     TextView tv_header;
 
@@ -89,6 +92,8 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     ArrayList<LoaFetch> loaList = new ArrayList<>();
     Context context;
     ScreenshotCallback callback;
+    LoaFetch loa;
+    AlertDialogCustom alertDialogCustom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +104,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
         ButterKnife.bind(this);
         context = this;
         callback = this;
+        alertDialogCustom = new AlertDialogCustom();
         position = Integer.parseInt(getIntent().getStringExtra(Constant.POSITION));
         ArrayList<LoaFetch> temp;
         temp = getIntent().getParcelableArrayListExtra(Constant.DATA_SEARCHED);
@@ -110,7 +116,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     }
 
     private void init(ArrayList<LoaFetch> loaList, int position) {
-        LoaFetch loa = loaList.get(position);
+        loa = loaList.get(position);
 
         tv_header.setText(loa.getRemarks());
         tv_status.setText(loa.getStatus());
@@ -161,7 +167,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
     @Override
     public void onScreenShotListener() {
-
+        Log.d("TRIGGERED", "TRIGGERED");
         btn_download.setVisibility(View.GONE);
         btn_cancel.setVisibility(View.GONE);
         btn_cancel_req.setVisibility(View.GONE);
@@ -169,8 +175,9 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
         if (Permission.checkPermissionStorage(context)) {
             new ImageSaver(context).
-                    setFileName("History.jpg").
-                    setDirectoryName("Medicard")
+                    setFileName(DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate())
+                            + "_" + loa.getRemarks() + ".jpg")
+                    .setDirectoryName("Medicard")
                     .setExternal(false)
                     .save(bitmap, callback);
 
@@ -182,5 +189,8 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
         btn_download.setVisibility(View.VISIBLE);
         btn_cancel.setVisibility(View.VISIBLE);
         btn_cancel_req.setVisibility(View.VISIBLE);
+
+        alertDialogCustom.showMe(context, alertDialogCustom.CONGRATULATIONS_title, alertDialogCustom.Saved_Screenshot, 2);
+
     }
 }

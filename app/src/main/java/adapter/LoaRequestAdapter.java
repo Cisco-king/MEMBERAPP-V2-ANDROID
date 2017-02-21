@@ -21,6 +21,7 @@ import Sqlite.DatabaseHandler;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.Doctor;
+import model.DoctorsToHospital;
 import model.LoaFetch;
 import model.TheDoctor;
 import rx.Subscriber;
@@ -64,15 +65,16 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
 
 
         final Holder holder = (Holder) viewHolder;
-        getDataAndDisplay(holder.tv_hospname, arrayList.get(position).getHospitalCode(), databaseHandler);
         holder.tv_remark.setText(arrayList.get(position).getRemarks());
         holder.tv_req_date.setText(arrayList.get(position).getApprovalDate());
         holder.tv_room.setText(arrayList.get(position).getRoom());
         holder.tv_sched.setVisibility(View.GONE);
         holder.tv_status.setText(arrayList.get(position).getStatus());
-        getDoctorData(holder.tv_doctor, holder.tv_spec, arrayList.get(position).getDoctorCode(), position, holder.loading1, holder.loading2);
 
+        holder.tv_doctor.setText(arrayList.get(position).getDoctorName());
+        holder.tv_spec.setText(arrayList.get(position).getDoctorSpec());
 
+        holder.tv_hospname.setText(arrayList.get(position).getHospitalName());
     }
 
 
@@ -86,7 +88,7 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
         if (arrayList.get(position).getDoctorSpec().equals(""))
             fetchData(doctorCode, tv_doctor, tv_spec, arrayList, position, loading1, loading2);
         else
-            dataFetchAndReadyToDisp(tv_doctor, tv_spec, arrayList, position , loading1 , loading2);
+            dataFetchAndReadyToDisp(tv_doctor, tv_spec, arrayList, position, loading1, loading2);
 
     }
 
@@ -105,7 +107,7 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
 
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-        appInterface.getDoctorData(doctorCode)
+        appInterface.getDoctorDataWithRoom(doctorCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
@@ -142,18 +144,21 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
                             loading1.setVisibility(View.GONE);
                             loading2.setVisibility(View.GONE);
                         } else {
-                            onSuccessListener(theDoctor.getDoctor(), tv_doctor, tv_spec, arrayList, position, loading1, loading2);
+                            onSuccessListener(theDoctor.getDoctorsToHospital().get(0), tv_doctor, tv_spec, arrayList, position, loading1, loading2);
                         }
                     }
                 });
     }
+//
+//    private void getDataAndDisplay(TextView tv_hospname, String hospitalCode, DatabaseHandler databaseHandler, int position) {
+//        String hospName = databaseHandler.getHospitalName(hospitalCode);
+//
+//        tv_hospname.setText(hospName);
+//        databaseHandler.setHospitalToLoaReq(arrayList.get(position).getId(), hospName);
+//    }
 
-    private void getDataAndDisplay(TextView tv_hospname, String hospitalCode, DatabaseHandler databaseHandler) {
-        tv_hospname.setText(databaseHandler.getHospitalName(hospitalCode));
-    }
 
-
-    public void onSuccessListener(Doctor theDoctor, TextView tv_doctor, TextView tv_spec, ArrayList<LoaFetch> arrayList, int position, ProgressBar loading1, ProgressBar loading2) {
+    public void onSuccessListener(DoctorsToHospital theDoctor, TextView tv_doctor, TextView tv_spec, ArrayList<LoaFetch> arrayList, int position, ProgressBar loading1, ProgressBar loading2) {
         tv_doctor.setText(theDoctor.getDocFname() + " " +
                 theDoctor.getDocLname());
 
@@ -163,6 +168,13 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
         arrayList.get(position).setDoctorSpec(theDoctor.getSpecDesc());
         arrayList.get(position).setDoctorSpecCode(theDoctor.getSpecCode());
 
+        databaseHandler.setDoctorToLoaReq(
+                arrayList.get(position).getId(),
+                theDoctor.getDocFname() + " " + theDoctor.getDocLname(),
+                theDoctor.getSpecDesc(),
+                theDoctor.getSpecCode(),
+                theDoctor.getSchedule(),
+                theDoctor.getRoom());
         tv_doctor.setVisibility(View.VISIBLE);
         tv_spec.setVisibility(View.VISIBLE);
         loading1.setVisibility(View.GONE);

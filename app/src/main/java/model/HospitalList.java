@@ -1,10 +1,12 @@
 package model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by mpx-pawpaw on 1/4/17.
  */
-
-public class HospitalList {
+public class HospitalList implements Parcelable {
 
     private String phoneNo;
 
@@ -34,6 +36,12 @@ public class HospitalList {
 
     public HospitalList( ) {
 
+    }
+
+
+    public HospitalList(String hospitalName, String hospitalCode) {
+        this.hospitalName = hospitalName;
+        this.hospitalCode = hospitalCode;
     }
 
     public HospitalList(String phoneNo, String region, String streetAddress, String category, String faxno, String alias, String keyword, String province, String hospitalName, String hospitalCode, String coordinator, String contactPerson, String city) {
@@ -187,4 +195,55 @@ public class HospitalList {
     {
         return "ClassPojo [phoneNo = "+phoneNo+", region = "+region+", streetAddress = "+streetAddress+", category = "+category+", faxno = "+faxno+", alias = "+alias+", keyword = "+keyword+", province = "+province+", hospitalName = "+hospitalName+", hospitalCode = "+hospitalCode+", coordinator = "+coordinator+", contactPerson = "+contactPerson+", city = "+city+"]";
     }
+
+    protected HospitalList(Parcel in) {
+        phoneNo = in.readString();
+        region = in.readString();
+        streetAddress = in.readString();
+        category = in.readString();
+        faxno = in.readString();
+        alias = in.readString();
+        keyword = in.readString();
+        province = in.readString();
+        hospitalName = in.readString();
+        hospitalCode = in.readString();
+        coordinator = in.readString();
+        contactPerson = in.readString();
+        city = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(phoneNo);
+        dest.writeString(region);
+        dest.writeString(streetAddress);
+        dest.writeString(category);
+        dest.writeString(faxno);
+        dest.writeString(alias);
+        dest.writeString(keyword);
+        dest.writeString(province);
+        dest.writeString(hospitalName);
+        dest.writeString(hospitalCode);
+        dest.writeString(coordinator);
+        dest.writeString(contactPerson);
+        dest.writeString(city);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<HospitalList> CREATOR = new Parcelable.Creator<HospitalList>() {
+        @Override
+        public HospitalList createFromParcel(Parcel in) {
+            return new HospitalList(in);
+        }
+
+        @Override
+        public HospitalList[] newArray(int size) {
+            return new HospitalList[size];
+        }
+    };
 }

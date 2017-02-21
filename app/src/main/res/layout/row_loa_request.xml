@@ -86,6 +86,7 @@
             android:textSize="@dimen/text_small" />
 
         <ProgressBar
+            android:visibility="gone"
             android:id="@+id/loading1"
 
             android:layout_width="15dp"
@@ -102,7 +103,7 @@
 
         <ProgressBar
             android:id="@+id/loading2"
-
+            android:visibility="gone"
             android:layout_width="15dp"
             android:layout_height="15dp" />
     </LinearLayout>

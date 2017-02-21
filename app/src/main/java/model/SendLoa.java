@@ -13,9 +13,13 @@ public class SendLoa {
 
     private String doctorCode;
 
+    private String diagnosisDesc;
+
     private String deviceID;
 
     private String procedureAmount;
+
+    private String primaryComplaint;
 
     private String procedureDesc;
 
@@ -25,89 +29,129 @@ public class SendLoa {
 
     private String memberCode;
 
-    public String getLocationCode() {
+    public String getLocationCode ()
+    {
         return locationCode;
     }
 
-    public void setLocationCode(String locationCode) {
+    public void setLocationCode (String locationCode)
+    {
         this.locationCode = locationCode;
     }
 
-    public String getUsername() {
+    public String getUsername ()
+    {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername (String username)
+    {
         this.username = username;
     }
 
-    public String getProcedureCode() {
+    public String getProcedureCode ()
+    {
         return procedureCode;
     }
 
-    public void setProcedureCode(String procedureCode) {
+    public void setProcedureCode (String procedureCode)
+    {
         this.procedureCode = procedureCode;
     }
 
-    public String getDoctorCode() {
+    public String getDoctorCode ()
+    {
         return doctorCode;
     }
 
-    public void setDoctorCode(String doctorCode) {
+    public void setDoctorCode (String doctorCode)
+    {
         this.doctorCode = doctorCode;
     }
 
-    public String getDeviceID() {
+    public String getDiagnosisDesc ()
+    {
+        return diagnosisDesc;
+    }
+
+    public void setDiagnosisDesc (String diagnosisDesc)
+    {
+        this.diagnosisDesc = diagnosisDesc;
+    }
+
+    public String getDeviceID ()
+    {
         return deviceID;
     }
 
-    public void setDeviceID(String deviceID) {
+    public void setDeviceID (String deviceID)
+    {
         this.deviceID = deviceID;
     }
 
-    public String getProcedureAmount() {
+    public String getProcedureAmount ()
+    {
         return procedureAmount;
     }
 
-    public void setProcedureAmount(String procedureAmount) {
+    public void setProcedureAmount (String procedureAmount)
+    {
         this.procedureAmount = procedureAmount;
     }
 
-    public String getProcedureDesc() {
+    public String getPrimaryComplaint ()
+    {
+        return primaryComplaint;
+    }
+
+    public void setPrimaryComplaint (String primaryComplaint)
+    {
+        this.primaryComplaint = primaryComplaint;
+    }
+
+    public String getProcedureDesc ()
+    {
         return procedureDesc;
     }
 
-    public void setProcedureDesc(String procedureDesc) {
+    public void setProcedureDesc (String procedureDesc)
+    {
         this.procedureDesc = procedureDesc;
     }
 
-    public String getHospitalCode() {
+    public String getHospitalCode ()
+    {
         return hospitalCode;
     }
 
-    public void setHospitalCode(String hospitalCode) {
+    public void setHospitalCode (String hospitalCode)
+    {
         this.hospitalCode = hospitalCode;
     }
 
-    public String getDiagnosisCode() {
+    public String getDiagnosisCode ()
+    {
         return diagnosisCode;
     }
 
-    public void setDiagnosisCode(String diagnosisCode) {
+    public void setDiagnosisCode (String diagnosisCode)
+    {
         this.diagnosisCode = diagnosisCode;
     }
 
-    public String getMemberCode() {
+    public String getMemberCode ()
+    {
         return memberCode;
     }
 
-    public void setMemberCode(String memberCode) {
+    public void setMemberCode (String memberCode)
+    {
         this.memberCode = memberCode;
     }
 
     @Override
-    public String toString() {
-        return "ClassPojo [locationCode = " + locationCode + ", username = " + username + ", procedureCode = " + procedureCode + ", doctorCode = " + doctorCode + ", deviceID = " + deviceID + ", procedureAmount = " + procedureAmount + ", procedureDesc = " + procedureDesc + ", hospitalCode = " + hospitalCode + ", diagnosisCode = " + diagnosisCode + ", memberCode = " + memberCode + "]";
+    public String toString()
+    {
+        return "ClassPojo [locationCode = "+locationCode+", username = "+username+", procedureCode = "+procedureCode+", doctorCode = "+doctorCode+", diagnosisDesc = "+diagnosisDesc+", deviceID = "+deviceID+", procedureAmount = "+procedureAmount+", primaryComplaint = "+primaryComplaint+", procedureDesc = "+procedureDesc+", hospitalCode = "+hospitalCode+", diagnosisCode = "+diagnosisCode+", memberCode = "+memberCode+"]";
     }
-
 }

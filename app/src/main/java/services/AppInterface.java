@@ -126,4 +126,7 @@ public interface AppInterface {
 
     @GET("/listing/getDoctorByCode/?")
     Observable<TheDoctor> getDoctorData(@Query("doctorCode") String doctorCode);
+
+    @GET("/listing/getDoctorHospitalByCode/?")
+    Observable<TheDoctor> getDoctorDataWithRoom(@Query("doctorCode") String doctorCode);
 }

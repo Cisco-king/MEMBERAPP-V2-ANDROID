@@ -1,51 +1,45 @@
 package model;
 
+import java.util.ArrayList;
+
 /**
  * Created by mpx-pawpaw on 2/16/17.
  */
 
-public class TheDoctor
-{
+public class TheDoctor {
     private String responseCode;
 
     private String responseDesc;
 
-    private Doctor doctor;
+    private ArrayList<DoctorsToHospital> doctorsToHospital;
 
-    public String getResponseCode ()
-    {
+    public String getResponseCode() {
         return responseCode;
     }
 
-    public void setResponseCode (String responseCode)
-    {
+    public void setResponseCode(String responseCode) {
         this.responseCode = responseCode;
     }
 
-    public String getResponseDesc ()
-    {
+    public String getResponseDesc() {
         return responseDesc;
     }
 
-    public void setResponseDesc (String responseDesc)
-    {
+    public void setResponseDesc(String responseDesc) {
         this.responseDesc = responseDesc;
     }
 
-    public Doctor getDoctor ()
-    {
-        return doctor;
+    public ArrayList<DoctorsToHospital> getDoctorsToHospital() {
+        return doctorsToHospital;
     }
 
-    public void setDoctor (Doctor doctor)
-    {
-        this.doctor = doctor;
+    public void setDoctorsToHospital(ArrayList<DoctorsToHospital> doctorsToHospital) {
+        this.doctorsToHospital = doctorsToHospital;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [responseCode = "+responseCode+", responseDesc = "+responseDesc+", doctor = "+doctor+"]";
+    public String toString() {
+        return "ClassPojo [responseCode = " + responseCode + ", responseDesc = " + responseDesc + ", doctorsToHospital = " + doctorsToHospital + "]";
     }
 }
 

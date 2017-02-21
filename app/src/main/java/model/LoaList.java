@@ -74,8 +74,10 @@ public class LoaList implements Parcelable {
 
     private String room;
 
+    private String schedule;
 
-    public LoaList(String procedureCode, String batchCode, String reason, String memCompany, String diagnosis, String remarks, String diagnosisCode, String type, String updatedBy, String callTypeId, String id, String runningBill, String memMi, String memberCode, String memFname, String memLname, String doctorCode, String actionTaken, String status, String updatedDate, String terminalNo, String approvalNo, String procedureAmount, String callDate, String companyCode, String category, String callerId, String approvalDate, String hospitalCode, String procedureDesc, String notes, String dateAdmitted, String room) {
+
+    public LoaList(String procedureCode, String batchCode, String reason, String memCompany, String diagnosis, String remarks, String diagnosisCode, String type, String updatedBy, String callTypeId, String id, String runningBill, String memMi, String memberCode, String memFname, String memLname, String doctorCode, String actionTaken, String status, String updatedDate, String terminalNo, String approvalNo, String procedureAmount, String callDate, String companyCode, String category, String callerId, String approvalDate, String hospitalCode, String procedureDesc, String notes, String dateAdmitted, String room, String schedule) {
         this.procedureCode = procedureCode;
         this.batchCode = batchCode;
         this.reason = reason;
@@ -109,342 +111,286 @@ public class LoaList implements Parcelable {
         this.notes = notes;
         this.dateAdmitted = dateAdmitted;
         this.room = room;
+        this.schedule = schedule;
     }
 
-    public String getProcedureCode ()
-    {
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
+    public String getSchedule() {
+
+        return schedule;
+    }
+
+
+    public String getProcedureCode() {
         return procedureCode;
     }
 
-    public void setProcedureCode (String procedureCode)
-    {
+    public void setProcedureCode(String procedureCode) {
         this.procedureCode = procedureCode;
     }
 
-    public String getBatchCode ()
-    {
+    public String getBatchCode() {
         return batchCode;
     }
 
-    public void setBatchCode (String batchCode)
-    {
+    public void setBatchCode(String batchCode) {
         this.batchCode = batchCode;
     }
 
-    public String getReason ()
-    {
+    public String getReason() {
         return reason;
     }
 
-    public void setReason (String reason)
-    {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 
-    public String getMemCompany ()
-    {
+    public String getMemCompany() {
         return memCompany;
     }
 
-    public void setMemCompany (String memCompany)
-    {
+    public void setMemCompany(String memCompany) {
         this.memCompany = memCompany;
     }
 
-    public String getDiagnosis ()
-    {
+    public String getDiagnosis() {
         return diagnosis;
     }
 
-    public void setDiagnosis (String diagnosis)
-    {
+    public void setDiagnosis(String diagnosis) {
         this.diagnosis = diagnosis;
     }
 
-    public String getRemarks ()
-    {
+    public String getRemarks() {
         return remarks;
     }
 
-    public void setRemarks (String remarks)
-    {
+    public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
 
-    public String getDiagnosisCode ()
-    {
+    public String getDiagnosisCode() {
         return diagnosisCode;
     }
 
-    public void setDiagnosisCode (String diagnosisCode)
-    {
+    public void setDiagnosisCode(String diagnosisCode) {
         this.diagnosisCode = diagnosisCode;
     }
 
-    public String getType ()
-    {
+    public String getType() {
         return type;
     }
 
-    public void setType (String type)
-    {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public String getUpdatedBy ()
-    {
+    public String getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy (String updatedBy)
-    {
+    public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
 
-    public String getCallTypeId ()
-    {
+    public String getCallTypeId() {
         return callTypeId;
     }
 
-    public void setCallTypeId (String callTypeId)
-    {
+    public void setCallTypeId(String callTypeId) {
         this.callTypeId = callTypeId;
     }
 
-    public String getId ()
-    {
+    public String getId() {
         return id;
     }
 
-    public void setId (String id)
-    {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getRunningBill ()
-    {
+    public String getRunningBill() {
         return runningBill;
     }
 
-    public void setRunningBill (String runningBill)
-    {
+    public void setRunningBill(String runningBill) {
         this.runningBill = runningBill;
     }
 
-    public String getMemMi ()
-    {
+    public String getMemMi() {
         return memMi;
     }
 
-    public void setMemMi (String memMi)
-    {
+    public void setMemMi(String memMi) {
         this.memMi = memMi;
     }
 
-    public String getMemberCode ()
-    {
+    public String getMemberCode() {
         return memberCode;
     }
 
-    public void setMemberCode (String memberCode)
-    {
+    public void setMemberCode(String memberCode) {
         this.memberCode = memberCode;
     }
 
-    public String getMemFname ()
-    {
+    public String getMemFname() {
         return memFname;
     }
 
-    public void setMemFname (String memFname)
-    {
+    public void setMemFname(String memFname) {
         this.memFname = memFname;
     }
 
-    public String getMemLname ()
-    {
+    public String getMemLname() {
         return memLname;
     }
 
-    public void setMemLname (String memLname)
-    {
+    public void setMemLname(String memLname) {
         this.memLname = memLname;
     }
 
-    public String getDoctorCode ()
-    {
+    public String getDoctorCode() {
         return doctorCode;
     }
 
-    public void setDoctorCode (String doctorCode)
-    {
+    public void setDoctorCode(String doctorCode) {
         this.doctorCode = doctorCode;
     }
 
-    public String getActionTaken ()
-    {
+    public String getActionTaken() {
         return actionTaken;
     }
 
-    public void setActionTaken (String actionTaken)
-    {
+    public void setActionTaken(String actionTaken) {
         this.actionTaken = actionTaken;
     }
 
-    public String getStatus ()
-    {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus (String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getUpdatedDate ()
-    {
+    public String getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate (String updatedDate)
-    {
+    public void setUpdatedDate(String updatedDate) {
         this.updatedDate = updatedDate;
     }
 
-    public String getTerminalNo ()
-    {
+    public String getTerminalNo() {
         return terminalNo;
     }
 
-    public void setTerminalNo (String terminalNo)
-    {
+    public void setTerminalNo(String terminalNo) {
         this.terminalNo = terminalNo;
     }
 
-    public String getApprovalNo ()
-    {
+    public String getApprovalNo() {
         return approvalNo;
     }
 
-    public void setApprovalNo (String approvalNo)
-    {
+    public void setApprovalNo(String approvalNo) {
         this.approvalNo = approvalNo;
     }
 
-    public String getProcedureAmount ()
-    {
+    public String getProcedureAmount() {
         return procedureAmount;
     }
 
-    public void setProcedureAmount (String procedureAmount)
-    {
+    public void setProcedureAmount(String procedureAmount) {
         this.procedureAmount = procedureAmount;
     }
 
-    public String getCallDate ()
-    {
+    public String getCallDate() {
         return callDate;
     }
 
-    public void setCallDate (String callDate)
-    {
+    public void setCallDate(String callDate) {
         this.callDate = callDate;
     }
 
-    public String getCompanyCode ()
-    {
+    public String getCompanyCode() {
         return companyCode;
     }
 
-    public void setCompanyCode (String companyCode)
-    {
+    public void setCompanyCode(String companyCode) {
         this.companyCode = companyCode;
     }
 
-    public String getCategory ()
-    {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory (String category)
-    {
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    public String getCallerId ()
-    {
+    public String getCallerId() {
         return callerId;
     }
 
-    public void setCallerId (String callerId)
-    {
+    public void setCallerId(String callerId) {
         this.callerId = callerId;
     }
 
-    public String getApprovalDate ()
-    {
+    public String getApprovalDate() {
         return approvalDate;
     }
 
-    public void setApprovalDate (String approvalDate)
-    {
+    public void setApprovalDate(String approvalDate) {
         this.approvalDate = approvalDate;
     }
 
-    public String getHospitalCode ()
-    {
+    public String getHospitalCode() {
         return hospitalCode;
     }
 
-    public void setHospitalCode (String hospitalCode)
-    {
+    public void setHospitalCode(String hospitalCode) {
         this.hospitalCode = hospitalCode;
     }
 
-    public String getProcedureDesc ()
-    {
+    public String getProcedureDesc() {
         return procedureDesc;
     }
 
-    public void setProcedureDesc (String procedureDesc)
-    {
+    public void setProcedureDesc(String procedureDesc) {
         this.procedureDesc = procedureDesc;
     }
 
-    public String getNotes ()
-    {
+    public String getNotes() {
         return notes;
     }
 
-    public void setNotes (String notes)
-    {
+    public void setNotes(String notes) {
         this.notes = notes;
     }
 
-    public String getDateAdmitted ()
-    {
+    public String getDateAdmitted() {
         return dateAdmitted;
     }
 
-    public void setDateAdmitted (String dateAdmitted)
-    {
+    public void setDateAdmitted(String dateAdmitted) {
         this.dateAdmitted = dateAdmitted;
     }
 
-    public String getRoom ()
-    {
+    public String getRoom() {
         return room;
     }
 
-    public void setRoom (String room)
-    {
+    public void setRoom(String room) {
         this.room = room;
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [procedureCode = "+procedureCode+", batchCode = "+batchCode+", reason = "+reason+", memCompany = "+memCompany+", diagnosis = "+diagnosis+", remarks = "+remarks+", diagnosisCode = "+diagnosisCode+", type = "+type+", updatedBy = "+updatedBy+", callTypeId = "+callTypeId+", id = "+id+", runningBill = "+runningBill+", memMi = "+memMi+", memberCode = "+memberCode+", memFname = "+memFname+", memLname = "+memLname+", doctorCode = "+doctorCode+", actionTaken = "+actionTaken+", status = "+status+", updatedDate = "+updatedDate+", terminalNo = "+terminalNo+", approvalNo = "+approvalNo+", procedureAmount = "+procedureAmount+", callDate = "+callDate+", companyCode = "+companyCode+", category = "+category+", callerId = "+callerId+", approvalDate = "+approvalDate+", hospitalCode = "+hospitalCode+", procedureDesc = "+procedureDesc+", notes = "+notes+", dateAdmitted = "+dateAdmitted+", room = "+room+"]";
+    public String toString() {
+        return "ClassPojo [procedureCode = " + procedureCode + ", batchCode = " + batchCode + ", reason = " + reason + ", memCompany = " + memCompany + ", diagnosis = " + diagnosis + ", remarks = " + remarks + ", diagnosisCode = " + diagnosisCode + ", type = " + type + ", updatedBy = " + updatedBy + ", callTypeId = " + callTypeId + ", id = " + id + ", runningBill = " + runningBill + ", memMi = " + memMi + ", memberCode = " + memberCode + ", memFname = " + memFname + ", memLname = " + memLname + ", doctorCode = " + doctorCode + ", actionTaken = " + actionTaken + ", status = " + status + ", updatedDate = " + updatedDate + ", terminalNo = " + terminalNo + ", approvalNo = " + approvalNo + ", procedureAmount = " + procedureAmount + ", callDate = " + callDate + ", companyCode = " + companyCode + ", category = " + category + ", callerId = " + callerId + ", approvalDate = " + approvalDate + ", hospitalCode = " + hospitalCode + ", procedureDesc = " + procedureDesc + ", notes = " + notes + ", dateAdmitted = " + dateAdmitted + ", room = " + room + "]";
     }
 
     protected LoaList(Parcel in) {
@@ -481,6 +427,7 @@ public class LoaList implements Parcelable {
         notes = in.readString();
         dateAdmitted = in.readString();
         room = in.readString();
+        schedule = in.readString();
     }
 
     @Override
@@ -523,6 +470,7 @@ public class LoaList implements Parcelable {
         dest.writeString(notes);
         dest.writeString(dateAdmitted);
         dest.writeString(room);
+        dest.writeString(schedule);
     }
 
     @SuppressWarnings("unused")

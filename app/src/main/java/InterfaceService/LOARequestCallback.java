@@ -19,4 +19,10 @@ public interface LOARequestCallback {
     void onDbLoaSuccessListener();
 
     void gotoLoaPage(ArrayList<LoaFetch> arrayList, int adapterPosition);
+
+    void onErrorFetchingDoctorCreds(String message);
+
+    void doneFetchingDoctorData();
+
+    void doneUpdatingHosp();
 }

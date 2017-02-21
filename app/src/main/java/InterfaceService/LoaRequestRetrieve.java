@@ -2,21 +2,24 @@ package InterfaceService;
 
 import android.content.Context;
 import android.medicard.com.medicard.R;
+import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.Button;
 
 import java.util.ArrayList;
 
 import Sqlite.DatabaseHandler;
 import Sqlite.SetLoaToDatabase;
+import model.DoctorsToHospital;
 import model.Loa;
-import model.LoaList;
+import model.LoaFetch;
+import model.TheDoctor;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
-import utilities.SharedPref;
 
 /**
  * Created by mpx-pawpaw on 1/18/17.
@@ -73,6 +76,153 @@ public class LoaRequestRetrieve {
         SetLoaToDatabase.setLoaToDb(loa, databaseHandler, callback);
     }
 
+    public void getDoctorCreds(final ArrayList<LoaFetch> arrayList, final DatabaseHandler databaseHandler) {
+
+        AsyncTask asyncTask = new AsyncTask() {
+
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                callback.doneFetchingDoctorData();
+
+
+            }
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                for (int x = 0; x < arrayList.size(); x++) {
+                    fetchDoctor(arrayList.get(x).getDoctorCode(), x, arrayList, databaseHandler);
+                }
+
+                return null;
+            }
+        };
+
+
+        asyncTask.execute();
+    }
+
+    private void fetchDoctor(final String doctorCode, final int position, final ArrayList<LoaFetch> arrayList, final DatabaseHandler databaseHandler) {
+        Log.d("DOCTOR_CODE", doctorCode);
+        Log.d("DOCTOR_CODE", doctorCode);
+
+        AppInterface appInterface;
+        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+        appInterface.getDoctorDataWithRoom(doctorCode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<TheDoctor>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("DOCTOR_CODE", e.getMessage());
+
+                        if (e.getMessage().contains("Expected BEGIN_OBJECT but was STRING")) {
+                            doctorNotFound(doctorCode, arrayList, position, databaseHandler);
+                        } else {
+                            callback.onErrorFetchingDoctorCreds(e.getMessage());
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onNext(TheDoctor theDoctor) {
+
+                        if (theDoctor.getResponseCode().equals("210")) {
+                            doctorNotFound(doctorCode, arrayList, position, databaseHandler);
+                        } else {
+                            if (theDoctor.getDoctorsToHospital().size() == 0)
+                                doctorNotFound(doctorCode, arrayList, position, databaseHandler);
+                            else
+                                onSuccessListener(databaseHandler, theDoctor.getDoctorsToHospital().get(0), arrayList, position);
+                        }
+                    }
+                });
+
+    }
+
+
+    public void onSuccessListener(DatabaseHandler databaseHandler, DoctorsToHospital theDoctor, ArrayList<LoaFetch> arrayList, int position) {
+        Log.d("DOCTOR_CODE_COUNT", position + "");
+
+        arrayList.get(position).setDoctorName(theDoctor.getDocFname() + " " +
+                theDoctor.getDocLname());
+        arrayList.get(position).setDoctorSpec(theDoctor.getSpecDesc());
+        arrayList.get(position).setDoctorSpecCode(theDoctor.getSpecCode());
+
+        databaseHandler.setDoctorToLoaReq(
+                arrayList.get(position).getId(),
+                theDoctor.getDocFname() + " " + theDoctor.getDocLname(),
+                theDoctor.getSpecDesc(),
+                theDoctor.getSpecCode(),
+                theDoctor.getSchedule(),
+                theDoctor.getRoom());
+    }
+
+
+    public void doctorNotFound(String doctorCode, ArrayList<LoaFetch> arrayList, int position, DatabaseHandler databaseHandler) {
+
+        arrayList.get(position).setDoctorName(doctorCode);
+        arrayList.get(position).setDoctorSpec("Not Specified");
+        arrayList.get(position).setDoctorSpecCode("Not Specified");
+
+        databaseHandler.setDoctorToLoaReq(
+                arrayList.get(position).getId(),
+                doctorCode,
+                "Not Specified",
+                "Not Specified",
+                "Not Specified",
+                "Not Specified");
+    }
+
+    public void updateHospitals(final ArrayList<LoaFetch> arrayList, final DatabaseHandler databaseHandler) {
+
+
+        for (int x = 0; x < arrayList.size(); x++) {
+            String hospName = databaseHandler.getHospitalName(arrayList.get(x).getHospitalCode());
+            databaseHandler.setHospitalToLoaReq(arrayList.get(x).getId(), hospName);
+        }
+
+        callback.doneUpdatingHosp();
+//        AsyncTask asyncTask = new AsyncTask() {
+//            @Override
+//            protected Object doInBackground(Object[] objects) {
+//                for (int x = 0; x < arrayList.size(); x++) {
+//                    String hospName = databaseHandler.getHospitalName(arrayList.get(x).getHospitalCode());
+//                    databaseHandler.setHospitalToLoaReq(arrayList.get(x).getId(), hospName);
+//                }
+//                return null;
+//            }
+//
+//
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Object o) {
+//                super.onPostExecute(o);
+//                callback.doneUpdatingHosp();
+//            }
+//        };
+//
+//        asyncTask.execute();
+    }
+
+
 //    public void testDataDownLoadRequirement(ArrayList<LoaList> arrayListfromDB, DatabaseHandler databaseHandler) {
 //
 //
@@ -106,12 +256,12 @@ public class LoaRequestRetrieve {
 //    }
 
 
-    /**
-     * UPDATE WITH NO INTERNET CONNECTION ASAP
-     *
-     * @param memberCode
-     * @return
-     */
+/**
+ * UPDATE WITH NO INTERNET CONNECTION ASAP
+ *
+ * @param memberCode
+ * @return
+ */
 //    public ArrayList<LoaList> getLoaOnly(String memberCode) {
 //        final ArrayList<LoaList> array = new ArrayList<>();
 //

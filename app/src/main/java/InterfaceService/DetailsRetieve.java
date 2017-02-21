@@ -179,7 +179,9 @@ public class DetailsRetieve {
         loa.setProcedureAmount("");
         loa.setProcedureCode("");
         loa.setUsername(SharedPref.getStringValue(SharedPref.USER, SharedPref.masterUSERNAME, context));
-        loa.setProcedureDesc(condition);
+        loa.setProcedureDesc("");
+        loa.setDiagnosisDesc("");
+        loa.setPrimaryComplaint(condition);
         Gson gson = new Gson();
         Log.d("TO_SEND", gson.toJson(loa));
 

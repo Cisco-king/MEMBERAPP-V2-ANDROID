@@ -65,6 +65,8 @@ public class LoaFetch implements Parcelable {
 
     private String hospitalCode;
 
+    private String hospitalName;
+
     private String procedureDesc;
 
     private String notes;
@@ -79,8 +81,10 @@ public class LoaFetch implements Parcelable {
 
     private String doctorSpecCode ;
 
+    private String schedule ;
 
-    public LoaFetch(String procedureCode, String batchCode, String reason, String memCompany, String diagnosis, String remarks, String diagnosisCode, String type, String updatedBy, String callTypeId, String id, String runningBill, String memMi, String memberCode, String memFname, String memLname, String doctorCode, String actionTaken, String status, String updatedDate, String terminalNo, String approvalNo, String procedureAmount, String callDate, String companyCode, String category, String callerId, String approvalDate, String hospitalCode, String procedureDesc, String notes, String dateAdmitted, String room, String doctorName, String doctorSpec, String doctorSpecCode) {
+
+    public LoaFetch(String procedureCode, String batchCode, String reason, String memCompany, String diagnosis, String remarks, String diagnosisCode, String type, String updatedBy, String callTypeId, String id, String runningBill, String memMi, String memberCode, String memFname, String memLname, String doctorCode, String actionTaken, String status, String updatedDate, String terminalNo, String approvalNo, String procedureAmount, String callDate, String companyCode, String category, String callerId, String approvalDate, String hospitalCode, String procedureDesc, String notes, String dateAdmitted, String room, String doctorName, String doctorSpec, String doctorSpecCode , String hospitalName  ,String schedule) {
         this.procedureCode = procedureCode;
         this.batchCode = batchCode;
         this.reason = reason;
@@ -117,7 +121,26 @@ public class LoaFetch implements Parcelable {
         this.doctorName = doctorName;
         this.doctorSpec = doctorSpec;
         this.doctorSpecCode = doctorSpecCode;
+        this.hospitalName = hospitalName;
+        this.schedule = schedule;
     }
+
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
+    }
+
 
     public String getProcedureCode() {
         return procedureCode;
@@ -444,6 +467,10 @@ public class LoaFetch implements Parcelable {
         doctorName = in.readString();
         doctorSpec = in.readString();
         doctorSpecCode = in.readString();
+        hospitalName = in.readString();
+        schedule = in.readString();
+
+
     }
 
     @Override
@@ -489,6 +516,11 @@ public class LoaFetch implements Parcelable {
         dest.writeString(doctorName);
         dest.writeString(doctorSpec);
         dest.writeString(doctorSpecCode);
+        dest.writeString(schedule);
+        dest.writeString(hospitalName);
+
+
+
     }
 
     @SuppressWarnings("unused")

@@ -141,6 +141,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private String docName = "docName";
     private String docSpec = "docSpec";
     private String docSpecCode = "docSpecCode";
+    // private String hospitalName = "hospitalName";
 
     protected static final String databaseName = "Medicard";
     private String hospTable = "hospital";
@@ -185,6 +186,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             docName + " TEXT ," +
             docSpec + " TEXT ," +
             docSpecCode + " TEXT ," +
+            hospitalName + " TEXT ," +
+            schedule + " TEXT ," +
             room + " TEXT )  ";
 
 
@@ -351,6 +354,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(docName, "");
         values.put(docSpec, "");
         values.put(docSpecCode, "");
+        values.put(hospitalName, "");
+        values.put(schedule, "");
 
         createSuccessful = db.insert(loaTable, null, values) > 0;
         db.close();
@@ -562,7 +567,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         getCursor(cursor, room),
                         getCursor(cursor, docName),
                         getCursor(cursor, docSpec),
-                        getCursor(cursor, docSpecCode)
+                        getCursor(cursor, docSpecCode),
+                        getCursor(cursor, hospitalName),
+                        getCursor(cursor, schedule)
+
 
                 );
 
@@ -1025,8 +1033,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public String getHospitalName(String searchCode) {
         String sql = " SELECT * FROM " + hospTable +
                 " WHERE " + hospitalCode + " = '" + searchCode + "'";
-        database = getReadableDatabase();
-        cursor = database.rawQuery(sql, null);
+        SQLiteDatabase database = getReadableDatabase();
+       Cursor cursor = database.rawQuery(sql, null);
 
         String gHosp = "";
         if (cursor.moveToFirst()) {
@@ -1041,7 +1049,51 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        database.close();
+
         return gHosp;
     }
+
+
+//    docName + " TEXT ," +
+//    docSpec + " TEXT ," +
+//    docSpecCode + " TEXT ," +
+
+    public void setDoctorToLoaReq(
+            String ID,
+            String getDocName,
+            String getDocSpec,
+            String getDocSpecCode,
+            String getSched,
+            String getRoom) {
+
+        String sql = "";
+        SQLiteDatabase db = this.getWritableDatabase();
+        sql = "UPDATE " + loaTable +
+                " SET " + docName + " = '" + getDocName +
+                "', " + docSpec + " = '" + getDocSpec +
+                "'," + docSpecCode + " = '" + getDocSpecCode +
+                "'," + schedule + " = '" + getSched +
+                "'," + room + " = '" + getRoom +
+                "' WHERE " + id + " = '" + ID + "'";
+        db.execSQL(sql);
+        Log.d("ID", sql);
+        Log.d("ID", getDocName);
+        Log.d("ID", getDocSpec);
+        Log.d("ID", getDocSpecCode);
+        db.close();
+    }
+
+    public void setHospitalToLoaReq(String ID, String hospName) {
+
+        String sql = "";
+        SQLiteDatabase db = this.getWritableDatabase();
+        sql = "UPDATE " + loaTable +
+                " SET " + hospitalName + " = '" + hospName +
+                "' WHERE " + id + " = '" + ID + "'";
+        db.execSQL(sql);
+        Log.d("ID", sql);
+        Log.d("ID", hospitalName);
+        db.close();
+    }
+
 }

@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.medicard.com.medicard.R;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import InterfaceService.ProvinceRetrieve;
 import Sqlite.DatabaseHandler;
 import adapter.CityAdapter;
+import adapter.LoaReqAdapter;
 import adapter.ProvinceAdapter;
 import adapter.SpecializationAdapter;
 import butterknife.BindView;
@@ -28,7 +29,9 @@ import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 import model.CitiesAdapter;
+import model.LoaFetch;
 import model.Provinces;
+import model.SimpleData;
 import model.SpecsAdapter;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
@@ -50,6 +53,7 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
     ProvinceAdapter adapter;
     CityAdapter adapterCity;
     SpecializationAdapter adapterSpecs;
+    LoaReqAdapter adapterLoa;
     ProvinceRetrieve implement;
     private ArrayList<Provinces> arrayProvince = new ArrayList<>();
     ArrayList<CitiesAdapter> arrayCity = new ArrayList<>();
@@ -59,6 +63,14 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
     private ArrayList<SpecsAdapter> arraySpecialization = new ArrayList<>();
     private ArrayList<SpecsAdapter> selectedSpecialization = new ArrayList<>();
     private ArrayList<SpecsAdapter> prevSelectedSpecialization = new ArrayList<>();
+
+    private ArrayList<SimpleData> arrayHospitals = new ArrayList<>();
+    private ArrayList<LoaFetch> arrayListMaster = new ArrayList<>();
+    private ArrayList<SimpleData> prevSelectedHosp = new ArrayList<>();
+
+    private ArrayList<SimpleData> prevSelectedDoctor = new ArrayList<>();
+    private ArrayList<SimpleData> arrayDoctors = new ArrayList<>();
+
     Context context;
     ProvinceAdapter.ProvinceInterface callback;
     String ORIGIN = "";
@@ -77,11 +89,11 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
         callback = this;
         alertDialogCustom = new AlertDialogCustom();
         ORIGIN = getIntent().getStringExtra(Constant.SELECT);
+        implement.setOkVISIBILITY(implement.testOriginFromCity(ORIGIN), implement.testOriginFromSpecialization(ORIGIN), btn_ok);
 
-
-        rv_provinces.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
 
         if (implement.testOriginFromCity(ORIGIN)) {
+            rv_provinces.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
             tv_header.setText("City");
             PROVINCE_CODE = getIntent().getStringExtra(Constant.SELECT_CODE);
             arrayCity.addAll(implement.setArrayCity(handler, PROVINCE_CODE));
@@ -90,20 +102,49 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
             adapterCity = new CityAdapter(context, arrayCity, selectedCity, callback);
             rv_provinces.setAdapter(adapterCity);
         } else if (implement.testOriginFromSpecialization(ORIGIN)) {
+            rv_provinces.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
             tv_header.setText("Specialization");
             arraySpecialization.addAll(implement.setArraySpecs(handler));
             prevSelectedSpecialization = getIntent().getParcelableArrayListExtra(Constant.SELECTED_SPECIALIZATION);
             implement.setSelectedDataSpecs(prevSelectedSpecialization, arraySpecialization, selectedSpecialization);
             adapterSpecs = new SpecializationAdapter(context, arraySpecialization, selectedSpecialization, callback);
             rv_provinces.setAdapter(adapterSpecs);
-        } else {
+        } else if (implement.testOriginFromProvince(ORIGIN)) {
+            rv_provinces.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
             tv_header.setText("Province");
             arrayProvince.addAll(implement.setArrayData(handler));
             adapter = new ProvinceAdapter(context, arrayProvince, callback);
             rv_provinces.setAdapter(adapter);
-        }
+        } else if (implement.testOriginFromLoaReq(ORIGIN)) {
+            rv_provinces.setLayoutManager(new LinearLayoutManager(this));
+            tv_header.setText("Hospital");
+            ArrayList<LoaFetch> temp;
+            temp = getIntent().getParcelableArrayListExtra(Constant.LOA_REQUEST);
+            arrayListMaster.addAll(temp);
+            Log.d("COUNT_LOA", arrayListMaster.size() + "");
+            Log.d("HOSP_GET_NAME", arrayListMaster.get(0).getHospitalName());
+            arrayHospitals.addAll(implement.getOnlyHospitalWithOneCount(arrayListMaster));
+            prevSelectedHosp = getIntent().getParcelableArrayListExtra(Constant.SELECTED_REQUEST);
+            implement.tagSelectedToMasterList(prevSelectedHosp, arrayHospitals);
+            adapterLoa = new LoaReqAdapter(context, arrayHospitals, callback);
+            rv_provinces.setAdapter(adapterLoa);
+            implement.setOkVISIBILITY(true, true, btn_ok);
+        } else if (implement.testOriginFromDoctors(ORIGIN)) {
+            rv_provinces.setLayoutManager(new LinearLayoutManager(this));
+            tv_header.setText("Doctors");
+            ArrayList<LoaFetch> temp;
+            temp = getIntent().getParcelableArrayListExtra(Constant.DOCTOR_LIST);
+            arrayListMaster.addAll(temp);
 
-        implement.setOkVISIBILITY(implement.testOriginFromCity(ORIGIN), implement.testOriginFromSpecialization(ORIGIN), btn_ok);
+            arrayDoctors.addAll(implement.getOnlyDoctorWithOneCount(arrayListMaster));
+            prevSelectedDoctor = getIntent().getParcelableArrayListExtra(Constant.SELECTED_DOCTOR);
+            implement.tagSelectedToMasterList(prevSelectedDoctor, arrayDoctors);
+
+            adapterLoa = new LoaReqAdapter(context, arrayDoctors, callback);
+            rv_provinces.setAdapter(adapterLoa);
+            implement.setOkVISIBILITY(true, true, btn_ok);
+
+        }
 
 
     }
@@ -126,6 +167,16 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
                 } else if (implement.testOriginFromSpecialization(ORIGIN)) {
                     Intent intent = new Intent();
                     intent.putParcelableArrayListExtra("SPECIALIZATION", selectedSpecialization);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                } else if (implement.testOriginFromLoaReq(ORIGIN)) {
+                    Intent intent = new Intent();
+                    intent.putParcelableArrayListExtra("LOA_REQUEST", arrayHospitals);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }else if (implement.testOriginFromDoctors(ORIGIN)) {
+                    Intent intent = new Intent();
+                    intent.putParcelableArrayListExtra("DOCTOR", arrayDoctors);
                     setResult(RESULT_OK, intent);
                     finish();
                 }

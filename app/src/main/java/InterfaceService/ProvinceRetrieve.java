@@ -7,14 +7,22 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 
 import Sqlite.DatabaseHandler;
 import adapter.SpecializationAdapter;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.Cities;
 import model.CitiesAdapter;
+import model.HospitalList;
+import model.LoaFetch;
 import model.Province;
 import model.Provinces;
+import model.SimpleData;
 import model.SpecsAdapter;
 import utilities.Constant;
 import utilities.SharedPref;
@@ -46,15 +54,25 @@ public class ProvinceRetrieve {
         return (data.equals(Constant.SELECT_CITY));
     }
 
+    public boolean testOriginFromDoctors(String origin) {
+        return (origin.equals(Constant.SELECT_DOCTOR));
+    }
+
     public boolean testOriginFromSpecialization(String origin) {
         return (origin.equals(Constant.SELECT_SPECIALIZATION));
     }
 
+    public boolean testOriginFromProvince(String origin) {
+        return (origin.equals(Constant.SELECT_PROVINCE));
+    }
+
+
+    public boolean testOriginFromLoaReq(String origin) {
+        return (origin.equals(Constant.SELECT_LOAREQUEST));
+    }
 
     public void setOkVISIBILITY(boolean b, boolean testOriginFromSpecialization, FancyButton btn_ok) {
-
-
-        btn_ok.setVisibility((b||testOriginFromSpecialization) ? View.VISIBLE : View.GONE);
+        btn_ok.setVisibility((b || testOriginFromSpecialization) ? View.VISIBLE : View.GONE);
     }
 
     public void setSelectedData(ArrayList<CitiesAdapter> prevSelectedCity, ArrayList<CitiesAdapter> arrayCity, ArrayList<CitiesAdapter> selected) {
@@ -94,5 +112,69 @@ public class ProvinceRetrieve {
                 }
             }
         }
+    }
+
+
+    public ArrayList<SimpleData> getOnlyHospitalWithOneCount(ArrayList<LoaFetch> arrayListMaster) {
+        ArrayList<SimpleData> array = new ArrayList<>();
+        ArrayList<String> arraySorter = new ArrayList<>();
+
+        for (int mid = 0; mid < arrayListMaster.size(); mid++) {
+            arraySorter.add(arrayListMaster.get(mid).getHospitalName());
+        }
+        Set<String> s = new HashSet<String>(arraySorter);
+        Set<String> alpha = new TreeSet<>(s);
+
+        arraySorter.clear();
+        arraySorter.addAll(alpha);
+        for (int x = 0; x < arraySorter.size(); x++) {
+            SimpleData data = new SimpleData();
+            data.setHospital(arraySorter.get(x));
+            data.setSelected("false");
+            array.add(data);
+        }
+
+
+        return array;
+
+    }
+
+    public void tagSelectedToMasterList(ArrayList<SimpleData> prevSelected, ArrayList<SimpleData> arrayHospitals) {
+        for (int prev = 0; prev < prevSelected.size(); prev++) {
+
+
+            if (prevSelected.get(prev).getSelected().equals("true")) {
+                arrayHospitals.get(prev).setSelected("true");
+            }
+        }
+
+    }
+
+
+    public Collection<? extends SimpleData> getOnlyDoctorWithOneCount(ArrayList<LoaFetch> arrayListMaster) {
+
+
+        ArrayList<SimpleData> array = new ArrayList<>();
+        ArrayList<String> arraySorter = new ArrayList<>();
+
+        for (int mid = 0; mid < arrayListMaster.size(); mid++) {
+            arraySorter.add(arrayListMaster.get(mid).getDoctorName());
+        }
+        Set<String> s = new HashSet<String>(arraySorter);
+        Set<String> alpha = new TreeSet<>(s);
+
+        arraySorter.clear();
+        arraySorter.addAll(alpha);
+        for (int x = 0; x < arraySorter.size(); x++) {
+            SimpleData data = new SimpleData();
+            data.setHospital(arraySorter.get(x));
+            data.setSelected("false");
+            array.add(data);
+        }
+
+
+        return array;
+
+
     }
 }
