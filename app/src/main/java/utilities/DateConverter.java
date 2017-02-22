@@ -113,7 +113,8 @@ public class DateConverter {
     }
 
     public static String convertDateFromYYYYMDD(String s) {
-        SimpleDateFormat dt = new SimpleDateFormat("yyyy,mm,dd");
+        Log.d("DATE_DATE_toformat", s + "");
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy,MM,dd");
         Date date = null;
         try {
             date = dt.parse(s);
@@ -170,7 +171,7 @@ public class DateConverter {
         SimpleDateFormat year = new SimpleDateFormat("yyyy");
 
         dates[0] = (Integer.parseInt(date_.format(date)));
-        dates[1] = (Integer.parseInt(month.format(date)) + 1);
+        dates[1] = (Integer.parseInt(month.format(date)));
         dates[2] = (Integer.parseInt(year.format(date)));
 
 
@@ -180,5 +181,27 @@ public class DateConverter {
 
     private static String getText(TextView v) {
         return v.getText().toString().trim();
+    }
+
+    public static String converttoyyyymmdd(String tv_req_date_start) {
+
+        String stringDate = "";
+        if (tv_req_date_start.equals("")) {
+            stringDate = "";
+        } else {
+            SimpleDateFormat dt = new SimpleDateFormat("MMM dd , yyyy");
+            Date date = null;
+            try {
+                date = dt.parse(tv_req_date_start);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            stringDate = dt1.format(date);
+
+        }
+        return stringDate;
+
     }
 }

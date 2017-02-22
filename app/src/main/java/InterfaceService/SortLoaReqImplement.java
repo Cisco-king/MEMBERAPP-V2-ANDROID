@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.medicard.com.medicard.R;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -242,26 +243,34 @@ public class SortLoaReqImplement {
 
         String data = "";
 
-        for (int x = 0; x < temp.size(); x++) {
-            if (temp.get(x).getSelected().equals("true")) {
-                data = temp.get(x).getHospital() + " , " + data;
+        if (temp.size() != 0) {
+
+
+            for (int x = 0; x < temp.size(); x++) {
+                if (temp.get(x).getSelected().equals("true")) {
+                    data = temp.get(x).getHospital() + " , " + data;
+                }
             }
+
+            tv_hosp_clinic.setText(data.substring(0, data.length() - 2));
+
         }
-
-        tv_hosp_clinic.setText(data.substring(0, data.length() - 2));
-
     }
 
     public String showDatePicker(final TextView tv_start, final boolean isSecond, final SortLoaReqCallback callback, final TextView tv_end, int[] dateStarter) {
         final String date = "";
         final int mDay, mMonth, mYear;
         mYear = dateStarter[2];
-        mMonth = dateStarter[1]; // current month
+        mMonth = dateStarter[1] - 1; // current month
         mDay = dateStarter[0]; // current day
 
-        Log.d("DATE_DATE", dateStarter[0] + "");
-        Log.d("DATE_DATE", dateStarter[1] + "");
-        Log.d("DATE_DATE", dateStarter[2] + "");
+
+        Calendar c = Calendar.getInstance();
+        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH) + 3);//Year,Mounth -1,Day
+        Log.d("DATE_DATE", c.get(Calendar.YEAR) + "");
+        Log.d("DATE_DATE", c.get(Calendar.MONTH) + "");
+        Log.d("DATE_DATE", (c.get(Calendar.DAY_OF_MONTH) + 3) + "");
+
         DatePickerDialog datePickerDialog;
 
         datePickerDialog = new DatePickerDialog(context,
@@ -271,7 +280,7 @@ public class SortLoaReqImplement {
                     public void onDateSet(android.widget.DatePicker view, int getYear,
                                           int monthOfYear, int dayOfMonth) {
 
-                        month = (monthOfYear + 1);
+                        month = monthOfYear + 1;
                         year = getYear;
                         day = dayOfMonth;
                         String dateTaken = DateConverter.convertDateFromYYYYMDD(year + "," + month + "," + day);
@@ -279,7 +288,7 @@ public class SortLoaReqImplement {
 
                         if (isSecond) {
                             if (DateConverter.testDataStartAndEnd(getTextTrimmed(tv_start), dateTaken)) {
-                                tv_end.setText(DateConverter.convertDateFromYYYYMDD(year + "," + month + "," + day));
+                                tv_end.setText(dateTaken);
                             } else {
                                 callback.datePickerEndDateError();
                             }
@@ -288,7 +297,7 @@ public class SortLoaReqImplement {
                                 tv_start.setText(dateTaken);
                             else {
                                 if (DateConverter.testDataStartAndEnd(dateTaken, getTextTrimmed(tv_end))) {
-                                    tv_end.setText(dateTaken);
+                                    tv_start.setText(dateTaken);
                                 } else {
                                     callback.datePickerStartDateError();
                                 }
@@ -296,15 +305,23 @@ public class SortLoaReqImplement {
                         }
                     }
                 }, mYear, mMonth, mDay);
-     //   datePickerDialog.updateDate(mYear, mMonth, mDay);
-        datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+        datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
         datePickerDialog.show();
 
         return date;
     }
 
+    private int addZero(int i) {
 
-    private String getTextTrimmed(TextView data) {
+//        if (i <= 9) {
+//            return Integer.parseInt(String.valueOf(0 + i));
+//        } else
+        return Integer.parseInt(String.valueOf(0 + i));
+    }
+
+
+    @NonNull
+    public String getTextTrimmed(TextView data) {
         return data.getText().toString().trim();
     }
 
@@ -329,12 +346,20 @@ public class SortLoaReqImplement {
             mMonth = c.get(Calendar.MONTH); // current month
             mDay = c.get(Calendar.DAY_OF_MONTH); // current day
             dateSet[0] = mDay;
-            dateSet[1] = mMonth;
+            dateSet[1] = mMonth + 1;
             dateSet[2] = mYear;
         } else {
             dateSet = DateConverter.getDates(getTextTrimmed(tv_req_date_start));
         }
 
         return dateSet;
+    }
+
+
+    public void replaceData(ArrayList<SimpleData> prevSelected, ArrayList<SimpleData> temp1) {
+
+        prevSelected.clear();
+        prevSelected.addAll(temp1);
+        temp1.clear();
     }
 }

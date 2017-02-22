@@ -25,11 +25,14 @@ import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.Loa;
 import model.LoaFetch;
-import model.LoaList;
+import model.SimpleData;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
+import utilities.DateConverter;
 import utilities.NetworkTest;
 import utilities.SharedPref;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class fragment_loaRequest extends Fragment implements LOARequestCallback {
@@ -48,6 +51,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     LinearLayoutManager llm;
     LoaRequestAdapter adapter;
     ArrayList<LoaFetch> arrayList = new ArrayList<>();
+    ArrayList<LoaFetch> arrayMASTERList = new ArrayList<>();
 
     LoaRequestRetrieve implement;
     LOARequestCallback callback;
@@ -57,6 +61,15 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     private Context context;
 
     private final int CALL_SORT_LOA = 100;
+
+    //SORTING DATA
+    String sort_by = "";
+    String status_sort = "";
+    String service_type_sort = "";
+    String date_end_sort = "";
+    String date_start_sort = "";
+    ArrayList<SimpleData> doctor_sort = new ArrayList<>();
+    ArrayList<SimpleData> hospital_sort = new ArrayList<>();
 
     public fragment_loaRequest() {
 
@@ -82,6 +95,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     }
 
     private void init() {
+
         callback = this;
         context = getActivity();
         databaseHandler = new DatabaseHandler(context);
@@ -95,8 +109,6 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         rv_loa_request.setAdapter(adapter);
 
         databaseHandler.dropLoa();
-        arrayList.addAll(databaseHandler.retrieveLoa());
-
 
         if (NetworkTest.isOnline(context)) {
             implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context));
@@ -113,10 +125,42 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
             case R.id.btn_sort:
                 Intent gotoSort = new Intent(context, SortLoaReqActivity.class);
-                gotoSort.putParcelableArrayListExtra(Constant.LOA_REQUEST, arrayList);
+                gotoSort.putParcelableArrayListExtra(Constant.LOA_REQUEST, arrayMASTERList);
+                gotoSort.putExtra(Constant.SORT_BY, sort_by);
+                gotoSort.putExtra(Constant.STATUS, status_sort);
+                gotoSort.putExtra(Constant.SERVICE_TYPE, service_type_sort);
+                gotoSort.putExtra(Constant.SELECTED_END_DATE, date_end_sort);
+                gotoSort.putExtra(Constant.SELECTED_START_DATE, date_start_sort);
+                gotoSort.putParcelableArrayListExtra(Constant.SELECTED_HOSPITAL, hospital_sort);
+                gotoSort.putParcelableArrayListExtra(Constant.SELECT_DOCTOR, doctor_sort);
                 startActivityForResult(gotoSort, CALL_SORT_LOA);
                 break;
 
+
+        }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CALL_SORT_LOA && resultCode == RESULT_OK) {
+
+            sort_by = data.getStringExtra(Constant.SORT_BY);
+            status_sort = data.getStringExtra(Constant.STATUS);
+            service_type_sort = data.getStringExtra(Constant.SERVICE_TYPE);
+            date_end_sort = data.getStringExtra(Constant.SELECTED_END_DATE);
+            date_start_sort = data.getStringExtra(Constant.SELECTED_START_DATE);
+            ArrayList<SimpleData> temp = data.getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
+            implement.replactDataArray(hospital_sort, temp);
+            temp = data.getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
+            implement.replactDataArray(doctor_sort, temp);
+
+
+            implement.updateList(arrayList, adapter, databaseHandler, sort_by, status_sort,
+                    service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort),
+                    DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort);
 
         }
 
@@ -149,8 +193,8 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @Override
     public void onDbLoaSuccessListener() {
-        arrayList.clear();
-        arrayList.addAll(databaseHandler.retrieveLoa());
+        implement.updateList(arrayList, adapter, databaseHandler, sort_by, status_sort,
+                service_type_sort, date_start_sort, date_end_sort, doctor_sort, hospital_sort);
         implement.getDoctorCreds(arrayList, databaseHandler);
     }
 
@@ -169,8 +213,8 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @Override
     public void doneFetchingDoctorData() {
-        arrayList.clear();
-        arrayList.addAll(databaseHandler.retrieveLoa());
+        implement.updateList(arrayList, adapter, databaseHandler, sort_by, status_sort,
+                service_type_sort, date_start_sort, date_end_sort, doctor_sort, hospital_sort);
         implement.updateHospitals(arrayList, databaseHandler);
 
 
@@ -178,8 +222,14 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @Override
     public void doneUpdatingHosp() {
-        arrayList.clear();
-        arrayList.addAll(databaseHandler.retrieveLoa());
-        adapter.notifyDataSetChanged();
+
+
+        implement.updateList(arrayList, adapter, databaseHandler, sort_by, status_sort,
+                service_type_sort, date_start_sort, date_end_sort, doctor_sort, hospital_sort);
+
+
+        arrayMASTERList.addAll(arrayList);
     }
+
+
 }

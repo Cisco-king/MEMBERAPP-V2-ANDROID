@@ -62,12 +62,20 @@ public class Constant {
     public static String POSITION = "POSITION";
     public static String SELECT_LOAREQUEST = "SELECT_LOAREQUEST";
     public static String SELECTED_REQUEST = "SELECTED_REQUEST";
+    public static String SELECTED_HOSPITAL = "SELECTED_HOSPITAL";
     public static String LOA_REQUEST = "LOA_REQUEST";
 
     public static String SELECT_DOCTOR = "SELECT_DOCTOR";
     public static String DOCTOR_LIST = "DOCTOR_LIST";
     public static String SELECTED_DOCTOR = "SELECTED_DOCTOR";
+    public static String SELECTED_START_DATE = "SELECTED_START_DATE";
+    public static String SELECTED_END_DATE = "SELECTED_END_DATE";
 
 
+
+
+
+
+    public static String SERVICE_TYPE = "SERVICE_TYPE";
 
 }

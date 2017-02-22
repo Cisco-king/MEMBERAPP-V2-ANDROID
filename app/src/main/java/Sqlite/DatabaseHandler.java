@@ -13,6 +13,7 @@ import android.util.Log;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 
 import model.Cities;
@@ -24,6 +25,7 @@ import model.Loa;
 import model.LoaFetch;
 import model.LoaList;
 import model.Provinces;
+import model.SimpleData;
 import model.SpecializationList;
 import model.Specializations;
 import model.SpecsAdapter;
@@ -508,10 +510,65 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<LoaFetch> retrieveLoa() {
+    /**
+     * @param sort_by           == ORDER BY
+     * @param status_sort       = EXAMPLE = EXPIRED , APPROVED
+     * @param service_type_sort = EXAMPLE CONSULTATION
+     * @param date_start_sort   = START DATE FILTER
+     * @param date_end_sort     = END DATE FILTER
+     * @param doctor_sort       = LIST OF DOCTORS TO SEARCH
+     * @param hospital_sort     = LIST HOSPITAL TO SEARCH
+     * @return = list of filtered data of loa list
+     */
+    public ArrayList<LoaFetch> retrieveLoa(String sort_by, String status_sort, String service_type_sort,
+                                           String date_start_sort, String date_end_sort,
+                                           ArrayList<SimpleData> doctor_sort,
+                                           ArrayList<SimpleData> hospital_sort) {
+
         ArrayList<LoaFetch> array = new ArrayList<>();
         String sql = "SELECT * FROM " + loaTable;
-        sql += " ORDER BY " + dateAdmitted + " ASC ";
+        sql += " WHERE " + " " + status + "  LIKE '%" + status_sort + "%' ";
+        sql += " AND " + " " + remarks + "  LIKE '%" + service_type_sort + "%' ";
+
+//TELL IF END OR START DATE HAS DATA
+        if (date_start_sort.equals("") || date_end_sort.equals("")) {
+            //DO NOTHING
+        } else
+            sql += " AND " + approvalDate + " BETWEEN date('" + date_start_sort + "') AND date('" + date_end_sort + "')";
+
+
+        if (doctor_sort.size() != 0) {
+
+            sql += " AND (";
+
+            for (int doc = 0; doc < doctor_sort.size(); doc++) {
+                if (doctor_sort.get(doc).getSelected().equals("true")) {
+                    sql += " " + docName + "  LIKE '%" + doctor_sort.get(doc).getHospital() + "%'    OR ";
+                }
+            }
+
+            sql = sql.substring(0, sql.length() - 6);
+
+            sql += " ) ";
+        }
+
+        Log.d("HOSP_COUNT", hospital_sort.size() + "");
+        if (hospital_sort.size() != 0) {
+
+            sql += " AND (";
+
+            for (int hosp = 0; hosp < hospital_sort.size(); hosp++) {
+                if (hospital_sort.get(hosp).getSelected().equals("true")) {
+                    sql += " " + hospitalName + "  LIKE '%" + hospital_sort.get(hosp).getHospital() + "%'    OR ";
+                }
+            }
+
+            sql = sql.substring(0, sql.length() - 6);
+
+            sql += " ) ";
+        }
+
+        sql += " ORDER BY " + sort_by + " ASC ";
         database = getReadableDatabase();
         cursor = database.rawQuery(sql, null);
         Log.e(TAG, cursor.getCount() + "");
@@ -1034,7 +1091,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String sql = " SELECT * FROM " + hospTable +
                 " WHERE " + hospitalCode + " = '" + searchCode + "'";
         SQLiteDatabase database = getReadableDatabase();
-       Cursor cursor = database.rawQuery(sql, null);
+        Cursor cursor = database.rawQuery(sql, null);
 
         String gHosp = "";
         if (cursor.moveToFirst()) {
@@ -1096,4 +1153,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public ArrayList<String> getDateRange(String start, String end) {
+        ArrayList<String> array = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor;
+///SELECT * FROM Categories WHERE DateCreated BETWEEN '2012-03-11 00:00:00' AND '2015-05-12 23:59:59'
+        String sql = " SELECT * FROM " + loaTable +
+                " WHERE " + approvalDate + " BETWEEN date('" + start + "') AND date('" + end + "')";
+        Log.d("SQL_DATE", sql);
+
+        cursor = db.rawQuery(sql, null);
+        Log.d("SQL_DATE_count", cursor.getCount() + "");
+        if (cursor.moveToFirst()) {
+
+
+            do {
+                cursor.getString(cursor.getColumnIndex(hospitalName));
+                Log.d("HOSP-NAME", cursor.getString(cursor.getColumnIndex(id)));
+
+                array.add(cursor.getString(cursor.getColumnIndex(hospitalName)));
+            } while (cursor.moveToNext());
+
+
+        }
+
+        cursor.close();
+
+
+        return array;
+    }
 }

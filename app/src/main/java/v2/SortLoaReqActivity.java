@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import InterfaceService.SortLoaReqCallback;
 import InterfaceService.SortLoaReqImplement;
+import Sqlite.DatabaseHandler;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,6 +24,7 @@ import model.LoaFetch;
 import model.SimpleData;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
+import utilities.DateConverter;
 
 public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqCallback {
 
@@ -68,9 +70,14 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     ArrayList<SimpleData> prevSelected = new ArrayList<>();
 
     ArrayList<SimpleData> prevSelectedDoctor = new ArrayList<>();
-    String date_Start, date_End;
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
-    boolean isSelectedStartDate = false;
+
+    //SORTING DATA
+    String sort_by = "";
+    String status_sort = "";
+    String service_type_sort = "";
+    String date_end_sort = "";
+    String date_start_sort = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +94,25 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
         temp = getIntent().getParcelableArrayListExtra(Constant.LOA_REQUEST);
         arrayListMaster.addAll(temp);
 
+
+        sort_by = getIntent().getStringExtra(Constant.SORT_BY);
+        status_sort = getIntent().getStringExtra(Constant.STATUS);
+        service_type_sort = getIntent().getStringExtra(Constant.SERVICE_TYPE);
+        date_end_sort = getIntent().getStringExtra(Constant.SELECTED_END_DATE);
+        date_start_sort = getIntent().getStringExtra(Constant.SELECTED_START_DATE);
+        ArrayList<SimpleData> temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
+        implement.replaceData(prevSelected, temp1);
+        temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
+        implement.replaceData(prevSelectedDoctor, temp1);
+
+        //SET DATA
+        implement.setFetchHospitals(tv_doctor, prevSelectedDoctor);
+        implement.setFetchHospitals(tv_hosp_clinic, prevSelected);
+        tv_sort_by.setText(sort_by);
+        tv_status.setText(status_sort);
+        tv_service_type.setText(service_type_sort);
+        tv_req_date_start.setText(date_start_sort);
+        tv_req_date_end.setText(date_end_sort);
     }
 
     @OnClick({R.id.tv_status, R.id.tv_sort_by, R.id.tv_service_type, R.id.tv_hosp_clinic, R.id.tv_doctor, R.id.tv_test,
@@ -132,14 +158,10 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 break;
 
 
-            case R.id.tv_req_date:
-
-                break;
-
             case R.id.tv_req_date_end:
 
 
-                int []dateStarter = implement.getDateStarter(tv_req_date_start) ;
+                int[] dateStarter = implement.getDateStarter(tv_req_date_start);
                 if (tv_req_date_start.getText().toString().equals(""))
                     alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.pick_start_Date, 1);
                 else {
@@ -148,16 +170,45 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 break;
 
             case R.id.tv_req_date_start:
-                int []dateStarter1 = implement.getDateStarter(tv_req_date_start) ;
+                int[] dateStarter1 = implement.getDateStarter(tv_req_date_start);
 
 
-                implement.showDatePicker(tv_req_date_start, false, callback, tv_req_date_end , dateStarter1);
+                implement.showDatePicker(tv_req_date_start, false, callback, tv_req_date_end, dateStarter1);
 
                 break;
             case R.id.btn_show:
 
+                Intent intent = new Intent();
+                intent.putExtra(Constant.SORT_BY, implement.getTextTrimmed(tv_sort_by));
+                intent.putExtra(Constant.STATUS, implement.getTextTrimmed(tv_status));
+                intent.putExtra(Constant.SERVICE_TYPE, implement.getTextTrimmed(tv_service_type));
+                intent.putParcelableArrayListExtra(Constant.SELECTED_HOSPITAL, prevSelected);
+                intent.putParcelableArrayListExtra(Constant.SELECT_DOCTOR, prevSelectedDoctor);
+                intent.putExtra(Constant.SELECTED_START_DATE, implement.getTextTrimmed(tv_req_date_start));
+                intent.putExtra(Constant.SELECTED_END_DATE, implement.getTextTrimmed(tv_req_date_end));
+                setResult(RESULT_OK, intent);
+                finish();
+
                 break;
             case R.id.btn_reset:
+
+                sort_by = "";
+                status_sort = "";
+                service_type_sort = "";
+                date_end_sort = "";
+                date_start_sort = "";
+                prevSelectedDoctor.clear();
+                prevSelected.clear();
+
+                //SET DATA
+                implement.setFetchHospitals(tv_doctor, prevSelectedDoctor);
+                implement.setFetchHospitals(tv_hosp_clinic, prevSelected);
+                tv_sort_by.setText(sort_by);
+                tv_status.setText(status_sort);
+                tv_service_type.setText(service_type_sort);
+                tv_req_date_start.setText(date_start_sort);
+                tv_req_date_end.setText(date_end_sort);
+
 
                 break;
 
@@ -213,14 +264,5 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     public void datePickerStartDateError() {
         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.start_must_lesser, 1);
     }
-//
-//    @Override
-//    public void onDatePickerListener(int month, int year, int day, boolean isSecond) {
-//        Log.d("DATE_END", month + ",," + year + " ,," + day);
-//
-//        if (isSecond) {
-//
-//        }
-//
-//    }
+
 }

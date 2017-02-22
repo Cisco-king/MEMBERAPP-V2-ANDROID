@@ -11,9 +11,11 @@ import java.util.ArrayList;
 
 import Sqlite.DatabaseHandler;
 import Sqlite.SetLoaToDatabase;
+import adapter.LoaRequestAdapter;
 import model.DoctorsToHospital;
 import model.Loa;
 import model.LoaFetch;
+import model.SimpleData;
 import model.TheDoctor;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -220,6 +222,39 @@ public class LoaRequestRetrieve {
 //        };
 //
 //        asyncTask.execute();
+    }
+
+    public void updateList(ArrayList<LoaFetch> arrayList, LoaRequestAdapter adapter,
+                           DatabaseHandler databaseHandler, String sort_by, String status_sort,
+                           String service_type_sort, String date_start_sort, String date_end_sort,
+                           ArrayList<SimpleData> doctor_sort, ArrayList<SimpleData> hospital_sort) {
+
+
+        arrayList.clear();
+
+
+        arrayList.addAll(databaseHandler.retrieveLoa(dateSortUpdate(sort_by), status_sort, service_type_sort,
+                date_start_sort, date_end_sort, doctor_sort, hospital_sort));
+        adapter.notifyDataSetChanged();
+    }
+
+    private String dateSortUpdate(String sort_by) {
+        String returnData = "";
+        if (sort_by.equals(context.getString(R.string.doctor_family))) {
+            returnData = "docName";
+        } else if (sort_by.equals(context.getString(R.string.room))) {
+            returnData = "room";
+        } else if (sort_by.equals(context.getString(R.string.specialization))) {
+            returnData = "docSpec";
+        } else if (sort_by.equals("")){
+            returnData = "docName";
+        }
+        return returnData;
+    }
+
+    public void replactDataArray(ArrayList<SimpleData> masterList, ArrayList<SimpleData> temp) {
+        masterList.addAll(temp);
+        temp.clear();
     }
 
 
