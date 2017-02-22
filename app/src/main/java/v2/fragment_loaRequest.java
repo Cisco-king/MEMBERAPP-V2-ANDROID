@@ -114,7 +114,6 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
             case R.id.btn_sort:
                 Intent gotoSort = new Intent(context, SortLoaReqActivity.class);
                 gotoSort.putParcelableArrayListExtra(Constant.LOA_REQUEST, arrayList);
-                Log.d("HOSP_GET_NAME", arrayList.get(0).getHospitalName());
                 startActivityForResult(gotoSort, CALL_SORT_LOA);
                 break;
 

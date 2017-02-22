@@ -1,5 +1,6 @@
 package InterfaceService;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -7,14 +8,18 @@ import android.graphics.drawable.ColorDrawable;
 import android.medicard.com.medicard.R;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.SimpleData;
+import utilities.DateConverter;
 
 /**
  * Created by mpx-pawpaw on 2/20/17.
@@ -25,6 +30,7 @@ public class SortLoaReqImplement {
     private Context context;
     private SortLoaReqCallback callback;
     private Dialog dialog;
+    private int month, day, year;
 
 
     public SortLoaReqImplement(Context context, SortLoaReqCallback callback) {
@@ -237,12 +243,98 @@ public class SortLoaReqImplement {
         String data = "";
 
         for (int x = 0; x < temp.size(); x++) {
-            if (temp.get(x).getSelected().equals("true")){
+            if (temp.get(x).getSelected().equals("true")) {
                 data = temp.get(x).getHospital() + " , " + data;
             }
         }
 
-        tv_hosp_clinic.setText(data.substring(0 , data.length() - 2));
+        tv_hosp_clinic.setText(data.substring(0, data.length() - 2));
 
+    }
+
+    public String showDatePicker(final TextView tv_start, final boolean isSecond, final SortLoaReqCallback callback, final TextView tv_end, int[] dateStarter) {
+        final String date = "";
+        final int mDay, mMonth, mYear;
+        mYear = dateStarter[2];
+        mMonth = dateStarter[1]; // current month
+        mDay = dateStarter[0]; // current day
+
+        Log.d("DATE_DATE", dateStarter[0] + "");
+        Log.d("DATE_DATE", dateStarter[1] + "");
+        Log.d("DATE_DATE", dateStarter[2] + "");
+        DatePickerDialog datePickerDialog;
+
+        datePickerDialog = new DatePickerDialog(context,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(android.widget.DatePicker view, int getYear,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        month = (monthOfYear + 1);
+                        year = getYear;
+                        day = dayOfMonth;
+                        String dateTaken = DateConverter.convertDateFromYYYYMDD(year + "," + month + "," + day);
+
+
+                        if (isSecond) {
+                            if (DateConverter.testDataStartAndEnd(getTextTrimmed(tv_start), dateTaken)) {
+                                tv_end.setText(DateConverter.convertDateFromYYYYMDD(year + "," + month + "," + day));
+                            } else {
+                                callback.datePickerEndDateError();
+                            }
+                        } else {
+                            if (tv_end.getText().toString().equals(""))
+                                tv_start.setText(dateTaken);
+                            else {
+                                if (DateConverter.testDataStartAndEnd(dateTaken, getTextTrimmed(tv_end))) {
+                                    tv_end.setText(dateTaken);
+                                } else {
+                                    callback.datePickerStartDateError();
+                                }
+                            }
+                        }
+                    }
+                }, mYear, mMonth, mDay);
+     //   datePickerDialog.updateDate(mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+        datePickerDialog.show();
+
+        return date;
+    }
+
+
+    private String getTextTrimmed(TextView data) {
+        return data.getText().toString().trim();
+    }
+
+    public boolean isNullValue(TextView tv_req_date_start) {
+        return tv_req_date_start.getText().toString().trim().equals("");
+    }
+
+    /**
+     * if true return current date else
+     * get set date
+     *
+     * @param tv_req_date_start
+     * @return
+     */
+    public int[] getDateStarter(TextView tv_req_date_start) {
+        int[] dateSet = new int[3];
+
+        if (isNullValue(tv_req_date_start)) {
+            final Calendar c = Calendar.getInstance();
+            final int mDay, mMonth, mYear;
+            mYear = c.get(Calendar.YEAR); // current year
+            mMonth = c.get(Calendar.MONTH); // current month
+            mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+            dateSet[0] = mDay;
+            dateSet[1] = mMonth;
+            dateSet[2] = mYear;
+        } else {
+            dateSet = DateConverter.getDates(getTextTrimmed(tv_req_date_start));
+        }
+
+        return dateSet;
     }
 }

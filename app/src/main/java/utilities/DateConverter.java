@@ -1,6 +1,8 @@
 package utilities;
 
 import android.util.Log;
+import android.widget.TextView;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -110,4 +112,73 @@ public class DateConverter {
         return convertDate((Integer.parseInt(month.format(date)) + 1) + " " + date_.format(date) + " , " + year.format(date));
     }
 
+    public static String convertDateFromYYYYMDD(String s) {
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy,mm,dd");
+        Date date = null;
+        try {
+            date = dt.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        SimpleDateFormat dt1 = new SimpleDateFormat("MMM dd , yyyy");
+        return dt1.format(date);
+    }
+
+    public static boolean testDataStartAndEnd(String start, String end) {
+
+
+        Date startTime = null;
+        Date endTime = null;
+        SimpleDateFormat dfDate = new SimpleDateFormat("MMM dd , yyyy");
+
+        try {
+            startTime = dfDate.parse(start);
+            endTime = dfDate.parse(end);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        boolean b = false;
+
+        if (startTime.before(endTime)) {
+            b = true;//If start date is before end date
+        } else if (startTime.before(endTime)) {
+            b = true;//If two dates are equal
+        } else {
+            b = false; //If start date is after the end date
+        }
+
+        return b;
+
+
+    }
+
+    public static int[] getDates(String s) {
+        int[] dates = new int[3];
+        SimpleDateFormat dt = new SimpleDateFormat("MMM dd , yyyy");
+
+        Date date = null;
+        try {
+            date = dt.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        SimpleDateFormat date_ = new SimpleDateFormat("d");
+        SimpleDateFormat month = new SimpleDateFormat("MM");
+        SimpleDateFormat year = new SimpleDateFormat("yyyy");
+
+        dates[0] = (Integer.parseInt(date_.format(date)));
+        dates[1] = (Integer.parseInt(month.format(date)) + 1);
+        dates[2] = (Integer.parseInt(year.format(date)));
+
+
+        return dates;
+    }
+
+
+    private static String getText(TextView v) {
+        return v.getText().toString().trim();
+    }
 }

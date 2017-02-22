@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.medicard.com.medicard.R;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,6 +21,7 @@ import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.LoaFetch;
 import model.SimpleData;
+import utilities.AlertDialogCustom;
 import utilities.Constant;
 
 public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqCallback {
@@ -48,8 +47,12 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     TextView tv_test;
     @BindView(R.id.tv_diagnosis)
     TextView tv_diagnosis;
-    @BindView(R.id.tv_req_date)
-    TextView tv_req_date;
+
+    @BindView(R.id.tv_req_date_start)
+    TextView tv_req_date_start;
+
+    @BindView(R.id.tv_req_date_end)
+    TextView tv_req_date_end;
 
     @BindView(R.id.btn_reset)
     FancyButton btn_reset;
@@ -65,6 +68,9 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     ArrayList<SimpleData> prevSelected = new ArrayList<>();
 
     ArrayList<SimpleData> prevSelectedDoctor = new ArrayList<>();
+    String date_Start, date_End;
+    AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
+    boolean isSelectedStartDate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +90,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     }
 
     @OnClick({R.id.tv_status, R.id.tv_sort_by, R.id.tv_service_type, R.id.tv_hosp_clinic, R.id.tv_doctor, R.id.tv_test,
-            R.id.tv_diagnosis, R.id.tv_req_date, R.id.btn_reset, R.id.btn_show})
+            R.id.tv_diagnosis, R.id.tv_req_date_end, R.id.tv_req_date_start, R.id.btn_reset, R.id.btn_show})
     public void onClick(View v) {
 
 
@@ -118,7 +124,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 break;
 
             case R.id.tv_test:
-                //
+
                 break;
 
             case R.id.tv_diagnosis:
@@ -127,6 +133,25 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
 
 
             case R.id.tv_req_date:
+
+                break;
+
+            case R.id.tv_req_date_end:
+
+
+                int []dateStarter = implement.getDateStarter(tv_req_date_start) ;
+                if (tv_req_date_start.getText().toString().equals(""))
+                    alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.pick_start_Date, 1);
+                else {
+                    implement.showDatePicker(tv_req_date_start, true, callback, tv_req_date_end, dateStarter);
+                }
+                break;
+
+            case R.id.tv_req_date_start:
+                int []dateStarter1 = implement.getDateStarter(tv_req_date_start) ;
+
+
+                implement.showDatePicker(tv_req_date_start, false, callback, tv_req_date_end , dateStarter1);
 
                 break;
             case R.id.btn_show:
@@ -176,4 +201,26 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     public void onSortServiceType(String sortBy) {
         tv_service_type.setText(sortBy);
     }
+
+
+    @Override
+    public void datePickerEndDateError() {
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.end_must_greater, 1);
+
+    }
+
+    @Override
+    public void datePickerStartDateError() {
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.start_must_lesser, 1);
+    }
+//
+//    @Override
+//    public void onDatePickerListener(int month, int year, int day, boolean isSecond) {
+//        Log.d("DATE_END", month + ",," + year + " ,," + day);
+//
+//        if (isSecond) {
+//
+//        }
+//
+//    }
 }

@@ -10,4 +10,8 @@ public interface SortLoaReqCallback {
     void onSortStatus(String string);
 
     void onSortServiceType(String string);
+
+    void datePickerEndDateError();
+
+    void datePickerStartDateError();
 }

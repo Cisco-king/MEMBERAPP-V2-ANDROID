@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Slidr-v2.0.5">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.r0adkll/Slidr/v2.0.5/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.r0adkll/Slidr/v2.0.5/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.r0adkll/Slidr/v2.0.5/7d25da461195e49a6658a3502f56a0fa67597de8/Slidr-v2.0.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

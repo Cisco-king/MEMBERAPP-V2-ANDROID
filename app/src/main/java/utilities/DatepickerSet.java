@@ -24,7 +24,7 @@ import java.util.Date;
 public class DatepickerSet {
 
 
-    DatePickerDialog datePickerDialog;
+        DatePickerDialog datePickerDialog;
     String StringdatetoSend = "";
 //BIRTHDAY FORMAT 19751213
 

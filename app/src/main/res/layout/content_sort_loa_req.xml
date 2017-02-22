@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_sort_loa_req"
     android:layout_width="match_parent"
@@ -12,9 +12,9 @@
 
 
     <LinearLayout
-        android:background="@color/l_gray"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/l_gray"
         android:orientation="vertical">
 
 
@@ -77,7 +77,9 @@
 
             </LinearLayout>
 
-        </android.support.v7.widget.CardView> <android.support.v7.widget.CardView
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/sub_margin">
@@ -308,16 +310,40 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_main" />
 
-                <TextView
-                    android:id="@+id/tv_req_date"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_rounded_corner"
-                    android:padding="@dimen/sub_margin"
+                    android:orientation="horizontal">
 
-                    android:textColor="@color/BLACK"
-                    android:textSize="@dimen/text_main" />
+                    <TextView
+                        android:hint="@string/start_date"
+                        android:layout_marginEnd="@dimen/sub_margin"
+                        android:layout_weight="1"
+                        android:id="@+id/tv_req_date_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_rounded_corner"
+                        android:padding="@dimen/sub_margin"
+                        android:textColor="@color/BLACK"
+                        android:textSize="@dimen/text_main" />
 
+
+                    <TextView
+                        android:hint="@string/end_date"
+                        android:layout_marginLeft="@dimen/sub_margin"
+                        android:layout_weight="1"
+                        android:id="@+id/tv_req_date_end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_rounded_corner"
+                        android:padding="@dimen/sub_margin"
+                        android:textColor="@color/BLACK"
+                        android:textSize="@dimen/text_main" />
+
+
+
+
+                </LinearLayout>
 
             </LinearLayout>
 

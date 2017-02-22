@@ -75,9 +75,13 @@ public class AlertDialogCustom {
     public String success_update_pin = "You have successfully changed your Pin";
     public String no_condition = "Please enter Problem/Condition.";
     public String no_doctor = "Please enter Doctor.";
+    public String pick_start_Date = "Pick Start date first.";
+    public String end_must_greater = "End Date must be greater than Start Date.";
+    public String start_must_lesser = "Start Date must be lesser than End Date.";
     TextView tv_message, tv_title;
     CircleImageView ci_error_image;
     Button btn_accept;
+
 
     public void showMe(Context context, String title, String message, int errorImage) {
 

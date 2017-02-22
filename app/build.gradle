@@ -60,5 +60,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile project(':fancybuttons_library')
     compile 'com.appyvet:materialrangebar:1.3'
+
     testCompile 'junit:junit:4.12'
 }

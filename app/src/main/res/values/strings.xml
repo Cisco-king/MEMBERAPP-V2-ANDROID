@@ -222,5 +222,7 @@
     <string name="disapproved_">disapproved</string>
     <string name="basic_test">Basic Test</string>
     <string name="other_test_proc">Other Test/Procedures</string>
+    <string name="start_date">Start Date:</string>
+    <string name="end_date">End Date:</string>
 
 </resources>
