@@ -135,11 +135,9 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
             ArrayList<LoaFetch> temp;
             temp = getIntent().getParcelableArrayListExtra(Constant.DOCTOR_LIST);
             arrayListMaster.addAll(temp);
-
             arrayDoctors.addAll(implement.getOnlyDoctorWithOneCount(arrayListMaster));
             prevSelectedDoctor = getIntent().getParcelableArrayListExtra(Constant.SELECTED_DOCTOR);
             implement.tagSelectedToMasterList(prevSelectedDoctor, arrayDoctors);
-
             adapterLoa = new LoaReqAdapter(context, arrayDoctors, callback);
             rv_provinces.setAdapter(adapterLoa);
             implement.setOkVISIBILITY(true, true, btn_ok);

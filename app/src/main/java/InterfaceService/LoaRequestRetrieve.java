@@ -246,13 +246,14 @@ public class LoaRequestRetrieve {
             returnData = "room";
         } else if (sort_by.equals(context.getString(R.string.specialization))) {
             returnData = "docSpec";
-        } else if (sort_by.equals("")){
+        } else if (sort_by.equals("")) {
             returnData = "docName";
         }
         return returnData;
     }
 
     public void replactDataArray(ArrayList<SimpleData> masterList, ArrayList<SimpleData> temp) {
+        masterList.clear();
         masterList.addAll(temp);
         temp.clear();
     }

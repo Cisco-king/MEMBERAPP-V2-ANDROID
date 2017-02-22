@@ -242,7 +242,7 @@ public class SortLoaReqImplement {
     public void setFetchHospitals(TextView tv_hosp_clinic, ArrayList<SimpleData> temp) {
 
         String data = "";
-
+        tv_hosp_clinic.setText("");
         if (temp.size() != 0) {
 
 
@@ -252,7 +252,9 @@ public class SortLoaReqImplement {
                 }
             }
 
-            tv_hosp_clinic.setText(data.substring(0, data.length() - 2));
+            if (data.length() != 0)
+                tv_hosp_clinic.setText(data.substring(0, data.length() - 2));
+
 
         }
     }
