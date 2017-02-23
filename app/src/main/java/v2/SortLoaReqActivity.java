@@ -115,12 +115,15 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
         tv_req_date_end.setText(date_end_sort);
     }
 
-    @OnClick({R.id.tv_status, R.id.tv_sort_by, R.id.tv_service_type, R.id.tv_hosp_clinic, R.id.tv_doctor, R.id.tv_test,
+    @OnClick({R.id.btn_back, R.id.tv_status, R.id.tv_sort_by, R.id.tv_service_type, R.id.tv_hosp_clinic, R.id.tv_doctor, R.id.tv_test,
             R.id.tv_diagnosis, R.id.tv_req_date_end, R.id.tv_req_date_start, R.id.btn_reset, R.id.btn_show})
     public void onClick(View v) {
 
 
         switch (v.getId()) {
+            case R.id.btn_back:
+                finish();
+                break;
 
             case R.id.tv_sort_by:
                 implement.showSortBy();

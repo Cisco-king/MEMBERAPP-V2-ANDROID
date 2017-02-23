@@ -1105,7 +1105,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         }
 
-        cursor.close();
 
         return gHosp;
     }
@@ -1144,13 +1143,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String sql = "";
         SQLiteDatabase db = this.getWritableDatabase();
+
         sql = "UPDATE " + loaTable +
                 " SET " + hospitalName + " = '" + hospName +
                 "' WHERE " + id + " = '" + ID + "'";
         db.execSQL(sql);
         Log.d("ID", sql);
         Log.d("ID", hospitalName);
-        db.close();
+
     }
 
     public ArrayList<String> getDateRange(String start, String end) {

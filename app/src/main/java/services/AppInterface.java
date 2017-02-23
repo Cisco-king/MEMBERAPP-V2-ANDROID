@@ -4,6 +4,7 @@ import model.AddDepenceResponse;
 import model.AddDependence;
 import model.ChangePassword;
 import model.City;
+import model.DoctorNORoom;
 import model.Doctors;
 import model.Exclusions;
 import model.Hospital;
@@ -49,8 +50,11 @@ public interface AppInterface {
 //    String ENDPOINT = "http://10.10.24.195:8080/";
 //    String PHOTOLINK = "http://10.10.24.195:8080/downloadpicture/";
 
-    String ENDPOINT = "http://mace-public01.medicardphils.com:8080/";
-    String PHOTOLINK = "http://mace-public01.medicardphils.com:8080/downloadpicture/";
+//    String ENDPOINT = "http://mace-public01.medicardphils.com:8080/";
+//    String PHOTOLINK = "http://mace-public01.medicardphils.com:8080/downloadpicture/";
+
+    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
+    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
 
 
     @POST("v2/registerAccount/")
@@ -125,7 +129,7 @@ public interface AppInterface {
     Observable<Loa> getLoaList(@Query("memberCode") String memberCode);
 
     @GET("/listing/getDoctorByCode/?")
-    Observable<TheDoctor> getDoctorData(@Query("doctorCode") String doctorCode);
+    Observable<DoctorNORoom> getDoctorData(@Query("doctorCode") String doctorCode);
 
     @GET("/listing/getDoctorHospitalByCode/?")
     Observable<TheDoctor> getDoctorDataWithRoom(@Query("doctorCode") String doctorCode);

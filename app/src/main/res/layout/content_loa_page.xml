@@ -7,10 +7,11 @@
     android:layout_height="match_parent"
     android:background="@color/l_gray"
     android:scrollbars="none"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_loa_page"
     tools:context="v2.LoaPageActivity">
 
-    <!--   -->
+
     <ScrollView
         android:id="@+id/content_loa_page"
         android:layout_width="match_parent"

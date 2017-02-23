@@ -148,7 +148,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
                 break;
 
             case R.id.btn_cancel:
-
+                finish();
                 break;
 
             case R.id.btn_cancel_req:
@@ -175,7 +175,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
         if (Permission.checkPermissionStorage(context)) {
             new ImageSaver(context).
-                    setFileName(DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate())
+                    setFileName(loa.getApprovalNo()
                             + "_" + loa.getRemarks() + ".jpg")
                     .setDirectoryName("Medicard")
                     .setExternal(false)

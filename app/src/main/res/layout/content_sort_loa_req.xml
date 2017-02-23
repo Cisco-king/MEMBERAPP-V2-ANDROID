@@ -30,11 +30,11 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:focusable="false"
                     android:id="@+id/et_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_rounded_corner"
+                    android:focusable="false"
                     android:hint="Search"
                     android:padding="@dimen/sub_margin"
                     android:textColor="@color/BLACK"
@@ -70,8 +70,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="@string/hospital_clinic"
                     android:padding="@dimen/sub_margin"
-
                     android:textColor="@color/BLACK"
                     android:textSize="@dimen/text_main" />
 
@@ -105,8 +105,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="@string/approved"
                     android:padding="@dimen/sub_margin"
-
                     android:textColor="@color/BLACK"
                     android:textSize="@dimen/text_main" />
 
@@ -140,8 +140,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="@string/consultation"
                     android:padding="@dimen/sub_margin"
-
                     android:textColor="@color/BLACK"
                     android:textSize="@dimen/text_main" />
 
@@ -176,8 +176,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="@string/all_hospital_clinic"
                     android:padding="@dimen/sub_margin"
-
                     android:textColor="@color/BLACK"
                     android:textSize="@dimen/text_main" />
 
@@ -211,8 +211,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="@string/all_doctors"
                     android:padding="@dimen/sub_margin"
-
                     android:textColor="@color/BLACK"
                     android:textSize="@dimen/text_main" />
 
@@ -246,8 +246,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="@string/all_test"
                     android:padding="@dimen/sub_margin"
-
                     android:textColor="@color/BLACK"
                     android:textSize="@dimen/text_main" />
 
@@ -281,8 +281,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="@string/all_diagnosis"
                     android:padding="@dimen/sub_margin"
-
                     android:textColor="@color/BLACK"
                     android:textSize="@dimen/text_main" />
 
@@ -317,31 +317,29 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:hint="@string/start_date"
-                        android:layout_marginEnd="@dimen/sub_margin"
-                        android:layout_weight="1"
                         android:id="@+id/tv_req_date_start"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/sub_margin"
+                        android:layout_weight="1"
                         android:background="@drawable/edit_text_rounded_corner"
+                        android:hint="@string/start_date"
                         android:padding="@dimen/sub_margin"
                         android:textColor="@color/BLACK"
                         android:textSize="@dimen/text_main" />
 
 
                     <TextView
-                        android:hint="@string/end_date"
-                        android:layout_marginLeft="@dimen/sub_margin"
-                        android:layout_weight="1"
                         android:id="@+id/tv_req_date_end"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/sub_margin"
+                        android:layout_weight="1"
                         android:background="@drawable/edit_text_rounded_corner"
+                        android:hint="@string/end_date"
                         android:padding="@dimen/sub_margin"
                         android:textColor="@color/BLACK"
                         android:textSize="@dimen/text_main" />
-
-
 
 
                 </LinearLayout>

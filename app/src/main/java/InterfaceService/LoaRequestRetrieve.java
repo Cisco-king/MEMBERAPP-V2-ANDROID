@@ -4,14 +4,21 @@ import android.content.Context;
 import android.medicard.com.medicard.R;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
 import Sqlite.DatabaseHandler;
 import Sqlite.SetLoaToDatabase;
+import Sqlite.UpdateDoctorCode;
 import adapter.LoaRequestAdapter;
+import mehdi.sakout.fancybuttons.FancyButton;
+import model.Doctor;
+import model.DoctorNORoom;
 import model.DoctorsToHospital;
 import model.Loa;
 import model.LoaFetch;
@@ -37,16 +44,7 @@ public class LoaRequestRetrieve {
         this.callback = callback;
     }
 
-    public void changeButtonColorSelected(Button btn) {
 
-        btn.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
-        btn.setTextColor(ContextCompat.getColor(context, R.color.white));
-    }
-
-    public void changeButtonColorDeselect(Button btn) {
-        btn.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-        btn.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
-    }
 
     public void getLoa(String memberCode) {
 
@@ -116,11 +114,11 @@ public class LoaRequestRetrieve {
 
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-        appInterface.getDoctorDataWithRoom(doctorCode)
+        appInterface.getDoctorData(doctorCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<TheDoctor>() {
+                .subscribe(new Subscriber<DoctorNORoom>() {
                     @Override
                     public void onCompleted() {
 
@@ -140,15 +138,15 @@ public class LoaRequestRetrieve {
                     }
 
                     @Override
-                    public void onNext(TheDoctor theDoctor) {
+                    public void onNext(DoctorNORoom doctorNORoom) {
 
-                        if (theDoctor.getResponseCode().equals("210")) {
+                        if (doctorNORoom.getResponseCode().equals("210")) {
                             doctorNotFound(doctorCode, arrayList, position, databaseHandler);
                         } else {
-                            if (theDoctor.getDoctorsToHospital().size() == 0)
-                                doctorNotFound(doctorCode, arrayList, position, databaseHandler);
-                            else
-                                onSuccessListener(databaseHandler, theDoctor.getDoctorsToHospital().get(0), arrayList, position);
+                       //     if (.getDoctorsToHospital().size() == 0)
+                        //        doctorNotFound(doctorCode, arrayList, position, databaseHandler);
+                      //      else
+                                onSuccessListener(databaseHandler, doctorNORoom.getDoctor(), arrayList, position);
                         }
                     }
                 });
@@ -156,7 +154,7 @@ public class LoaRequestRetrieve {
     }
 
 
-    public void onSuccessListener(DatabaseHandler databaseHandler, DoctorsToHospital theDoctor, ArrayList<LoaFetch> arrayList, int position) {
+    public void onSuccessListener(DatabaseHandler databaseHandler, Doctor theDoctor, ArrayList<LoaFetch> arrayList, int position) {
         Log.d("DOCTOR_CODE_COUNT", position + "");
 
         arrayList.get(position).setDoctorName(theDoctor.getDocFname() + " " +
@@ -164,13 +162,16 @@ public class LoaRequestRetrieve {
         arrayList.get(position).setDoctorSpec(theDoctor.getSpecDesc());
         arrayList.get(position).setDoctorSpecCode(theDoctor.getSpecCode());
 
+
+
         databaseHandler.setDoctorToLoaReq(
                 arrayList.get(position).getId(),
                 theDoctor.getDocFname() + " " + theDoctor.getDocLname(),
                 theDoctor.getSpecDesc(),
-                theDoctor.getSpecCode(),
-                theDoctor.getSchedule(),
-                theDoctor.getRoom());
+                theDoctor.getSpecCode(), "", "");
+        // theDoctor.getSchedule(),
+        // theDoctor.getRoom());
+
     }
 
 
@@ -221,21 +222,17 @@ public class LoaRequestRetrieve {
 //            }
 //        };
 //
-//        asyncTask.execute();
+//        asyncTask.execute(context);
     }
 
     public void updateList(ArrayList<LoaFetch> arrayList, LoaRequestAdapter adapter,
                            DatabaseHandler databaseHandler, String sort_by, String status_sort,
                            String service_type_sort, String date_start_sort, String date_end_sort,
                            ArrayList<SimpleData> doctor_sort, ArrayList<SimpleData> hospital_sort) {
-
-
         arrayList.clear();
-
-
         arrayList.addAll(databaseHandler.retrieveLoa(dateSortUpdate(sort_by), status_sort, service_type_sort,
                 date_start_sort, date_end_sort, doctor_sort, hospital_sort));
-        adapter.notifyDataSetChanged();
+
     }
 
     private String dateSortUpdate(String sort_by) {
@@ -256,6 +253,19 @@ public class LoaRequestRetrieve {
         masterList.clear();
         masterList.addAll(temp);
         temp.clear();
+    }
+
+    public void UIUpdateShowLoad(boolean b, ProgressBar pb, RecyclerView rv_loa_request, FancyButton btn_sort) {
+
+        if (b) {
+            pb.setVisibility(View.VISIBLE);
+            rv_loa_request.setVisibility(View.GONE);
+            btn_sort.setVisibility(View.GONE);
+        } else {
+            pb.setVisibility(View.GONE);
+            rv_loa_request.setVisibility(View.VISIBLE);
+            btn_sort.setVisibility(View.VISIBLE);
+        }
     }
 
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.medicard.com.medicard.R;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
@@ -47,6 +48,9 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @BindView(R.id.btn_sort)
     FancyButton btn_sort;
+
+    @BindView(R.id.pb)
+    ProgressBar pb;
 
     LinearLayoutManager llm;
     LoaRequestAdapter adapter;
@@ -115,6 +119,8 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         } else
             alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.NO_Internet, 1);
 
+
+        implement.UIUpdateShowLoad(true, pb, rv_loa_request, btn_sort);
     }
 
 
@@ -223,12 +229,12 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     @Override
     public void doneUpdatingHosp() {
 
-
+        implement.UIUpdateShowLoad(false, pb, rv_loa_request, btn_sort);
         implement.updateList(arrayList, adapter, databaseHandler, sort_by, status_sort,
                 service_type_sort, date_start_sort, date_end_sort, doctor_sort, hospital_sort);
 
-
         arrayMASTERList.addAll(arrayList);
+        adapter.notifyDataSetChanged();
     }
 
 
