@@ -127,12 +127,12 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
         tv_gender.setText(GenderPicker.setGender(Integer.parseInt(
                 SharedPref.getStringValue(SharedPref.USER, SharedPref.GENDER, this))));
         tv_company.setText(loa.getMemCompany());
-        tv_date_approved.setText(DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate()));
+        tv_date_approved.setText(DateConverter.convertDatetoMMMddyyy(loa.getDateAdmitted()));
 
         tv_doc_name.setText(loa.getDoctorName());
         tv_problem.setText(loa.getProcedureDesc());
 
-        String changeFormat = DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate());
+        String changeFormat = DateConverter.convertDatetoMMMddyyy(loa.getDateAdmitted());
         tv_validity_date.setText(DateConverter.convertDateToMMddyyyy(changeFormat) + " to " +
                 DateConverter.validityDatePLusDay(changeFormat, 3));
         tv_spec.setText(testData(loa.getDoctorSpec()));
@@ -168,12 +168,14 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     @Override
     public void onScreenShotListener() {
         Log.d("TRIGGERED", "TRIGGERED");
-        btn_download.setVisibility(View.GONE);
-        btn_cancel.setVisibility(View.GONE);
-        btn_cancel_req.setVisibility(View.GONE);
         Bitmap bitmap = Screenshot.loadBitmapFromView(content_loa_page);
 
         if (Permission.checkPermissionStorage(context)) {
+
+            btn_download.setVisibility(View.GONE);
+            btn_cancel.setVisibility(View.GONE);
+            btn_cancel_req.setVisibility(View.GONE);
+
             new ImageSaver(context).
                     setFileName(loa.getApprovalNo()
                             + "_" + loa.getRemarks() + ".jpg")

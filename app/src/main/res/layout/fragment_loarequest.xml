@@ -12,7 +12,8 @@
         android:id="@+id/rv_loa_request"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_above="@+id/linearLayout4" />
 
 
     <LinearLayout
@@ -22,7 +23,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout4">
 
 
         <mehdi.sakout.fancybuttons.FancyButton

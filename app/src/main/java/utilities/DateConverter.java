@@ -112,6 +112,11 @@ public class DateConverter {
         return convertDate((Integer.parseInt(month.format(date)) + 1) + " " + date_.format(date) + " , " + year.format(date));
     }
 
+
+
+
+
+
     public static String convertDateFromYYYYMDD(String s) {
         Log.d("DATE_DATE_toformat", s + "");
         SimpleDateFormat dt = new SimpleDateFormat("yyyy,MM,dd");
@@ -197,7 +202,7 @@ public class DateConverter {
                 e.printStackTrace();
             }
 
-            SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             stringDate = dt1.format(date);
 
         }

@@ -70,6 +70,7 @@ public class Constant {
     public static String SELECTED_DOCTOR = "SELECTED_DOCTOR";
     public static String SELECTED_START_DATE = "SELECTED_START_DATE";
     public static String SELECTED_END_DATE = "SELECTED_END_DATE";
+    public static String SEARCHED_DATA = "SEARCHED_DATA";
 
 
 

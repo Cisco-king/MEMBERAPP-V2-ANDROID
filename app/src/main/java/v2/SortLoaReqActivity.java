@@ -78,6 +78,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     String service_type_sort = "";
     String date_end_sort = "";
     String date_start_sort = "";
+    String searchData = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
         temp = getIntent().getParcelableArrayListExtra(Constant.LOA_REQUEST);
         arrayListMaster.addAll(temp);
 
-
+        searchData = getIntent().getStringExtra(Constant.SEARCHED_DATA);
         sort_by = getIntent().getStringExtra(Constant.SORT_BY);
         status_sort = getIntent().getStringExtra(Constant.STATUS);
         service_type_sort = getIntent().getStringExtra(Constant.SERVICE_TYPE);
@@ -113,6 +114,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
         tv_service_type.setText(service_type_sort);
         tv_req_date_start.setText(date_start_sort);
         tv_req_date_end.setText(date_end_sort);
+        et_search.setText(searchData);
     }
 
     @OnClick({R.id.btn_back, R.id.tv_status, R.id.tv_sort_by, R.id.tv_service_type, R.id.tv_hosp_clinic, R.id.tv_doctor, R.id.tv_test,
@@ -189,6 +191,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 intent.putParcelableArrayListExtra(Constant.SELECT_DOCTOR, prevSelectedDoctor);
                 intent.putExtra(Constant.SELECTED_START_DATE, implement.getTextTrimmed(tv_req_date_start));
                 intent.putExtra(Constant.SELECTED_END_DATE, implement.getTextTrimmed(tv_req_date_end));
+                intent.putExtra(Constant.SEARCHED_DATA, et_search.getText().toString().trim());
                 setResult(RESULT_OK, intent);
                 finish();
 
@@ -211,6 +214,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 tv_service_type.setText(service_type_sort);
                 tv_req_date_start.setText(date_start_sort);
                 tv_req_date_end.setText(date_end_sort);
+                et_search.setText("");
 
 
                 break;

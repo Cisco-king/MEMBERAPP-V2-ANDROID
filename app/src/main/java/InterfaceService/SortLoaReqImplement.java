@@ -42,44 +42,53 @@ public class SortLoaReqImplement {
     public void showSortBy() {
 
 
-        FancyButton doctor_family;
-        FancyButton tv_specialization;
-        FancyButton tv_room;
+        FancyButton status;
+        FancyButton req_date;
+        FancyButton hospital_clinic;
+        FancyButton service_type;
         FancyButton tv_close;
 
 
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_sortby_doctors);
+        dialog.setContentView(R.layout.dialog_sort_loa_req);
 
-        doctor_family = (FancyButton) dialog.findViewById(R.id.doctor_family);
-        tv_specialization = (FancyButton) dialog.findViewById(R.id.tv_specialization);
-        tv_room = (FancyButton) dialog.findViewById(R.id.tv_room);
+        status = (FancyButton) dialog.findViewById(R.id.status);
+        req_date = (FancyButton) dialog.findViewById(R.id.req_date);
+        hospital_clinic = (FancyButton) dialog.findViewById(R.id.hospital_clinic);
+        service_type = (FancyButton) dialog.findViewById(R.id.service_type);
         tv_close = (FancyButton) dialog.findViewById(R.id.tv_close);
 
-        doctor_family.setOnClickListener(new View.OnClickListener() {
+        status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callback.onSortListener(context.getString(R.string.doctor_family));
+                callback.onSortListener(context.getString(R.string.status));
                 dialog.dismiss();
             }
         });
-        tv_specialization.setOnClickListener(new View.OnClickListener() {
+        req_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callback.onSortListener(context.getString(R.string.specialization));
+                callback.onSortListener(context.getString(R.string.request_date));
                 dialog.dismiss();
             }
         });
-        tv_room.setOnClickListener(new View.OnClickListener() {
+        hospital_clinic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callback.onSortListener(context.getString(R.string.room_number));
+                callback.onSortListener(context.getString(R.string.hospital_clinic));
                 dialog.dismiss();
             }
         });
 
+        service_type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callback.onSortListener(context.getString(R.string.service_type));
+                dialog.dismiss();
+            }
+        });
         tv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

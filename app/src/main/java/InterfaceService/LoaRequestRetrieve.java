@@ -1,6 +1,7 @@
 package InterfaceService;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.medicard.com.medicard.R;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
@@ -43,7 +44,6 @@ public class LoaRequestRetrieve {
         this.context = context;
         this.callback = callback;
     }
-
 
 
     public void getLoa(String memberCode) {
@@ -112,44 +112,58 @@ public class LoaRequestRetrieve {
         Log.d("DOCTOR_CODE", doctorCode);
         Log.d("DOCTOR_CODE", doctorCode);
 
-        AppInterface appInterface;
-        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-        appInterface.getDoctorData(doctorCode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<DoctorNORoom>() {
-                    @Override
-                    public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d("DOCTOR_CODE", e.getMessage());
-
-                        if (e.getMessage().contains("Expected BEGIN_OBJECT but was STRING")) {
-                            doctorNotFound(doctorCode, arrayList, position, databaseHandler);
-                        } else {
-                            callback.onErrorFetchingDoctorCreds(e.getMessage());
-                        }
+        AsyncTask asyncTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
 
 
-                    }
+                AppInterface appInterface;
+                appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+                appInterface.getDoctorData(doctorCode)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .unsubscribeOn(Schedulers.io())
+                        .subscribe(new Subscriber<DoctorNORoom>() {
+                            @Override
+                            public void onCompleted() {
 
-                    @Override
-                    public void onNext(DoctorNORoom doctorNORoom) {
+                            }
 
-                        if (doctorNORoom.getResponseCode().equals("210")) {
-                            doctorNotFound(doctorCode, arrayList, position, databaseHandler);
-                        } else {
-                       //     if (.getDoctorsToHospital().size() == 0)
-                        //        doctorNotFound(doctorCode, arrayList, position, databaseHandler);
-                      //      else
-                                onSuccessListener(databaseHandler, doctorNORoom.getDoctor(), arrayList, position);
-                        }
-                    }
-                });
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d("DOCTOR_CODE", e.getMessage());
+
+                                if (e.getMessage().contains("Expected BEGIN_OBJECT but was STRING")) {
+                                    doctorNotFound(doctorCode, arrayList, position, databaseHandler);
+                                } else {
+                                    callback.onErrorFetchingDoctorCreds(e.getMessage());
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onNext(DoctorNORoom doctorNORoom) {
+
+                                if (doctorNORoom.getResponseCode().equals("210")) {
+                                    doctorNotFound(doctorCode, arrayList, position, databaseHandler);
+                                } else {
+                                    //     if (.getDoctorsToHospital().size() == 0)
+                                    //        doctorNotFound(doctorCode, arrayList, position, databaseHandler);
+                                    //      else
+                                    onSuccessListener(databaseHandler, doctorNORoom.getDoctor(), arrayList, position);
+                                }
+                            }
+                        });
+
+
+                return null;
+            }
+        };
+
+
+        asyncTask.execute();
 
     }
 
@@ -161,7 +175,6 @@ public class LoaRequestRetrieve {
                 theDoctor.getDocLname());
         arrayList.get(position).setDoctorSpec(theDoctor.getSpecDesc());
         arrayList.get(position).setDoctorSpecCode(theDoctor.getSpecCode());
-
 
 
         databaseHandler.setDoctorToLoaReq(
@@ -191,60 +204,49 @@ public class LoaRequestRetrieve {
     }
 
     public void updateHospitals(final ArrayList<LoaFetch> arrayList, final DatabaseHandler databaseHandler) {
+        AsyncTask asyncTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                for (int x = 0; x < arrayList.size(); x++) {
+                    String hospName = databaseHandler.getHospitalName(arrayList.get(x).getHospitalCode());
+                    databaseHandler.setHospitalToLoaReq(arrayList.get(x).getId(), hospName);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                callback.doneUpdatingHosp();
+            }
+        };
+        asyncTask.execute();
 
 
-        for (int x = 0; x < arrayList.size(); x++) {
-            String hospName = databaseHandler.getHospitalName(arrayList.get(x).getHospitalCode());
-            databaseHandler.setHospitalToLoaReq(arrayList.get(x).getId(), hospName);
-        }
-
-        callback.doneUpdatingHosp();
-//        AsyncTask asyncTask = new AsyncTask() {
-//            @Override
-//            protected Object doInBackground(Object[] objects) {
-//                for (int x = 0; x < arrayList.size(); x++) {
-//                    String hospName = databaseHandler.getHospitalName(arrayList.get(x).getHospitalCode());
-//                    databaseHandler.setHospitalToLoaReq(arrayList.get(x).getId(), hospName);
-//                }
-//                return null;
-//            }
-//
-//
-//            @Override
-//            protected void onPreExecute() {
-//                super.onPreExecute();
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Object o) {
-//                super.onPostExecute(o);
-//                callback.doneUpdatingHosp();
-//            }
-//        };
-//
-//        asyncTask.execute(context);
     }
 
-    public void updateList(ArrayList<LoaFetch> arrayList, LoaRequestAdapter adapter,
+    public void updateList(ArrayList<LoaFetch> arrayList,
                            DatabaseHandler databaseHandler, String sort_by, String status_sort,
                            String service_type_sort, String date_start_sort, String date_end_sort,
-                           ArrayList<SimpleData> doctor_sort, ArrayList<SimpleData> hospital_sort) {
+                           ArrayList<SimpleData> doctor_sort, ArrayList<SimpleData> hospital_sort, String seachedData) {
         arrayList.clear();
         arrayList.addAll(databaseHandler.retrieveLoa(dateSortUpdate(sort_by), status_sort, service_type_sort,
-                date_start_sort, date_end_sort, doctor_sort, hospital_sort));
+                date_start_sort, date_end_sort, doctor_sort, hospital_sort, seachedData));
 
     }
 
     private String dateSortUpdate(String sort_by) {
         String returnData = "";
-        if (sort_by.equals(context.getString(R.string.doctor_family))) {
-            returnData = "docName";
-        } else if (sort_by.equals(context.getString(R.string.room))) {
-            returnData = "room";
-        } else if (sort_by.equals(context.getString(R.string.specialization))) {
-            returnData = "docSpec";
+        if (sort_by.equals(context.getString(R.string.status))) {
+            returnData = "status";
+        } else if (sort_by.equals(context.getString(R.string.request_date))) {
+            returnData = "DATETIME(\"dateAdmitted\")";
+        } else if (sort_by.equals(context.getString(R.string.hospital_clinic))) {
+            returnData = "hospitalName";
+        } else if (sort_by.equals(context.getString(R.string.service_type))) {
+            returnData = "remarks";
         } else if (sort_by.equals("")) {
-            returnData = "docName";
+            returnData = "status";
         }
         return returnData;
     }

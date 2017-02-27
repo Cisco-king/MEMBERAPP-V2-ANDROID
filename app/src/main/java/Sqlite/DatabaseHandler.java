@@ -39,8 +39,8 @@ import utilities.SharedPref;
 public class DatabaseHandler extends SQLiteOpenHelper {
     ////CHECK DOCTORS TABLE
     private Context context;
-    private SQLiteDatabase database;
-    private Cursor cursor;
+    //private SQLiteDatabase database;
+    // private Cursor cursor;
 
     private String TAG = "database";
     private String hospitalCode = "hospitalCode";
@@ -360,7 +360,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(schedule, "");
 
         createSuccessful = db.insert(loaTable, null, values) > 0;
-        db.close();
+
 
         if (createSuccessful) {
             Log.e("LOAD_LOA", loa.getId() + " created.");
@@ -422,7 +422,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(specializationDescription, specializations.getSpecializationDescription());
 
         createsuccessful = db.insert(specTable, null, values) > 0;
-
         db.close();
 
         if (createsuccessful) {
@@ -518,55 +517,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param date_end_sort     = END DATE FILTER
      * @param doctor_sort       = LIST OF DOCTORS TO SEARCH
      * @param hospital_sort     = LIST HOSPITAL TO SEARCH
+     * @param searchTerm        = query term
      * @return = list of filtered data of loa list
      */
     public ArrayList<LoaFetch> retrieveLoa(String sort_by, String status_sort, String service_type_sort,
                                            String date_start_sort, String date_end_sort,
                                            ArrayList<SimpleData> doctor_sort,
-                                           ArrayList<SimpleData> hospital_sort) {
-
+                                           ArrayList<SimpleData> hospital_sort, String searchTerm) {
+        SQLiteDatabase database;
+        Cursor cursor;
         ArrayList<LoaFetch> array = new ArrayList<>();
         String sql = "SELECT * FROM " + loaTable;
-        sql += " WHERE " + " " + status + "  LIKE '%" + status_sort + "%' ";
+        sql += " WHERE (" + "UPPER(" + hospitalName + ") LIKE '%" + searchTerm + "%'";
+        sql += " OR " + "UPPER(" + docName + ") LIKE '%" + searchTerm + "%'   )";
+        sql += " AND " + " " + status + "  LIKE '%" + status_sort + "%' ";
         sql += " AND " + " " + remarks + "  LIKE '%" + service_type_sort + "%' ";
 
-//TELL IF END OR START DATE HAS DATA
+        //TELL IF END OR START DATE HAS DATA
         if (date_start_sort.equals("") || date_end_sort.equals("")) {
             //DO NOTHING
-        } else
-            sql += " AND " + approvalDate + " BETWEEN date('" + date_start_sort + "') AND date('" + date_end_sort + "')";
-
-
-        if (doctor_sort.size() != 0) {
-
-            sql += " AND (";
-
-            for (int doc = 0; doc < doctor_sort.size(); doc++) {
-                if (doctor_sort.get(doc).getSelected().equals("true")) {
-                    sql += " " + docName + "  LIKE '%" + doctor_sort.get(doc).getHospital() + "%'    OR ";
-                }
-            }
-
-            sql = sql.substring(0, sql.length() - 6);
-
-            sql += " ) ";
+            ///(Date(column_date) >= Date (2000-01-01) AND Date(column_date) <= Date (2050-01-01))
+        } else {
+            sql += " AND ( DATETIME(" + dateAdmitted + ") >= DATETIME('" + date_start_sort + "') AND DATETIME(" + dateAdmitted + ") <= DATETIME('" + date_end_sort + "'))";
         }
 
-        Log.d("HOSP_COUNT", hospital_sort.size() + "");
-        if (hospital_sort.size() != 0) {
-
-            sql += " AND (";
-
-            for (int hosp = 0; hosp < hospital_sort.size(); hosp++) {
-                if (hospital_sort.get(hosp).getSelected().equals("true")) {
-                    sql += " " + hospitalName + "  LIKE '%" + hospital_sort.get(hosp).getHospital() + "%'    OR ";
-                }
-            }
-
-            sql = sql.substring(0, sql.length() - 6);
-
-            sql += " ) ";
-        }
+        sql += getDataSorted(doctor_sort, true);
+        sql += getDataSorted(hospital_sort, false);
 
         sql += " ORDER BY " + sort_by + " ASC ";
         database = getReadableDatabase();
@@ -577,9 +553,52 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         array.addAll(getDataLoa(cursor));
 
 
-        cursor.close();
-        database.close();
+//        cursor.close();
+//        database.close();
         return array;
+    }
+
+    private String getDataSorted(ArrayList<SimpleData> doctor_sort, boolean fromDoctor) {
+        String sql = "";
+        String seeker = "";
+        boolean isDoctorAvailable = false;
+
+        if (fromDoctor)
+            seeker = docName;
+        else
+            seeker = hospitalName;
+        if (doctor_sort.size() != 0) {
+
+
+            for (int doc = 0; doc < doctor_sort.size(); doc++) {
+
+                if (doc == 0)
+                    sql += "   AND (";
+
+
+                if (doctor_sort.get(doc).getSelected().equals("true")) {
+                    isDoctorAvailable = true;
+                    sql += " " + seeker + "  LIKE '%" + doctor_sort.get(doc).getHospital() + "%'    OR";
+                }
+
+            }
+
+
+            if (isDoctorAvailable) {
+                Log.d("ENDERS_GAME", isDoctorAvailable + "");
+                sql = sql.substring(0, sql.length() - 3);
+                sql += " ) ";
+
+            } else {
+                Log.d("ENDERS_GAME", isDoctorAvailable + "");
+                sql = sql.substring(0, sql.length() - 6);
+
+            }
+
+
+        }
+
+        return sql;
     }
 
     private ArrayList<LoaFetch> getDataLoa(Cursor cursor) {
@@ -633,6 +652,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                 loa.add(p);
                 Log.d("LOAD_DATE", getCursor(cursor, id));
+                Log.d("LOAD_DATE", getCursor(cursor, dateAdmitted));
             } while (cursor.moveToNext());
 
         }
@@ -647,6 +667,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public ArrayList<Provinces> retrieveProvince() {
+        Cursor cursor;
+        SQLiteDatabase database;
         ArrayList<Provinces> array = new ArrayList<>();
         String sql = "SELECT * FROM " + provinceTable;
         sql += " ORDER BY " + provinceName + " ASC ";
@@ -674,9 +696,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<CitiesAdapter> retrieveCity(String search) {
+    public ArrayList<CitiesAdapter> retrieveCity(String data) {
+        SQLiteDatabase database;
+        String search = data.toUpperCase().replace("'", "`");
         ArrayList<CitiesAdapter> array = new ArrayList<>();
-
+        Cursor cursor;
         String sql = "";
 
 
@@ -718,6 +742,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public ArrayList<SpecsAdapter> retrieveSpecs() {
+        Cursor cursor;
+        SQLiteDatabase database;
         ArrayList<SpecsAdapter> array = new ArrayList<>();
         String sql = "SELECT * FROM " + specTable;
         sql += " ORDER BY " + specializationDescription + " ASC ";
@@ -747,8 +773,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<GetDoctorsToHospital> retrieveDoctor(String searchTerm, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number) {
-
+    public ArrayList<GetDoctorsToHospital> retrieveDoctor(String searchData, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number_Data) {
+        String searchTerm = searchData.toUpperCase().replace("'", "`");
+        String room_number = room_number_Data.toUpperCase().replace("'", "`");
+        SQLiteDatabase database;
+        Cursor cursor;
         ArrayList<GetDoctorsToHospital> doc = new ArrayList<>();
         database = getReadableDatabase();
 
@@ -921,7 +950,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public void getAlltoFalse() {
-
+        Cursor cursor;
+        SQLiteDatabase database;
         database = getReadableDatabase();
 
         String sql = "";
@@ -975,6 +1005,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public ArrayList<HospitalList> retrieveHospital(String provinceCode, String data_sort, ArrayList<CitiesAdapter> selectedCity, String data) {
+        SQLiteDatabase database;
+        Cursor cursor;
         ArrayList<HospitalList> arrayList = new ArrayList<>();
         database = getReadableDatabase();
 
@@ -1136,7 +1168,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.d("ID", getDocName);
         Log.d("ID", getDocSpec);
         Log.d("ID", getDocSpecCode);
-        db.close();
+
     }
 
     public void setHospitalToLoaReq(String ID, String hospName) {
@@ -1153,33 +1185,4 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<String> getDateRange(String start, String end) {
-        ArrayList<String> array = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor;
-///SELECT * FROM Categories WHERE DateCreated BETWEEN '2012-03-11 00:00:00' AND '2015-05-12 23:59:59'
-        String sql = " SELECT * FROM " + loaTable +
-                " WHERE " + approvalDate + " BETWEEN date('" + start + "') AND date('" + end + "')";
-        Log.d("SQL_DATE", sql);
-
-        cursor = db.rawQuery(sql, null);
-        Log.d("SQL_DATE_count", cursor.getCount() + "");
-        if (cursor.moveToFirst()) {
-
-
-            do {
-                cursor.getString(cursor.getColumnIndex(hospitalName));
-                Log.d("HOSP-NAME", cursor.getString(cursor.getColumnIndex(id)));
-
-                array.add(cursor.getString(cursor.getColumnIndex(hospitalName)));
-            } while (cursor.moveToNext());
-
-
-        }
-
-        cursor.close();
-
-
-        return array;
-    }
 }

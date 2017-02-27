@@ -74,6 +74,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     String date_start_sort = "";
     ArrayList<SimpleData> doctor_sort = new ArrayList<>();
     ArrayList<SimpleData> hospital_sort = new ArrayList<>();
+    String seachedData = "";
 
     public fragment_loaRequest() {
 
@@ -133,6 +134,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
                 Intent gotoSort = new Intent(context, SortLoaReqActivity.class);
                 gotoSort.putParcelableArrayListExtra(Constant.LOA_REQUEST, arrayMASTERList);
                 gotoSort.putExtra(Constant.SORT_BY, sort_by);
+                gotoSort.putExtra(Constant.SEARCHED_DATA, seachedData);
                 gotoSort.putExtra(Constant.STATUS, status_sort);
                 gotoSort.putExtra(Constant.SERVICE_TYPE, service_type_sort);
                 gotoSort.putExtra(Constant.SELECTED_END_DATE, date_end_sort);
@@ -162,15 +164,25 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
             implement.replactDataArray(hospital_sort, temp);
             temp = data.getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
             implement.replactDataArray(doctor_sort, temp);
+            seachedData = data.getStringExtra(Constant.SEARCHED_DATA);
 
-
-            implement.updateList(arrayList, adapter, databaseHandler, sort_by, status_sort,
+            implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
                     service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort),
-                    DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort);
+                    DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort ,seachedData);
+            adapter.notifyDataSetChanged();
 
         }
 
     }
+
+    @Override
+    public void gotoLoaPage(ArrayList<LoaFetch> arrayList, int adapterPosition) {
+        Intent gotoLoa = new Intent(context, LoaPageActivity.class);
+        gotoLoa.putParcelableArrayListExtra(Constant.DATA_SEARCHED, arrayList);
+        gotoLoa.putExtra(Constant.POSITION, adapterPosition + "");
+        startActivity(gotoLoa);
+    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -199,18 +211,11 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @Override
     public void onDbLoaSuccessListener() {
-        implement.updateList(arrayList, adapter, databaseHandler, sort_by, status_sort,
-                service_type_sort, date_start_sort, date_end_sort, doctor_sort, hospital_sort);
+        implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
+                service_type_sort, date_start_sort, date_end_sort, doctor_sort, hospital_sort, seachedData);
         implement.getDoctorCreds(arrayList, databaseHandler);
     }
 
-    @Override
-    public void gotoLoaPage(ArrayList<LoaFetch> arrayList, int adapterPosition) {
-        Intent gotoLoa = new Intent(context, LoaPageActivity.class);
-        gotoLoa.putParcelableArrayListExtra(Constant.DATA_SEARCHED, arrayList);
-        gotoLoa.putExtra(Constant.POSITION, adapterPosition + "");
-        startActivity(gotoLoa);
-    }
 
     @Override
     public void onErrorFetchingDoctorCreds(String message) {
@@ -219,19 +224,17 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @Override
     public void doneFetchingDoctorData() {
-        implement.updateList(arrayList, adapter, databaseHandler, sort_by, status_sort,
-                service_type_sort, date_start_sort, date_end_sort, doctor_sort, hospital_sort);
+        implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
+                service_type_sort, date_start_sort, date_end_sort, doctor_sort, hospital_sort, seachedData);
         implement.updateHospitals(arrayList, databaseHandler);
-
-
     }
 
     @Override
     public void doneUpdatingHosp() {
 
         implement.UIUpdateShowLoad(false, pb, rv_loa_request, btn_sort);
-        implement.updateList(arrayList, adapter, databaseHandler, sort_by, status_sort,
-                service_type_sort, date_start_sort, date_end_sort, doctor_sort, hospital_sort);
+        implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
+                service_type_sort, date_start_sort, date_end_sort, doctor_sort, hospital_sort, seachedData);
 
         arrayMASTERList.addAll(arrayList);
         adapter.notifyDataSetChanged();
