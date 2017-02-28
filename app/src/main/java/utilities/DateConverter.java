@@ -97,7 +97,7 @@ public class DateConverter {
          */
 
         String date_s = birthday;
-        SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         Date date = null;
         try {
             date = dt.parse(date_s);
@@ -109,7 +109,7 @@ public class DateConverter {
         SimpleDateFormat year = new SimpleDateFormat("yyyy");
 
 
-        return convertDate((Integer.parseInt(month.format(date)) + 1) + " " + date_.format(date) + " , " + year.format(date));
+        return convertDate((Integer.parseInt(month.format(date)) ) + " " + date_.format(date) + " , " + year.format(date));
     }
 
 
@@ -202,7 +202,7 @@ public class DateConverter {
                 e.printStackTrace();
             }
 
-            SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             stringDate = dt1.format(date);
 
         }

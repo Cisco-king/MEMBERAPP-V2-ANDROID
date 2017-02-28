@@ -240,7 +240,7 @@ public class LoaRequestRetrieve {
         if (sort_by.equals(context.getString(R.string.status))) {
             returnData = "status";
         } else if (sort_by.equals(context.getString(R.string.request_date))) {
-            returnData = "DATETIME(\"dateAdmitted\")";
+            returnData = "DATETIME(dateAdmitted)";
         } else if (sort_by.equals(context.getString(R.string.hospital_clinic))) {
             returnData = "hospitalName";
         } else if (sort_by.equals(context.getString(R.string.service_type))) {
