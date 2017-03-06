@@ -7,5 +7,9 @@ package InterfaceService;
 public interface LoaPageInterface {
 
 
-    void onScreenShotSuccessfull();
+    void onError(String message);
+
+    void noInternet();
+
+    void onSuccess();
 }

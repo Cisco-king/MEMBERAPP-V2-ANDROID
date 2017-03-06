@@ -133,4 +133,7 @@ public interface AppInterface {
 
     @GET("/listing/getDoctorHospitalByCode/?")
     Observable<TheDoctor> getDoctorDataWithRoom(@Query("doctorCode") String doctorCode);
+
+    @POST("/memberloa/cancelLOA/")
+    Observable<ResponseBody> setRequestCancel(@Query("approvalNo") String approvalNo);
 }

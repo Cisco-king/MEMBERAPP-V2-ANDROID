@@ -18,6 +18,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import InterfaceService.LoaPageInterface;
+import InterfaceService.LoaPageRetieve;
 import InterfaceService.ScreenshotCallback;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,11 +32,12 @@ import utilities.Constant;
 import utilities.DateConverter;
 import utilities.GenderPicker;
 import utilities.ImageSaver;
+import utilities.Loader;
 import utilities.Permission;
 import utilities.Screenshot;
 import utilities.SharedPref;
 
-public class LoaPageActivity extends AppCompatActivity implements ScreenshotCallback {
+public class LoaPageActivity extends AppCompatActivity implements ScreenshotCallback, LoaPageInterface {
 
 
     @BindView(R.id.content_loa_page)
@@ -91,9 +93,12 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     int position;
     ArrayList<LoaFetch> loaList = new ArrayList<>();
     Context context;
-    ScreenshotCallback callback;
+    ScreenshotCallback screenshotCallback;
     LoaFetch loa;
     AlertDialogCustom alertDialogCustom;
+    LoaPageInterface callback;
+    LoaPageRetieve implement;
+    Loader loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +108,10 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
         context = this;
+        screenshotCallback = this;
         callback = this;
+        implement = new LoaPageRetieve(context, callback);
+        loader = new Loader(context);
         alertDialogCustom = new AlertDialogCustom();
         position = Integer.parseInt(getIntent().getStringExtra(Constant.POSITION));
         ArrayList<LoaFetch> temp;
@@ -144,7 +152,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
         switch (v.getId()) {
             case R.id.btn_download:
-                callback.onScreenShotListener();
+                screenshotCallback.onScreenShotListener();
                 break;
 
             case R.id.btn_cancel:
@@ -152,7 +160,9 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
                 break;
 
             case R.id.btn_cancel_req:
-
+                loader.startLad();
+                loader.setMessage("Cancelling Request");
+                implement.cancelRequest(loa.getApprovalNo());
                 break;
         }
 
@@ -181,7 +191,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
                             + "_" + loa.getRemarks() + ".jpg")
                     .setDirectoryName("Medicard")
                     .setExternal(false)
-                    .save(bitmap, callback);
+                    .save(bitmap, screenshotCallback);
 
         }
     }
@@ -194,5 +204,24 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
         alertDialogCustom.showMe(context, alertDialogCustom.CONGRATULATIONS_title, alertDialogCustom.Saved_Screenshot, 2);
 
+    }
+
+    @Override
+    public void onError(String message) {
+        Log.e("ERROR" , message);
+        loader.stopLoad();
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+    }
+
+    @Override
+    public void noInternet() {
+        loader.stopLoad();
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.NO_Internet, 1);
+    }
+
+    @Override
+    public void onSuccess() {
+        loader.stopLoad();
+        alertDialogCustom.showMe(context, alertDialogCustom.success, alertDialogCustom.data_cancelled, 2);
     }
 }

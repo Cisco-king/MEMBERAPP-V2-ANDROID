@@ -52,6 +52,7 @@ public class AlertDialogCustom {
     public String NO_Internet_title = "Hold On";
     public String unknown = "Alert";
     public String unknown_msg = "Something went wrong. Please try again.";
+    public String data_cancelled = "Request successfully cancelled." ;
     public String didnt_match_old_new_pin = "Incorrect Old Pin." ;
     public String success = "Success";
     public String success_msg = "You have successfully uploaded your photo.";
@@ -78,6 +79,7 @@ public class AlertDialogCustom {
     public String pick_start_Date = "Pick Start date first.";
     public String end_must_greater = "End Date must be greater than Start Date.";
     public String start_must_lesser = "Start Date must be lesser than End Date.";
+    public String data_not_avilable = "List is not available";
     TextView tv_message, tv_title;
     CircleImageView ci_error_image;
     Button btn_accept;

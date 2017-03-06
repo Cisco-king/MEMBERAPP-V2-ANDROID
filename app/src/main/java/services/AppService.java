@@ -15,7 +15,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AppService {
 
 
-
     public static <T> T createApiService(Class<T> mClass, String endPoint) {
 
 
