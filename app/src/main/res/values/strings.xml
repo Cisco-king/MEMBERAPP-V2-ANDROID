@@ -7,7 +7,7 @@
 
     <string name="request_for_loa">Request for LOA</string>
     <string name="hosp_not_found">Hospital not found</string>
-    <string name="app_name">Medicard</string>
+    <string name="app_name">MACE Member</string>
     <string name="cancel">Cancel</string>
     <string name="confirm_request">Confirm Request</string>
     <string name="are_you_sure_you">Are you sure you want to submit this request?</string>
@@ -218,7 +218,7 @@
     <string name="expired">Expired</string>
     <string name="approved">Approved</string>
     <string name="pending">Pending</string>
-    <string name="cancelled">cancelled</string>
+    <string name="cancelled">Cancelled</string>
     <string name="disapproved_">disapproved</string>
     <string name="basic_test">Basic Test</string>
     <string name="other_test_proc">Other Test/Procedures</string>
@@ -228,5 +228,6 @@
     <string name="all_doctors">All Doctors</string>
     <string name="all_test">All Test</string>
     <string name="all_diagnosis">All Diagnosis</string>
+    <string name="are_you_sure_you_want">Are you sure you want to cancel the LOA Request?</string>
 
 </resources>

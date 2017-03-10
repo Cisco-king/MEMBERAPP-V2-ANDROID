@@ -49,25 +49,24 @@
                     android:id="@+id/btn_ok"
                     android:layout_width="@dimen/btn_back_width"
                     android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
                     android:gravity="center"
                     fancy:fb_defaultColor="@color/transparent"
                     fancy:fb_focusColor="@color/colorPrimaryBlueDark"
-
-                     fancy:fb_text="OK"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    fancy:fb_text="OK" />
 
                 <TextView
-                    android:text="@string/sample"
                     android:id="@+id/tv_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/sample"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_main"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+                    android:textSize="@dimen/text_main" />
 
             </RelativeLayout>
 

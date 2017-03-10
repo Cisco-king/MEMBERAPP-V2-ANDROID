@@ -168,9 +168,7 @@ public class DetailsRetieve {
         phoneInformation = new PhoneInformations();
 
         SendLoa loa = new SendLoa();
-         loa.setDoctorCode(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, context));
-        //loa.setDoctorCode("38603");
-
+        loa.setDoctorCode(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, context));
         loa.setDeviceID(phoneInformation.getIMEI(context));
         loa.setDiagnosisCode("");
         loa.setHospitalCode(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context));
@@ -310,7 +308,7 @@ public class DetailsRetieve {
         final Dialog dialog = new Dialog(this.context);
         final Button btn_proceed, btn_cancel;
 
-        TextView tv_title , textView3;
+        TextView tv_title, textView3;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_confirmloa);
         btn_proceed = (Button) dialog.findViewById(R.id.btn_proceed);
@@ -326,7 +324,7 @@ public class DetailsRetieve {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-              callback.cancelRequest();
+                callback.cancelRequest();
 
 
             }

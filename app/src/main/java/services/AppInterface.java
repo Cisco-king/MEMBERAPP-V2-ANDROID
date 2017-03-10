@@ -4,6 +4,7 @@ import model.AddDepenceResponse;
 import model.AddDependence;
 import model.ChangePassword;
 import model.City;
+import model.Consultation;
 import model.DoctorNORoom;
 import model.Doctors;
 import model.Exclusions;
@@ -136,4 +137,7 @@ public interface AppInterface {
 
     @POST("/memberloa/cancelLOA/")
     Observable<ResponseBody> setRequestCancel(@Query("approvalNo") String approvalNo);
+
+    @POST("/app/addConsultationRecordVersion02/")
+    Observable<ResponseBody> sendConsultation(@Body Consultation consultation);
 }

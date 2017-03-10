@@ -76,6 +76,8 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     ArrayList<SimpleData> hospital_sort = new ArrayList<>();
     String seachedData = "";
 
+    private int CALL_LOA_VIEW = 200;
+
     public fragment_loaRequest() {
 
     }
@@ -168,8 +170,18 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
             implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
                     service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort),
-                    DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort ,seachedData);
+                    DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
             adapter.notifyDataSetChanged();
+
+        } else if (requestCode == CALL_LOA_VIEW && resultCode == RESULT_OK) {
+            if (NetworkTest.isOnline(context)) {
+                databaseHandler.dropLoa();
+                implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context));
+            } else
+                alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.NO_Internet, 1);
+
+
+            implement.UIUpdateShowLoad(true, pb, rv_loa_request, btn_sort);
 
         }
 
@@ -180,7 +192,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         Intent gotoLoa = new Intent(context, LoaPageActivity.class);
         gotoLoa.putParcelableArrayListExtra(Constant.DATA_SEARCHED, arrayList);
         gotoLoa.putExtra(Constant.POSITION, adapterPosition + "");
-        startActivity(gotoLoa);
+        startActivityForResult(gotoLoa, CALL_LOA_VIEW);
     }
 
 

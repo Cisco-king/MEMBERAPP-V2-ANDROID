@@ -12,4 +12,6 @@ public interface LoaPageInterface {
     void noInternet();
 
     void onSuccess();
+
+    void onCancelRequestListener();
 }

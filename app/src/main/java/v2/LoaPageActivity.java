@@ -1,6 +1,7 @@
 package v2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.medicard.com.medicard.R;
 import android.os.Bundle;
@@ -90,6 +91,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     @BindView(R.id.btn_cancel)
     FancyButton btn_cancel;
 
+    private int RESULT_GETTER;
     int position;
     ArrayList<LoaFetch> loaList = new ArrayList<>();
     Context context;
@@ -124,9 +126,10 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     }
 
     private void init(ArrayList<LoaFetch> loaList, int position) {
-        loa = loaList.get(position);
 
+        loa = loaList.get(position);
         tv_header.setText(loa.getRemarks());
+        implement.setCancelButton(loa.getStatus(), btn_cancel_req);
         tv_status.setText(loa.getStatus());
         tv_approval_code.setText(loa.getApprovalNo());
         tv_member_code.setText(loa.getMemberCode());
@@ -156,13 +159,13 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
                 break;
 
             case R.id.btn_cancel:
+                Intent intent = new Intent();
+                setResult(RESULT_GETTER, intent);
                 finish();
                 break;
 
             case R.id.btn_cancel_req:
-                loader.startLad();
-                loader.setMessage("Cancelling Request");
-                implement.cancelRequest(loa.getApprovalNo());
+                implement.showCancelConfirmation();
                 break;
         }
 
@@ -182,6 +185,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
         if (Permission.checkPermissionStorage(context)) {
 
+
             btn_download.setVisibility(View.GONE);
             btn_cancel.setVisibility(View.GONE);
             btn_cancel_req.setVisibility(View.GONE);
@@ -200,7 +204,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     public void onSuccessfulScreenshot() {
         btn_download.setVisibility(View.VISIBLE);
         btn_cancel.setVisibility(View.VISIBLE);
-        btn_cancel_req.setVisibility(View.VISIBLE);
+        implement.setCancelButton(loa.getStatus(), btn_cancel_req);
 
         alertDialogCustom.showMe(context, alertDialogCustom.CONGRATULATIONS_title, alertDialogCustom.Saved_Screenshot, 2);
 
@@ -208,20 +212,38 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
     @Override
     public void onError(String message) {
-        Log.e("ERROR" , message);
+        Log.e("ERROR", message);
         loader.stopLoad();
         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+        RESULT_GETTER = implement.setToLoadList(false);
     }
 
     @Override
     public void noInternet() {
         loader.stopLoad();
         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.NO_Internet, 1);
+        RESULT_GETTER = implement.setToLoadList(false);
     }
 
     @Override
     public void onSuccess() {
         loader.stopLoad();
         alertDialogCustom.showMe(context, alertDialogCustom.success, alertDialogCustom.data_cancelled, 2);
+        RESULT_GETTER = implement.setToLoadList(true);
+    }
+
+    @Override
+    public void onCancelRequestListener() {
+        loader.startLad();
+        loader.setMessage("Cancelling Request");
+        implement.cancelRequest(loa.getApprovalNo());
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        setResult(RESULT_GETTER, intent);
+        finish();
     }
 }

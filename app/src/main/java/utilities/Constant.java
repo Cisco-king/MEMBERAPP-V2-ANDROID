@@ -14,6 +14,7 @@ public class Constant {
     public static String GENDER = "GENDER";
     public static String COMPANY = "COMPANY";
     public static String STATUS = "STATUS";
+    public static String CANCELLED = "CANCELLED";
 
     public static String MEMTYPE = "MEMTYPE";
     public static String EFFECTIVE = "EFFECTIVE";
