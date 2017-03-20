@@ -128,6 +128,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     private void init(ArrayList<LoaFetch> loaList, int position) {
 
         loa = loaList.get(position);
+
         tv_header.setText(loa.getRemarks());
         implement.setCancelButton(loa.getStatus(), btn_cancel_req);
         tv_status.setText(loa.getStatus());
@@ -138,15 +139,17 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
         tv_gender.setText(GenderPicker.setGender(Integer.parseInt(
                 SharedPref.getStringValue(SharedPref.USER, SharedPref.GENDER, this))));
         tv_company.setText(loa.getMemCompany());
-        tv_date_approved.setText(DateConverter.convertDatetoMMMddyyy(loa.getDateAdmitted()));
+        tv_date_approved.setText(DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate()));
 
         tv_doc_name.setText(loa.getDoctorName());
-        tv_problem.setText(loa.getProcedureDesc());
+        tv_problem.setText(loa.getPrimaryComplaint());
 
-        String changeFormat = DateConverter.convertDatetoMMMddyyy(loa.getDateAdmitted());
+        String changeFormat = DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate());
         tv_validity_date.setText(DateConverter.convertDateToMMddyyyy(changeFormat) + " to " +
                 DateConverter.validityDatePLusDay(changeFormat, 3));
         tv_spec.setText(testData(loa.getDoctorSpec()));
+
+        implement.setExpiredStatus(btn_download, btn_cancel_req , loa.getStatus() );
     }
 
 
@@ -193,7 +196,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
             new ImageSaver(context).
                     setFileName(loa.getApprovalNo()
                             + "_" + loa.getRemarks() + ".jpg")
-                    .setDirectoryName("Medicard")
+                    .setDirectoryName("MediCard")
                     .setExternal(false)
                     .save(bitmap, screenshotCallback);
 
@@ -227,6 +230,10 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
     @Override
     public void onSuccess() {
+        tv_status.setText("CANCELLED");
+        btn_download.setVisibility(View.GONE);
+        btn_cancel_req.setVisibility(View.GONE);
+
         loader.stopLoad();
         alertDialogCustom.showMe(context, alertDialogCustom.success, alertDialogCustom.data_cancelled, 2);
         RESULT_GETTER = implement.setToLoadList(true);

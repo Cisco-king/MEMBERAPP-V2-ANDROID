@@ -169,7 +169,7 @@ public class SortLoaReqImplement {
         disapproved.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callback.onSortStatus(context.getString(R.string.disapproved));
+                callback.onSortStatus(context.getString(R.string.disapproved_));
                 dialog.dismiss();
             }
         });
@@ -197,6 +197,7 @@ public class SortLoaReqImplement {
         FancyButton basic;
         FancyButton other_test;
         FancyButton tv_close;
+        FancyButton consultation;
 
 
         dialog = new Dialog(context);
@@ -208,7 +209,15 @@ public class SortLoaReqImplement {
         basic = (FancyButton) dialog.findViewById(R.id.basic);
         other_test = (FancyButton) dialog.findViewById(R.id.other_test);
         tv_close = (FancyButton) dialog.findViewById(R.id.tv_close);
+        consultation = (FancyButton) dialog.findViewById(R.id.consultation);
 
+        consultation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callback.onSortServiceType(context.getString(R.string.consultation));
+                dialog.dismiss();
+            }
+        });
         maternity_consultation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -320,15 +329,6 @@ public class SortLoaReqImplement {
 
         return date;
     }
-
-    private int addZero(int i) {
-
-//        if (i <= 9) {
-//            return Integer.parseInt(String.valueOf(0 + i));
-//        } else
-        return Integer.parseInt(String.valueOf(0 + i));
-    }
-
 
     @NonNull
     public String getTextTrimmed(TextView data) {

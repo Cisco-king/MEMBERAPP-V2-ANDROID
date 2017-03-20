@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -109,12 +110,8 @@ public class DateConverter {
         SimpleDateFormat year = new SimpleDateFormat("yyyy");
 
 
-        return convertDate((Integer.parseInt(month.format(date)) ) + " " + date_.format(date) + " , " + year.format(date));
+        return convertDate((Integer.parseInt(month.format(date))) + " " + date_.format(date) + " , " + year.format(date));
     }
-
-
-
-
 
 
     public static String convertDateFromYYYYMDD(String s) {
@@ -208,5 +205,59 @@ public class DateConverter {
         }
         return stringDate;
 
+    }
+
+    public static String currentDate() {
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time => " + c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("MMM dd , yyyy");
+        String formattedDate = df.format(c.getTime());
+
+        return formattedDate;
+    }
+
+    public static boolean testExpiration(String approvalDate) {
+
+        boolean data = false;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String current = convertDateToMMddyyyy(currentDate());
+
+        Date current_date = null;
+        Date approval_date = null;
+        try {
+            current_date = dateFormat.parse(current);
+            approval_date = dateFormat.parse(validityDatePLusDay(approvalDate, 3));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        Log.d("CURRENT DATE", current_date + "");
+        Log.d("APPROVAL DATE", approval_date + "");
+
+        if (current_date.after(approval_date))
+            return false;
+        else if (current_date.before(approval_date))
+            return true;
+        else if (current_date.equals(approval_date))
+            return true;
+
+        return true;
+    }
+
+
+    public static String convertDate(String approvalDate, SimpleDateFormat currentFormat) {
+
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd , yyyy");
+        String dateToSend = "";
+        try {
+            Date currentDate = currentFormat.parse(approvalDate);
+            dateToSend = dateFormat.format(currentDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dateToSend;
     }
 }

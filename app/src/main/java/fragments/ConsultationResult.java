@@ -331,7 +331,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
 
                 if (Permission.checkPermissionStorage(context)) {
                     new ImageSaver(context).
-                            setFileName("Consultation.jpg").
+                            setFileName(refCode + "+Consultation.jpg").
                             setDirectoryName("Medicard")
                             .setExternal(false)
                             .save(bitmap, callback);

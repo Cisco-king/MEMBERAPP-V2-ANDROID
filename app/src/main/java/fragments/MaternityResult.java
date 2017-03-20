@@ -269,7 +269,7 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
 
                 if (Permission.checkPermissionStorage(context)) {
                     new ImageSaver(context).
-                            setFileName("Maternity.jpg").
+                            setFileName(refCode + "_Maternity.jpg").
                             setDirectoryName("Medicard")
                             .setExternal(false)
                             .save(bitmap, callback);

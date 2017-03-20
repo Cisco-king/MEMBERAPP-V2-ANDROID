@@ -9,6 +9,8 @@ import android.os.Parcelable;
 public class LoaFetch implements Parcelable {
     private String procedureCode;
 
+    private String primaryComplaint;
+
     private String batchCode;
 
     private String reason;
@@ -75,16 +77,17 @@ public class LoaFetch implements Parcelable {
 
     private String room;
 
-    private String doctorName ;
+    private String doctorName;
 
-    private String doctorSpec ;
+    private String doctorSpec;
 
-    private String doctorSpecCode ;
+    private String doctorSpecCode;
 
-    private String schedule ;
+    private String schedule;
 
 
-    public LoaFetch(String procedureCode, String batchCode, String reason, String memCompany, String diagnosis, String remarks, String diagnosisCode, String type, String updatedBy, String callTypeId, String id, String runningBill, String memMi, String memberCode, String memFname, String memLname, String doctorCode, String actionTaken, String status, String updatedDate, String terminalNo, String approvalNo, String procedureAmount, String callDate, String companyCode, String category, String callerId, String approvalDate, String hospitalCode, String procedureDesc, String notes, String dateAdmitted, String room, String doctorName, String doctorSpec, String doctorSpecCode , String hospitalName  ,String schedule) {
+    public LoaFetch(String primaryComplaint, String procedureCode, String batchCode, String reason, String memCompany, String diagnosis, String remarks, String diagnosisCode, String type, String updatedBy, String callTypeId, String id, String runningBill, String memMi, String memberCode, String memFname, String memLname, String doctorCode, String actionTaken, String status, String updatedDate, String terminalNo, String approvalNo, String procedureAmount, String callDate, String companyCode, String category, String callerId, String approvalDate, String hospitalCode, String procedureDesc, String notes, String dateAdmitted, String room, String doctorName, String doctorSpec, String doctorSpecCode, String hospitalName, String schedule) {
+        this.primaryComplaint = primaryComplaint;
         this.procedureCode = procedureCode;
         this.batchCode = batchCode;
         this.reason = reason;
@@ -125,6 +128,13 @@ public class LoaFetch implements Parcelable {
         this.schedule = schedule;
     }
 
+    public String getPrimaryComplaint() {
+        return primaryComplaint;
+    }
+
+    public void setPrimaryComplaint(String primaryComplaint) {
+        this.primaryComplaint = primaryComplaint;
+    }
 
     public String getSchedule() {
         return schedule;
@@ -133,6 +143,7 @@ public class LoaFetch implements Parcelable {
     public void setSchedule(String schedule) {
         this.schedule = schedule;
     }
+
     public String getHospitalName() {
         return hospitalName;
     }
@@ -431,6 +442,7 @@ public class LoaFetch implements Parcelable {
     }
 
     protected LoaFetch(Parcel in) {
+        primaryComplaint = in.readString();
         procedureCode = in.readString();
         batchCode = in.readString();
         reason = in.readString();
@@ -480,6 +492,7 @@ public class LoaFetch implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(primaryComplaint);
         dest.writeString(procedureCode);
         dest.writeString(batchCode);
         dest.writeString(reason);
@@ -518,7 +531,6 @@ public class LoaFetch implements Parcelable {
         dest.writeString(doctorSpecCode);
         dest.writeString(schedule);
         dest.writeString(hospitalName);
-
 
 
     }

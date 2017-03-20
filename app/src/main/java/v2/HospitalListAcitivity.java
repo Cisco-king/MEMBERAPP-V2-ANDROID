@@ -148,7 +148,7 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
 
 
     private void retrieveHosp(String s) {
-        //  array.addAll(databaseHandler.retrieveHospital(provinceName, sortBy, selectedCity, ""));
+
         implement.updateList(provinceName, sortBy, selectedCity, hospitalAdapter, array, s);
         implement.updateListUI(array, rv_hospital, tv_hosp_not_found);
     }

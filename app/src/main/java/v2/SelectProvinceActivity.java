@@ -9,8 +9,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -46,6 +50,10 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
     FancyButton btn_back;
     @BindView(R.id.tv_header)
     TextView tv_header;
+    @BindView(R.id.ed_search)
+    EditText ed_search;
+    @BindView(R.id.linearLayout3)
+    LinearLayout linearLayout3;
 
     DatabaseHandler handler;
 
@@ -75,6 +83,7 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
     ProvinceAdapter.ProvinceInterface callback;
     String ORIGIN = "";
     String PROVINCE_CODE = "";
+    String SPEC_SEARCH = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +99,13 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
         alertDialogCustom = new AlertDialogCustom();
         ORIGIN = getIntent().getStringExtra(Constant.SELECT);
         implement.setOkVISIBILITY(implement.testOriginFromCity(ORIGIN), implement.testOriginFromSpecialization(ORIGIN), btn_ok);
-
-
+        SPEC_SEARCH = getIntent().getStringExtra(Constant.SPEC_SEARCH);
+        ed_search.setText(SPEC_SEARCH);
         if (implement.testOriginFromCity(ORIGIN)) {
             rv_provinces.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
             tv_header.setText("City");
             PROVINCE_CODE = getIntent().getStringExtra(Constant.SELECT_CODE);
-            arrayCity.addAll(implement.setArrayCity(handler, PROVINCE_CODE));
+            arrayCity.addAll(implement.setArrayCity(handler, PROVINCE_CODE, SPEC_SEARCH));
             prevSelectedCity = getIntent().getParcelableArrayListExtra(Constant.SELECTED_CITY);
             implement.setSelectedData(prevSelectedCity, arrayCity, selectedCity);
             adapterCity = new CityAdapter(context, arrayCity, selectedCity, callback);
@@ -104,7 +113,7 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
         } else if (implement.testOriginFromSpecialization(ORIGIN)) {
             rv_provinces.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
             tv_header.setText("Specialization");
-            arraySpecialization.addAll(implement.setArraySpecs(handler));
+            arraySpecialization.addAll(implement.setArraySpecs(handler, SPEC_SEARCH));
             prevSelectedSpecialization = getIntent().getParcelableArrayListExtra(Constant.SELECTED_SPECIALIZATION);
             implement.setSelectedDataSpecs(prevSelectedSpecialization, arraySpecialization, selectedSpecialization);
             adapterSpecs = new SpecializationAdapter(context, arraySpecialization, selectedSpecialization, callback);
@@ -112,7 +121,7 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
         } else if (implement.testOriginFromProvince(ORIGIN)) {
             rv_provinces.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
             tv_header.setText("Province");
-            arrayProvince.addAll(implement.setArrayData(handler));
+            arrayProvince.addAll(implement.setArrayData(handler, SPEC_SEARCH));
             adapter = new ProvinceAdapter(context, arrayProvince, callback);
             rv_provinces.setAdapter(adapter);
         } else if (implement.testOriginFromLoaReq(ORIGIN)) {
@@ -145,6 +154,46 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
         }
 
 
+        ed_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (implement.testOriginFromCity(ORIGIN)) {
+                    SPEC_SEARCH = String.valueOf(charSequence);
+                    arrayCity.clear();
+                    arrayCity.addAll(implement.setArrayCity(handler, PROVINCE_CODE, SPEC_SEARCH));
+                    implement.setSelectedData( arrayCity, selectedCity);
+                    adapterCity.notifyDataSetChanged();
+                } else if (implement.testOriginFromSpecialization(ORIGIN)) {
+                    SPEC_SEARCH = String.valueOf(charSequence);
+                    arraySpecialization.clear();
+
+                    arraySpecialization.addAll(implement.setArraySpecs(handler, SPEC_SEARCH));
+                    implement.setSelectedDataSpecs(prevSelectedSpecialization, arraySpecialization, selectedSpecialization);
+                    adapterSpecs.notifyDataSetChanged();
+                } else if (implement.testOriginFromProvince(ORIGIN)) {
+                    SPEC_SEARCH = String.valueOf(charSequence);
+                    arrayProvince.clear();
+
+                    arrayProvince.addAll(implement.setArrayData(handler, SPEC_SEARCH));
+                    implement.setSelectedDataSpecs(prevSelectedSpecialization, arraySpecialization, selectedSpecialization);
+                    adapter.notifyDataSetChanged();
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
     }
 
     @OnClick({R.id.btn_back, R.id.btn_ok})
@@ -159,6 +208,7 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
                 if (implement.testOriginFromCity(ORIGIN)) {
                     Intent intent = new Intent();
                     intent.putParcelableArrayListExtra("CITY", selectedCity);
+                    intent.putExtra(Constant.SPEC_SEARCH ,SPEC_SEARCH);
                     setResult(RESULT_OK, intent);
                     finish();
                     //  }
@@ -172,7 +222,7 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
                     intent.putParcelableArrayListExtra("LOA_REQUEST", arrayHospitals);
                     setResult(RESULT_OK, intent);
                     finish();
-                }else if (implement.testOriginFromDoctors(ORIGIN)) {
+                } else if (implement.testOriginFromDoctors(ORIGIN)) {
                     Intent intent = new Intent();
                     intent.putParcelableArrayListExtra("DOCTOR", arrayDoctors);
                     setResult(RESULT_OK, intent);
@@ -190,6 +240,7 @@ public class SelectProvinceActivity extends AppCompatActivity implements Provinc
 
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra("PROVINCE", selectedProvince);
+        intent.putExtra(Constant.SPEC_SEARCH ,SPEC_SEARCH);
         setResult(RESULT_OK, intent);
         Log.d("PROVINCE_SEL", selectedProvince.get(0).getProvinceName());
         finish();

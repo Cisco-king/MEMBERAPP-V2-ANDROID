@@ -61,6 +61,7 @@ public class SortDoctorActivity extends AppCompatActivity implements DoctorSortI
     private String sort_by;
     private String search_String;
     private String room_number;
+    private String SPEC_SEARCH  = "";
     private int SPECIALIZATION_CALL = 100;
 
     @Override
@@ -121,6 +122,7 @@ public class SortDoctorActivity extends AppCompatActivity implements DoctorSortI
 
                 Intent gotoSelection1 = new Intent(SortDoctorActivity.this, SelectProvinceActivity.class);
                 gotoSelection1.putExtra(Constant.SELECT, Constant.SELECT_SPECIALIZATION);
+                gotoSelection1.putExtra(Constant.SPEC_SEARCH, SPEC_SEARCH );
                 gotoSelection1.putParcelableArrayListExtra(Constant.SELECTED_SPECIALIZATION, selectedSpec);
                 startActivityForResult(gotoSelection1, SPECIALIZATION_CALL);
                 break;
@@ -155,7 +157,7 @@ public class SortDoctorActivity extends AppCompatActivity implements DoctorSortI
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == SPECIALIZATION_CALL && resultCode == RESULT_OK) {
-
+            SPEC_SEARCH = data.getStringExtra(Constant.SPEC_SEARCH) ;
             selectedSpec = data.getParcelableArrayListExtra("SPECIALIZATION");
             implement.setSpecText(tv_specialization, selectedSpec);
         }

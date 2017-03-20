@@ -98,6 +98,7 @@ public class LoaRequestRetrieve {
             protected Object doInBackground(Object[] objects) {
                 for (int x = 0; x < arrayList.size(); x++) {
                     fetchDoctor(arrayList.get(x).getDoctorCode(), x, arrayList, databaseHandler);
+
                 }
 
                 return null;

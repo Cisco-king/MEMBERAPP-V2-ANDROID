@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,7 +36,7 @@ import utilities.HeaderNameSetter;
 import utilities.SharedPref;
 
 
-public class DetailsActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, DetailsActCallback {
+public class DetailsActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, DetailsActCallback, AlertDialogCustom.onClickDialogListener {
 
     @BindView(R.id.tv_sched)
     TextView tv_sched;
@@ -86,12 +88,17 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
     @BindView(R.id.ll_doctor_not_found)
     LinearLayout ll_doctor_not_found;
 
+    @BindView(R.id.tv_select_doc)
+    TextView tv_select_doc;
+
+    @BindView(R.id.img_arrow)
+    ImageView img_arrow;
 
     DetailsRetieve implement;
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
     DetailsActCallback callback;
 
-
+    AlertDialogCustom.onClickDialogListener callbackDialog ;
     Context context;
     String origin;
     String hospital_name, hospital_address, hospital_code;
@@ -104,6 +111,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
         setContentView(R.layout.activity_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        callbackDialog = this ;
         context = this;
         implement = new DetailsRetieve(context, this);
         callback = this;
@@ -203,18 +211,26 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
         doctor_code = SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, context);
         doctor_desc = SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, context);
 
+
         if (doctor_name.equals(Constant.NOT_FOUND)) {
             implement.setDoctorFieldEditText(true, ll_doctor_not_found, et_doctor);
             tv_no_doctor.setVisibility(View.GONE);
+            tv_select_doc.setVisibility(View.VISIBLE);
+            img_arrow.setVisibility(View.GONE);
         } else if (doctor_name.equals(Constant.NOT_SET)) {
             tv_no_doctor.setVisibility(View.VISIBLE);
             implement.setDoctorFieldEditText(true, ll_doctor_not_found, et_doctor);
             et_doctor.setVisibility(View.GONE);
+            tv_select_doc.setVisibility(View.VISIBLE);
+            img_arrow.setVisibility(View.GONE);
         } else {
             tv_no_doctor.setVisibility(View.GONE);
             implement.setDoctorFieldEditText(false, ll_doctor_not_found, et_doctor);
             tv_doc_name.setText(doctor_name);
             tv_doc_det.setText(doctor_desc);
+
+            tv_select_doc.setVisibility(View.GONE);
+            img_arrow.setVisibility(View.VISIBLE);
         }
 
         tv_contact_person.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, context));
@@ -269,6 +285,8 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
     @Override
     public void emptyFieldsListener() {
         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.errorEmptyFields, 1);
+        cb_confirm.setChecked(false);
+        implement.setSubmitButtonDisabled(cb_confirm, btn_submit);
     }
 
     @Override
@@ -296,6 +314,11 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
 
     @Override
     public void onBackPressed() {
-        gotoHospital();
+        alertDialogCustom.showMe(context , alertDialogCustom.HOLD_ON_title , alertDialogCustom.close_loa ,1 ,  callbackDialog );
+    }
+
+    @Override
+    public void onOkPress() {
+        finish();
     }
 }

@@ -45,6 +45,18 @@
 
 
         <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/consultation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/sub_margin"
+            android:gravity="center"
+            android:padding="@dimen/sub_margin"
+            fancy:fb_defaultColor="@color/colorPrimaryLight"
+            fancy:fb_focusColor="@color/colorPrimaryDark"
+            fancy:fb_text="@string/consultation"
+            fancy:fb_textSize="@dimen/text_main" />
+
+        <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/maternity_consultation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

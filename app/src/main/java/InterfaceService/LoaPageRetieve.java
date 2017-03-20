@@ -125,4 +125,15 @@ public class LoaPageRetieve {
 
 
     }
+
+    public void setExpiredStatus(FancyButton btn_download, FancyButton btn_cancel_req, String status) {
+
+        if (status.equals("EXPIRED")) {
+            btn_cancel_req.setVisibility(View.GONE);
+            btn_download.setVisibility(View.GONE);
+        }else{
+            btn_cancel_req.setVisibility(View.VISIBLE);
+            btn_download.setVisibility(View.VISIBLE);
+        }
+    }
 }

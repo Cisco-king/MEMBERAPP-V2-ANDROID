@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/sub_margin"
+    android:background="#00000000"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="#00000000"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingTop="40dp">
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:gravity="center"
+            android:text="Error"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_main" />
+
+        <TextView
+            android:layout_margin="@dimen/mini_margin"
+            android:id="@+id/tv_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Teka lang ang daming ginagawa boss"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_small" />
+
+        <Button
+            android:id="@+id/btn_accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/mini_margin"
+            android:background="@color/colorPrimaryDark"
+            android:text="OK"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/mini_margin"
+            android:background="@color/colorPrimaryDark"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:paddingBottom="80dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+
+            android:id="@+id/ci_error_image"
+            android:layout_width="@dimen/alert_circle_width"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/logout"
+            app:civ_border_color="@android:color/white"
+            app:civ_border_width="10px" />
+
+    </LinearLayout>
+
+</RelativeLayout>

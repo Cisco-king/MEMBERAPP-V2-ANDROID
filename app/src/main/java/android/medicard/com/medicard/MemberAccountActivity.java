@@ -48,6 +48,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import InterfaceService.MemberAccountCallback;
+import InterfaceService.MemberberAccountRetrieve;
 import de.hdodenhof.circleimageview.CircleImageView;
 import mehdi.sakout.fancybuttons.FancyButton;
 import okhttp3.MediaType;
@@ -74,7 +76,7 @@ import utilities.StatusSetter;
 import v2.RequestButtonsActivity;
 
 
-public class MemberAccountActivity extends AppCompatActivity implements View.OnClickListener, Animation.AnimationListener {
+public class MemberAccountActivity extends AppCompatActivity implements View.OnClickListener, Animation.AnimationListener, MemberAccountCallback {
     LinearLayout blackBG;
     FloatingActionButton fab, fab1;
     private Animation animation1;
@@ -120,13 +122,18 @@ public class MemberAccountActivity extends AppCompatActivity implements View.OnC
 
     private Animation fab_open, fab_close, rotate_forward, rotate_backward, fade_in, fade_out, flip;
 
+    MemberAccountCallback callback;
+    MemberberAccountRetrieve implement;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_account);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        callback = this;
+        context = this;
+        implement = new MemberberAccountRetrieve(context, callback);
 
         init();
 
@@ -134,7 +141,6 @@ public class MemberAccountActivity extends AppCompatActivity implements View.OnC
     }
 
     private void init() {
-        context = this;
 
 
         blackBG = (LinearLayout) findViewById(R.id.blackBG);
@@ -422,8 +428,13 @@ public class MemberAccountActivity extends AppCompatActivity implements View.OnC
                 break;
 
             case R.id.fab1:
-                animateFAB();
-                gotoRequestButton();
+
+                if (implement.testPinAvailable()) {
+                    animateFAB();
+                    gotoRequestButton();
+                } else {
+                    alertDialogCustom.showMe(context , alertDialogCustom.HOLD_ON_title , alertDialogCustom.A_VALID_PIN  , 1);
+                }
                 break;
 
 
@@ -463,76 +474,6 @@ public class MemberAccountActivity extends AppCompatActivity implements View.OnC
         Log.d("RETURN", event.getMessage());
 
 
-    }
-
-    private void showDeletePhoto(String id) {
-
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-        builder1.setMessage("Removing photo will require member to go to validation process. Continue?");
-        builder1.setCancelable(false);
-
-        builder1.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-
-                        if (NetworkTest.isOnline(context)) {
-                            deleteImage(MEMBER_ID);
-                        } else {
-                            getPhoto();
-                            alertDialogCustom.showMe(context, alertDialogCustom.NO_Internet_title, alertDialogCustom.NO_Internet, 1);
-
-                        }
-
-                    }
-                });
-
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        getPhoto();
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-
-
-    }
-
-    private void deleteImage(String member_id) {
-
-        pd.show();
-        AppInterface appInterface;
-        appInterface = AppServicewithBasicAuth.createApiService(AppInterface.class, AppInterface.ENDPOINT, sharedPref.getStringValue(sharedPref.USER, sharedPref.masterUSERNAME, context), sharedPref.getStringValue(sharedPref.USER, sharedPref.masterPASSWORD, context));
-        appInterface.deletePhoto(member_id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<ResponseBody>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("Upload error:", e.getMessage());
-                        pd.dismiss();
-                        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
-                        getPhoto();
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        alertDialogCustom.showMe(context, alertDialogCustom.success, alertDialogCustom.delete_msg, 2);
-                        pd.dismiss();
-                        getPhoto();
-                    }
-                });
     }
 
     @Override
@@ -800,12 +741,5 @@ public class MemberAccountActivity extends AppCompatActivity implements View.OnC
 
     }
 
-
-    /* Checks if external storage is available to at least read */
-    public boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
-    }
 
 }

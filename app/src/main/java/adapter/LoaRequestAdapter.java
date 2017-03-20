@@ -67,7 +67,7 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
 
         final Holder holder = (Holder) viewHolder;
         holder.tv_remark.setText(arrayList.get(position).getRemarks());
-        holder.tv_req_date.setText("Request Date: " + DateConverter.convertDateToMMddyyyy(DateConverter.convertDatetoMMMddyyy(arrayList.get(position).getDateAdmitted())));
+        holder.tv_req_date.setText("Request Date: " + DateConverter.convertDateToMMddyyyy(DateConverter.convertDatetoMMMddyyy(arrayList.get(position).getApprovalDate())));
         holder.tv_status.setText(arrayList.get(position).getStatus());
         holder.tv_doctor.setText(arrayList.get(position).getDoctorName());
         holder.tv_spec.setText(arrayList.get(position).getDoctorSpec());

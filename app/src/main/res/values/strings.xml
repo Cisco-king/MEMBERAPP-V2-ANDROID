@@ -160,7 +160,7 @@
     <string name="doctor">Doctor</string>
     <string name="doctor_">Doctor: <font fgcolor="red"><b> * </b></font> </string>
     <string name="prob_cond">Problem/Condition:</string>
-    <string name="prob_cond_">Problem/Condition: <font fgcolor="red"><b> * </b></font> </string>
+    <string name="prob_cond_">Reason for Consult: <font fgcolor="red"><b> * </b></font> </string>
     <string name="this_req_is_valid_from">This form is valid from</string>
     <string name="ok">Ok</string>
     <string name="screenshot">Download LoA form</string>
@@ -174,7 +174,7 @@
     <string name="doctor_has_no">Doctor has no MACE Provider Application account, \n Please download and print this Approval</string>
     <string name="i_confirm_that">I accept the</string>
     <string name="this_approval_shall">This approval shall be subject to existing benefits and actual available limits under the plan. Member may still be billed for the amount paid. \n \n This approval serves as your request form. There is no need to go
-        to Medicard Coordinator. You may go directly to the consulting doctor and present this approval. Please take note of the <font fgcolor="black"><b>Reference No.</b></font> This
+        to Medicard Coordinator. You may go directly to the consulting doctor and present this approval. Please take note of the <font fgcolor="black"><b>Reference No.</b></font> and Pin. This
      information is required during consultation.</string>
     <string name="no_registered_pin">No registered PIN. \n PIN is required in Requesting LOA.</string>
     <string name="retype_pin">Re-type PIN</string>
@@ -219,7 +219,7 @@
     <string name="approved">Approved</string>
     <string name="pending">Pending</string>
     <string name="cancelled">Cancelled</string>
-    <string name="disapproved_">disapproved</string>
+    <string name="disapproved_">Disapproved</string>
     <string name="basic_test">Basic Test</string>
     <string name="other_test_proc">Other Test/Procedures</string>
     <string name="start_date">Start Date:</string>

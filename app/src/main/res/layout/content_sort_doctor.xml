@@ -39,7 +39,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_rounded_corner"
-                        android:hint="Search"
+                        android:hint="Find by Doctor’s Name"
                         android:padding="@dimen/sub_margin"
                         android:textColor="@color/BLACK"
                         android:textSize="@dimen/text_main" />

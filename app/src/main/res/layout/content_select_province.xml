@@ -5,15 +5,41 @@
     android:id="@+id/content_select_province"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="v2.SelectProvinceActivity"
     tools:showIn="@layout/activity_select_province">
 
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:focusableInTouchMode="true"
+         >
+
+        <EditText
+            android:id="@+id/ed_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/sub_margin"
+
+            android:layout_marginLeft="@dimen/sub_margin"
+            android:layout_marginRight="@dimen/sub_margin"
+            android:layout_weight="1"
+            android:background="@drawable/button_border"
+            android:hint="Search..."
+            android:inputType="text"
+            android:padding="@dimen/sub_margin"
+
+            android:textColor="@color/BLACK"
+            android:textSize="@dimen/text_small" />
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:scrollbars="vertical"
         android:id="@+id/rv_provinces"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
 
 </LinearLayout>

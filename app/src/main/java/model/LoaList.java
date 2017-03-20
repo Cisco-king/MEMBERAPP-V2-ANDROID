@@ -8,6 +8,16 @@ import android.os.Parcelable;
  */
 
 public class LoaList implements Parcelable {
+
+    public String getPrimaryComplaint() {
+        return primaryComplaint;
+    }
+
+    public void setPrimaryComplaint(String primaryComplaint) {
+        this.primaryComplaint = primaryComplaint;
+    }
+
+    private String  primaryComplaint ;
     private String procedureCode;
 
     private String batchCode;
@@ -77,7 +87,8 @@ public class LoaList implements Parcelable {
     private String schedule;
 
 
-    public LoaList(String procedureCode, String batchCode, String reason, String memCompany, String diagnosis, String remarks, String diagnosisCode, String type, String updatedBy, String callTypeId, String id, String runningBill, String memMi, String memberCode, String memFname, String memLname, String doctorCode, String actionTaken, String status, String updatedDate, String terminalNo, String approvalNo, String procedureAmount, String callDate, String companyCode, String category, String callerId, String approvalDate, String hospitalCode, String procedureDesc, String notes, String dateAdmitted, String room, String schedule) {
+    public LoaList(String primaryComplaint , String procedureCode, String batchCode, String reason, String memCompany, String diagnosis, String remarks, String diagnosisCode, String type, String updatedBy, String callTypeId, String id, String runningBill, String memMi, String memberCode, String memFname, String memLname, String doctorCode, String actionTaken, String status, String updatedDate, String terminalNo, String approvalNo, String procedureAmount, String callDate, String companyCode, String category, String callerId, String approvalDate, String hospitalCode, String procedureDesc, String notes, String dateAdmitted, String room, String schedule) {
+      this.primaryComplaint =  primaryComplaint ;
         this.procedureCode = procedureCode;
         this.batchCode = batchCode;
         this.reason = reason;
@@ -394,6 +405,7 @@ public class LoaList implements Parcelable {
     }
 
     protected LoaList(Parcel in) {
+        primaryComplaint = in.readString();
         procedureCode = in.readString();
         batchCode = in.readString();
         reason = in.readString();
@@ -437,6 +449,7 @@ public class LoaList implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(primaryComplaint);
         dest.writeString(procedureCode);
         dest.writeString(batchCode);
         dest.writeString(reason);

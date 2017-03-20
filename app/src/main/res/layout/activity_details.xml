@@ -23,7 +23,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <mehdi.sakout.fancybuttons.FancyButton
-
+android:visibility="gone"
                 android:id="@+id/btn_back"
                 android:layout_width="@dimen/btn_back_width"
                 android:layout_height="match_parent"
@@ -35,16 +35,16 @@
                 fancy:fb_text="" />
 
             <TextView
-
                 android:id="@+id/tv_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/btn_back_width"
+
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_main" />
 
             <ImageButton
+                android:visibility="gone"
                 android:id="@+id/btn_next"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

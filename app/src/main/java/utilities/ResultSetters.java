@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class ResultSetters {
 
     private static String Approved = "Approved";
-    public static String REQUEST_APPROVED = "REQUEST APPROVED";
+    public static String REQUEST_APPROVED = "REQUEST SUBMITTED";
     public static String REQUEST_DISAPPROVED = "REQUEST DISAPPROVED";
     public static String REQUEST_APPROVAL = "PENDING APPROVAL";
     private static String WITHPROVIDER = "withProvider";

@@ -40,13 +40,13 @@ public class ProvinceRetrieve {
     }
 
 
-    public ArrayList<Provinces> setArrayData(DatabaseHandler databaseHandler) {
-        return databaseHandler.retrieveProvince();
+    public ArrayList<Provinces> setArrayData(DatabaseHandler databaseHandler, String SPEC_SEARCH) {
+        return databaseHandler.retrieveProvince(SPEC_SEARCH);
 
     }
 
-    public ArrayList<CitiesAdapter> setArrayCity(DatabaseHandler databaseHandler, String provinceCode) {
-        return databaseHandler.retrieveCity(provinceCode);
+    public ArrayList<CitiesAdapter> setArrayCity(DatabaseHandler databaseHandler, String provinceCode, String SPEC_SEARCH) {
+        return databaseHandler.retrieveCity(provinceCode , SPEC_SEARCH);
     }
 
 
@@ -75,6 +75,7 @@ public class ProvinceRetrieve {
         btn_ok.setVisibility((b || testOriginFromSpecialization) ? View.VISIBLE : View.GONE);
     }
 
+    //GIVE PREVSELECTED TO SLECTED ARRAY
     public void setSelectedData(ArrayList<CitiesAdapter> prevSelectedCity, ArrayList<CitiesAdapter> arrayCity, ArrayList<CitiesAdapter> selected) {
 
         if (prevSelectedCity.size() != 0) {
@@ -94,8 +95,8 @@ public class ProvinceRetrieve {
     }
 
 
-    public ArrayList<SpecsAdapter> setArraySpecs(DatabaseHandler handler) {
-        return handler.retrieveSpecs();
+    public ArrayList<SpecsAdapter> setArraySpecs(DatabaseHandler handler, String SPEC_SEARCH) {
+        return handler.retrieveSpecs(SPEC_SEARCH);
     }
 
     public void setSelectedDataSpecs(ArrayList<SpecsAdapter> prevSelectedSpecialization, ArrayList<SpecsAdapter> arraySpecialization, ArrayList<SpecsAdapter> selectedSpecialization) {
@@ -173,6 +174,24 @@ public class ProvinceRetrieve {
 
 
         return array;
+
+
+    }
+
+    public void setSelectedData(ArrayList<CitiesAdapter> arrayCity, ArrayList<CitiesAdapter> selectedCity) {
+
+
+        if (selectedCity.size() != 0) {
+
+            for (int sel = 0; sel < selectedCity.size(); sel++) {
+                for (int data = 0; data < arrayCity.size(); data++) {
+                    if (selectedCity.get(sel).getCityCode().equals(arrayCity.get(data).getCityCode())) {
+                        arrayCity.get(data).setSelected("true");
+                        Log.d("sel_change", arrayCity.get(data).getSelected());
+                    }
+                }
+            }
+        }
 
 
     }

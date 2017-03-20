@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -221,6 +222,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements ChangeP
         tv_message = (TextView) dialog.findViewById(R.id.tv_message);
         tv_title = (TextView) dialog.findViewById(R.id.tv_title);
         btn_accept = (Button) dialog.findViewById(R.id.btn_accept);
+        ci_error_image.setImageDrawable(ContextCompat.getDrawable(context , R.drawable.warning));
         tv_title.setText("Success!");
         tv_message.setText("You have successfully changed your password.");
         btn_accept.setOnClickListener(new View.OnClickListener() {

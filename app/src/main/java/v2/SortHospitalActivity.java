@@ -56,7 +56,9 @@ public class SortHospitalActivity extends AppCompatActivity implements HospitalS
     String PROVINCE_NAME = "";
     private int PROVINCE_CALL = 300;
     private int CITY_CALL = 200;
-    private String searchString;
+    private String searchString = "";
+    private String CITY_SEARCH = "";
+    private String PROV_SEARCH = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +93,14 @@ public class SortHospitalActivity extends AppCompatActivity implements HospitalS
             case R.id.tv_province:
                 Intent gotoProvince = new Intent(SortHospitalActivity.this, SelectProvinceActivity.class);
                 gotoProvince.putExtra(Constant.SELECT, Constant.SELECT_PROVINCE);
+                gotoProvince.putExtra(Constant.SPEC_SEARCH, PROV_SEARCH);
+
                 startActivityForResult(gotoProvince, PROVINCE_CALL);
                 break;
             case R.id.tv_city:
                 Intent gotoSelection1 = new Intent(SortHospitalActivity.this, SelectProvinceActivity.class);
                 gotoSelection1.putExtra(Constant.SELECT_CODE, PROVINCE_CODE);
+                gotoSelection1.putExtra(Constant.SPEC_SEARCH, CITY_SEARCH);
                 gotoSelection1.putExtra(Constant.SELECT, Constant.SELECT_CITY);
                 gotoSelection1.putParcelableArrayListExtra(Constant.SELECTED_CITY, selectedCity);
                 startActivityForResult(gotoSelection1, CITY_CALL);
@@ -134,10 +139,12 @@ public class SortHospitalActivity extends AppCompatActivity implements HospitalS
             if (resultCode == RESULT_OK) {
                 selectedCity = data.getParcelableArrayListExtra("CITY");
                 implement.setCityText(tv_city, selectedCity);
+                CITY_SEARCH = data.getStringExtra(Constant.SPEC_SEARCH);
             }
         } else if (requestCode == PROVINCE_CALL) {
             if (resultCode == RESULT_OK) {
                 selectedProvince = data.getParcelableArrayListExtra("PROVINCE");
+                PROV_SEARCH = data.getStringExtra(Constant.SPEC_SEARCH);
                 PROVINCE_CODE = selectedProvince.get(0).getProvinceCode();
                 PROVINCE_NAME = selectedProvince.get(0).getProvinceName();
                 implement.setProvinceText(tv_province, selectedProvince);
