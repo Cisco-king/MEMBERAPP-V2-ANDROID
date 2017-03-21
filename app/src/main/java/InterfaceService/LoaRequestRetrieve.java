@@ -2,7 +2,7 @@ package InterfaceService;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;

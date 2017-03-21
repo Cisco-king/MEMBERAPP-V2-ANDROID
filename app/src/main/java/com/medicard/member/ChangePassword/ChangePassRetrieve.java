@@ -1,4 +1,4 @@
-package android.medicard.com.medicard.ChangePassword;
+package com.medicard.member.ChangePassword;
 
 import android.content.Context;
 

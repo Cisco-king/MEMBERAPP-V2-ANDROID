@@ -1,4 +1,4 @@
-package android.medicard.com.medicard;
+package com.medicard.member;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

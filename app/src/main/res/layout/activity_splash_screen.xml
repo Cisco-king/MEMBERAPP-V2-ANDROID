@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="android.medicard.com.medicard.SplashScreen.SplashScreenActivity">
+    tools:context="com.medicard.member.SplashScreen.SplashScreenActivity">
 
     <include layout="@layout/content_splash_screen" />
 

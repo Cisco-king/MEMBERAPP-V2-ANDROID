@@ -19,17 +19,18 @@
          >
 
         <EditText
+            android:imeOptions="actionDone"
+            android:maxLines="1"
+            android:inputType="text"
             android:id="@+id/ed_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/sub_margin"
-
             android:layout_marginLeft="@dimen/sub_margin"
             android:layout_marginRight="@dimen/sub_margin"
             android:layout_weight="1"
             android:background="@drawable/button_border"
             android:hint="Search..."
-            android:inputType="text"
             android:padding="@dimen/sub_margin"
 
             android:textColor="@color/BLACK"

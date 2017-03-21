@@ -1,9 +1,9 @@
-package android.medicard.com.medicard;
+package com.medicard.member;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.medicard.com.medicard.ChangePassword.ChangePasswordActivity;
+import com.medicard.member.ChangePassword.ChangePasswordActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;

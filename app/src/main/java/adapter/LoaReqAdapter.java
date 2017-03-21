@@ -1,7 +1,7 @@
 package adapter;
 
 import android.content.Context;
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;

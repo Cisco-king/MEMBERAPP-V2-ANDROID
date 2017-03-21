@@ -3,7 +3,7 @@ package v2;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -184,7 +184,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     @Override
     public void onScreenShotListener() {
         Log.d("TRIGGERED", "TRIGGERED");
-        Bitmap bitmap = Screenshot.loadBitmapFromView(content_loa_page);
+
 
         if (Permission.checkPermissionStorage(context)) {
 
@@ -192,7 +192,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
             btn_download.setVisibility(View.GONE);
             btn_cancel.setVisibility(View.GONE);
             btn_cancel_req.setVisibility(View.GONE);
-
+            Bitmap bitmap = Screenshot.loadBitmapFromView(content_loa_page);
             new ImageSaver(context).
                     setFileName(loa.getApprovalNo()
                             + "_" + loa.getRemarks() + ".jpg")

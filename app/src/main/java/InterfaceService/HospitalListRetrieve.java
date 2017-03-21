@@ -1,7 +1,7 @@
 package InterfaceService;
 
 import android.content.Context;
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;

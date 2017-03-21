@@ -3,7 +3,7 @@ package InterfaceService;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;

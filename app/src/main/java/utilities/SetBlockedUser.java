@@ -3,7 +3,7 @@ package utilities;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.View;

@@ -8,7 +8,7 @@
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
 
     android:orientation="vertical"
-    tools:context="android.medicard.com.medicard.MemberAccountActivity">
+    tools:context="com.medicard.member.MemberAccountActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

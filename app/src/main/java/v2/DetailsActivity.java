@@ -2,8 +2,8 @@ package v2;
 
 import android.content.Context;
 import android.content.Intent;
-import android.medicard.com.medicard.R;
-import android.medicard.com.medicard.TermsActivity;
+import com.medicard.member.R;
+import com.medicard.member.TermsActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -98,7 +99,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
     DetailsActCallback callback;
 
-    AlertDialogCustom.onClickDialogListener callbackDialog ;
+    AlertDialogCustom.onClickDialogListener callbackDialog;
     Context context;
     String origin;
     String hospital_name, hospital_address, hospital_code;
@@ -111,7 +112,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
         setContentView(R.layout.activity_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        callbackDialog = this ;
+        callbackDialog = this;
         context = this;
         implement = new DetailsRetieve(context, this);
         callback = this;
@@ -122,7 +123,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
         cb_confirm.setChecked(false);
         cb_confirm.setOnCheckedChangeListener(this);
 
-
+        et_doctor.setImeOptions(EditorInfo.IME_ACTION_DONE);
         et_doctor.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -314,7 +315,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
 
     @Override
     public void onBackPressed() {
-        alertDialogCustom.showMe(context , alertDialogCustom.HOLD_ON_title , alertDialogCustom.close_loa ,1 ,  callbackDialog );
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.close_loa, 1, callbackDialog);
     }
 
     @Override

@@ -1,9 +1,9 @@
-package android.medicard.com.medicard.SplashScreen;
+package com.medicard.member.SplashScreen;
 
 import android.content.Context;
 import android.content.Intent;
-import android.medicard.com.medicard.ChangePassword.ChangePasswordActivity;
-import android.medicard.com.medicard.NavigationActivity;
+import com.medicard.member.ChangePassword.ChangePasswordActivity;
+import com.medicard.member.NavigationActivity;
 import android.util.Log;
 
 import com.google.gson.Gson;

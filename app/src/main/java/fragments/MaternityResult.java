@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -263,16 +263,20 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         switch (v.getId()) {
             case R.id.btn_shot:
 
-                btn_shot.setVisibility(View.GONE);
-                btn_ok.setVisibility(View.GONE);
-                Bitmap bitmap = Screenshot.loadBitmapFromView(sv_whole);
+
 
                 if (Permission.checkPermissionStorage(context)) {
+                    btn_shot.setVisibility(View.GONE);
+                    btn_ok.setVisibility(View.GONE);
+                    Bitmap bitmap = Screenshot.loadBitmapFromView(sv_whole);
                     new ImageSaver(context).
                             setFileName(refCode + "_Maternity.jpg").
-                            setDirectoryName("Medicard")
+                            setDirectoryName("MediCard")
                             .setExternal(false)
                             .save(bitmap, callback);
+                }else{
+                    btn_shot.setVisibility(View.VISIBLE);
+                    btn_ok.setVisibility(View.VISIBLE);
                 }
 
                 break;

@@ -1,4 +1,4 @@
-package android.medicard.com.medicard;
+package com.medicard.member;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;

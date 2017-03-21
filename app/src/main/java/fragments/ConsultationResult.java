@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -331,8 +331,8 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
 
                 if (Permission.checkPermissionStorage(context)) {
                     new ImageSaver(context).
-                            setFileName(refCode + "+Consultation.jpg").
-                            setDirectoryName("Medicard")
+                            setFileName(refCode + "_Consultation.jpg").
+                            setDirectoryName("MediCard")
                             .setExternal(false)
                             .save(bitmap, callback);
                 }
@@ -361,16 +361,20 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     public void onScreenShotListener() {
         Log.d("TRIGGERED", "TRIGGERED");
 
-        btn_ok.setVisibility(View.GONE);
-        Bitmap bitmap = Screenshot.loadBitmapFromView(sv_whole);
 
-        if (Permission.checkPermissionStorage(context)){
+
+        if (Permission.checkPermissionStorage(context)) {
+            btn_shot.setVisibility(View.GONE);
+            btn_ok.setVisibility(View.GONE);
+            Bitmap bitmap = Screenshot.loadBitmapFromView(sv_whole);
             new ImageSaver(context).
-                    setFileName("Consultation.jpg").
-                    setDirectoryName("Medicard")
+                    setFileName(refCode + "_Consultation.jpg").
+                    setDirectoryName("MediCard")
                     .setExternal(false)
                     .save(bitmap, callback);
-
+        }else{
+            btn_shot.setVisibility(View.VISIBLE);
+            btn_ok.setVisibility(View.VISIBLE);
         }
     }
 

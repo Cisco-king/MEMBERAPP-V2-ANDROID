@@ -2,7 +2,7 @@ package utilities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 
 /**
  * Created by mpx-pawpaw on 1/20/17.

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/coords"
-    tools:context="android.medicard.com.medicard.RegistrationActivity">
+    tools:context="com.medicard.member.RegistrationActivity">
 
 
     <include layout="@layout/content_registration" />

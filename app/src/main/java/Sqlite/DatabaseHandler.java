@@ -7,7 +7,7 @@ import android.database.Cursor;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.medicard.com.medicard.NavigationActivity;
+import com.medicard.member.NavigationActivity;
 import android.util.Log;
 
 import java.security.PublicKey;

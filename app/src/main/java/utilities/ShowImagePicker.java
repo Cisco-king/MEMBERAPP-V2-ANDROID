@@ -4,7 +4,7 @@ package utilities;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import android.medicard.com.medicard.MemberAccountActivity;
+import com.medicard.member.MemberAccountActivity;
 import android.support.v7.app.AlertDialog;
 import org.greenrobot.eventbus.EventBus;
 

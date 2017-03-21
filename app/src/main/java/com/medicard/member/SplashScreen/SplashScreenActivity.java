@@ -1,9 +1,9 @@
-package android.medicard.com.medicard.SplashScreen;
+package com.medicard.member.SplashScreen;
 
 import android.content.Context;
 import android.content.Intent;
-import android.medicard.com.medicard.R;
-import android.medicard.com.medicard.SignInActivity;
+import com.medicard.member.R;
+import com.medicard.member.SignInActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;

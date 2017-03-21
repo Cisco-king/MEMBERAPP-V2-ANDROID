@@ -1,12 +1,12 @@
-package android.medicard.com.medicard.ChangePassword;
+package com.medicard.member.ChangePassword;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.medicard.com.medicard.NavigationActivity;
-import android.medicard.com.medicard.R;
+import com.medicard.member.NavigationActivity;
+import com.medicard.member.R;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;

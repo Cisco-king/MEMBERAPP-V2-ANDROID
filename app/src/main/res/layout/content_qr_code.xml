@@ -9,7 +9,7 @@
     android:gravity="center"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="android.medicard.com.medicard.QrCodeActivity"
+    tools:context="com.medicard.member.QrCodeActivity"
     tools:showIn="@layout/activity_qr_code">
 
 

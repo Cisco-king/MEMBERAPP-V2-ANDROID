@@ -91,8 +91,7 @@ public class ImageSaver {
 
     private File createAlbum(String directoryName) {
 
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "DCIM",
-                directoryName);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),directoryName);
 
         if (!file.mkdirs()) {
             Log.e("ImageSaver", "Directory not created");
@@ -102,8 +101,8 @@ public class ImageSaver {
     }
 
     private File getAlbumStorageDir(String albumName) {
-        File file = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM), albumName);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),albumName);
+
         if (!file.mkdirs()) {
             Log.e("ImageSaver", "Directory not created");
         }

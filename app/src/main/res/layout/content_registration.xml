@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/l_gray_bg"
-    tools:context="android.medicard.com.medicard.RegistrationActivity"
+    tools:context="com.medicard.member.RegistrationActivity"
     tools:showIn="@layout/activity_registration">
 
 

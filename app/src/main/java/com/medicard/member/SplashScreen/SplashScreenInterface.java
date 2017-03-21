@@ -1,4 +1,4 @@
-package android.medicard.com.medicard.SplashScreen;
+package com.medicard.member.SplashScreen;
 
 import android.content.Intent;
 

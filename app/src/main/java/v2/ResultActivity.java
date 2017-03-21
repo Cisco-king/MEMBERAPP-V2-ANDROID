@@ -1,7 +1,7 @@
 package v2;
 
 import android.content.Context;
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;

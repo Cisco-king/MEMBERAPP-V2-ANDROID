@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:background="@android:color/white"
-    tools:context="android.medicard.com.medicard.SignInActivity">
+    tools:context="com.medicard.member.SignInActivity">
 
     <FrameLayout
         android:layout_width="match_parent"

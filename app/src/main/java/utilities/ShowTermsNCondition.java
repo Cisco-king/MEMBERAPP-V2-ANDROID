@@ -3,8 +3,8 @@ package utilities;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
-import android.medicard.com.medicard.R;
-import android.medicard.com.medicard.RegistrationActivity;
+import com.medicard.member.R;
+import com.medicard.member.RegistrationActivity;
 import android.view.View;
 import android.widget.Button;
 

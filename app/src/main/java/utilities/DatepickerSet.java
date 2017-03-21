@@ -4,7 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.medicard.com.medicard.RegistrationActivity;
+import com.medicard.member.RegistrationActivity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;

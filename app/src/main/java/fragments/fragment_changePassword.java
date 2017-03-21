@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;

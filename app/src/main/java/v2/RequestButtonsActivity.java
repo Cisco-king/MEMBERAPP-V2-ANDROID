@@ -3,7 +3,7 @@ package v2;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;

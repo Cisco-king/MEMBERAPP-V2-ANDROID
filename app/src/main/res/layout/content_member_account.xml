@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/l_gray_bg"
     android:orientation="vertical"
-    tools:context="android.medicard.com.medicard.MemberAccountActivity"
+    tools:context="com.medicard.member.MemberAccountActivity"
     tools:showIn="@layout/activity_member_account">
 
 

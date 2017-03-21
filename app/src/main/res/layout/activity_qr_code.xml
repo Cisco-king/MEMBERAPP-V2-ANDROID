@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="android.medicard.com.medicard.QrCodeActivity">
+    tools:context="com.medicard.member.QrCodeActivity">
 
     <include layout="@layout/content_qr_code" />
 

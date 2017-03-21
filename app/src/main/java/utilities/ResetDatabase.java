@@ -2,7 +2,7 @@ package utilities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.medicard.com.medicard.R;
+import com.medicard.member.R;
 import android.os.AsyncTask;
 
 import Sqlite.DatabaseHandler;
