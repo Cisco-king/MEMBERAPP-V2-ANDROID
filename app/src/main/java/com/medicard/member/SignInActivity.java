@@ -187,6 +187,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                                 String test = responseBody.getUserAccount().getPIN();
                                 Log.d("PIN", test);
                                 SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, "TRUE", context);
+                                SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN, responseBody.getUserAccount().getPIN(), context);
 
                             } catch (Exception e) {
 

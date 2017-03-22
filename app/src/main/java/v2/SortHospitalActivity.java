@@ -80,7 +80,7 @@ public class SortHospitalActivity extends AppCompatActivity implements HospitalS
 
         implement.setCityText(tv_city, selectedCity);
         implement.setProvinceText(tv_province, selectedProvince);
-
+        implement.setCheckBox(cb_med_clinic,getIntent().getStringExtra(Constant.MEDICARD_ONLY));
     }
 
     @OnClick({R.id.tv_sort_by, R.id.tv_province, R.id.tv_city, R.id.btn_reset, R.id.btn_back, R.id.btn_show})
@@ -114,6 +114,7 @@ public class SortHospitalActivity extends AppCompatActivity implements HospitalS
                 break;
             case R.id.btn_show:
                 Intent intent = new Intent();
+                intent.putExtra(Constant.MEDICARD_ONLY, implement.getChecked(cb_med_clinic));
                 intent.putExtra(Constant.PROVINCE_CODE, PROVINCE_CODE);
                 intent.putExtra(Constant.SEARCH_STRING, et_search.getText().toString().trim());
                 intent.putExtra(Constant.PROVINCE_NAME, PROVINCE_NAME);

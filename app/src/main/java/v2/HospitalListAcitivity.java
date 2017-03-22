@@ -71,7 +71,7 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
     String provinceCode = "";
     String provinceName = "";
     private String search_string = "";
-
+    private String isMedicardOnly = "false";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,6 +126,7 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HospitalListAcitivity.this, SortHospitalActivity.class);
+                intent.putExtra(Constant.MEDICARD_ONLY, isMedicardOnly);
                 intent.putExtra(Constant.PROVINCE_CODE, provinceCode);
                 intent.putExtra(Constant.PROVINCE_NAME, provinceName);
                 intent.putExtra(Constant.SORT_BY, sortBy);
@@ -149,16 +150,16 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
 
     private void retrieveHosp(String s) {
 
-        implement.updateList(provinceName, sortBy, selectedCity, hospitalAdapter, array, s);
+        implement.updateList(isMedicardOnly,provinceName, sortBy, selectedCity, hospitalAdapter, array, s);
         implement.updateListUI(array, rv_hospital, tv_hosp_not_found);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == SORT_CALL && resultCode == RESULT_OK) {
+            isMedicardOnly = data.getStringExtra(Constant.MEDICARD_ONLY);
             provinceCode = data.getStringExtra(Constant.PROVINCE_CODE);
             provinceName = data.getStringExtra(Constant.PROVINCE_NAME);
             sortBy = data.getStringExtra(Constant.SORT_BY);

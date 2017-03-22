@@ -130,9 +130,11 @@ public class ChangePasswordWithPinRetrieve {
 
     }
 
-    public void setVisibility(CardView cv_new, CardView cv_old) {
+
+    public void setVisibility(CardView cv_new, CardView cv_old, TextView tv_current_pin) {
 
         if (SharedPref.getStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, context).equals("TRUE")) {
+            tv_current_pin.setText("Your current PIN is : " + SharedPref.getStringValue(SharedPref.USER, SharedPref.PIN, context));
             cv_new.setVisibility(View.GONE);
             cv_old.setVisibility(View.VISIBLE);
         } else {
@@ -141,6 +143,7 @@ public class ChangePasswordWithPinRetrieve {
         }
 
     }
+
 
     public void testInput(EditText et_old_pin, EditText et_new_pin, EditText et_retype_pin_new) {
 
@@ -174,7 +177,7 @@ public class ChangePasswordWithPinRetrieve {
             callback.noInternetConnectionListener();
     }
 
-    private void updatePin(String newPIN, String oldPIN) {
+    private void updatePin(final String newPIN, String oldPIN) {
 
 
         UpdatePin updatePin = new UpdatePin();
@@ -210,7 +213,7 @@ public class ChangePasswordWithPinRetrieve {
                     @Override
                     public void onNext(Pinned pinned) {
                         Log.e("PINNED", pinned.toString());
-                        callback.onSuccessUpdatePin(pinned);
+                        callback.onSuccessUpdatePin(pinned , newPIN);
                     }
                 });
 
@@ -243,7 +246,7 @@ public class ChangePasswordWithPinRetrieve {
             callback.noInternetConnectionListener();
     }
 
-    private void registerPin(String newPin) {
+    private void registerPin(final String newPin) {
 
         Pin pin = new Pin();
         pin.setUsername(SharedPref.getStringValue(SharedPref.USER, SharedPref.masterUSERNAME, context));
@@ -276,7 +279,7 @@ public class ChangePasswordWithPinRetrieve {
                     @Override
                     public void onNext(Pinned pinned) {
                         Log.e("PINNED", pinned.toString());
-                        callback.onSuccessRegisterPin(pinned.getResponseCode());
+                        callback.onSuccessRegisterPin(pinned.getResponseCode() , newPin);
                     }
                 });
     }
@@ -290,9 +293,9 @@ public class ChangePasswordWithPinRetrieve {
 
     }
 
-    public void updatePinUI(CardView cv_new, CardView cv_old) {
+    public void updatePinUI(CardView cv_new, CardView cv_old, TextView tv_current_pin) {
         SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, "TRUE", context);
-        setVisibility(cv_new, cv_old);
+        setVisibility(cv_new, cv_old, tv_current_pin);
 
     }
 }

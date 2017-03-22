@@ -28,7 +28,7 @@ public class AlertDialogCustom {
     public String PASSWORD_CRED_message = "Password must have at least one (1) capitalized letter, one (1) number and a minimum of eight (8) characters.";
     public String PASSWORD_MATCH_message = "Password did not match. Please try again.";
     public String PASSWORD_RETYPEPASS_MATCH_message = "New Password and Re-Type Password did not match. Please try again.";
-    public String PIN_RETYPEPIN_MATCH_message = "New Pin and Re-Type Pin did not match. Please try again.";
+    public String PIN_RETYPEPIN_MATCH_message = "Pin and Re-Type Pin did not match. Please try again.";
 
     public String CONGRATULATIONS_title = "Success!";
     public String CONGRATULATIONS_message = "You have successfully created an account. Please login to begin.";

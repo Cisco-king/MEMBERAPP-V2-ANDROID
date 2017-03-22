@@ -10,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -171,4 +172,18 @@ public class HospitalSortRetrieve implements View.OnClickListener {
     }
 
 
+
+    public String getChecked(CheckBox cb_med_clinic) {
+
+        return cb_med_clinic.isChecked() ? "true" : "false" ;
+
+    }
+
+    public void setCheckBox(CheckBox cb_med_clinic, String stringExtra) {
+
+        if (stringExtra.equals("true"))
+            cb_med_clinic.setChecked(true);
+        else
+            cb_med_clinic.setChecked(false);
+    }
 }

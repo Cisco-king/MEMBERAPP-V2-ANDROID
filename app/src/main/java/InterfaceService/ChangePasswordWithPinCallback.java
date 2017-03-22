@@ -30,13 +30,13 @@ public interface ChangePasswordWithPinCallback {
 
     void updatePin(String newPIN, String oldPIN);
 
-    void onSuccessUpdatePin(Pinned pinned);
+    void onSuccessUpdatePin(Pinned pinned, String newPIN);
 
     void onErrorUpdatePin();
 
     void registerPin(String text);
 
-    void onSuccessRegisterPin(String responseCode);
+    void onSuccessRegisterPin(String responseCode, String newPin);
 
     void onErrorRegisterPin(Throwable error);
 

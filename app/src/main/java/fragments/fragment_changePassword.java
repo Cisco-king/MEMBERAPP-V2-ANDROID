@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.medicard.member.R;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.medicard.member.R;
 
 import InterfaceService.ChangePasswordWithPinCallback;
 import InterfaceService.ChangePasswordWithPinRetrieve;
@@ -23,6 +25,7 @@ import model.Pinned;
 import model.ReturnChangePassword;
 import utilities.AlertDialogCustom;
 import utilities.Loader;
+import utilities.SharedPref;
 
 public class fragment_changePassword extends Fragment implements ChangePasswordWithPinCallback {
 
@@ -51,6 +54,9 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
 
     @BindView(R.id.et_emailAdd)
     TextView et_emailAdd;
+
+    @BindView(R.id.tv_current_pin)
+    TextView tv_current_pin;
 
     @BindView(R.id.et_oldPass)
     EditText et_oldPass;
@@ -88,8 +94,7 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
 
         implement.setEmailAdd(et_emailAdd);
 
-        implement.setVisibility(cv_new, cv_old);
-
+        implement.setVisibility(cv_new, cv_old, tv_current_pin);
 
 
         return view;
@@ -188,11 +193,13 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     }
 
     @Override
-    public void onSuccessUpdatePin(Pinned pinned) {
+    public void onSuccessUpdatePin(Pinned pinned, String newPIN) {
 
         if (pinned.getResponseCode().equals("230"))
             alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.didnt_match_old_new_pin, 1);
-        else{
+        else {
+            SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN, newPIN, context);
+            implement.setVisibility(cv_new, cv_old, tv_current_pin);
             alertDialogCustom.showMe(context, alertDialogCustom.success, alertDialogCustom.success_update_pin, 2);
             implement.setToEmpty(et_old_pin, et_new_pin, et_retype_pin_new);
 
@@ -210,9 +217,10 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     }
 
     @Override
-    public void onSuccessRegisterPin(String responseCode) {
-        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.success_pin_message, 2);
-        implement.updatePinUI(cv_new , cv_old);
+    public void onSuccessRegisterPin(String responseCode, String newPin) {
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN, newPin, context);
+        alertDialogCustom.showMe(context, alertDialogCustom.success, alertDialogCustom.success_pin_message, 2);
+        implement.updatePinUI(cv_new, cv_old, tv_current_pin);
     }
 
     @Override

@@ -11,7 +11,7 @@ public class SharedPref {
     public static String masterPASSWORD = "masterPASSWORD";
     public static String masterUSERNAME = "masterUSERNAME" ;
 
-
+    public static String PIN = "PIN" ;
     public static String USER = "USER";
     public static String MEMBERCODE = "MEMBERCODE";
     public String NAME = "NAME";

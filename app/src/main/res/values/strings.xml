@@ -28,7 +28,7 @@
     <string name="reg_medicard_id">MediCard ID number</string>
     <string name="reg_date_of_birth">Date of Birth</string>
     <string name="reg_member_name">MediCard Member Name</string>
-    <string name="reg_add_your_first">Add your first Medicard Account</string>
+    <string name="reg_add_your_first">Add your first MediCard Account</string>
     <string name="reg_by_clicking_the_button">By clicking the button you are agreeing to the</string>
     <string name="reg_terms_n_conditions">Terms and Conditions</string>
     <string name="reg_button">REGISTER ACCOUNT</string>
@@ -154,7 +154,7 @@
     <string name="proceed">Proceed</string>
     <string name="hint_doctor">Enter Doctor Name</string>
     <string name="no_doctor_set">Please select Doctor after selecting Hospital/Clinic</string>
-    <string name="hint_condition">Enter Problem/Condition</string>
+    <string name="hint_condition">Enter Reason to Consult</string>
     <string name="hospital_clinic">Hospital/Clinic</string>
     <string name="hospital_clinic_">Hospital/Clinic: <font fgcolor="red"><b> * </b></font> </string>
     <string name="doctor">Doctor</string>
@@ -174,7 +174,7 @@
     <string name="doctor_has_no">Doctor has no MACE Provider Application account, \n Please download and print this Approval</string>
     <string name="i_confirm_that">I accept the</string>
     <string name="this_approval_shall">This approval shall be subject to existing benefits and actual available limits under the plan. Member may still be billed for the amount paid. \n \n This approval serves as your request form. There is no need to go
-        to Medicard Coordinator. You may go directly to the consulting doctor and present this approval. Please take note of the <font fgcolor="black"><b>Reference No.</b></font> and Pin. This
+        to MediCard Coordinator. You may go directly to the consulting doctor and present this approval. Please take note of the <font fgcolor="black"><b>Reference No.</b></font> and Pin. This
      information is required during consultation.</string>
     <string name="no_registered_pin">No registered PIN. \n PIN is required in Requesting LOA.</string>
     <string name="retype_pin">Re-type PIN</string>
@@ -191,11 +191,11 @@
     <string name="room">Room</string>
     <string name="schedule">Schedule</string>
     <string name="time">Time</string>
-    <string name="medicard_clinic">Medicard Clinics</string>
+    <string name="medicard_clinic">MediCard Clinics</string>
     <string name="city">City</string>
     <string name="reset_filter">Reset Filters</string>
     <string name="show_result">Show Result</string>
-    <string name="medicard_first">Medicard Clinics First</string>
+    <string name="medicard_first">MediCard Clinics First</string>
     <string name="hospital_clinic_name">Hospital/Clinic Name</string>
     <string name="title_activity_select_province">SelectProvinceActivity</string>
     <string name="title_activity_sort_doctor">SortDoctorActivity</string>

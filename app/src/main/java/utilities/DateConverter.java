@@ -143,13 +143,12 @@ public class DateConverter {
         }
 
         boolean b = false;
-
-        if (startTime.before(endTime)) {
-            b = true;//If start date is before end date
+        if (startTime.equals(endTime)) {
+            b = true ;
         } else if (startTime.before(endTime)) {
-            b = true;//If two dates are equal
-        } else {
-            b = false; //If start date is after the end date
+            b = true;
+        } else if (startTime.after(endTime)) {
+            b = false;
         }
 
         return b;
