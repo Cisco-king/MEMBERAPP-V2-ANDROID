@@ -631,10 +631,13 @@ public class MemberAccountActivity extends AppCompatActivity implements View.OnC
 
         RequestBody fbody = RequestBody.create(MediaType.parse("image/jpeg"), file);
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), memberCode);
+        RequestBody username = RequestBody.create(MediaType.parse("text/plain"),
+                SharedPref.getStringValue(SharedPref.USER, SharedPref.masterUSERNAME, context));
+        RequestBody type = RequestBody.create(MediaType.parse("text/plain"),  "MEMBER");
         Log.v("Upload", file.toString());
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-        appInterface.upload(fbody, name)
+        appInterface.upload(fbody, name  , username , type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())

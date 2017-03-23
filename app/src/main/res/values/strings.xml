@@ -51,7 +51,7 @@
     <string name="maternity">Maternity Consultation</string>
     <string name="chest_xray">Chest X-Ray</string>
     <string name="cbc">CBC</string>
-    <string name="pin">PIN</string>
+    <string name="pin"> CHANGE PIN</string>
     <string name="old_pin">Old PIN</string>
     <string name="fecalysis">Fecalysis</string>
     <string name="urinalysis">Urinalysis</string>
@@ -199,7 +199,7 @@
     <string name="hospital_clinic_name">Hospital/Clinic Name</string>
     <string name="title_activity_select_province">SelectProvinceActivity</string>
     <string name="title_activity_sort_doctor">SortDoctorActivity</string>
-    <string name="doctor_family">Doctor Family Name</string>
+    <string name="doctor_family">Doctor\'s Family Name</string>
     <string name="room_number">Room</string>
     <string name="close">CLOSE</string>
 

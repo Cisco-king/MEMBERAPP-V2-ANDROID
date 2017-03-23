@@ -71,7 +71,10 @@ public interface AppInterface {
 
     @Multipart
     @POST("uploadpicture")
-    Observable<ResponseBody> upload(@Part("file\"; filename=\"image.png\"") RequestBody file, @Part("memCode") RequestBody memCode);
+    Observable<ResponseBody> upload(@Part("file\"; filename=\"image.png\"") RequestBody file,
+                                    @Part("memCode") RequestBody memCode ,
+                                    @Part("appUsername") RequestBody appUsername ,
+                                    @Part("userType") RequestBody userType);
 
 
     @GET("v2/viewAccountInfo/{id}")

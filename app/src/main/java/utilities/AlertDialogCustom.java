@@ -24,11 +24,11 @@ public class AlertDialogCustom {
 
     public String A_VALID_PIN = "A valid PIN is required to Request for LOA. Please register PIN through Account Settings";
     public String EMAIL_message = "Invalid email Address. Please try again.";
-    public String success_pin_message = "You have successfully registered a pin.";
+    public String success_pin_message = "You have successfully registered a PIN.";
     public String PASSWORD_CRED_message = "Password must have at least one (1) capitalized letter, one (1) number and a minimum of eight (8) characters.";
     public String PASSWORD_MATCH_message = "Password did not match. Please try again.";
     public String PASSWORD_RETYPEPASS_MATCH_message = "New Password and Re-Type Password did not match. Please try again.";
-    public String PIN_RETYPEPIN_MATCH_message = "Pin and Re-Type Pin did not match. Please try again.";
+    public String PIN_RETYPEPIN_MATCH_message = "PIN and Re-Type PIN did not match. Please try again.";
 
     public String CONGRATULATIONS_title = "Success!";
     public String CONGRATULATIONS_message = "You have successfully created an account. Please login to begin.";
@@ -50,7 +50,7 @@ public class AlertDialogCustom {
     public String unknown = "Alert";
     public String unknown_msg = "Something went wrong. Please try again.";
     public String data_cancelled = "Request successfully cancelled.";
-    public String didnt_match_old_new_pin = "Incorrect Old Pin.";
+    public String didnt_match_old_new_pin = "Incorrect Old PIN.";
     public String success = "Success";
     public String success_msg = "You have successfully uploaded your photo.";
     public String errorUploadPhoto = "Failed to upload photo. Please try again.";
@@ -70,7 +70,7 @@ public class AlertDialogCustom {
     public String warninginputMemberId = "Please input Dependent Member ID.";
     public String maternity_not_available = "Maternity Consultation is not available for male.";
     public String no_city_selected = "Please Select City";
-    public String success_update_pin = "You have successfully changed your Pin";
+    public String success_update_pin = "You have successfully changed your PIN";
     public String no_condition = "Please enter Problem/Condition.";
     public String no_doctor = "Please enter Doctor.";
     public String pick_start_Date = "Pick Start date first.";
