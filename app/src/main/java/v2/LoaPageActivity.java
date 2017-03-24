@@ -31,6 +31,7 @@ import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.DateConverter;
+import utilities.ErrorMessage;
 import utilities.GenderPicker;
 import utilities.ImageSaver;
 import utilities.Loader;
@@ -217,7 +218,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     public void onError(String message) {
         Log.e("ERROR", message);
         loader.stopLoad();
-        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
         RESULT_GETTER = implement.setToLoadList(false);
     }
 

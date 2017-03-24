@@ -32,6 +32,7 @@ import model.RequestResult;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.DateAddThreeDays;
+import utilities.ErrorMessage;
 import utilities.GenderPicker;
 import utilities.HeaderNameSetter;
 import utilities.SharedPref;
@@ -253,7 +254,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
     @Override
     public void onError(String message) {
         Log.e("ERROR", message);
-        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override

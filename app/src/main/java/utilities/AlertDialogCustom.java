@@ -48,7 +48,7 @@ public class AlertDialogCustom {
     public String NO_Internet = "Please check your internet connection.";
     public String NO_Internet_title = "Hold On";
     public String unknown = "Alert";
-    public String unknown_msg = "Something went wrong. Please try again.";
+
     public String data_cancelled = "Request successfully cancelled.";
     public String didnt_match_old_new_pin = "Incorrect Old PIN.";
     public String success = "Success";

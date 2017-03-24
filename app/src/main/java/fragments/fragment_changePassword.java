@@ -24,6 +24,7 @@ import butterknife.OnClick;
 import model.Pinned;
 import model.ReturnChangePassword;
 import utilities.AlertDialogCustom;
+import utilities.ErrorMessage;
 import utilities.Loader;
 import utilities.SharedPref;
 
@@ -207,8 +208,8 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     }
 
     @Override
-    public void onErrorUpdatePin() {
-        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+    public void onErrorUpdatePin(String message) {
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override
@@ -225,7 +226,7 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
 
     @Override
     public void onErrorRegisterPin(Throwable error) {
-        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(error.getMessage()), 1);
     }
 
     @Override

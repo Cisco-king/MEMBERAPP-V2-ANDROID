@@ -34,6 +34,7 @@ import model.SpecsAdapter;
 import services.OnClicklistener;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
+import utilities.ErrorMessage;
 import utilities.HeaderNameSetter;
 import utilities.Loader;
 import utilities.NetworkTest;
@@ -252,7 +253,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     public void onError(String message) {
         Log.e("DOCTOR", message);
         loader.stopLoad();
-        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override

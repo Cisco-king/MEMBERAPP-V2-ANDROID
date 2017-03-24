@@ -38,6 +38,7 @@ import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
 import utilities.AlertDialogCustom;
+import utilities.ErrorMessage;
 import utilities.ImageConverters;
 import utilities.RemarksFilter;
 import utilities.SharedPref;
@@ -265,14 +266,14 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             Log.e("ACCOUNTADAPTER", e.getMessage());
 
 
-                            alertDialogCustom.showMe(context, "Alert", alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(context, "Hold On", ErrorMessage.setErrorMessage(e.getMessage()), 1);
                             progressDialog.dismiss();
 
 
                         }catch (Exception error){
 
 
-                            alertDialogCustom.showMe(context, "Alert", alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(context, "Hold On", ErrorMessage.setErrorMessage(e.getMessage()), 1);
                             progressDialog.dismiss();
 
 

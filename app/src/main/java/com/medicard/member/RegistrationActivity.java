@@ -37,6 +37,7 @@ import services.AppInterface;
 import services.AppService;
 import utilities.AlertDialogCustom;
 import utilities.DatepickerSet;
+import utilities.ErrorMessage;
 import utilities.SharedPref;
 import utilities.SnackBar;
 import utilities.EmailTester;
@@ -319,12 +320,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     public void onError(Throwable e) {
 
                         try {
-                            alert.showMe(context, "Alert", alert.ALREADY_message, 1);
+                            alert.showMe(context, "Hold On", alert.ALREADY_message, 1);
 
                             Log.e("RETURN", e.toString());
                             pd.dismiss();
                         } catch (Exception error) {
-                            alert.showMe(context, "Alert", alert.unknown_msg, 1);
+                            alert.showMe(context, "Hold On", ErrorMessage.setErrorMessage(e.getMessage()), 1);
                             pd.dismiss();
                             Log.e("Rx_ERROR", error.getMessage());
                         }
@@ -370,7 +371,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             pd.dismiss();
                         } catch (Exception error) {
                             pd.dismiss();
-                            alert.showMe(context, alert.HOLD_ON_title, alert.unknown_msg, 1);
+                            alert.showMe(context, alert.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
 
                             Log.e("Rx_ERROR", error.getMessage());
                         }

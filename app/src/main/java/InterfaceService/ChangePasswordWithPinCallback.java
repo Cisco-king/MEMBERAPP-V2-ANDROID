@@ -32,7 +32,7 @@ public interface ChangePasswordWithPinCallback {
 
     void onSuccessUpdatePin(Pinned pinned, String newPIN);
 
-    void onErrorUpdatePin();
+    void onErrorUpdatePin(String message);
 
     void registerPin(String text);
 

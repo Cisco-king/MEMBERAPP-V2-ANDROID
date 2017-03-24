@@ -16,6 +16,7 @@ import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
 import utilities.AlertDialogCustom;
+import utilities.ErrorMessage;
 import utilities.NetworkTest;
 import v2.DoctorListActivity;
 
@@ -73,7 +74,7 @@ public class DoctorRetrieve {
                             callback.onError(e.getMessage());
                         } catch (Exception error) {
                             AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
                             Log.e("Rx_ERROR", error.getCause().getMessage());
                         }
 

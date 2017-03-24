@@ -24,6 +24,7 @@ import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
 import utilities.AlertDialogCustom;
+import utilities.ErrorMessage;
 import utilities.NetworkTest;
 import utilities.PhoneInformations;
 import utilities.SnackBar;
@@ -127,10 +128,10 @@ public class fragment_request_new_password extends Fragment {
 
                         try {
                             pd.dismiss();
-                            alertDialogCustom.showMe(getActivity() , alertDialogCustom.HOLD_ON_title , alertDialogCustom.unknown_msg , 1);
+                            alertDialogCustom.showMe(getActivity() , alertDialogCustom.HOLD_ON_title , ErrorMessage.setErrorMessage(e.getMessage()) , 1);
                         }catch (Exception error){
                             pd.dismiss();
-                            alertDialogCustom.showMe(getActivity() , alertDialogCustom.HOLD_ON_title , alertDialogCustom.unknown_msg , 1);
+                            alertDialogCustom.showMe(getActivity() , alertDialogCustom.HOLD_ON_title , ErrorMessage.setErrorMessage(e.getMessage()), 1);
 
                             Log.e("Rx_ERROR" , error.getMessage());
                         }

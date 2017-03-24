@@ -30,6 +30,7 @@ import model.SimpleData;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.DateConverter;
+import utilities.ErrorMessage;
 import utilities.NetworkTest;
 import utilities.SharedPref;
 
@@ -211,7 +212,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @Override
     public void onErrorLoaListener(String message) {
-        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override
@@ -231,7 +232,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @Override
     public void onErrorFetchingDoctorCreds(String message) {
-        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override

@@ -36,6 +36,7 @@ import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
 import utilities.AlertDialogCustom;
+import utilities.ErrorMessage;
 import utilities.Permission;
 import utilities.SharedPref;
 import utilities.NetworkTest;
@@ -141,7 +142,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         } catch (Exception error) {
                             pd.dismiss();
 
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
 
                             Log.e("Rx_ERROR", error.getMessage());
                         }
@@ -226,11 +227,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             Log.d("ERROR_SIGN", e.getMessage());
 
                             pd.dismiss();
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
 
                         } catch (Exception error) {
                             pd.dismiss();
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
 
                             Log.e("Rx_ERROR", error.getCause().getMessage());
                             Log.d("ERROR_SIGN", e.getMessage());
@@ -382,7 +383,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     public void onErrorProvince(String message) {
         Log.d("ERROR_Province", message);
         pd.dismiss();
-        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override
@@ -395,7 +396,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         Log.d("ERROR_City", message);
 
         pd.dismiss();
-        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override
@@ -415,7 +416,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         Log.d("ERROR_City", message);
 
         pd.dismiss();
-        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override

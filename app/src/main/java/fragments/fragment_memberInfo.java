@@ -36,6 +36,7 @@ import services.AppInterface;
 import services.AppService;
 import utilities.AlertDialogCustom;
 import utilities.DialogAddDependence;
+import utilities.ErrorMessage;
 import utilities.NetworkTest;
 import utilities.SharedPref;
 
@@ -170,12 +171,12 @@ public class fragment_memberInfo extends Fragment implements View.OnClickListene
                             Log.e(TAG, e.getMessage());
 
 
-                            alertDialogCustom.showMe(getContext(), "Alert", alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(getContext(), "Hold On", ErrorMessage.setErrorMessage(e.getMessage()), 1);
                             progressDialog.dismiss();
                         }catch (Exception error){
 
 
-                            alertDialogCustom.showMe(getContext(), "Alert", alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(getContext(), "Hold On", ErrorMessage.setErrorMessage(e.getMessage()), 1);
                             progressDialog.dismiss();
 
                             Log.e("Rx_ERROR" , error.getMessage());

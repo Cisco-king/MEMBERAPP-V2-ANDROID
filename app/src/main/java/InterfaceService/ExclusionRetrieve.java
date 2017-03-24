@@ -15,6 +15,7 @@ import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
 import utilities.AlertDialogCustom;
+import utilities.ErrorMessage;
 import v2.HospitalListAcitivity;
 
 /**
@@ -56,11 +57,11 @@ public class ExclusionRetrieve {
 
                             Log.e("EXCLUSIONS", e.getMessage());
                             pd.dismiss();
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
 
                         }catch (Exception error){
                             pd.dismiss();
-                             alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+                             alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title,ErrorMessage.setErrorMessage(e.getMessage()), 1);
 
 
                             Log.e("Rx_ERROR" , error.getMessage());
@@ -100,11 +101,11 @@ public class ExclusionRetrieve {
 
                             Log.e("EXCLUSIONS", e.getMessage());
                             pd.dismiss();
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
 
                         }catch (Exception error){
                             pd.dismiss();
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title,ErrorMessage.setErrorMessage(e.getMessage()), 1);
 
 
                             Log.e("Rx_ERROR" , error.getMessage());

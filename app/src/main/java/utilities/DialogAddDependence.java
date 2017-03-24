@@ -138,11 +138,11 @@ public class DialogAddDependence {
 
                         try {
                             Log.d("ADD_RETURN", e.getMessage());
-                            alertDialogCustom.showMe(context ,alertDialogCustom.HOLD_ON_title , alertDialogCustom.unknown_msg , 1);
+                            alertDialogCustom.showMe(context ,alertDialogCustom.HOLD_ON_title , ErrorMessage.setErrorMessage(e.getMessage()) , 1);
                         }catch (Exception error){
                             dialog.dismiss();
 
-                            alertDialogCustom.showMe(context ,alertDialogCustom.HOLD_ON_title , alertDialogCustom.unknown_msg , 1);
+                            alertDialogCustom.showMe(context ,alertDialogCustom.HOLD_ON_title , ErrorMessage.setErrorMessage(e.getMessage()), 1);
 
                             Log.e("Rx_ERROR" , error.getMessage());
                         }
@@ -171,7 +171,7 @@ public class DialogAddDependence {
 
                         }else{
 
-                            alertDialogCustom.showMe(context, alertDialogCustom.unknown, alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(context, alertDialogCustom.unknown, ErrorMessage.setErrorMessage(""), 1);
 
                         }
                     }

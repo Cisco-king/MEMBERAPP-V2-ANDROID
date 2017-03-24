@@ -22,6 +22,7 @@ import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
 import utilities.AlertDialogCustom;
+import utilities.ErrorMessage;
 import utilities.NetworkTest;
 import utilities.PasswordTester;
 import utilities.SharedPref;
@@ -112,7 +113,7 @@ public class ChangePasswordWithPinRetrieve {
                             callback.onErrorChangePassword();
                         } catch (Exception error) {
                             AlertDialogCustom alert = new AlertDialogCustom();
-                            alert.showMe(context, alert.HOLD_ON_title, alert.unknown_msg, 1);
+                            alert.showMe(context, alert.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
 
 
                             Log.e("Rx_ERROR", error.getMessage());
@@ -203,10 +204,10 @@ public class ChangePasswordWithPinRetrieve {
                     @Override
                     public void onError(Throwable error) {
                         try {
-                            callback.onErrorUpdatePin();
+                            callback.onErrorUpdatePin(error.getMessage());
                         } catch (Exception e) {
                             AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
                         }
                     }
 
@@ -272,7 +273,7 @@ public class ChangePasswordWithPinRetrieve {
                             callback.onErrorRegisterPin(error);
                         } catch (Exception e) {
                             AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.unknown_msg, 1);
+                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
                         }
                     }
 
