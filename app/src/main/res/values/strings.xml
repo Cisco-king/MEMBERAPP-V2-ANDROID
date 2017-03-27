@@ -154,7 +154,7 @@
     <string name="proceed">Proceed</string>
     <string name="hint_doctor">Enter Doctor Name</string>
     <string name="no_doctor_set">Please select Doctor after selecting Hospital/Clinic</string>
-    <string name="hint_condition">Enter Reason to Consult</string>
+    <string name="hint_condition">Enter Reason for Consult</string>
     <string name="hospital_clinic">Hospital/Clinic</string>
     <string name="hospital_clinic_">Hospital/Clinic: <font fgcolor="red"><b> * </b></font> </string>
     <string name="doctor">Doctor</string>

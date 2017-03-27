@@ -41,4 +41,6 @@ public interface ChangePasswordWithPinCallback {
     void onErrorRegisterPin(Throwable error);
 
     void testInputPinListener();
+
+    void testInputPinLengthListener();
 }

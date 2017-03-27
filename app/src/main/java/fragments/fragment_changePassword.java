@@ -234,4 +234,9 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.PIN_RETYPEPIN_MATCH_message, 1);
 
     }
+
+    @Override
+    public void testInputPinLengthListener() {
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.PIN_RETYPE_LENGTH_message, 1);
+    }
 }

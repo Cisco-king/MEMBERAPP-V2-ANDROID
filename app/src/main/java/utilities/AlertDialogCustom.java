@@ -29,11 +29,12 @@ public class AlertDialogCustom {
     public String PASSWORD_MATCH_message = "Password did not match. Please try again.";
     public String PASSWORD_RETYPEPASS_MATCH_message = "New Password and Re-Type Password did not match. Please try again.";
     public String PIN_RETYPEPIN_MATCH_message = "PIN and Re-Type PIN did not match. Please try again.";
+    public String PIN_RETYPE_LENGTH_message = "PIN must be four (4) digits long";
 
     public String CONGRATULATIONS_title = "Success!";
     public String CONGRATULATIONS_message = "You have successfully created an account. Please login to begin.";
 
-    public String Saved_Screenshot = "LOA Request has been saved to Medicard folder in your photo gallery.";
+    public String Saved_Screenshot = "LOA Request has been saved to MediCard folder in your photo gallery.";
 
     public String ALREADY_message = "Account is already existing.";
     public String MemberAccountDidNotMatch = "Date of Birth does not match with MediCard ID number.";

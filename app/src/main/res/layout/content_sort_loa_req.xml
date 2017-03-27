@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_rounded_corner"
-                    android:hint="@string/hospital_clinic"
+                    android:hint="Choose Sort By"
                     android:padding="@dimen/sub_margin"
                     android:textColor="@color/BLACK"
                     android:textSize="@dimen/text_main" />
@@ -107,7 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_rounded_corner"
-                    android:hint="@string/approved"
+                    android:hint="Choose Status"
                     android:padding="@dimen/sub_margin"
                     android:textColor="@color/BLACK"
                     android:textSize="@dimen/text_main" />
@@ -142,7 +142,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_rounded_corner"
-                    android:hint="@string/consultation"
+                    android:hint="Choose Service Type"
                     android:padding="@dimen/sub_margin"
                     android:textColor="@color/BLACK"
                     android:textSize="@dimen/text_main" />

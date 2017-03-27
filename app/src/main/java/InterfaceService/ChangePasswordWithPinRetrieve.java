@@ -158,7 +158,10 @@ public class ChangePasswordWithPinRetrieve {
         } else {
 
             if (getText(et_new_pin).equals(getText(et_retype_pin_new))) {
-                callback.updatePin(getText(et_new_pin), getText(et_old_pin));
+                if (getText(et_new_pin).length() < 4)
+                    callback.testInputPinLengthListener();
+                else
+                    callback.updatePin(getText(et_new_pin), getText(et_old_pin));
             } else
                 callback.testInputPinListener();
 
@@ -214,7 +217,7 @@ public class ChangePasswordWithPinRetrieve {
                     @Override
                     public void onNext(Pinned pinned) {
                         Log.e("PINNED", pinned.toString());
-                        callback.onSuccessUpdatePin(pinned , newPIN);
+                        callback.onSuccessUpdatePin(pinned, newPIN);
                     }
                 });
 
@@ -230,7 +233,10 @@ public class ChangePasswordWithPinRetrieve {
         } else {
 
             if (getText(et_pin).equals(getText(et_retype_pin))) {
-                callback.registerPin(getText(et_pin));
+                if (getText(et_pin).length() < 4)
+                    callback.testInputPinLengthListener();
+                else
+                    callback.registerPin(getText(et_pin));
             } else
                 callback.testInputPinListener();
 
@@ -280,7 +286,7 @@ public class ChangePasswordWithPinRetrieve {
                     @Override
                     public void onNext(Pinned pinned) {
                         Log.e("PINNED", pinned.toString());
-                        callback.onSuccessRegisterPin(pinned.getResponseCode() , newPin);
+                        callback.onSuccessRegisterPin(pinned.getResponseCode(), newPin);
                     }
                 });
     }
