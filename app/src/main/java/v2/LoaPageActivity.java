@@ -132,7 +132,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
         tv_header.setText(loa.getRemarks());
         implement.setCancelButton(loa.getStatus(), btn_cancel_req);
-        tv_status.setText("REQUEST " + loa.getStatus());
+        tv_status.setText(implement.getStatus(loa.getStatus()));
         tv_approval_code.setText(loa.getApprovalNo());
         tv_member_code.setText(loa.getMemberCode());
         tv_member_name.setText(loa.getMemFname() + " " + loa.getMemLname());
@@ -231,7 +231,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
     @Override
     public void onSuccess() {
-        tv_status.setText("CANCELLED");
+        tv_status.setText("REQUEST CANCELLED");
         btn_download.setVisibility(View.GONE);
         btn_cancel_req.setVisibility(View.GONE);
 

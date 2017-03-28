@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+
 import com.medicard.member.R;
+
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -131,9 +133,21 @@ public class LoaPageRetieve {
         if (status.equals("EXPIRED")) {
             btn_cancel_req.setVisibility(View.GONE);
             btn_download.setVisibility(View.GONE);
-        }else{
+        } else {
             btn_cancel_req.setVisibility(View.VISIBLE);
             btn_download.setVisibility(View.VISIBLE);
         }
+    }
+
+    public String getStatus(String status) {
+        String data = "";
+
+        if (status.contains("APPROVED"))
+            data =  "REQUEST SUBMITTED";
+        else
+            data = "REQUEST " +  status;
+
+
+        return data;
     }
 }

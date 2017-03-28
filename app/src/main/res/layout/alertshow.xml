@@ -28,10 +28,11 @@
         android:layout_below="@+id/linearLayout"
         android:background="@android:color/white"
         android:orientation="vertical"
-        android:paddingTop="40dp">
+        android:paddingTop="30dp">
 
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,6 +43,7 @@
             android:textSize="@dimen/text_main" />
 
         <TextView
+            android:paddingBottom="@dimen/sub_margin"
             android:layout_margin="@dimen/mini_margin"
             android:id="@+id/tv_message"
             android:layout_width="match_parent"

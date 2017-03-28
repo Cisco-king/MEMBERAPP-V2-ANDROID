@@ -38,17 +38,13 @@ public class HospitalListRetrieve {
             data_sort = "province";
         } else if (sortBy.equals(context.getString(R.string.city))) {
             data_sort = "city";
-        } else {
-            data_sort = "hospitalName";
+        } else if (sortBy.equals("")){
+            data_sort = "";
         }
 
         array.clear();
 
-
-        /**
-         todo : test data and only fetch data from medicard if isMedicardOnly is true
-
-         */
+        //ONLY MEDICARD
         if (isMedicardOnly.equals("true"))
             array.addAll(handler.getOnlyMedicardClinics(provinceName , data_sort , selectedCity , isMedicardOnly , s));
         else

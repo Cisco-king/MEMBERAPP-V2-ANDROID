@@ -90,7 +90,7 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
 
         provinceCode = "";
         provinceName = Constant.QUERY_ALL;
-        sortBy = context.getString(R.string.hospital_clinic_name);
+        sortBy = context.getString(R.string.medicard_first);
 
         if (NetworkTest.isOnline(context)) {
             ExclusionRetrieve.getHospInPatient(context, databaseHandler, SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context), this);
@@ -187,7 +187,7 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
 
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, array.get(position).getPhoneNo(), context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, array.get(position).getContactPerson(), context);
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_U, "WAITING...", context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_U, "", context);
 
 
         SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, Constant.NOT_SET, context);

@@ -45,7 +45,7 @@ public class AlertDialogCustom {
     public String InvalidUsername = "Username invalid. It must not contain blank spaces.";
 
     public String successfullyAddedDep = "You have successfully added a dependent.";
-    public String INVALID_PASS_USER = "It seems like you've got the wrong username/password. Please try again.";
+    public String INVALID_PASS_USER = "You have entered an incorrect password. After 3 unsuccessful attempts your account will be locked.";
     public String NO_Internet = "Please check your internet connection.";
     public String NO_Internet_title = "Hold On";
     public String unknown = "Alert";
@@ -64,7 +64,7 @@ public class AlertDialogCustom {
     public String errorUnableToRequestPass = "Something went wrong. Unable to request a new password. Please try again.";
     public String errorUsernameOrPass = "It seems like you've got the wrong username/password. Please try again.";
     public String errorRequestUsernameOrPass = "Something went wrong. Incorrect Email Address or MemberCode.";
-    public String errorAccountLocked = "Account is locked due to incorrect input of your username or password 3 times.";
+    public String errorAccountLocked = "Your account is locked. Please tap on the \"Forgot your Password\" link to reset your password.";
     public String errorNeedToChangePass = "You need to change your password.";
     public String errorNoUsername = "No User Account for entered username.";
     public String errorEmptyFields = "Please fill up the required fields.";

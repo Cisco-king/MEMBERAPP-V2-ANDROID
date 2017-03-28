@@ -63,7 +63,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/approval_code"
+                                android:text="Reference No.: "
                                 android:textColor="@color/colorPrimaryLight"
                                 android:textSize="@dimen/text_small" />
 
@@ -222,7 +222,7 @@
 
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/date_approved_"
+                                android:text="Date Requested: "
                                 android:textColor="@color/colorPrimaryLight"
                                 android:textSize="@dimen/text_small" />
 
