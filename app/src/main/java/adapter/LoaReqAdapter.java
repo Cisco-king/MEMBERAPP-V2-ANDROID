@@ -30,13 +30,11 @@ public class LoaReqAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     private Context context;
-    private ProvinceAdapter.ProvinceInterface callback;
-    private ArrayList<SimpleData> arrayList;
+     private ArrayList<SimpleData> arrayList;
 
 
-    public LoaReqAdapter(Context context, ArrayList<SimpleData> arrayList, ProvinceAdapter.ProvinceInterface callback) {
+    public LoaReqAdapter(Context context, ArrayList<SimpleData> arrayList ) {
         this.context = context;
-        this.callback = callback;
         this.arrayList = arrayList;
 
 

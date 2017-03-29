@@ -21,21 +21,18 @@
         android:focusableInTouchMode="true">
 
         <EditText
+            android:imeOptions="actionDone"
+            android:maxLines="1"
+            android:inputType="text"
             android:id="@+id/ed_searchDoctor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/sub_margin"
-
-            android:layout_marginLeft="@dimen/sub_margin"
-            android:layout_marginRight="@dimen/sub_margin"
-            android:layout_weight="1"
-            android:background="@drawable/button_border"
+            android:background="@drawable/edit_text_rounded_corner"
             android:hint="Search..."
-            android:inputType="text"
             android:padding="@dimen/sub_margin"
-
             android:textColor="@color/BLACK"
-            android:textSize="@dimen/text_small" />
+            android:textSize="@dimen/text_main" />
     </LinearLayout>
 
 

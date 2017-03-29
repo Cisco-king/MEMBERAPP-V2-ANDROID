@@ -115,6 +115,7 @@ public class SortLoaReqImplement {
         FancyButton cancelled;
         FancyButton disapproved;
         FancyButton close;
+        FancyButton outstanding;
 
 
         dialog = new Dialog(context);
@@ -122,6 +123,7 @@ public class SortLoaReqImplement {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_sortby_status);
 
+        outstanding = (FancyButton) dialog.findViewById(R.id.outstanding);
         approved = (FancyButton) dialog.findViewById(R.id.approved);
         pending = (FancyButton) dialog.findViewById(R.id.pending);
         expired = (FancyButton) dialog.findViewById(R.id.expired);
@@ -130,6 +132,13 @@ public class SortLoaReqImplement {
         disapproved = (FancyButton) dialog.findViewById(R.id.disapproved);
         close = (FancyButton) dialog.findViewById(R.id.close);
 
+        outstanding.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callback.onSortStatus(context.getString(R.string.outstanding));
+                dialog.dismiss();
+            }
+        });
         approved.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

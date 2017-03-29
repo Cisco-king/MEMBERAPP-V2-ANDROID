@@ -29,6 +29,7 @@ import mehdi.sakout.fancybuttons.FancyButton;
 import model.CitiesAdapter;
 import model.HospitalList;
 import model.Provinces;
+import model.ProvincesAdapter;
 import services.OnClicklistener;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
@@ -67,9 +68,7 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
 
     String sortBy = "";
     ArrayList<CitiesAdapter> selectedCity = new ArrayList<>();
-    ArrayList<Provinces> selectedProvince = new ArrayList<>();
-    String provinceCode = "";
-    String provinceName = "";
+    ArrayList<ProvincesAdapter> selectedProvince = new ArrayList<>();
     private String search_string = "";
     private String isMedicardOnly = "false";
     @Override
@@ -82,14 +81,10 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
         databaseHandler = new DatabaseHandler(context);
         implement = new HospitalListRetrieve(context, databaseHandler);
         ButterKnife.bind(this);
-        provinceName = Constant.QUERY_ALL;
         origin = getIntent().getExtras().getString(RequestButtonsActivity.ORIGIN);
         llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rv_hospital.setLayoutManager(llm);
-
-        provinceCode = "";
-        provinceName = Constant.QUERY_ALL;
         sortBy = context.getString(R.string.medicard_first);
 
         if (NetworkTest.isOnline(context)) {
@@ -127,8 +122,6 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
             public void onClick(View v) {
                 Intent intent = new Intent(HospitalListAcitivity.this, SortHospitalActivity.class);
                 intent.putExtra(Constant.MEDICARD_ONLY, isMedicardOnly);
-                intent.putExtra(Constant.PROVINCE_CODE, provinceCode);
-                intent.putExtra(Constant.PROVINCE_NAME, provinceName);
                 intent.putExtra(Constant.SORT_BY, sortBy);
                 intent.putParcelableArrayListExtra(Constant.SELECTED_CITY, selectedCity);
                 intent.putParcelableArrayListExtra(Constant.SELECTED_PROVINCE, selectedProvince);
@@ -150,7 +143,7 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
 
     private void retrieveHosp(String s) {
 
-        implement.updateList(isMedicardOnly,provinceName, sortBy, selectedCity, hospitalAdapter, array, s);
+        implement.updateList(isMedicardOnly,selectedProvince, sortBy, selectedCity, hospitalAdapter, array, s);
         implement.updateListUI(array, rv_hospital, tv_hosp_not_found);
     }
 
@@ -160,18 +153,16 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
 
         if (requestCode == SORT_CALL && resultCode == RESULT_OK) {
             isMedicardOnly = data.getStringExtra(Constant.MEDICARD_ONLY);
-            provinceCode = data.getStringExtra(Constant.PROVINCE_CODE);
-            provinceName = data.getStringExtra(Constant.PROVINCE_NAME);
             sortBy = data.getStringExtra(Constant.SORT_BY);
             selectedCity = data.getParcelableArrayListExtra(Constant.SELECTED_CITY);
             selectedProvince = data.getParcelableArrayListExtra(Constant.SELECTED_PROVINCE);
             search_string = data.getStringExtra(Constant.SEARCH_STRING);
 
-            Log.d("Province_code", provinceCode);
-            Log.d("sort_by", sortBy);
-            for (int x = 0; x < selectedCity.size(); x++) {
-                Log.d("selected_city", selectedCity.get(x).getCityName());
-            }
+
+//            Log.d("sort_by", sortBy);
+//            for (int x = 0; x < selectedCity.size(); x++) {
+//                Log.d("selected_city", selectedCity.get(x).getCityName());
+//            }
             ed_searchHosp.setText(search_string);
             retrieveHosp(search_string);
         }

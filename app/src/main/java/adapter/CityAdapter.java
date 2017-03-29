@@ -33,10 +33,9 @@ public class CityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<CitiesAdapter> selected = new ArrayList<>();
 
 
-    public CityAdapter(Context context, ArrayList<CitiesAdapter> array, ArrayList<CitiesAdapter> selected, ProvinceAdapter.ProvinceInterface callback) {
+    public CityAdapter(Context context, ArrayList<CitiesAdapter> array, ArrayList<CitiesAdapter> selected ) {
         this.context = context;
         this.array = array;
-
         this.selected = selected;
     }
 

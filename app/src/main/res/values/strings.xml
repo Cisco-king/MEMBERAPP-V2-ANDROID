@@ -171,10 +171,10 @@
     <string name="submit"> Submit</string>
     <string name="this_request_is">This request is still in process</string>
     <string name="disapproved">Member has no maternity benefit</string>
-    <string name="doctor_has_no">Doctor has no MACE Provider Application account, \n Please download and print this Approval</string>
+    <string name="doctor_has_no">Doctor has no MACE Provider Application account, \n Please download and print this form</string>
     <string name="i_confirm_that">I accept the</string>
-    <string name="this_approval_shall">This approval shall be subject to existing benefits and actual available limits under the plan. Member may still be billed for the amount paid. \n \n This approval serves as your request form. There is no need to go
-        to MediCard Coordinator. You may go directly to the consulting doctor and present this approval. Please take note of the <font fgcolor="black"><b>Reference No.</b></font> and Pin. This
+    <string name="this_approval_shall">This form shall be subject to existing benefits and actual available limits under the plan. Member may still be billed for the amount paid. \n \n This approval serves as your request form. There is no need to go
+        to MediCard Coordinator. You may go directly to the consulting doctor and present this form. Please take note of the <font fgcolor="black"><b>Reference No.</b></font> and Pin. This
      information is required during consultation.</string>
     <string name="no_registered_pin">No registered PIN. \n PIN is required in Requesting LOA.</string>
     <string name="retype_pin">Re-type PIN</string>
@@ -217,6 +217,7 @@
     <string name="availed">Availed</string>
     <string name="expired">Expired</string>
     <string name="approved">Approved</string>
+    <string name="outstanding">Outstanding</string>
     <string name="pending">Pending</string>
     <string name="cancelled">Cancelled</string>
     <string name="disapproved_">Disapproved</string>

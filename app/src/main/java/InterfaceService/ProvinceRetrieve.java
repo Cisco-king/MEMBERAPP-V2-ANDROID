@@ -14,6 +14,7 @@ import java.util.TreeSet;
 
 
 import Sqlite.DatabaseHandler;
+import adapter.ProvinceAdapter;
 import adapter.SpecializationAdapter;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.Cities;
@@ -22,6 +23,7 @@ import model.HospitalList;
 import model.LoaFetch;
 import model.Province;
 import model.Provinces;
+import model.ProvincesAdapter;
 import model.SimpleData;
 import model.SpecsAdapter;
 import utilities.Constant;
@@ -40,13 +42,13 @@ public class ProvinceRetrieve {
     }
 
 
-    public ArrayList<Provinces> setArrayData(DatabaseHandler databaseHandler, String SPEC_SEARCH) {
+    public ArrayList<ProvincesAdapter> setArrayData(DatabaseHandler databaseHandler, String SPEC_SEARCH) {
         return databaseHandler.retrieveProvince(SPEC_SEARCH);
 
     }
 
-    public ArrayList<CitiesAdapter> setArrayCity(DatabaseHandler databaseHandler, String provinceCode, String SPEC_SEARCH) {
-        return databaseHandler.retrieveCity(provinceCode , SPEC_SEARCH);
+    public ArrayList<CitiesAdapter> setArrayCity(DatabaseHandler databaseHandler, ArrayList<ProvincesAdapter> prevSelectedProvince, String SPEC_SEARCH) {
+        return databaseHandler.retrieveCity(prevSelectedProvince , SPEC_SEARCH);
     }
 
 
@@ -188,6 +190,44 @@ public class ProvinceRetrieve {
                     if (selectedCity.get(sel).getCityCode().equals(arrayCity.get(data).getCityCode())) {
                         arrayCity.get(data).setSelected("true");
                         Log.d("sel_change", arrayCity.get(data).getSelected());
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    public void setSelectedProvinceData(ArrayList<ProvincesAdapter> prevSelectedProvince, ArrayList<ProvincesAdapter> arrayProvince, ArrayList<ProvincesAdapter> selectedProvince) {
+
+
+        if (prevSelectedProvince.size() != 0) {
+
+            for (int sel = 0; sel < prevSelectedProvince.size(); sel++) {
+                for (int data = 0; data < arrayProvince.size(); data++) {
+                    if (prevSelectedProvince.get(sel).getProvinceCode().equals(arrayProvince.get(data).getProvinceCode())) {
+                        arrayProvince.get(data).setSelected("true");
+                        Log.d("sel_change", arrayProvince.get(data).getSelected());
+                        selectedProvince.add(prevSelectedProvince.get(sel));
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    public void setSelectedDataProvince(ArrayList<ProvincesAdapter> arrayProvince, ArrayList<ProvincesAdapter> selectedProvince) {
+
+
+
+        if (selectedProvince.size() != 0) {
+
+            for (int sel = 0; sel < selectedProvince.size(); sel++) {
+                for (int data = 0; data < arrayProvince.size(); data++) {
+                    if (selectedProvince.get(sel).getProvinceCode().equals(arrayProvince.get(data).getProvinceCode())) {
+                        arrayProvince.get(data).setSelected("true");
+                        Log.d("sel_change", arrayProvince.get(data).getSelected());
                     }
                 }
             }

@@ -2,7 +2,9 @@ package v2;
 
 import android.content.Context;
 import android.content.Intent;
+
 import com.medicard.member.R;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -134,7 +136,6 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
             case R.id.tv_status:
                 implement.showStatusSort();
                 break;
-
             case R.id.tv_service_type:
                 implement.showServiceType();
                 break;

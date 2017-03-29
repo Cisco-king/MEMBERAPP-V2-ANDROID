@@ -12,6 +12,8 @@ import Sqlite.DatabaseHandler;
 import adapter.HospitalAdapter;
 import model.CitiesAdapter;
 import model.HospitalList;
+import model.Provinces;
+import model.ProvincesAdapter;
 
 /**
  * Created by mpx-pawpaw on 1/26/17.
@@ -27,7 +29,7 @@ public class HospitalListRetrieve {
         handler = databaseHandler;
     }
 
-    public void updateList(String isMedicardOnly, String provinceName, String sortBy, ArrayList<CitiesAdapter> selectedCity, HospitalAdapter hospitalAdapter, ArrayList<HospitalList> array, String s) {
+    public void updateList(String isMedicardOnly, ArrayList<ProvincesAdapter> selectedProvince, String sortBy, ArrayList<CitiesAdapter> selectedCity, HospitalAdapter hospitalAdapter, ArrayList<HospitalList> array, String s) {
 
         String data_sort = "";
         if (sortBy.equals(context.getString(R.string.hospital_clinic_name))) {
@@ -46,9 +48,9 @@ public class HospitalListRetrieve {
 
         //ONLY MEDICARD
         if (isMedicardOnly.equals("true"))
-            array.addAll(handler.getOnlyMedicardClinics(provinceName , data_sort , selectedCity , isMedicardOnly , s));
+            array.addAll(handler.getOnlyMedicardClinics(selectedProvince , data_sort , selectedCity , isMedicardOnly , s));
         else
-            array.addAll(handler.retrieveHospital(isMedicardOnly, provinceName, data_sort, selectedCity, s));
+            array.addAll(handler.retrieveHospital(isMedicardOnly, selectedProvince, data_sort, selectedCity, s));
         hospitalAdapter.notifyDataSetChanged();
 
 

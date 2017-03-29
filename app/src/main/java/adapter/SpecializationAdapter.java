@@ -29,14 +29,13 @@ public class SpecializationAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private Context context;
     private ArrayList<SpecsAdapter> array = new ArrayList<>();
-    private ProvinceAdapter.ProvinceInterface callback;
-    private ArrayList<SpecsAdapter> selected = new ArrayList<>();
+     private ArrayList<SpecsAdapter> selected = new ArrayList<>();
 
 
-    public SpecializationAdapter(Context context, ArrayList<SpecsAdapter> array, ArrayList<SpecsAdapter> selected, ProvinceAdapter.ProvinceInterface callback) {
+    public SpecializationAdapter(Context context, ArrayList<SpecsAdapter> array, ArrayList<SpecsAdapter> selected ) {
         this.context = context;
         this.array = array;
-        this.callback = callback;
+
         this.selected = selected;
     }
 
