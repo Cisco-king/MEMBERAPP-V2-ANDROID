@@ -567,7 +567,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         sql += getDataSorted(doctor_sort, true);
         sql += getDataSorted(hospital_sort, false);
 
-        sql += " ORDER BY " + sort_by + " ASC ";
+        sql += " ORDER BY " + sort_by;
+
+        //ONLY DESC ON DATE REQUEST
+        if (sort_by.contains("DATETIME(dateAdmitted)"))
+            sql += " DESC" ;
+        else
+            sql += " ASC" ;
+
+
         database = getReadableDatabase();
         cursor = database.rawQuery(sql, null);
         Log.e(TAG, cursor.getCount() + "");
