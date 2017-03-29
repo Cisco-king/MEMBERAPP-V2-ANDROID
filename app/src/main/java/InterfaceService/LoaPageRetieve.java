@@ -9,6 +9,7 @@ import com.medicard.member.R;
 
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
@@ -81,13 +82,14 @@ public class LoaPageRetieve {
         return b ? RESULT_OK : RESULT_CANCELED;
     }
 
-    public void setCancelButton(String remarks, FancyButton btn_cancel_req) {
-
-        if (remarks.equals(Constant.CANCELLED))
-            btn_cancel_req.setVisibility(View.GONE);
-        else
-            btn_cancel_req.setVisibility(View.VISIBLE);
-    }
+//    public void setCancelButton(String remarks, FancyButton btn_cancel_req) {
+//
+//        Log.d("REMARKS", remarks);
+//        if (remarks.contains("CANCELLED"))
+//            btn_cancel_req.setVisibility(View.GONE);
+//        else
+//            btn_cancel_req.setVisibility(View.VISIBLE);
+//    }
 
     public void showCancelConfirmation() {
 
@@ -130,7 +132,7 @@ public class LoaPageRetieve {
 
     public void setExpiredStatus(FancyButton btn_download, FancyButton btn_cancel_req, String status) {
 
-        if (status.equals("EXPIRED")) {
+        if (status.equals("EXPIRED") || status.equals(Constant.CANCELLED)) {
             btn_cancel_req.setVisibility(View.GONE);
             btn_download.setVisibility(View.GONE);
         } else {
@@ -143,9 +145,9 @@ public class LoaPageRetieve {
         String data = "";
 
         if (status.contains("APPROVED"))
-            data =  "REQUEST SUBMITTED";
+            data = "REQUEST SUBMITTED";
         else
-            data = "REQUEST " +  status;
+            data = "REQUEST " + status;
 
 
         return data;

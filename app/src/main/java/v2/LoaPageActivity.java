@@ -130,8 +130,10 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
         loa = loaList.get(position);
 
+
+        implement.setExpiredStatus(btn_download, btn_cancel_req , loa.getStatus() );
         tv_header.setText(loa.getRemarks());
-        implement.setCancelButton(loa.getStatus(), btn_cancel_req);
+        //implement.setCancelButton(loa.getStatus().trim(), btn_cancel_req);
         tv_status.setText(implement.getStatus(loa.getStatus()));
         tv_approval_code.setText(loa.getApprovalNo());
         tv_member_code.setText(loa.getMemberCode());
@@ -150,7 +152,7 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
                 DateConverter.validityDatePLusDay(changeFormat, 3));
         tv_spec.setText(testData(loa.getDoctorSpec()));
 
-        implement.setExpiredStatus(btn_download, btn_cancel_req , loa.getStatus() );
+
     }
 
 
@@ -208,7 +210,8 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     public void onSuccessfulScreenshot() {
         btn_download.setVisibility(View.VISIBLE);
         btn_cancel.setVisibility(View.VISIBLE);
-        implement.setCancelButton(loa.getStatus(), btn_cancel_req);
+        btn_cancel_req.setVisibility(View.GONE);
+        btn_download.setVisibility(View.GONE);
 
         alertDialogCustom.showMe(context, alertDialogCustom.CONGRATULATIONS_title, alertDialogCustom.Saved_Screenshot, 2);
 
