@@ -4,6 +4,7 @@ import model.AddDepenceResponse;
 import model.AddDependence;
 import model.ChangePassword;
 import model.City;
+import model.Confirm;
 import model.Consultation;
 import model.DoctorNORoom;
 import model.Doctors;
@@ -143,4 +144,8 @@ public interface AppInterface {
 
     @POST("/app/addConsultationRecordVersion02/")
     Observable<ResponseBody> sendConsultation(@Body Consultation consultation);
+
+    @POST("/coordinator/v2/approveLOA")
+    Observable<Confirm> confirmLoaConsult(@Query("batchCode") String batchCode);
+
 }

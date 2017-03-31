@@ -41,7 +41,10 @@ public class HospitalAdapter extends RecyclerView.Adapter<HospitalAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         holder.name.setText(array.get(position).getHospitalName());
-        holder.tv_address.setText(array.get(position).getStreetAddress());
+        holder.tv_address.setText(array.get(position).getStreetAddress().trim() + ", " +
+            array.get(position).getCity().trim() + ", " +
+            array.get(position).getProvince().trim() + ", " +
+            array.get(position).getRegion().trim());
         holder.contact.setText("Tel. No: " + SetUnfilledField.setData(array.get(position).getPhoneNo()));
         holder.person.setText("Contact Person: " + SetUnfilledField.setData(array.get(position).getContactPerson()));
         holder.time.setText("Clinic Hours: " + SetUnfilledField.setData(""));

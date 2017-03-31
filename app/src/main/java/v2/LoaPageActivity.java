@@ -208,10 +208,9 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
     @Override
     public void onSuccessfulScreenshot() {
-        btn_download.setVisibility(View.VISIBLE);
         btn_cancel.setVisibility(View.VISIBLE);
-        btn_cancel_req.setVisibility(View.GONE);
-        btn_download.setVisibility(View.GONE);
+        btn_cancel_req.setVisibility(View.VISIBLE);
+        btn_download.setVisibility(View.VISIBLE);
 
         alertDialogCustom.showMe(context, alertDialogCustom.CONGRATULATIONS_title, alertDialogCustom.Saved_Screenshot, 2);
 

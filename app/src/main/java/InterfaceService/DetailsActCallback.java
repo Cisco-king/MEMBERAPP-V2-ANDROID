@@ -18,4 +18,10 @@ public interface DetailsActCallback {
     void emptyFieldsListener();
 
     void cancelRequest();
+
+    void onDuplicateRequest(RequestResult requestResult);
+
+    void onErrorConfirm(String message);
+
+    void onSuccessConfirm(RequestResult requestResult);
 }

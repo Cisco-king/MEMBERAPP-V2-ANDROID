@@ -2,7 +2,9 @@ package v2;
 
 import android.content.Context;
 import android.content.Intent;
+
 import com.medicard.member.R;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -77,7 +79,7 @@ public class SortHospitalActivity extends AppCompatActivity implements HospitalS
 
         implement.setCityText(tv_city, selectedCity);
         implement.setProvinceText(tv_province, selectedProvince);
-        implement.setCheckBox(cb_med_clinic,getIntent().getStringExtra(Constant.MEDICARD_ONLY));
+        implement.setCheckBox(cb_med_clinic, getIntent().getStringExtra(Constant.MEDICARD_ONLY));
     }
 
     @OnClick({R.id.tv_sort_by, R.id.tv_province, R.id.tv_city, R.id.btn_reset, R.id.btn_back, R.id.btn_show})
@@ -143,7 +145,7 @@ public class SortHospitalActivity extends AppCompatActivity implements HospitalS
                 selectedProvince = data.getParcelableArrayListExtra("PROVINCE");
                 PROV_SEARCH = data.getStringExtra(Constant.SPEC_SEARCH);
                 implement.setProvinceText(tv_province, selectedProvince);
-implement.updateCityList(selectedCity , selectedProvince , tv_city);
+                implement.updateCityList(selectedCity, selectedProvince, tv_city);
             }
 
         }

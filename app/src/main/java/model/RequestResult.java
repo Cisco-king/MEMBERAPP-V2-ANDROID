@@ -17,6 +17,16 @@ public class RequestResult {
 
     private String withProvider;
 
+    private String batchCode ;
+
+    public String getBatchCode() {
+        return batchCode;
+    }
+
+    public void setBatchCode(String batchCode) {
+        this.batchCode = batchCode;
+    }
+
     public String getWithProvider() {
         return withProvider;
     }

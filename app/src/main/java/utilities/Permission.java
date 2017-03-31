@@ -69,7 +69,6 @@ public class Permission {
                     alertBuilder.setTitle(R.string.permission_Request);
                     alertBuilder.setMessage(R.string.permission_Storage_message);
                     alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_STORAGE);
                         }

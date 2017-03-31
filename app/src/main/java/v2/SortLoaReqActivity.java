@@ -199,7 +199,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 break;
             case R.id.btn_reset:
 
-                sort_by = "";
+                sort_by = getString(R.string.request_date);
                 status_sort = "";
                 service_type_sort = "";
                 date_end_sort = "";

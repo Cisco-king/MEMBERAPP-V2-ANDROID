@@ -105,6 +105,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     private void init() {
 
         callback = this;
+        sort_by = getString(R.string.request_date);
         context = getActivity();
         databaseHandler = new DatabaseHandler(context);
         implement = new LoaRequestRetrieve(context, callback);
@@ -171,7 +172,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
             implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
                     service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort),
-                    DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
+                    DateConverter.converttoyyyymmddEnd(date_end_sort), doctor_sort, hospital_sort, seachedData);
             adapter.notifyDataSetChanged();
 
         } else if (requestCode == CALL_LOA_VIEW && resultCode == RESULT_OK) {

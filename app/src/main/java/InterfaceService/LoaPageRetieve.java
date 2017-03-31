@@ -144,7 +144,7 @@ public class LoaPageRetieve {
     public String getStatus(String status) {
         String data = "";
 
-        if (status.contains("APPROVED"))
+        if (status.contains("OUTSTANDING"))
             data = "REQUEST SUBMITTED";
         else
             data = "REQUEST " + status;

@@ -158,7 +158,7 @@ public class HospitalSortRetrieve implements View.OnClickListener {
         SharedPref.setStringValue(SharedPref.USER, SharedPref.PROVINCE_CODE, "NONE", context);
         tv_city.setText(Constant.ALL_CITIES);
         tv_province.setText(Constant.ALL_PROVINCES);
-        tv_sort_by.setText(context.getString(R.string.medicard_first));
+        tv_sort_by.setText(context.getString(R.string.request_date));
 
     }
 

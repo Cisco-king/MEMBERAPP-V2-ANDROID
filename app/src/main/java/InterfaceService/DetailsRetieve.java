@@ -3,7 +3,9 @@ package InterfaceService;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+
 import com.medicard.member.R;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import model.Confirm;
 import model.RequestResult;
 import model.SendLoa;
 import rx.Subscriber;
@@ -154,8 +157,15 @@ public class DetailsRetieve {
 
                     @Override
                     public void onNext(RequestResult requestResult) {
+                        Log.d("REQUEST", requestResult.toString());
+
+                        if (requestResult.getResponseCode().equals("210"))
+                            callback.onDuplicateRequest(requestResult);
+                        else
+                            callback.onSuccess(requestResult);
+
+
                         pd.dismiss();
-                        callback.onSuccess(requestResult);
                     }
                 });
 
@@ -216,7 +226,14 @@ public class DetailsRetieve {
 
                     @Override
                     public void onNext(RequestResult requestResult) {
-                        callback.onSuccess(requestResult);
+                        Log.d("REQUEST", requestResult.toString());
+
+                        if (requestResult.getResponseCode().equals("210"))
+                            callback.onDuplicateRequest(requestResult);
+                        else
+                            callback.onSuccess(requestResult);
+
+
                         pd.dismiss();
                     }
                 });
@@ -348,4 +365,36 @@ public class DetailsRetieve {
 
 
     }
+
+
+    public void sendConfirmConsult(final RequestResult requestResult) {
+
+        AppInterface appInterface;
+        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+        appInterface.confirmLoaConsult(requestResult.getBatchCode())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Confirm>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onErrorConfirm(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Confirm confirm) {
+                        Log.d("CONFIRM", confirm.toString());
+                        //  if (confirm.getResponseCode().equals("200"))
+                        callback.onSuccessConfirm(requestResult);
+
+
+                    }
+                });
+    }
+
 }

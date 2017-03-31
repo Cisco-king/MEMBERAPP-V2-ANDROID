@@ -3,8 +3,10 @@ package utilities;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+
 import com.medicard.member.R;
 import com.medicard.member.RegistrationActivity;
+
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import model.RequestResult;
 
 /**
  * Created by mpx-pawpaw on 10/21/16.
@@ -241,9 +244,60 @@ public class AlertDialogCustom {
         }
     }
 
+
+    public void showMeValidateReq(final RequestResult requestResult, final onClickDialogListener callbackDialog, Context context) {
+
+        final onClickDialogListener callback;
+        callback = callbackDialog;
+        Button btn_accept;
+        Button btn_cancel;
+
+
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.alertshow2buttonconfirmreq);
+        dialog.getWindow().setWindowAnimations(R.style.CustomDialogAnimation);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setCancelable(false);
+
+        btn_accept = (Button) dialog.findViewById(R.id.btn_accept);
+        btn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        btn_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                callbackDialog.loaApprovedListener(requestResult);
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+
+
+        int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.70);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.width = width;
+        dialog.getWindow().setAttributes(lp);
+
+    }
+
     public interface onClickDialogListener {
 
         void onOkPress();
+
+        void onRequestDupliate();
+
+        void loaApprovedListener(RequestResult requestResult);
     }
 
 }

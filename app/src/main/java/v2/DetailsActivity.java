@@ -260,10 +260,14 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
     @Override
     public void onSuccess(RequestResult data) {
         Log.d("SUCCESS", data.getRemarks());
+        gotoResult(data);
+    }
+
+    private void gotoResult(RequestResult data) {
 
         Intent gotoResult = new Intent(DetailsActivity.this, ResultActivity.class);
         gotoResult.putExtra(Constant.REFERENCECODE, data.getApprovalNo());
-        gotoResult.putExtra(Constant.REQUEST, data.getResponseDesc());
+        gotoResult.putExtra(Constant.REQUEST, "Approved");
         gotoResult.putExtra(Constant.DOCTOR_WITH_PROVIDER, implement.setNull(data.getWithProvider()));
         gotoResult.putExtra(RequestButtonsActivity.ORIGIN, origin);
         gotoResult.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
@@ -298,6 +302,13 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
     }
 
     @Override
+    public void onDuplicateRequest(RequestResult requestResult) {
+        alertDialogCustom.showMeValidateReq(requestResult, callbackDialog ,context);
+    }
+
+
+
+    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         implement.setSubmitButtonDisabled(cb_confirm, btn_submit);
     }
@@ -322,5 +333,25 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
     @Override
     public void onOkPress() {
         finish();
+    }
+
+    @Override
+    public void onRequestDupliate() {
+
+    }
+
+    @Override
+    public void loaApprovedListener(RequestResult requestResult) {
+        implement.sendConfirmConsult(requestResult);
+    }
+
+    @Override
+    public void onErrorConfirm(String message) {
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
+    }
+
+    @Override
+    public void onSuccessConfirm(RequestResult requestResult) {
+        gotoResult(requestResult);
     }
 }

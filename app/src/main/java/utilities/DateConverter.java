@@ -184,6 +184,35 @@ public class DateConverter {
         return v.getText().toString().trim();
     }
 
+    public static String converttoyyyymmddEnd(String tv_req_date_start) {
+
+        String stringDate = "";
+        if (tv_req_date_start.equals("")) {
+            stringDate = "";
+        } else {
+            SimpleDateFormat dt = new SimpleDateFormat("MMM dd , yyyy");
+            Date date = null;
+            try {
+                date = dt.parse(tv_req_date_start);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            stringDate = dt1.format(addDays(date , 1));
+
+        }
+        return stringDate;
+
+    }
+    public static Date addDays(Date date, int days)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days); //minus number would decrement the days
+        return cal.getTime();
+    }
+
     public static String converttoyyyymmdd(String tv_req_date_start) {
 
         String stringDate = "";

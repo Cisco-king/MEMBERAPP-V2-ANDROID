@@ -21,7 +21,7 @@ public class PhoneInformations {
 
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
-        Log.d("IMEI", telephonyManager.getDeviceId());
+
 
         return telephonyManager.getDeviceId();
     }
