@@ -379,7 +379,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private String testStatusExpiration(String remarks, String status, String approvalDate) {
         String data = "";
 
-        if (DateConverter.testExpiration(DateConverter.convertDate(approvalDate, new SimpleDateFormat("yyyy-MM-dd HH:mm")))) {
+        if (remarks.contains("AVAILED"))
+            data = status;
+        else if (DateConverter.testExpiration(DateConverter.convertDate(approvalDate, new SimpleDateFormat("yyyy-MM-dd HH:mm")))) {
             if (remarks.contains("CONSULTATION") && status.contains("APPROVED"))
                 data = "OUTSTANDING";
             else
@@ -744,13 +746,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         sql = "SELECT * FROM " + cityTable;
         sql += " WHERE " + " " + cityName + "  LIKE '%" + SPEC_SEARCH + "%' ";
         if (prevSelectedProvince.size() >= 1) {
-           sql += " AND  ( " ;
+            sql += " AND  ( ";
             for (int x = 0; x < prevSelectedProvince.size(); x++) {
-                sql +=  provinceCode + "  LIKE '%" + prevSelectedProvince.get(x).getProvinceCode() + "%'  OR ";
+                sql += provinceCode + "  LIKE '%" + prevSelectedProvince.get(x).getProvinceCode() + "%'  OR ";
             }
 
-            sql = sql.substring(0 , sql.length() - 5);
-            sql += " ) " ;
+            sql = sql.substring(0, sql.length() - 5);
+            sql += " ) ";
         }
 
 

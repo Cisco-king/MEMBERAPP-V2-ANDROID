@@ -1,9 +1,12 @@
 package adapter;
 
 import android.content.Context;
+
 import com.medicard.member.R;
+
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,13 +44,37 @@ public class HospitalAdapter extends RecyclerView.Adapter<HospitalAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         holder.name.setText(array.get(position).getHospitalName());
-        holder.tv_address.setText(array.get(position).getStreetAddress().trim() + ", " +
-            array.get(position).getCity().trim() + ", " +
-            array.get(position).getProvince().trim() + ", " +
-            array.get(position).getRegion().trim());
+        holder.tv_address.setText(getStringName(array.get(position).getStreetAddress()) + ", " +
+                getStringName(array.get(position).getCity()) + ", " +
+                getStringName(array.get(position).getProvince()) + ", " +
+                getStringName(array.get(position).getRegion()));
         holder.contact.setText("Tel. No: " + SetUnfilledField.setData(array.get(position).getPhoneNo()));
         holder.person.setText("Contact Person: " + SetUnfilledField.setData(array.get(position).getContactPerson()));
         holder.time.setText("Clinic Hours: " + SetUnfilledField.setData(""));
+    }
+
+    private String getStringName(String getData) {
+        String data = setNull(getData);
+
+
+        return data.trim();
+    }
+
+    public String setNull(String getData) {
+        String data = " ";
+
+        try {
+            if (!getData.equals("null"))
+                data = getData + " letmeout ";
+        } catch (Exception e) {
+
+        }
+
+
+        String regex2 = "\\s*\\bletmeout\\b\\s*";
+        data = data.replaceAll(regex2, "");
+        Log.d("RETURN_withProvider", data);
+        return data;
     }
 
 

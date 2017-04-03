@@ -325,11 +325,12 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
             case R.id.btn_shot:
 
 
-                btn_ok.setVisibility(View.GONE);
-                btn_shot.setVisibility(View.GONE);
+
                 Bitmap bitmap = Screenshot.loadBitmapFromView(sv_whole);
 
                 if (Permission.checkPermissionStorage(context)) {
+                    btn_ok.setVisibility(View.GONE);
+                    btn_shot.setVisibility(View.GONE);
                     new ImageSaver(context).
                             setFileName(refCode + "_Consultation.jpg").
                             setDirectoryName("MediCard")

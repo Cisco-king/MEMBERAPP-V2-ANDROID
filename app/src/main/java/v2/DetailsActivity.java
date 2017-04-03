@@ -259,7 +259,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
 
     @Override
     public void onSuccess(RequestResult data) {
-        Log.d("SUCCESS", data.getRemarks());
+       // Log.d("SUCCESS", data.getRemarks());
         gotoResult(data);
     }
 

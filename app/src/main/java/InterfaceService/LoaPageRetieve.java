@@ -132,7 +132,7 @@ public class LoaPageRetieve {
 
     public void setExpiredStatus(FancyButton btn_download, FancyButton btn_cancel_req, String status) {
 
-        if (status.equals("EXPIRED") || status.equals(Constant.CANCELLED)) {
+        if (status.equals("EXPIRED") || status.equals(Constant.CANCELLED) || status.equals("AVAILED") ) {
             btn_cancel_req.setVisibility(View.GONE);
             btn_download.setVisibility(View.GONE);
         } else {

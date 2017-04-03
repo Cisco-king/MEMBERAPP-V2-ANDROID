@@ -142,9 +142,6 @@ public interface AppInterface {
     @POST("/memberloa/cancelLOA/")
     Observable<ResponseBody> setRequestCancel(@Query("approvalNo") String approvalNo);
 
-    @POST("/app/addConsultationRecordVersion02/")
-    Observable<ResponseBody> sendConsultation(@Body Consultation consultation);
-
     @POST("/coordinator/v2/approveLOA")
     Observable<Confirm> confirmLoaConsult(@Query("batchCode") String batchCode);
 

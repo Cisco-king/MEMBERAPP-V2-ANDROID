@@ -30,6 +30,7 @@ import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
 import utilities.Constant;
+import utilities.Permission;
 import utilities.PhoneInformations;
 import utilities.SharedPref;
 import v2.DetailsActivity;
@@ -112,7 +113,6 @@ public class DetailsRetieve {
 
         SendLoa loa = new SendLoa();
         loa.setDoctorCode(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, context));
-        loa.setDoctorCode(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, context));
         loa.setDeviceID(phoneInformation.getIMEI(context));
         loa.setDiagnosisCode("");
         loa.setHospitalCode(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context));
@@ -121,7 +121,9 @@ public class DetailsRetieve {
         loa.setProcedureAmount("");
         loa.setProcedureCode("");
         loa.setUsername(SharedPref.getStringValue(SharedPref.USER, SharedPref.masterUSERNAME, context));
-        loa.setProcedureDesc(condition);
+        loa.setProcedureDesc("");
+        loa.setDiagnosisDesc("");
+        loa.setPrimaryComplaint(condition);
         Gson gson = new Gson();
         Log.d("TO_SEND", gson.toJson(loa));
 
@@ -157,7 +159,7 @@ public class DetailsRetieve {
 
                     @Override
                     public void onNext(RequestResult requestResult) {
-                        Log.d("REQUEST", requestResult.toString());
+                     //   Log.d("REQUEST", requestResult.toString());
 
                         if (requestResult.getResponseCode().equals("210"))
                             callback.onDuplicateRequest(requestResult);
@@ -263,9 +265,12 @@ public class DetailsRetieve {
 
 
                             if (destination.equals(RequestButtonsActivity.MATERNITY)) {
-                                showDialog(context, et_input_diagnosis.getText().toString().trim(), DetailsRetieve.MATERNITY);
-                            } else
-                                showDialog(context, et_input_diagnosis.getText().toString().trim(), DetailsRetieve.CONSULTATION);
+                                if (Permission.checkPermissionPhone(context))
+                                    showDialog(context, et_input_diagnosis.getText().toString().trim(), DetailsRetieve.MATERNITY);
+                            } else {
+                                if (Permission.checkPermissionPhone(context))
+                                    showDialog(context, et_input_diagnosis.getText().toString().trim(), DetailsRetieve.CONSULTATION);
+                            }
                         }
                     }
                 }

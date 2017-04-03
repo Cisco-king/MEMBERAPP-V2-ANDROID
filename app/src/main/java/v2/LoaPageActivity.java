@@ -133,7 +133,6 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
         implement.setExpiredStatus(btn_download, btn_cancel_req , loa.getStatus() );
         tv_header.setText(loa.getRemarks());
-        //implement.setCancelButton(loa.getStatus().trim(), btn_cancel_req);
         tv_status.setText(implement.getStatus(loa.getStatus()));
         tv_approval_code.setText(loa.getApprovalNo());
         tv_member_code.setText(loa.getMemberCode());

@@ -69,7 +69,6 @@ public class ResultActivity extends AppCompatActivity {
                         getIntent().getStringExtra(Constant.COMPANY),
                         getIntent().getStringExtra(Constant.REMARK),
                         getIntent().getStringExtra(Constant.CONDITION),
-
                         getIntent().getStringExtra(Constant.REQUEST),
                         currentDate,
                         valDate
