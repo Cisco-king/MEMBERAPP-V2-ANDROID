@@ -577,7 +577,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         sql += " ORDER BY " + sort_by;
 
         //ONLY DESC ON DATE REQUEST
-        if (sort_by.contains("DATETIME(dateAdmitted)"))
+       // if (sort_by.contains("DATETIME(dateAdmitted)"))
+        if (sort_by.contains("approvalNo"))
             sql += " DESC";
         else
             sql += " ASC";
