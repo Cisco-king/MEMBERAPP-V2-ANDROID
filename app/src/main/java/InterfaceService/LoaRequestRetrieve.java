@@ -2,7 +2,9 @@ package InterfaceService;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.medicard.member.R;
+
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -43,6 +46,18 @@ public class LoaRequestRetrieve {
     public LoaRequestRetrieve(Context context, LOARequestCallback callback) {
         this.context = context;
         this.callback = callback;
+    }
+
+    //show textview if no list available
+    public void updateUIList(RecyclerView list, TextView tv_list, ArrayList<LoaFetch> arrayList) {
+
+        if (arrayList.size() == 0) {
+            list.setVisibility(View.GONE);
+            tv_list.setVisibility(View.VISIBLE);
+        }else{
+            list.setVisibility(View.VISIBLE);
+            tv_list.setVisibility(View.GONE);
+        }
     }
 
 
@@ -241,8 +256,8 @@ public class LoaRequestRetrieve {
         if (sort_by.equals(context.getString(R.string.status))) {
             returnData = "status";
         } else if (sort_by.equals(context.getString(R.string.request_date))) {
-           // returnData = "DATETIME(dateAdmitted)";
-            returnData = "approvalNo" ;
+            // returnData = "DATETIME(dateAdmitted)";
+            returnData = "approvalNo";
         } else if (sort_by.equals(context.getString(R.string.hospital_clinic))) {
             returnData = "hospitalName";
         } else if (sort_by.equals(context.getString(R.string.service_type))) {

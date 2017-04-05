@@ -12,7 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.medicard.member.R;
+
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -52,6 +56,9 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @BindView(R.id.pb)
     ProgressBar pb;
+
+    @BindView(R.id.tv_list)
+    TextView tv_list;
 
     LinearLayoutManager llm;
     LoaRequestAdapter adapter;
@@ -175,6 +182,10 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
                     DateConverter.converttoyyyymmddEnd(date_end_sort), doctor_sort, hospital_sort, seachedData);
             adapter.notifyDataSetChanged();
 
+
+            implement.updateUIList(rv_loa_request, tv_list, arrayList);
+
+            //used if user cancelled a request to update current list
         } else if (requestCode == CALL_LOA_VIEW && resultCode == RESULT_OK) {
             if (NetworkTest.isOnline(context)) {
                 databaseHandler.dropLoa();
@@ -213,7 +224,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @Override
     public void onErrorLoaListener(String message) {
-         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override
@@ -233,7 +244,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @Override
     public void onErrorFetchingDoctorCreds(String message) {
-     //   alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
+        //   alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override
@@ -252,6 +263,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
         arrayMASTERList.addAll(arrayList);
         adapter.notifyDataSetChanged();
+        implement.updateUIList(rv_loa_request, tv_list, arrayList);
     }
 
 

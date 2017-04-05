@@ -7,8 +7,18 @@
 
     tools:context="v2.fragment_loaRequest">
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_list"
+        android:textSize="@dimen/text_small"
+        android:gravity="center"
+        android:text="@string/no_loa_request"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
     <android.support.v7.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/rv_loa_request"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -46,7 +56,6 @@
     </LinearLayout>
 
     <ProgressBar
-
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_centerVertical="true"
