@@ -61,8 +61,8 @@
                     android:layout_margin="@dimen/sub_margin"
                     android:gravity="center"
                     android:padding="@dimen/sub_margin"
-                    fancy:fb_defaultColor="@color/colorPrimaryLight"
-                    fancy:fb_focusColor="@color/colorPrimaryDark"
+                    fancy:fb_defaultColor="@color/BLACK"
+                    fancy:fb_focusColor="@color/BLACK"
                     fancy:fb_text="Proceed"
                     fancy:fb_textSize="@dimen/text_main" />
 
@@ -74,8 +74,8 @@
                     android:layout_margin="@dimen/sub_margin"
                     android:gravity="center"
                     android:padding="@dimen/sub_margin"
-                    fancy:fb_defaultColor="@color/colorPrimaryLight"
-                    fancy:fb_focusColor="@color/colorPrimaryDark"
+                    fancy:fb_defaultColor="@color/BLACK"
+                    fancy:fb_focusColor="@color/BLACK"
                     fancy:fb_text="Cancel"
                     fancy:fb_textSize="@dimen/text_main" />
 
