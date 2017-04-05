@@ -81,6 +81,7 @@ public class AlertDialogCustom {
     public String end_must_greater = "End date should be greater than Start Date.";
     public String start_must_lesser = "Start Date should be lesser than End Date.";
     public String data_not_avilable = "List is not available";
+    public  String successfully_updated = "Setting is successfully updated.";
     TextView tv_message, tv_title;
     CircleImageView ci_error_image;
     Button btn_accept, btn_cancel;

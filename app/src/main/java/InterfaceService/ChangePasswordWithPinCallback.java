@@ -43,4 +43,8 @@ public interface ChangePasswordWithPinCallback {
     void testInputPinListener();
 
     void testInputPinLengthListener();
+
+    void onErrorDisclaimer(String message);
+
+    void onSuccessDisclaimer();
 }

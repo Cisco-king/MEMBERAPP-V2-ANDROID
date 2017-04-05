@@ -26,6 +26,7 @@ import model.ReturnChangePassword;
 import utilities.AlertDialogCustom;
 import utilities.ErrorMessage;
 import utilities.Loader;
+import utilities.NetworkTest;
 import utilities.SharedPref;
 
 public class fragment_changePassword extends Fragment implements ChangePasswordWithPinCallback {
@@ -68,6 +69,9 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     @BindView(R.id.et_retypePass)
     EditText et_retypePass;
 
+    @BindView(R.id.btn_disclamer)
+    Button btn_disclamer;
+
 
     Loader loader;
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
@@ -102,7 +106,7 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
 
     }
 
-    @OnClick({R.id.btn_changePin_new, R.id.btn_changePin, R.id.btn_changePassword})
+    @OnClick({R.id.btn_disclamer, R.id.btn_changePin_new, R.id.btn_changePin, R.id.btn_changePassword})
     public void onClick(View view) {
 
         switch (view.getId()) {
@@ -118,6 +122,16 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
 
             case R.id.btn_changePassword:
                 implement.testChangePassword(et_emailAdd, et_newPass, et_oldPass, et_retypePass);
+                break;
+
+            case R.id.btn_disclamer:
+                if (NetworkTest.isOnline(context)) {
+                    loader.startLad();
+                    loader.setMessage("Updating...");
+                    implement.setDisclaimer(SharedPref.getStringValue(SharedPref.USER,
+                            SharedPref.MEMBERCODE, context), callback);
+                } else
+                    alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.NO_Internet, 1);
                 break;
 
         }
@@ -238,5 +252,18 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     @Override
     public void testInputPinLengthListener() {
         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.PIN_RETYPE_LENGTH_message, 1);
+    }
+
+    @Override
+    public void onErrorDisclaimer(String message) {
+        loader.stopLoad();
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
+    }
+
+    @Override
+    public void onSuccessDisclaimer() {
+        loader.stopLoad();
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.successfully_updated, 1);
+
     }
 }

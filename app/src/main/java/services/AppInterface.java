@@ -73,8 +73,8 @@ public interface AppInterface {
     @Multipart
     @POST("uploadpicture")
     Observable<ResponseBody> upload(@Part("file\"; filename=\"image.png\"") RequestBody file,
-                                    @Part("memCode") RequestBody memCode ,
-                                    @Part("appUsername") RequestBody appUsername ,
+                                    @Part("memCode") RequestBody memCode,
+                                    @Part("appUsername") RequestBody appUsername,
                                     @Part("userType") RequestBody userType);
 
 
@@ -144,5 +144,9 @@ public interface AppInterface {
 
     @POST("/coordinator/v2/approveLOA")
     Observable<Confirm> confirmLoaConsult(@Query("batchCode") String batchCode);
+
+    @POST("/coordinator/v2/updateHasDisclaimerByMemberCode")
+    Observable<ResponseBody> setDisclaimer(@Query("memberCode") String memberCode,
+                                           @Query("hasDisclaimer") String hasDisclaimer);
 
 }

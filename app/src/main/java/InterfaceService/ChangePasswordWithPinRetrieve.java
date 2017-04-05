@@ -16,6 +16,7 @@ import model.Pin;
 import model.Pinned;
 import model.ReturnChangePassword;
 import model.UpdatePin;
+import okhttp3.ResponseBody;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -26,8 +27,6 @@ import utilities.ErrorMessage;
 import utilities.NetworkTest;
 import utilities.PasswordTester;
 import utilities.SharedPref;
-
-import static java.security.AccessController.getContext;
 
 /**
  * Created by mpx-pawpaw on 2/6/17.
@@ -304,5 +303,31 @@ public class ChangePasswordWithPinRetrieve {
         SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, "TRUE", context);
         setVisibility(cv_new, cv_old, tv_current_pin);
 
+    }
+
+    public void setDisclaimer(String memberCode, final ChangePasswordWithPinCallback callback) {
+
+        AppInterface appInterface;
+        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+        appInterface.setDisclaimer(memberCode, "0").
+                subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onErrorDisclaimer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        callback.onSuccessDisclaimer();
+                    }
+                });
     }
 }
