@@ -263,7 +263,7 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     @Override
     public void onSuccessDisclaimer() {
         loader.stopLoad();
-        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.successfully_updated, 1);
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.successfully_updated, 2);
 
     }
 }
