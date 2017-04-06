@@ -2,7 +2,10 @@ package v2;
 
 import android.content.Context;
 import android.content.Intent;
+
 import com.medicard.member.R;
+import com.medicard.member.SignInActivity;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -82,6 +85,8 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     private String sort_by = "";
     private String room_number = "";
 
+    private String DERMATOLOGY = "DERMATOLOGY";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,7 +153,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
             @Override
             public void afterTextChanged(Editable s) {
-                getSearchDoctor(String.valueOf(s), selectedSpec, sort_by , room_number);
+                getSearchDoctor(String.valueOf(s), selectedSpec, sort_by, room_number);
                 search_string = String.valueOf(s);
             }
         });
@@ -172,7 +177,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
         }
     }
 
-    private void getSearchDoctor(String editable, ArrayList<SpecsAdapter> selectedSpec, String sort_by ,String room_number) {
+    private void getSearchDoctor(String editable, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number) {
 
 
         array.clear();
@@ -206,7 +211,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
             search_string = data.getStringExtra(Constant.SEARCH_STRING);
             sort_by = data.getStringExtra(Constant.SORT_BY);
             room_number = data.getStringExtra(Constant.ROOM_NUMBER);
-            getSearchDoctor(search_string, selectedSpec, sort_by , room_number);
+            getSearchDoctor(search_string, selectedSpec, sort_by, room_number);
             implement.setSearchStringtoUI(search_string, ed_searchDoctor);
         }
     }
@@ -259,7 +264,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     @Override
     public void onSuccess(Doctors doctors) {
         loader.stopLoad();
-        getSearchDoctor("", selectedSpec, sort_by , "");
+        getSearchDoctor("", selectedSpec, sort_by, "");
     }
 
     @Override
@@ -275,11 +280,13 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     }
 
 
-
-
     @Override
     public void onClickListener(int position) {
-        gotoNextActivity(position);
+        if (array.get(position).getSpecDesc().equals(DERMATOLOGY))
+            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.spec_not_good, 1);
+        else
+            gotoNextActivity(position);
+
     }
 
 
