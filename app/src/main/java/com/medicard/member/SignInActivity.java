@@ -3,8 +3,11 @@ package com.medicard.member;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+
 import com.medicard.member.ChangePassword.ChangePasswordActivity;
+
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -35,14 +38,16 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
+import utilities.AccessGooglePlay;
 import utilities.AlertDialogCustom;
 import utilities.ErrorMessage;
 import utilities.Permission;
 import utilities.SharedPref;
 import utilities.NetworkTest;
+import utilities.UpdateCaller;
 
 
-public class SignInActivity extends AppCompatActivity implements View.OnClickListener, SignInCallback {
+public class SignInActivity extends AppCompatActivity implements View.OnClickListener, SignInCallback, UpdateCaller.DialogUpdateInterface {
     Context context;
     Button btn_signUp;
     Button btn_signIn;
@@ -67,6 +72,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     String getUsername;
     String getPassword;
     String forced_Change;
+    String username, password;
+    SignInDetails signInDetails;
+
+    UpdateCaller.DialogUpdateInterface callbackDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +83,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_sign_in);
         context = this;
         callback = this;
+        callbackDialog = this;
         implement = new SignInRetrieve(context, callback);
 
         btn_signIn = (Button) findViewById(R.id.btn_signIn);
@@ -97,15 +107,16 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    public void signIn(final String username, final String password) {
+    public void signIn(final String getUsername, final String getPassword) {
         pd.show();
 
 
         s.setStringValue(s.USER, s.USERNAME, username, context);
 
         LogIn logIn = new LogIn();
-        logIn.setUsername(username);
-        logIn.setPassword(password);
+        logIn.setUsername(getUsername);
+        logIn.setPassword(getPassword);
+        logIn.setVersionNo(BuildConfig.VERSION_NAME);
         Gson gson = new Gson();
         Log.d("JSON", gson.toJson(logIn));
         AppInterface appInterface;
@@ -172,35 +183,51 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                             pd.dismiss();
 
-                        } else {
+                        } else if (responseBody.getResponseCode().equals("200")) {
 
-                            pd.setMessage("Updating Hospitals...");
-                            getHospitalList(responseBody, username, password);
+                            signInDetails = responseBody;
+                            username = getUsername;
+                            password = getPassword;
 
-                            memCode = responseBody.getUserAccount().getMEM_CODE();
+                            signInCreds(signInDetails);
+                        } else if (responseBody.getResponseCode().equals("280")) {
+                            signInDetails = responseBody;
+                            username = getUsername;
+                            password = getPassword;
+                            UpdateCaller.showUpdateCall(context, "Optional Update Available", false, callbackDialog);
+                        } else if (responseBody.getResponseCode().equals("290")) {
+                            UpdateCaller.showUpdateCall(context, "Update Required", true, callbackDialog);
+                        } else
+                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(""), 1);
 
-                            name = responseBody.getUserAccount().getMEM_FNAME() + " " + responseBody.getUserAccount().getMEM_LNAME();
-                            getUsername = username;
-                            getPassword = password;
-                            forced_Change = responseBody.getUserAccount().getFORCE_CHANGE_PASSWORD();
-                            try {
-
-                                String test = responseBody.getUserAccount().getPIN();
-                                Log.d("PIN", test);
-                                SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, "TRUE", context);
-                                SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN, responseBody.getUserAccount().getPIN(), context);
-
-                            } catch (Exception e) {
-
-                                SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, "FALSE", context);
-                            }
-                        }
 
                         Log.d("PIN", SharedPref.getStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, context));
                     }
                 });
     }
 
+    private void signInCreds(SignInDetails responseBody) {
+        pd.setMessage("Updating Hospitals...");
+        getHospitalList(responseBody, username, password);
+
+        memCode = responseBody.getUserAccount().getMEM_CODE();
+
+        name = responseBody.getUserAccount().getMEM_FNAME() + " " + responseBody.getUserAccount().getMEM_LNAME();
+        getUsername = username;
+        getPassword = password;
+        forced_Change = responseBody.getUserAccount().getFORCE_CHANGE_PASSWORD();
+        try {
+
+            String test = responseBody.getUserAccount().getPIN();
+            Log.d("PIN", test);
+            SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, "TRUE", context);
+            SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN, responseBody.getUserAccount().getPIN(), context);
+
+        } catch (Exception e) {
+
+            SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, "FALSE", context);
+        }
+    }
 
 
     private void getHospitalList(final SignInDetails responseBody, final String username, final String password) {
@@ -246,7 +273,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     public void onNext(Hospital hospital) {
                         Log.d("Hospital", hospital.toString());
 
-                        setToDatabase(hospital);
+                        setToDatabase(hospital, responseBody);
 
                     }
                 });
@@ -254,7 +281,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void setToDatabase(final Hospital hospital ) {
+    private void setToDatabase(final Hospital hospital, final SignInDetails responseBody) {
 
 
         AsyncTask setHosp = new AsyncTask() {
@@ -294,7 +321,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     implement.getProvince();
                 } else {
 
-                    gotoNavigationTest();
+                    gotoNavigationTest(responseBody);
 
 
                 }
@@ -309,20 +336,22 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void gotoNavigationTest() {
+    private void gotoNavigationTest(SignInDetails responseBody) {
 
-        SharedPref sharedPref = new SharedPref();
-        sharedPref.setStringValue(sharedPref.USER, sharedPref.MEMBERCODE, memCode, context);
-        sharedPref.setStringValue(sharedPref.USER, sharedPref.NAME, name, context);
-        sharedPref.setStringValue(sharedPref.USER, sharedPref.masterUSERNAME, getUsername, context);
-        sharedPref.setStringValue(sharedPref.USER, sharedPref.masterPASSWORD, getPassword, context);
-        sharedPref.setStringValue(sharedPref.USER, sharedPref.FORCE_CHANGE_PASSWORD, forced_Change, context);
+
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.MEMBERCODE, memCode, context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.NAME, name, context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.masterUSERNAME, getUsername, context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.masterPASSWORD, getPassword, context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.FORCE_CHANGE_PASSWORD, forced_Change, context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.DISCLAIMER, responseBody.getUserAccount().getHAS_DISCLAIMER(), context);
 
         SharedPref.setStringValue(SharedPref.USER, SharedPref.FIRST_TIME, "FALSE", context);
-        Log.i("FORCE CHANGE PASSWORD: ", sharedPref.getStringValue(sharedPref.USER, sharedPref.FORCE_CHANGE_PASSWORD, context));
+        Log.i("FORCE CHANGE PASSWORD: ", SharedPref.getStringValue(SharedPref.USER, SharedPref.FORCE_CHANGE_PASSWORD, context));
+        Log.i("get_has_disclaimer: ", responseBody.getUserAccount().getHAS_DISCLAIMER());
 
 
-        if (sharedPref.getStringValue(sharedPref.USER, sharedPref.FORCE_CHANGE_PASSWORD, context).equals("1")) {
+        if (SharedPref.getStringValue(SharedPref.USER, SharedPref.FORCE_CHANGE_PASSWORD, context).equals("1")) {
 
             startActivity(new Intent(context, ChangePasswordActivity.class));
             finish();
@@ -427,6 +456,16 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onSpecsToDBListener() {
-        gotoNavigationTest();
+        gotoNavigationTest(signInDetails);
+    }
+
+    @Override
+    public void updateRequired() {
+        AccessGooglePlay.openAppInGooglePlay(context);
+    }
+
+    @Override
+    public void updateNotRequired() {
+        signInCreds(signInDetails);
     }
 }

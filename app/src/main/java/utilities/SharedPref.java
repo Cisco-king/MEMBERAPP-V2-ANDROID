@@ -14,10 +14,12 @@ public class SharedPref {
     public static String PIN = "PIN" ;
     public static String USER = "USER";
     public static String MEMBERCODE = "MEMBERCODE";
-    public String NAME = "NAME";
+    public static String NAME = "NAME";
 
     public static String FORCE_CHANGE_PASSWORD = "FORCE_CHANGE_PASSWORD";
     public static String USERNAME = "USERNAME";
+
+    public static String DISCLAIMER = "DISCLAIMER";
 
     public static String YEAR = "YEAR";
     public static String DAY = "DAY";

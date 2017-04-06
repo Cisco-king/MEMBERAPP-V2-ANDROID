@@ -2,8 +2,11 @@ package com.medicard.member.SplashScreen;
 
 import android.content.Context;
 import android.content.Intent;
+
+import com.medicard.member.BuildConfig;
 import com.medicard.member.ChangePassword.ChangePasswordActivity;
 import com.medicard.member.NavigationActivity;
+
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -70,6 +73,7 @@ public class SplashScreenRetrieve {
         LogIn logIn = new LogIn();
         logIn.setUsername(username);
         logIn.setPassword(password);
+        logIn.setVersionNo(BuildConfig.VERSION_NAME);
         Gson gson = new Gson();
         Log.d("JSON", gson.toJson(logIn));
         AppInterface appInterface;
@@ -117,7 +121,7 @@ public class SplashScreenRetrieve {
     public void saveData(SignInDetails responseBody, String username, String password) {
 
 
-        Log.i("RESPONSE", responseBody.getResponseCode());
+        //    Log.i("RESPONSE", responseBody.getResponseCode());
 
         SharedPref.setStringValue(SharedPref.USER, SharedPref.FORCE_CHANGE_PASSWORD, responseBody.getUserAccount().getFORCE_CHANGE_PASSWORD(), context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.masterUSERNAME, username, context);
@@ -136,7 +140,7 @@ public class SplashScreenRetrieve {
         try {
 
             String test = responseBody.getUserAccount().getPIN();
-            Log.d("PIN", test);
+            //  Log.d("PIN", test);
             SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, "TRUE", context);
 
         } catch (Exception e) {
@@ -144,7 +148,7 @@ public class SplashScreenRetrieve {
             SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, "FALSE", context);
         }
 
-        Log.d("PIN", SharedPref.getStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, context));
+        //  Log.d("PIN", SharedPref.getStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, context));
 
 
     }

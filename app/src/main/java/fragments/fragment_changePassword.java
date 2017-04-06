@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.medicard.member.R;
@@ -21,6 +22,7 @@ import InterfaceService.ChangePasswordWithPinRetrieve;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import model.Disclaimer;
 import model.Pinned;
 import model.ReturnChangePassword;
 import utilities.AlertDialogCustom;
@@ -72,6 +74,9 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     @BindView(R.id.btn_disclamer)
     Button btn_disclamer;
 
+    @BindView(R.id.pd_disclaimer)
+    ProgressBar pb_disclaimer;
+
 
     Loader loader;
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
@@ -102,6 +107,10 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
         implement.setVisibility(cv_new, cv_old, tv_current_pin);
 
 
+        if (NetworkTest.isOnline(getContext()))
+            implement.getDisclaimer(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context), callback);
+
+        implement.setDisclaimerUI(false, pb_disclaimer, btn_disclamer);
         return view;
 
     }
@@ -264,6 +273,28 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     public void onSuccessDisclaimer() {
         loader.stopLoad();
         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.successfully_updated, 2);
+        implement.setDisclaimerStatus(btn_disclamer, "0" , "Allowed");
+    }
 
+    @Override
+    public void onErrorFetchDisclaimer(String message) {
+        implement.setDisclaimerUI(true, pb_disclaimer, btn_disclamer);
+        implement.setDisclaimerStatus(btn_disclamer, "0" , "Unable to fetch status");
+    }
+
+    @Override
+    public void onSuccessFetchDisclaimer(Disclaimer responseBody) {
+
+        /**
+         *  0 means disclaimer/waiver appears
+         *  1 means disclaimer/waiver wont appear
+         */
+        implement.setDisclaimerUI(true, pb_disclaimer, btn_disclamer);
+
+        if (responseBody.getHasDisclaimer().equals("1")) {
+            implement.setDisclaimerStatus(btn_disclamer, "1" , "Allow");
+        } else {
+            implement.setDisclaimerStatus(btn_disclamer, "0" , "Allowed");
+        }
     }
 }

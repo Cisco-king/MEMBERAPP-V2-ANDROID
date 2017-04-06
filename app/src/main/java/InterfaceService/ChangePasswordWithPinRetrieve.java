@@ -3,15 +3,20 @@ package InterfaceService;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.medicard.member.R;
 
 import model.ChangePassword;
+import model.Disclaimer;
 import model.Pin;
 import model.Pinned;
 import model.ReturnChangePassword;
@@ -330,4 +335,59 @@ public class ChangePasswordWithPinRetrieve {
                     }
                 });
     }
+
+    public void setDisclaimerStatus(Button btn_disclamer, String stringValue, String allow) {
+
+        if (stringValue.equals("0")) {
+            btn_disclamer.setClickable(false);
+            btn_disclamer.setBackgroundColor(ContextCompat.getColor(context, R.color.grey));
+        } else if (stringValue.equals("1")) {
+            btn_disclamer.setClickable(true);
+            btn_disclamer.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
+        }
+
+        btn_disclamer.setText(allow);
+
+    }
+
+
+    public void getDisclaimer(String stringValue, final ChangePasswordWithPinCallback callback) {
+
+        AppInterface appInterface;
+        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+        appInterface.getDisclaimer(stringValue)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Disclaimer>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onErrorFetchDisclaimer(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Disclaimer responseBody) {
+                        callback.onSuccessFetchDisclaimer(responseBody);
+                    }
+                });
+
+    }
+
+    public void setDisclaimerUI(boolean isDoneLoading, ProgressBar pb_disclaimer, Button btn_disclaimer) {
+
+        if (isDoneLoading) {
+            pb_disclaimer.setVisibility(View.GONE);
+            btn_disclaimer.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
+        } else {
+            pb_disclaimer.setVisibility(View.VISIBLE);
+            btn_disclaimer.setBackgroundColor(ContextCompat.getColor(context, R.color.grey));
+        }
+    }
+
+
 }

@@ -6,6 +6,7 @@ import model.ChangePassword;
 import model.City;
 import model.Confirm;
 import model.Consultation;
+import model.Disclaimer;
 import model.DoctorNORoom;
 import model.Doctors;
 import model.Exclusions;
@@ -149,4 +150,6 @@ public interface AppInterface {
     Observable<ResponseBody> setDisclaimer(@Query("memberCode") String memberCode,
                                            @Query("hasDisclaimer") String hasDisclaimer);
 
+    @GET("/coordinator/v2/getHasDisclaimerByMemberCode/?")
+    Observable<Disclaimer> getDisclaimer(@Query("memberCode") String memberCode);
 }

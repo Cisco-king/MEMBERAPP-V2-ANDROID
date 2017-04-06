@@ -1,5 +1,6 @@
 package InterfaceService;
 
+import model.Disclaimer;
 import model.Pinned;
 import model.ReturnChangePassword;
 
@@ -47,4 +48,8 @@ public interface ChangePasswordWithPinCallback {
     void onErrorDisclaimer(String message);
 
     void onSuccessDisclaimer();
+
+    void onErrorFetchDisclaimer(String message);
+
+    void onSuccessFetchDisclaimer(Disclaimer responseBody);
 }

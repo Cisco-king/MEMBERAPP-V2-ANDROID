@@ -5,10 +5,13 @@ package model;
  */
 
 public class LogIn {
+    private String username;
 
+    private String deviceID;
 
-    String username;
-    String password;
+    private String versionNo;
+
+    private String password;
 
     public String getUsername() {
         return username;
@@ -18,11 +21,32 @@ public class LogIn {
         this.username = username;
     }
 
+    public String getDeviceID() {
+        return deviceID;
+    }
+
+    public void setDeviceID(String deviceID) {
+        this.deviceID = deviceID;
+    }
+
+    public String getVersionNo() {
+        return versionNo;
+    }
+
+    public void setVersionNo(String versionNo) {
+        this.versionNo = versionNo;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "ClassPojo [username = " + username + ", deviceID = " + deviceID + ", versionNo = " + versionNo + ", password = " + password + "]";
     }
 }
