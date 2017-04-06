@@ -46,7 +46,7 @@ public class AlertDialogCustom {
     public String close_loa = "Are you sure you to cancel LOA request?";
     public String UsernameMinimumCharacter = "Username must contain a minimum of 3 characters.";
     public String InvalidUsername = "Username invalid. It must not contain blank spaces.";
-    public String spec_not_good = "Please proceed to Coordinator";
+    public String spec_not_good = "Please proceed to Coordinator to request for LOA.";
 
     public String successfullyAddedDep = "You have successfully added a dependent.";
     public String INVALID_PASS_USER = "You have entered an incorrect password. After 3 unsuccessful attempts your account will be locked.";
