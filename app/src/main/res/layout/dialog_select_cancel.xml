@@ -62,7 +62,9 @@
                     android:gravity="center"
                     android:padding="@dimen/sub_margin"
                     fancy:fb_defaultColor="@color/BLACK"
+
                     fancy:fb_focusColor="@color/semiDark"
+
                     fancy:fb_text="Proceed"
                     fancy:fb_textSize="@dimen/text_main" />
 
@@ -75,7 +77,9 @@
                     android:gravity="center"
                     android:padding="@dimen/sub_margin"
                     fancy:fb_defaultColor="@color/BLACK"
+
                     fancy:fb_focusColor="@color/semiDark"
+
                     fancy:fb_text="Cancel"
                     fancy:fb_textSize="@dimen/text_main" />
 
