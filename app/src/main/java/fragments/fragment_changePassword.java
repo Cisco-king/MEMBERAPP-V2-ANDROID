@@ -17,11 +17,14 @@ import android.widget.TextView;
 
 import com.medicard.member.R;
 
+import net.cachapa.expandablelayout.ExpandableLayout;
+
 import InterfaceService.ChangePasswordWithPinCallback;
 import InterfaceService.ChangePasswordWithPinRetrieve;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import mehdi.sakout.fancybuttons.FancyButton;
 import model.Disclaimer;
 import model.Pinned;
 import model.ReturnChangePassword;
@@ -77,7 +80,11 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     @BindView(R.id.pd_disclaimer)
     ProgressBar pb_disclaimer;
 
+    @BindView(R.id.expandable_layout)
+    ExpandableLayout expandable_layout;
 
+    @BindView(R.id.show_disc)
+    FancyButton show_disc;
     Loader loader;
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
 
@@ -106,6 +113,8 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
 
         implement.setVisibility(cv_new, cv_old, tv_current_pin);
 
+        expandable_layout.collapse(false);
+
 
         if (NetworkTest.isOnline(getContext()))
             implement.getDisclaimer(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context), callback);
@@ -115,7 +124,7 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
 
     }
 
-    @OnClick({R.id.btn_disclamer, R.id.btn_changePin_new, R.id.btn_changePin, R.id.btn_changePassword})
+    @OnClick({R.id.btn_disclamer, R.id.btn_changePin_new, R.id.btn_changePin, R.id.btn_changePassword, R.id.show_disc})
     public void onClick(View view) {
 
         switch (view.getId()) {
@@ -141,6 +150,18 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
                             SharedPref.MEMBERCODE, context), callback);
                 } else
                     alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.NO_Internet, 1);
+                break;
+
+            case R.id.show_disc:
+                if (expandable_layout.isExpanded()) {
+                    expandable_layout.collapse();
+                    show_disc.setText("Show Disclosure Agreement");
+                }
+                else {
+                    expandable_layout.expand();
+                    show_disc.setText("Close Disclosure Agreement");
+                }
+
                 break;
 
         }
@@ -273,28 +294,21 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     public void onSuccessDisclaimer() {
         loader.stopLoad();
         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.successfully_updated, 2);
-        implement.setDisclaimerStatus(btn_disclamer, "0" , "Allowed");
+        implement.setDisclaimerStatus(btn_disclamer, "0", getString(R.string.show_waiver));
     }
 
     @Override
     public void onErrorFetchDisclaimer(String message) {
         implement.setDisclaimerUI(true, pb_disclaimer, btn_disclamer);
-        implement.setDisclaimerStatus(btn_disclamer, "0" , "Unable to fetch status");
+        implement.setDisclaimerStatus(btn_disclamer, "0", "Unable to fetch status");
     }
 
     @Override
     public void onSuccessFetchDisclaimer(Disclaimer responseBody) {
 
-        /**
-         *  0 means disclaimer/waiver appears
-         *  1 means disclaimer/waiver wont appear
-         */
         implement.setDisclaimerUI(true, pb_disclaimer, btn_disclamer);
 
-        if (responseBody.getHasDisclaimer().equals("1")) {
-            implement.setDisclaimerStatus(btn_disclamer, "1" , "Allow");
-        } else {
-            implement.setDisclaimerStatus(btn_disclamer, "0" , "Allowed");
-        }
+        implement.setDisclaimerStatus(btn_disclamer, responseBody.getHasDisclaimer(), getString(R.string.disclaimer_btn));
+
     }
 }

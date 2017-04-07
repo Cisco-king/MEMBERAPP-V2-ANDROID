@@ -314,8 +314,8 @@ public class ChangePasswordWithPinRetrieve {
 
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-        appInterface.setDisclaimer(memberCode, "0").
-                subscribeOn(Schedulers.io())
+        appInterface.setDisclaimer(memberCode, "0")
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<ResponseBody>() {
@@ -336,17 +336,26 @@ public class ChangePasswordWithPinRetrieve {
                 });
     }
 
-    public void setDisclaimerStatus(Button btn_disclamer, String stringValue, String allow) {
+    public void setDisclaimerStatus(Button btn_disclaimer, String stringValue, String allow) {
+
+
+        /**
+         Member Options = 1 [ Clickable to turn off ] Do not show waiver.
+
+         Member Options = 0 [ Not clickable ]
+         Show waiver
+         */
+
 
         if (stringValue.equals("0")) {
-            btn_disclamer.setClickable(false);
-            btn_disclamer.setBackgroundColor(ContextCompat.getColor(context, R.color.grey));
+            btn_disclaimer.setClickable(false);
+            btn_disclaimer.setBackgroundColor(ContextCompat.getColor(context, R.color.grey));
         } else if (stringValue.equals("1")) {
-            btn_disclamer.setClickable(true);
-            btn_disclamer.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
+            btn_disclaimer.setClickable(true);
+            btn_disclaimer.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
         }
 
-        btn_disclamer.setText(allow);
+        btn_disclaimer.setText(allow);
 
     }
 

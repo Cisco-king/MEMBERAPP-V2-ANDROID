@@ -232,5 +232,15 @@
     <string name="are_you_sure_you_want">Are you sure you want to cancel the LOA Request?</string>
     <string name="there_is_an_existing_request_with_the_same_details_submitting_this_may_cause_duplicate_requests_and_may_affect_your_existing_utilization_limits_are_you_sure_you_want_to_submit_this_request">There is an existing request with the same details. Submitting this may cause duplicate requests and may affect your existing utilization limits. Are you sure you want to submit this request?</string>
     <string name="no_loa_request">No LOA Request</string>
+    <string name="show_waiver">Show waiver</string>
+    <string name="dont_show_waiver">Dont Show waiver</string>
+    <string name="disclaimer_btn">I disagree with the conditions</string>
+  <string name="waiver">Consent is hereby given by the patient or by the next of kin (if patient cannot sign) to the disclosure and processing of the
+    patient\'s medical/health information by MediCard and its representatives, it\'s Medical Service Units/Teams and
+    it\'s Accredited Hospitals/Clinics which is determinative for the assessment of the treatment of his
+    or her illness. MediCard and it\'s representatives are also free to disclose the said information including utilization data
+    of the patient to it\'s concerned Company upon demand of the latter for such other legal purpose it may have
+    including for the proper administration of the Company\'s health benefits program. MediCard and it\'s representatives,
+     it\'s Medical Service Units/Teams and its Accredited Hospital/Clinics are hereby released from liability by reason of such disclosure.</string>
 
 </resources>

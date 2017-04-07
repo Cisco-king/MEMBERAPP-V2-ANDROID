@@ -111,7 +111,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         pd.show();
 
 
-        s.setStringValue(s.USER, s.USERNAME, username, context);
+        s.setStringValue(s.USER, s.USERNAME, getUsername, context);
 
         LogIn logIn = new LogIn();
         logIn.setUsername(getUsername);

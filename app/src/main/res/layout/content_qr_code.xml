@@ -28,7 +28,7 @@
                 android:id="@+id/img_qrcode"
                 android:layout_width="@dimen/qrcode_width"
                 android:layout_height="@dimen/qrcode_height"
-                android:src="@drawable/icon" />
+                android:src="@drawable/icon_launcher" />
 
             <TextView
                 android:id="@+id/tv_name"
