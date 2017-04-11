@@ -88,8 +88,22 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
+        tv_header.setText("My Account");
+        if (fragment.equals(fragment_memberInfo.class)) {
+            if (drawer.isDrawerOpen(Gravity.RIGHT)) {
+                drawer.closeDrawer(Gravity.RIGHT);
+            }
+        } else {
+            if (drawer.isDrawerOpen(Gravity.RIGHT)) {
+                drawer.closeDrawer(Gravity.RIGHT);
+            }
+            fragment = null;
+            fragment = new fragment_memberInfo();
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.container_body, fragment);
+            fragmentTransaction.commit();
 
-
+        }
     }
 
     @Override
@@ -98,12 +112,16 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()) {
 
             case R.id.tv_memberInfo:
+                tv_header.setText("My Account");
                 if (fragment.equals(fragment_memberInfo.class)) {
-                    closeDrawer() ;
+                    closeDrawer();
                 } else {
-
-                    startActivity(new Intent(NavigationActivity.this, NavigationActivity.class));
-                    finish();
+                    closeDrawer();
+                    fragment = null;
+                    fragment = new fragment_memberInfo();
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.container_body, fragment);
+                    fragmentTransaction.commit();
                 }
 
                 break;
@@ -111,16 +129,15 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
             case R.id.tv_account_settings:
 
 
-
                 tv_header.setText("Account Settings");
 
                 fragment = null;
-               fragment = new fragment_changePassword();
+                fragment = new fragment_changePassword();
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_body, fragment);
                 fragmentTransaction.commit();
 
-                closeDrawer() ;
+                closeDrawer();
 
                 break;
 
@@ -146,12 +163,12 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
                         .setNegativeButton("No", null)
                         .show();
 
-                closeDrawer() ;
+                closeDrawer();
 
                 break;
 
             case R.id.btn_nav:
-                closeDrawer() ;
+                closeDrawer();
                 break;
 
 
@@ -164,12 +181,12 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
                 fragmentTransaction.replace(R.id.container_body, fragment);
                 fragmentTransaction.commit();
 
-                closeDrawer() ;
+                closeDrawer();
                 break;
         }
     }
 
-    private void closeDrawer(){
+    private void closeDrawer() {
 
         if (drawer.isDrawerOpen(Gravity.RIGHT)) {
             drawer.closeDrawer(Gravity.RIGHT);

@@ -289,5 +289,22 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
     }
 
+    @Override
+    public void onBackPressed() {
 
+//        if (!origin.equals("END")) {
+//            Intent gotoMaternity = new Intent(context, HospitalListAcitivity.class);
+//            gotoMaternity.putExtra(RequestButtonsActivity.ORIGIN, origin);
+//            gotoMaternity.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
+//            gotoMaternity.putExtra(Constant.GENDER, getIntent().getExtras().getString(Constant.GENDER));
+//            gotoMaternity.putExtra(Constant.NAME, getIntent().getExtras().getString(Constant.NAME));
+//            gotoMaternity.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
+//            gotoMaternity.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
+//            gotoMaternity.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
+//            startActivity(gotoMaternity);
+//            finish();
+//        }
+
+
+    }
 }

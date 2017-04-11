@@ -127,12 +127,13 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         databaseHandler.dropLoa();
 
         if (NetworkTest.isOnline(context)) {
-            implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context));
+            if (implement != null)
+                implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context));
         } else
             alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.NO_Internet, 1);
 
-
-        implement.UIUpdateShowLoad(true, pb, rv_loa_request, btn_sort);
+        if (implement != null)
+            implement.UIUpdateShowLoad(true, pb, rv_loa_request, btn_sort);
     }
 
 
@@ -165,36 +166,38 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CALL_SORT_LOA && resultCode == RESULT_OK) {
+            if (implement != null) {
+                sort_by = data.getStringExtra(Constant.SORT_BY);
+                status_sort = data.getStringExtra(Constant.STATUS);
+                service_type_sort = data.getStringExtra(Constant.SERVICE_TYPE);
+                date_end_sort = data.getStringExtra(Constant.SELECTED_END_DATE);
+                date_start_sort = data.getStringExtra(Constant.SELECTED_START_DATE);
+                ArrayList<SimpleData> temp = data.getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
+                implement.replactDataArray(hospital_sort, temp);
+                temp = data.getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
+                implement.replactDataArray(doctor_sort, temp);
+                seachedData = data.getStringExtra(Constant.SEARCHED_DATA);
 
-            sort_by = data.getStringExtra(Constant.SORT_BY);
-            status_sort = data.getStringExtra(Constant.STATUS);
-            service_type_sort = data.getStringExtra(Constant.SERVICE_TYPE);
-            date_end_sort = data.getStringExtra(Constant.SELECTED_END_DATE);
-            date_start_sort = data.getStringExtra(Constant.SELECTED_START_DATE);
-            ArrayList<SimpleData> temp = data.getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
-            implement.replactDataArray(hospital_sort, temp);
-            temp = data.getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
-            implement.replactDataArray(doctor_sort, temp);
-            seachedData = data.getStringExtra(Constant.SEARCHED_DATA);
-
-            implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
-                    service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort),
-                    DateConverter.converttoyyyymmddEnd(date_end_sort), doctor_sort, hospital_sort, seachedData);
-            adapter.notifyDataSetChanged();
+                implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
+                        service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort),
+                        DateConverter.converttoyyyymmddEnd(date_end_sort), doctor_sort, hospital_sort, seachedData);
+                adapter.notifyDataSetChanged();
 
 
-            implement.updateUIList(rv_loa_request, tv_list, arrayList);
-
+                implement.updateUIList(rv_loa_request, tv_list, arrayList);
+            }
             //used if user cancelled a request to update current list
         } else if (requestCode == CALL_LOA_VIEW && resultCode == RESULT_OK) {
             if (NetworkTest.isOnline(context)) {
-                databaseHandler.dropLoa();
-                implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context));
+                if (implement != null) {
+                    databaseHandler.dropLoa();
+                    implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context));
+                }
             } else
                 alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.NO_Internet, 1);
 
-
-            implement.UIUpdateShowLoad(true, pb, rv_loa_request, btn_sort);
+            if (implement != null)
+                implement.UIUpdateShowLoad(true, pb, rv_loa_request, btn_sort);
 
         }
 
@@ -230,15 +233,17 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     @Override
     public void onSuccessLoaListener(Loa loa) {
         Log.d("LOA_SUCCESS", loa.toString());
-
-        implement.getData(loa, databaseHandler);
+        if (implement != null)
+            implement.getData(loa, databaseHandler);
     }
 
     @Override
     public void onDbLoaSuccessListener() {
-        implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
-                service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
-        implement.getDoctorCreds(arrayList, databaseHandler);
+        if (implement != null) {
+            implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
+                    service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
+            implement.getDoctorCreds(arrayList, databaseHandler);
+        }
     }
 
 
@@ -249,22 +254,29 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @Override
     public void doneFetchingDoctorData() {
-        implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
-                service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
-        implement.updateHospitals(arrayList, databaseHandler);
+        if (implement != null) {
+            implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
+                    service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
+            implement.updateHospitals(arrayList, databaseHandler);
+        }
     }
 
     @Override
     public void doneUpdatingHosp() {
+        if (implement != null) {
+            implement.UIUpdateShowLoad(false, pb, rv_loa_request, btn_sort);
+            implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
+                    service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
 
-        implement.UIUpdateShowLoad(false, pb, rv_loa_request, btn_sort);
-        implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
-                service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
-
-        arrayMASTERList.addAll(arrayList);
-        adapter.notifyDataSetChanged();
-        implement.updateUIList(rv_loa_request, tv_list, arrayList);
+            arrayMASTERList.addAll(arrayList);
+            adapter.notifyDataSetChanged();
+            implement.updateUIList(rv_loa_request, tv_list, arrayList);
+        }
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        implement = null;
+    }
 }

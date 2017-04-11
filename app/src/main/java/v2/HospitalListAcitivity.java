@@ -219,4 +219,9 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
         retrieveHosp("");
     }
 
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

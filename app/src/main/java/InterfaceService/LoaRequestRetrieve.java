@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.medicard.member.R;
 
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -85,6 +86,9 @@ public class LoaRequestRetrieve {
                         callback.onSuccessLoaListener(loa);
                     }
                 });
+
+
+
     }
 
     public void getData(Loa loa, DatabaseHandler databaseHandler) {
@@ -221,6 +225,7 @@ public class LoaRequestRetrieve {
 
     public void updateHospitals(final ArrayList<LoaFetch> arrayList, final DatabaseHandler databaseHandler) {
         AsyncTask asyncTask = new AsyncTask() {
+            @Nullable
             @Override
             protected Object doInBackground(Object[] objects) {
                 for (int x = 0; x < arrayList.size(); x++) {
@@ -286,6 +291,8 @@ public class LoaRequestRetrieve {
             btn_sort.setVisibility(View.VISIBLE);
         }
     }
+
+
 
 
 //    public void testDataDownLoadRequirement(ArrayList<LoaList> arrayListfromDB, DatabaseHandler databaseHandler) {
