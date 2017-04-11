@@ -156,8 +156,7 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
                 if (expandable_layout.isExpanded()) {
                     expandable_layout.collapse();
                     show_disc.setText("Show Disclosure Agreement");
-                }
-                else {
+                } else {
                     expandable_layout.expand();
                     show_disc.setText("Close Disclosure Agreement");
                 }
@@ -294,7 +293,7 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     public void onSuccessDisclaimer() {
         loader.stopLoad();
         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.successfully_updated, 2);
-        implement.setDisclaimerStatus(btn_disclamer, "0", getString(R.string.show_waiver));
+        implement.setDisclaimerStatus(btn_disclamer, "0", getString(R.string.disclaimer_btn));
     }
 
     @Override
