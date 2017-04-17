@@ -17,7 +17,8 @@ import utilities.AlertDialogCustom;
 import utilities.SharedPref;
 import utilities.UpdateCaller;
 
-public class SplashScreenActivity extends AppCompatActivity implements SplashScreenInterface, UpdateCaller.DialogUpdateInterface {
+public class SplashScreenActivity extends AppCompatActivity
+        implements SplashScreenInterface, UpdateCaller.DialogUpdateInterface {
 
     Context context;
     final String TAG = "SPLASHSCREEN";

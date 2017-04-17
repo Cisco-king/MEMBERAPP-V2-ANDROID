@@ -5,8 +5,8 @@
     android:id="@+id/coords"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
     android:background="@android:color/white"
+    android:gravity="center_vertical"
     tools:context="com.medicard.member.SignInActivity">
 
     <FrameLayout
@@ -31,27 +31,27 @@
                 android:src="@drawable/ic_logo_verticals" />
 
             <EditText
-                android:padding="@dimen/sub_margin"
-                android:background="@drawable/button_border"
                 android:id="@+id/ed_userid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin"
+                android:background="@drawable/button_border"
                 android:hint="@string/ID_number"
                 android:inputType="text"
+                android:padding="@dimen/sub_margin"
                 android:textColorHighlight="@color/colorAccent"
                 android:textSize="@dimen/text_small" />
 
 
             <EditText
-                android:padding="@dimen/sub_margin"
-                android:background="@drawable/button_border"
                 android:id="@+id/ed_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin"
+                android:background="@drawable/button_border"
                 android:hint="@string/password"
                 android:inputType="textPassword"
+                android:padding="@dimen/sub_margin"
                 android:textColorHighlight="@color/colorAccent"
                 android:textSize="@dimen/text_small" />
 

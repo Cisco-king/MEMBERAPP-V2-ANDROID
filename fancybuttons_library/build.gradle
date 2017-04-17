@@ -21,7 +21,6 @@ dependencies {
 }
 
 repositories {
-    maven { url '// ...' }
     maven { url 'https://jitpack.io' }
     jcenter()
     maven { url 'https://dl.bintray.com/drummer-aidan/maven' }

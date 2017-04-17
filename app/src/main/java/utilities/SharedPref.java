@@ -51,30 +51,22 @@ public class SharedPref {
 
 
     public void setBoolValue(String Key, boolean value, Context context) {
-
         SharedPreferences prefs = context.getSharedPreferences(Key, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("LOG", value);
         editor.commit();
-
-
     }
-
 
     public static boolean getBoolValue(String Key, Context context) {
         SharedPreferences preferences = context.getSharedPreferences(Key, Context.MODE_PRIVATE);
         return preferences.getBoolean("LOG", false);
     }
 
-
     public static void setStringValue(String Key, String specID, String value, Context context) {
-
         SharedPreferences prefs = context.getSharedPreferences(Key, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(specID, value);
         editor.commit();
-
-
     }
 
     public static String getStringValue(String Key, String specID, Context context) {

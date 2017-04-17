@@ -7,23 +7,19 @@
     tools:context="fragments.fragment_memberInfo">
 
 
-
-
-
     <android.support.v7.widget.RecyclerView
-        android:clickable="false"
         android:id="@+id/rv_memberInfo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:clickable="false" />
 
 
     <LinearLayout
-        android:orientation="horizontal"
         android:id="@+id/blackBG"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/semiDark"
-        />
+        android:orientation="horizontal" />
 
 
     <LinearLayout

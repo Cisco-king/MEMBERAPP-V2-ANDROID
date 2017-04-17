@@ -7,7 +7,6 @@ import android.content.Intent;
 import com.medicard.member.ChangePassword.ChangePasswordActivity;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +26,9 @@ import Sqlite.SetHospitalToDatabase;
 import Sqlite.SetProvinceToDatabase;
 import Sqlite.SetSpecializationTodDatabase;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import model.City;
 import model.Hospital;
 import model.LogIn;
@@ -47,14 +49,20 @@ import utilities.NetworkTest;
 import utilities.UpdateCaller;
 
 
-public class SignInActivity extends AppCompatActivity implements View.OnClickListener, SignInCallback, UpdateCaller.DialogUpdateInterface {
-    Context context;
-    Button btn_signUp;
-    Button btn_signIn;
-    EditText ed_password, ed_userid;
-    CoordinatorLayout coords;
+public class SignInActivity extends AppCompatActivity
+        implements View.OnClickListener, SignInCallback, UpdateCaller.DialogUpdateInterface {
 
-    TextView tv_forgot_password;
+    @BindView(R.id.btn_signUp) Button btn_signUp;
+    @BindView(R.id.btn_signIn) Button btn_signIn;
+
+    @BindView(R.id.ed_password) EditText ed_password;
+    @BindView(R.id.ed_userid) EditText ed_userid;
+
+    @BindView(R.id.tv_forgot_password) TextView tv_forgot_password;
+
+    @BindView(R.id.coords) CoordinatorLayout coords;
+
+    Context context;
 
     DatabaseHandler databaseHandler;
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
@@ -77,21 +85,19 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     UpdateCaller.DialogUpdateInterface callbackDialog;
 
+    private Unbinder unbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        unbinder = ButterKnife.bind(this);
+
         context = this;
         callback = this;
         callbackDialog = this;
-        implement = new SignInRetrieve(context, callback);
 
-        btn_signIn = (Button) findViewById(R.id.btn_signIn);
-        btn_signUp = (Button) findViewById(R.id.btn_signUp);
-        ed_password = (EditText) findViewById(R.id.ed_password);
-        ed_userid = (EditText) findViewById(R.id.ed_userid);
-        tv_forgot_password = (TextView) findViewById(R.id.tv_forgot_password);
-        coords = (CoordinatorLayout) findViewById(R.id.coords);
+        implement = new SignInRetrieve(context, callback);
 
         btn_signUp.setOnClickListener(this);
         btn_signIn.setOnClickListener(this);
@@ -103,8 +109,12 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
 
         permission = new Permission();
+    }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 
     public void signIn(final String getUsername, final String getPassword) {
@@ -119,8 +129,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         logIn.setVersionNo(BuildConfig.VERSION_NAME);
         Gson gson = new Gson();
         Log.d("JSON", gson.toJson(logIn));
-        AppInterface appInterface;
-        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+
+        AppInterface appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
         appInterface.logInUser(logIn)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -133,32 +143,35 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void onError(Throwable e) {
-
-
                         try {
                             Log.e(TAG, e.getMessage());
 
                             if (e.getMessage().toString().contains("HTTP 401")) {
-
-                                alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.INVALID_PASS_USER, 1);
+                                alertDialogCustom.showMe(
+                                        context,
+                                        alertDialogCustom.HOLD_ON_title,
+                                        alertDialogCustom.INVALID_PASS_USER, 1);
 
                             } else if (e.getMessage().toString().contains("HTTP 404")) {
-
-                                alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.errorNoUsername, 1);
-
+                                alertDialogCustom.showMe(
+                                        context,
+                                        alertDialogCustom.HOLD_ON_title,
+                                        alertDialogCustom.errorNoUsername, 1);
                             }
 
                             pd.dismiss();
                             ed_password.setText("");
+
                         } catch (Exception error) {
                             pd.dismiss();
 
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
+                            alertDialogCustom.showMe(
+                                    context,
+                                    alertDialogCustom.HOLD_ON_title,
+                                    ErrorMessage.setErrorMessage(e.getMessage()), 1);
 
                             Log.e("Rx_ERROR", error.getMessage());
                         }
-
-
                     }
 
                     @Override
@@ -166,20 +179,27 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         Log.d("HAHAHAHA", responseBody.toString());
 
                         if (responseBody.getResponseCode().equals("210")) {
-
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.errorNoUsername, 1);
+                            alertDialogCustom.showMe(context,
+                                    alertDialogCustom.HOLD_ON_title,
+                                    alertDialogCustom.errorNoUsername,
+                                    1);
 
                             pd.dismiss();
 
                         } else if (responseBody.getResponseCode().equals("220")) {
-
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.errorAccountLocked, 1);
+                            alertDialogCustom.showMe(
+                                    context,
+                                    alertDialogCustom.HOLD_ON_title,
+                                    alertDialogCustom.errorAccountLocked,
+                                    1);
 
                             pd.dismiss();
 
                         } else if (responseBody.getResponseCode().equals("230")) {
-
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.INVALID_PASS_USER, 1);
+                            alertDialogCustom.showMe(context,
+                                    alertDialogCustom.HOLD_ON_title,
+                                    alertDialogCustom.INVALID_PASS_USER,
+                                    1);
 
                             pd.dismiss();
 
@@ -189,24 +209,34 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             username = getUsername;
                             password = getPassword;
 
-                            signInCreds(signInDetails);
+                            signinCredential(signInDetails);
                         } else if (responseBody.getResponseCode().equals("280")) {
                             signInDetails = responseBody;
                             username = getUsername;
                             password = getPassword;
-                            UpdateCaller.showUpdateCall(context, "Optional Update Available", false, callbackDialog);
-                        } else if (responseBody.getResponseCode().equals("290")) {
-                            UpdateCaller.showUpdateCall(context, "Update Required", true, callbackDialog);
-                        } else
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(""), 1);
+                            UpdateCaller.showUpdateCall(
+                                    context,
+                                    "Optional Update Available",
+                                    false,
+                                    callbackDialog);
 
+                        } else if (responseBody.getResponseCode().equals("290")) {
+                            UpdateCaller.showUpdateCall(
+                                    context, "Update Required", true, callbackDialog);
+                        } else {
+                            alertDialogCustom.showMe(
+                                    context,
+                                    alertDialogCustom.HOLD_ON_title,
+                                    ErrorMessage.setErrorMessage(""),
+                                    1);
+                        }
 
                         Log.d("PIN", SharedPref.getStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, context));
                     }
                 });
     }
 
-    private void signInCreds(SignInDetails responseBody) {
+    private void signinCredential(SignInDetails responseBody) {
         pd.setMessage("Updating Hospitals...");
         getHospitalList(responseBody, username, password);
 
@@ -232,7 +262,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private void getHospitalList(final SignInDetails responseBody, final String username, final String password) {
 
-
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
         appInterface.getHospital()
@@ -247,10 +276,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void onError(Throwable e) {
-
-
                         try {
-
                             Log.d("ERROR_SIGN", e.getMessage());
 
                             pd.dismiss();
@@ -262,8 +288,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                             Log.e("Rx_ERROR", error.getCause().getMessage());
                             Log.d("ERROR_SIGN", e.getMessage());
-
-
                         }
 
 
@@ -466,6 +490,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void updateNotRequired() {
-        signInCreds(signInDetails);
+        signinCredential(signInDetails);
     }
 }

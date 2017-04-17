@@ -35,7 +35,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/nav_text_size"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"
@@ -50,88 +50,32 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:textStyle="bold"
                     android:id="@+id/tv_memberInfo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/sub_margin"
                     android:gravity="center_vertical"
                     android:padding="@dimen/nav_padding"
                     android:text="@string/nav_myAccount"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/nav_text_size"
-                    />
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_grey"
-                    />
+                    android:background="@color/light_grey" />
 
                 <TextView
                     android:id="@+id/tv_loa_req"
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:textStyle="bold"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/sub_margin"
                     android:gravity="center_vertical"
                     android:padding="@dimen/nav_padding"
                     android:text="@string/nav_my_loa_request"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/nav_text_size"
-                    />
-
-                <View
-
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_grey" />
-<!--
-                <TextView
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:textStyle="bold"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/nav_padding"
-                    android:text="@string/nav_dentist"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/nav_text_size"
-                    />
-
-                <View
-
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_grey" />
-
-                <TextView
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/nav_padding"
-                    android:text="@string/nav_hospital"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/nav_text_size"
-                    android:textStyle="bold" />
-
-                <View
-
-
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_grey" />
-
-                <TextView
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/nav_padding"
-                    android:text="@string/nav_doctor"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/nav_text_size"
                     android:textStyle="bold" />
 
                 <View
@@ -139,20 +83,73 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/light_grey" />
+                <!--
+                                <TextView
+                                    android:layout_marginLeft="@dimen/sub_margin"
+                                    android:textStyle="bold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:padding="@dimen/nav_padding"
+                                    android:text="@string/nav_dentist"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="@dimen/nav_text_size"
+                                    />
 
-                <TextView
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/nav_padding"
-                    android:text="@string/nav_faqs"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/nav_text_size"
-                    android:textStyle="bold" />
+                                <View
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/light_grey" />
+
+                                <TextView
+                                    android:layout_marginLeft="@dimen/sub_margin"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:padding="@dimen/nav_padding"
+                                    android:text="@string/nav_hospital"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="@dimen/nav_text_size"
+                                    android:textStyle="bold" />
+
+                                <View
 
 
-                    -->
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/light_grey" />
+
+                                <TextView
+                                    android:layout_marginLeft="@dimen/sub_margin"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:padding="@dimen/nav_padding"
+                                    android:text="@string/nav_doctor"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="@dimen/nav_text_size"
+                                    android:textStyle="bold" />
+
+                                <View
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/light_grey" />
+
+                                <TextView
+                                    android:layout_marginLeft="@dimen/sub_margin"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:padding="@dimen/nav_padding"
+                                    android:text="@string/nav_faqs"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="@dimen/nav_text_size"
+                                    android:textStyle="bold" />
+
+
+                                    -->
 
                 <View
                     android:layout_width="match_parent"
@@ -161,9 +158,9 @@
 
                 <TextView
                     android:id="@+id/tv_account_settings"
-                    android:layout_marginLeft="@dimen/sub_margin"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/sub_margin"
                     android:gravity="center_vertical"
                     android:padding="@dimen/nav_padding"
                     android:text="@string/nav_account_setting"

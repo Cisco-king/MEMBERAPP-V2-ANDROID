@@ -1,35 +1,55 @@
 package v2;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import com.medicard.member.R;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.medicard.member.R;
+
 import Sqlite.DatabaseHandler;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import constants.ParcelableObject;
 import mehdi.sakout.fancybuttons.FancyButton;
+import model.Member;
+import modules.tests.TestsActivity;
 import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.ResetDatabase;
 import utilities.SharedPref;
 
-public class RequestButtonsActivity extends AppCompatActivity implements View.OnClickListener {
+public class RequestButtonsActivity extends AppCompatActivity {
+
+    public static final String TAG =
+            RequestButtonsActivity.class.getSimpleName();
+
+    public static final String ORIGIN = "ORIGIN";
+    public static final String CONSULT = "CONSULT";
+    public static final String MATERNITY = "MATERNITY";
+    public static final String TO_DETAILS_ACT = "TO_DETAILS_ACT";
+
+    @BindView(R.id.cvConsultanty) CardView cvConsultanty;
+    @BindView(R.id.cvMaternityConsultation) CardView cvMaternityConsultation;
+    @BindView(R.id.cvTests) CardView cvTests;
+
+    @BindView(R.id.btn_back) FancyButton btn_back;
+
+    Unbinder unbinder;
+
     DatabaseHandler databaseHandler;
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
-    LinearLayout ll_consult, ll_maternity, ll_basic, ll_other;
-    FancyButton btn_back;
+
     Context context;
-    public static String ORIGIN = "ORIGIN";
-    public static String CONSULT = "CONSULT";
-    public static String MATERNITY = "MATERNITY";
-    public static String TO_DETAILS_ACT = "TO_DETAILS_ACT";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,55 +58,64 @@ public class RequestButtonsActivity extends AppCompatActivity implements View.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        unbinder = ButterKnife.bind(this);
+
         context = this;
         databaseHandler = new DatabaseHandler(context);
 
-        ll_consult = (LinearLayout) findViewById(R.id.ll_consult);
-        ll_maternity = (LinearLayout) findViewById(R.id.ll_maternity);
-        ll_basic = (LinearLayout) findViewById(R.id.ll_basic);
-        ll_other = (LinearLayout) findViewById(R.id.ll_other);
-        btn_back = (FancyButton) findViewById(R.id.btn_back);
-
-        ll_consult.setOnClickListener(this);
-        ll_maternity.setOnClickListener(this);
-        ll_basic.setOnClickListener(this);
-        ll_other.setOnClickListener(this);
-        btn_back.setOnClickListener(this);
-
-
         ResetDatabase.resetDB(context, databaseHandler);
+
+        Log.d(TAG, "gotoRequest: memberID : " + getIntent().getExtras().getString(Constant.MEMBER_ID));
     }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick(R.id.cvConsultanty)
+    public void onStartConsultanty() {
+        gotoRequest(CONSULT);
+    }
 
+    @OnClick(R.id.cvMaternityConsultation)
+    public void onStartMaternityConsultation() {
+        if (getIntent().getExtras().getString(Constant.GENDER).equals("1")) {
+            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.maternity_not_available, 1);
+        } else {
+            gotoRequest(MATERNITY);
+        }
+    }
 
-        switch (v.getId()) {
-            case R.id.ll_basic:
+    @OnClick(R.id.cvTests)
+    public void onStartTests() {
+        try {
+            Bundle bundle = getIntent().getExtras();
+            Member member = new Member.Builder()
+                    .name(bundle.getString(Constant.NAME))
+                    .memberId(bundle.getString(Constant.MEMBER_ID))
+                    .company(bundle.getString(Constant.COMPANY))
+                    .gender(bundle.getString(Constant.GENDER))
+                    .age(AgeCorrector.age(bundle.getString(Constant.GENDER)))
+                    .remarks(bundle.getString(Constant.REMARK))
+                    .build();
 
-                break;
-            case R.id.ll_maternity:
+            Intent intent = new Intent(this, TestsActivity.class);
+            intent.putExtra(ParcelableObject.MEMBER, member);
 
-                if (getIntent().getExtras().getString(Constant.GENDER).equals("1")) {
-                    alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.maternity_not_available, 1);
-                } else {
-                    gotoRequest(MATERNITY);
-                }
+            startActivity(intent);
 
-
-                break;
-            case R.id.ll_consult:
-                gotoRequest(CONSULT);
-                break;
-            case R.id.ll_other:
-
-                break;
-            case R.id.btn_back:
-                finish();
-                break;
-
+        } catch (Exception e) {
+            // do some loggable thing here
         }
 
+    }
+
+    @OnClick(R.id.btn_back)
+    public void back() {
+        finish();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 
     private void gotoRequest(String DESTINATION) {
@@ -104,4 +133,5 @@ public class RequestButtonsActivity extends AppCompatActivity implements View.On
         startActivity(gotoMaternity);
 
     }
+
 }
