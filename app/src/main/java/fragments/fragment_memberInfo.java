@@ -40,7 +40,8 @@ import utilities.ErrorMessage;
 import utilities.NetworkTest;
 import utilities.SharedPref;
 
-public class fragment_memberInfo extends Fragment implements View.OnClickListener, Animation.AnimationListener {
+public class fragment_memberInfo extends Fragment
+        implements View.OnClickListener, Animation.AnimationListener {
 
     private Boolean isFabOpen = true;
     private FloatingActionButton fab, fab1, fab2, fab3;

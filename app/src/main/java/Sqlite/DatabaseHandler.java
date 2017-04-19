@@ -1123,7 +1123,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
         ///WILDCARD AT START
-        if (selectedCity.size() == 0) {
+     //   if (selectedCity.size() == 0) {
             String sql2 = "";
             sql2 += "SELECT * FROM " + hospTable;
             sql2 += " WHERE " + hospitalName + "  LIKE '%" + s + "%' ";
@@ -1132,21 +1132,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             sql2 += " AND ( " + excluded + " = 'false' ) ";
 
             if (selectedProvince.size() >= 1) {
-
+                Log.d("testable", "getHospitalList: this method is called selectedProvince.size())");
                 for (int x = 0; x < selectedProvince.size(); x++) {
                     sql2 += " AND ";
                     sql2 += province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' ";
                 }
-
-
             }
+
             if (selectedCity.size() != 0) {
-                sql2 += " AND ";
+                Log.d("testable", "getHospitalList: this method is called selectedCity.size()");
+                sql2 += " AND (";
                 for (int x = 0; x < selectedCity.size(); x++) {
-                    sql2 += " ( " + city + " = '" + selectedCity.get(x).getCityName() + "' ) " + "  OR  ";
+                    sql2 += "   " + city + " LIKE '%" + selectedCity.get(x).getCityName() + "%'   " + "  OR  ";
                 }
                 //remove and
                 sql2 = sql2.substring(0, sql2.length() - 6);
+                sql2 += " ) ";
             }
             sql2 += " ORDER BY " + data_sort + " ASC ";
             Log.e(TAG, "sql: " + sql2);
@@ -1155,7 +1156,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Log.e(TAG, cursor.getCount() + "");
             arrayList.addAll(getHospList(cursor));
 
-        }
+     //   }
 
 //        ///WILDCARD AT END
 //        String sql3 = "";
@@ -1214,12 +1215,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         }
         if (selectedCity.size() != 0) {
-            primary += " AND ";
+            primary += " AND ( ";
             for (int x = 0; x < selectedCity.size(); x++) {
-                primary += " ( " + city + " = '" + selectedCity.get(x).getCityName() + "' ) " + "  OR  ";
+                primary += " ( " + city + " LIKE '%" + selectedCity.get(x).getCityName() + "%' ) " + "  OR  ";
             }
             //remove and
             primary = primary.substring(0, primary.length() - 6);
+            primary += ") ";
         }
         primary += " ORDER BY " + data_sort + " ASC ";
         Log.e(TAG, "sql: " + primary);
@@ -1298,5 +1300,92 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.d("ID", hospitalName);
 
     }
+
+    public HospitalList getHospitalContact(String gethospitalCode) {
+
+        Cursor cursor;
+        SQLiteDatabase database;
+        database = getReadableDatabase();
+
+        String sql = "";
+        sql += "SELECT * FROM " + hospTable;
+        sql += " WHERE " + hospitalCode + " = '"+gethospitalCode+"'";
+        Log.e(TAG, "objectName: " + sql);
+        cursor = database.rawQuery(sql, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        HospitalList hospital = new HospitalList();
+        hospital.setAlias(cursor.getString(cursor.getColumnIndex(alias)));
+        hospital.setCategory(cursor.getString(cursor.getColumnIndex(category)));
+        hospital.setCoordinator(cursor.getString(cursor.getColumnIndex(coordinator)));
+        hospital.setHospitalCode(cursor.getString(cursor.getColumnIndex(hospitalCode)));
+        hospital.setHospitalName(cursor.getString(cursor.getColumnIndex(hospitalName)));
+        hospital.setKeyword(cursor.getString(cursor.getColumnIndex(keyword)));
+        hospital.setStreetAddress(cursor.getString(cursor.getColumnIndex(streetAddress)));
+
+        hospital.setCity(cursor.getString(cursor.getColumnIndex(city)));
+        hospital.setProvince(cursor.getString(cursor.getColumnIndex(province)));
+        hospital.setRegion(cursor.getString(cursor.getColumnIndex(region)));
+        hospital.setPhoneNo(cursor.getString(cursor.getColumnIndex(phoneNo)));
+        hospital.setFaxno(cursor.getString(cursor.getColumnIndex(faxno)));
+        hospital.setContactPerson(cursor.getString(cursor.getColumnIndex(contactPerson)));
+
+
+        database.close();
+
+
+        return hospital;
+    }
+
+    public GetDoctorsToHospital findDoctoByCode(String getDoctorCode) {
+        GetDoctorsToHospital setDocs = new GetDoctorsToHospital();
+
+        Cursor cursor;
+        SQLiteDatabase database;
+        database = getReadableDatabase();
+
+        String sql = "";
+        sql += "SELECT * FROM " + doctable;
+        sql += " WHERE " + doctorCode + " = '" + getDoctorCode + "'";
+        Log.e(TAG, "objectName: " + sql);
+        cursor = database.rawQuery(sql, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        setDocs.setRegion(cursor.getString(cursor.getColumnIndex(region)));
+        setDocs.setStreetAddress(cursor.getString(cursor.getColumnIndex(streetAddress)));
+        setDocs.setSpecialRem(cursor.getString(cursor.getColumnIndex(specialRem)));
+        setDocs.setDocFname(cursor.getString(cursor.getColumnIndex(docFname)));
+        setDocs.setSpecDesc(cursor.getString(cursor.getColumnIndex(specDesc)));
+        setDocs.setHospRemarks(cursor.getString(cursor.getColumnIndex(hospRemarks)));
+        setDocs.setDoctorCode(cursor.getString(cursor.getColumnIndex(doctorCode)));
+        setDocs.setDocMname(cursor.getString(cursor.getColumnIndex(docMname)));
+        setDocs.setVat(cursor.getString(cursor.getColumnIndex(vat)));
+        setDocs.setDocLname(cursor.getString(cursor.getColumnIndex(docLname)));
+
+
+        setDocs.setWtax(cursor.getString(cursor.getColumnIndex(wtax)));
+        setDocs.setRemarks(cursor.getString(cursor.getColumnIndex(remarks)));
+        setDocs.setCity(cursor.getString(cursor.getColumnIndex(city)));
+        setDocs.setGracePeriod(cursor.getString(cursor.getColumnIndex(gracePeriod)));
+        setDocs.setPhoneNo(cursor.getString(cursor.getColumnIndex(phoneNo)));
+        setDocs.setSpecCode(cursor.getString(cursor.getColumnIndex(specCode)));
+        setDocs.setSchedule(cursor.getString(cursor.getColumnIndex(schedule)));
+        setDocs.setFaxno(cursor.getString(cursor.getColumnIndex(faxno)));
+        setDocs.setProvince(cursor.getString(cursor.getColumnIndex(province)));
+        setDocs.setHospitalCode(cursor.getString(cursor.getColumnIndex(hospitalCode)));
+        setDocs.setContactPerson(cursor.getString(cursor.getColumnIndex(contactPerson)));
+        setDocs.setRoomBoard(cursor.getString(cursor.getColumnIndex(roomBoard)));
+        setDocs.setRemarks2(cursor.getString(cursor.getColumnIndex(remarks2)));
+        setDocs.setRoom(cursor.getString(cursor.getColumnIndex(room)));
+
+        return setDocs;
+    }
+
 
 }

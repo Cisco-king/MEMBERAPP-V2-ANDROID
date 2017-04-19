@@ -208,6 +208,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         Intent gotoLoa = new Intent(context, LoaPageActivity.class);
         gotoLoa.putParcelableArrayListExtra(Constant.DATA_SEARCHED, arrayList);
         gotoLoa.putExtra(Constant.POSITION, adapterPosition + "");
+
         startActivityForResult(gotoLoa, CALL_LOA_VIEW);
     }
 

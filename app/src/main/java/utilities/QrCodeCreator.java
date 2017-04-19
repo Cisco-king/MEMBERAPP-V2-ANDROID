@@ -21,4 +21,20 @@ public class QrCodeCreator {
         Bitmap bmp = BitmapFactory.decodeByteArray (data,0,data.length, null);
         return bmp;
     }
+
+    /**
+     * Convert the String to QRcode equivalent
+     *
+     * @param qrText
+     * The Text to be Converted
+     * @return
+     * The {@link Bitmap}
+     */
+    public static Bitmap getBitmapFromString2(String qrText){
+        ByteArrayOutputStream out = QRCode.from(qrText).to(ImageType.PNG).withSize(300, 300).stream();
+        byte[] data = out.toByteArray();
+        Bitmap bmp = BitmapFactory.decodeByteArray (data,0,data.length, null);
+        return bmp;
+    }
+
 }

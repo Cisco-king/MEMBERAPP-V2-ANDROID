@@ -3,7 +3,9 @@ package v2;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+
 import com.medicard.member.R;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -21,12 +24,18 @@ import java.util.ArrayList;
 import InterfaceService.LoaPageInterface;
 import InterfaceService.LoaPageRetieve;
 import InterfaceService.ScreenshotCallback;
+import Sqlite.DatabaseHandler;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
+import model.Doctor;
+import model.GetDoctorsToHospital;
+import model.GetUSER;
+import model.HospitalList;
 import model.Loa;
 import model.LoaFetch;
+import model.MemberInfo;
 import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
@@ -35,12 +44,19 @@ import utilities.ErrorMessage;
 import utilities.GenderPicker;
 import utilities.ImageSaver;
 import utilities.Loader;
+import utilities.NetworkTest;
 import utilities.Permission;
+import utilities.QrCodeCreator;
 import utilities.Screenshot;
 import utilities.SharedPref;
+import v2.module.loapage.LoaPage;
+import v2.module.loapage.LoaPagePresenter;
 
-public class LoaPageActivity extends AppCompatActivity implements ScreenshotCallback, LoaPageInterface {
+public class LoaPageActivity extends AppCompatActivity
+        implements LoaPage.View, ScreenshotCallback, LoaPageInterface {
 
+
+    public static final String REFERENCE_NUMBER = "Reference No : ";
 
     @BindView(R.id.content_loa_page)
     ScrollView content_loa_page;
@@ -92,6 +108,23 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     @BindView(R.id.btn_cancel)
     FancyButton btn_cancel;
 
+    @BindView(R.id.ivQrApprovalNumber)
+    ImageView ivQrApprovalNumber;
+    @BindView(R.id.tvReferenceNumber)
+    TextView tvReferenceNumber;
+
+    @BindView(R.id.tvValidityDate) TextView tvValidityDate;
+    @BindView(R.id.tvEffectiveDate) TextView tvEffectiveDate;
+    @BindView(R.id.tvDateApproved) TextView tvDateApproved;
+    @BindView(R.id.tvRemarks) TextView tvRemakrs;
+
+    @BindView(R.id.tvHopitalClinicLocation) TextView tvHopitalClinicLocation;
+    @BindView(R.id.tvHopitalClinicContacts) TextView tvHopitalClinicContacts;
+    @BindView(R.id.tvHopitalClinicDoctorName) TextView tvHopitalClinicDoctorName;
+
+    @BindView(R.id.tvDoctorName) TextView tvDoctorName;
+    @BindView(R.id.tvDoctorInfo) TextView tvDoctorInfo;
+
     private int RESULT_GETTER;
     int position;
     ArrayList<LoaFetch> loaList = new ArrayList<>();
@@ -103,6 +136,12 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
     LoaPageRetieve implement;
     Loader loader;
 
+    private LoaPagePresenter presenter;
+    private GetUSER userInformation;
+
+
+    DatabaseHandler dbHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,17 +149,41 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+
         context = this;
         screenshotCallback = this;
         callback = this;
+
+        dbHandler = new DatabaseHandler(context);
+
         implement = new LoaPageRetieve(context, callback);
         loader = new Loader(context);
         alertDialogCustom = new AlertDialogCustom();
+
         position = Integer.parseInt(getIntent().getStringExtra(Constant.POSITION));
         ArrayList<LoaFetch> temp;
         temp = getIntent().getParcelableArrayListExtra(Constant.DATA_SEARCHED);
         loaList.addAll(temp);
         temp.clear();
+
+        presenter = new LoaPagePresenter();
+        presenter.attachView(this);
+
+        if (NetworkTest.isOnline(this)) {
+
+            String memberId = SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, this);
+            Log.d("UserInformationxxx", "onCreate: " + memberId);
+
+            presenter.initUserInformation(
+                    SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, this)
+            );
+        } else {
+            alertDialogCustom.showMe(
+                    this,
+                    alertDialogCustom.NO_Internet_title,
+                    alertDialogCustom.NO_Internet, 1);
+        }
+
 
         init(loaList, position);
 
@@ -130,8 +193,16 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
 
         loa = loaList.get(position);
 
+        HospitalList hospital =
+                dbHandler.getHospitalContact(loa.getHospitalCode());
 
-        implement.setExpiredStatus(btn_download, btn_cancel_req , loa.getStatus() );
+        presenter.requestDoctorByCode(loa.getDoctorCode());
+        String changeFormat = DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate());
+
+        ivQrApprovalNumber.setImageBitmap(QrCodeCreator.getBitmapFromString2(loa.getApprovalNo()));
+        tvReferenceNumber.setText(REFERENCE_NUMBER.concat(loa.getApprovalNo()));
+
+        implement.setExpiredStatus(btn_download, btn_cancel_req, loa.getStatus());
         tv_header.setText(loa.getRemarks());
         tv_status.setText(implement.getStatus(loa.getStatus()));
         tv_approval_code.setText(loa.getApprovalNo());
@@ -141,19 +212,39 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
         tv_gender.setText(GenderPicker.setGender(Integer.parseInt(
                 SharedPref.getStringValue(SharedPref.USER, SharedPref.GENDER, this))));
         tv_company.setText(loa.getMemCompany());
-        tv_date_approved.setText(DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate()));
+
+        tv_date_approved.setText(DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate())); // view is invisible
+
+        /*tvValidityDate.setText(changeFormat);
+        tvEffectiveDate.setText(DateConverter.validityDatePLusDay(changeFormat, 3));
+        tvDateApproved.setText(DateConverter.convertDatetoMMMddyyy(loa.getApp));*/
+//        tvEffectiveDate.setText();
+        tvDateApproved.setText(changeFormat);
 
         tv_doc_name.setText(loa.getDoctorName());
         tv_problem.setText(loa.getPrimaryComplaint());
 
-        String changeFormat = DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate());
-        tv_validity_date.setText(DateConverter.convertDateToMMddyyyy(changeFormat) + " to " +
-                DateConverter.validityDatePLusDay(changeFormat, 3));
+
+        tv_validity_date.setText(
+                getString(R.string.this_req_is_valid_from).concat("\n" +
+                        DateConverter.convertDateToMMddyyyy(changeFormat) + " to " +
+                        DateConverter.validityDatePLusDay(changeFormat, 3)));
+
         tv_spec.setText(testData(loa.getDoctorSpec()));
+
+        tvHopitalClinicLocation.setText(hospital.getHospitalName());
+        tvHopitalClinicLocation.setText(hospital.getFullAddress());
+        tvHopitalClinicContacts.setText(hospital.getPhoneNo());
+        tvHopitalClinicDoctorName.setText(hospital.getContactPerson());
 
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
+    }
 
     @OnClick({R.id.btn_download, R.id.btn_cancel_req, R.id.btn_cancel})
     public void onClick(View v) {
@@ -173,7 +264,6 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
                 implement.showCancelConfirmation();
                 break;
         }
-
 
     }
 
@@ -255,4 +345,39 @@ public class LoaPageActivity extends AppCompatActivity implements ScreenshotCall
         setResult(RESULT_GETTER, intent);
         finish();
     }
+
+    @Override
+    public void userInformation(GetUSER getUSER) {
+        Log.d("UserInformationxxx", "userInformation: " + getUSER.getMemberInfo().getVAL_DATE());
+
+        MemberInfo memberInfo = getUSER.getMemberInfo();
+
+        tvValidityDate.setText(memberInfo.getVAL_DATE());
+        tvEffectiveDate.setText(memberInfo.getEFF_DATE());
+
+    }
+
+    @Override
+    public void displayRemarks(String remark) {
+        tvRemakrs.append(remark + "\n");
+    }
+
+    @Override
+    public void onNetworkError() {
+        Log.d("UserInformationxxx", "onNetworkError:");
+    }
+
+    @Override
+    public void displayDoctor(Doctor doctor) {
+        Log.d("testtesttest", "displayDoctor: " + doctor.getSpecDesc());
+        tvDoctorName.setText(loa.getDoctorName());
+        String doctorInfo = new StringBuilder()
+                .append(doctor.getSpecDesc())
+                .append(doctor.getRoomNo() != null ? "\n\n" + doctor.getRoomNo() : "")
+                .append(doctor.getSchedule() != null ? "\n\n" + doctor.getSchedule() : "")
+                .toString();
+
+        tvDoctorInfo.setText(doctorInfo);
+    }
+
 }

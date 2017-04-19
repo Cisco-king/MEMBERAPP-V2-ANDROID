@@ -117,7 +117,7 @@ public class ProvinceRetrieve {
         }
     }
 
-
+    // GET ONLY ITEM WITHOUT REPETITION
     public ArrayList<SimpleData> getOnlyHospitalWithOneCount(ArrayList<LoaFetch> arrayListMaster) {
         ArrayList<SimpleData> array = new ArrayList<>();
         ArrayList<String> arraySorter = new ArrayList<>();
@@ -143,6 +143,16 @@ public class ProvinceRetrieve {
     }
 
     public void tagSelectedToMasterList(ArrayList<SimpleData> prevSelected, ArrayList<SimpleData> arrayHospitals) {
+        for (int prev = 0; prev < prevSelected.size(); prev++) {
+
+            if (prevSelected.get(prev).getSelected().equals("true")) {
+                arrayHospitals.get(prev).setSelected("true");
+            }
+        }
+
+    }
+
+    public void tagSelectedToMasterList(ArrayList<SimpleData> prevSelected, List<SimpleData> arrayHospitals) {
         for (int prev = 0; prev < prevSelected.size(); prev++) {
 
             if (prevSelected.get(prev).getSelected().equals("true")) {

@@ -2,7 +2,9 @@ package v2;
 
 import android.content.Context;
 import android.content.Intent;
+
 import com.medicard.member.R;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 import InterfaceService.ProvinceRetrieve;
@@ -42,7 +45,7 @@ import utilities.AlertDialogCustom;
 import utilities.Constant;
 
 
-public class SelectProvinceActivity extends AppCompatActivity  {
+public class SelectProvinceActivity extends AppCompatActivity {
     @BindView(R.id.rv_provinces)
     RecyclerView rv_provinces;
     @BindView(R.id.btn_ok)
@@ -63,7 +66,9 @@ public class SelectProvinceActivity extends AppCompatActivity  {
     CityAdapter adapterCity;
     SpecializationAdapter adapterSpecs;
     LoaReqAdapter adapterLoa;
+
     ProvinceRetrieve implement;
+
     private ArrayList<ProvincesAdapter> arrayProvince = new ArrayList<>();
     ArrayList<CitiesAdapter> arrayCity = new ArrayList<>();
     private ArrayList<CitiesAdapter> selectedCity = new ArrayList<>();
@@ -74,6 +79,7 @@ public class SelectProvinceActivity extends AppCompatActivity  {
     private ArrayList<SpecsAdapter> selectedSpecialization = new ArrayList<>();
     private ArrayList<SpecsAdapter> prevSelectedSpecialization = new ArrayList<>();
 
+    // TO BE SEARCH
     private ArrayList<SimpleData> arrayHospitals = new ArrayList<>();
     private ArrayList<LoaFetch> arrayListMaster = new ArrayList<>();
     private ArrayList<SimpleData> prevSelectedHosp = new ArrayList<>();
@@ -100,7 +106,7 @@ public class SelectProvinceActivity extends AppCompatActivity  {
 
         alertDialogCustom = new AlertDialogCustom();
         ORIGIN = getIntent().getStringExtra(Constant.SELECT);
-         SPEC_SEARCH = getIntent().getStringExtra(Constant.SPEC_SEARCH);
+        SPEC_SEARCH = getIntent().getStringExtra(Constant.SPEC_SEARCH);
         ed_search.setText(SPEC_SEARCH);
         if (implement.testOriginFromCity(ORIGIN)) {
             rv_provinces.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
@@ -137,7 +143,9 @@ public class SelectProvinceActivity extends AppCompatActivity  {
             Log.d("HOSP_GET_NAME", arrayListMaster.get(0).getHospitalName());
             arrayHospitals.addAll(implement.getOnlyHospitalWithOneCount(arrayListMaster));
             prevSelectedHosp = getIntent().getParcelableArrayListExtra(Constant.SELECTED_REQUEST);
+
             implement.tagSelectedToMasterList(prevSelectedHosp, arrayHospitals);
+
             adapterLoa = new LoaReqAdapter(context, arrayHospitals);
             rv_provinces.setAdapter(adapterLoa);
             implement.setOkVISIBILITY(true, true, btn_ok);
@@ -153,7 +161,6 @@ public class SelectProvinceActivity extends AppCompatActivity  {
             adapterLoa = new LoaReqAdapter(context, arrayDoctors);
             rv_provinces.setAdapter(adapterLoa);
             implement.setOkVISIBILITY(true, true, btn_ok);
-
         }
 
 
@@ -169,7 +176,7 @@ public class SelectProvinceActivity extends AppCompatActivity  {
                     SPEC_SEARCH = String.valueOf(charSequence);
                     arrayCity.clear();
                     arrayCity.addAll(implement.setArrayCity(handler, prevSelectedProvince, SPEC_SEARCH));
-                    implement.setSelectedData( arrayCity, selectedCity);
+                    implement.setSelectedData(arrayCity, selectedCity);
                     adapterCity.notifyDataSetChanged();
                 } else if (implement.testOriginFromSpecialization(ORIGIN)) {
                     SPEC_SEARCH = String.valueOf(charSequence);
@@ -181,11 +188,21 @@ public class SelectProvinceActivity extends AppCompatActivity  {
                     SPEC_SEARCH = String.valueOf(charSequence);
                     arrayProvince.clear();
                     arrayProvince.addAll(implement.setArrayData(handler, SPEC_SEARCH));
-                    implement.setSelectedDataProvince(arrayProvince , selectedProvince);
+                    implement.setSelectedDataProvince(arrayProvince, selectedProvince);
                     adapter.notifyDataSetChanged();
+                } else if (implement.testOriginFromLoaReq(ORIGIN)) {
+                    SPEC_SEARCH = String.valueOf(charSequence);
+
+                    adapterLoa.filterList(filter(arrayHospitals, SPEC_SEARCH));
+                    implement.tagSelectedToMasterList(prevSelectedHosp, arrayHospitals);
+                } else if (implement.testOriginFromDoctors(ORIGIN)) {
+
+                    SPEC_SEARCH = String.valueOf(charSequence);
+
+                    Log.d("filtertest", "onTextChanged: " + SPEC_SEARCH);
+                    adapterLoa.filterList(filter(arrayDoctors, SPEC_SEARCH));
+                    implement.tagSelectedToMasterList(prevSelectedDoctor, arrayDoctors);
                 }
-
-
             }
 
             @Override
@@ -209,10 +226,9 @@ public class SelectProvinceActivity extends AppCompatActivity  {
                 if (implement.testOriginFromCity(ORIGIN)) {
                     Intent intent = new Intent();
                     intent.putParcelableArrayListExtra("CITY", selectedCity);
-                    intent.putExtra(Constant.SPEC_SEARCH ,SPEC_SEARCH);
+                    intent.putExtra(Constant.SPEC_SEARCH, SPEC_SEARCH);
                     setResult(RESULT_OK, intent);
                     finish();
-                    //  }
                 } else if (implement.testOriginFromSpecialization(ORIGIN)) {
                     Intent intent = new Intent();
                     intent.putParcelableArrayListExtra("SPECIALIZATION", selectedSpecialization);
@@ -228,21 +244,38 @@ public class SelectProvinceActivity extends AppCompatActivity  {
                     intent.putParcelableArrayListExtra("DOCTOR", arrayDoctors);
                     setResult(RESULT_OK, intent);
                     finish();
-                } else  if (implement.testOriginFromProvince(ORIGIN)){
+                } else if (implement.testOriginFromProvince(ORIGIN)) {
                     Intent intent = new Intent();
                     intent.putParcelableArrayListExtra("PROVINCE", selectedProvince);
-                    intent.putExtra(Constant.SPEC_SEARCH ,SPEC_SEARCH);
+                    intent.putExtra(Constant.SPEC_SEARCH, SPEC_SEARCH);
                     setResult(RESULT_OK, intent);
                     finish();
-
                 }
+
                 break;
-
-
         }
     }
 
+    private ArrayList<SimpleData> filter(ArrayList<SimpleData> list, String query) {
+        Log.d("testfilter", "filter: " + list.size());
+        query = query.toLowerCase();
+        ArrayList<SimpleData> temp = new ArrayList<>();
 
+        if (!query.isEmpty()) {
+            Log.d("testfilter", "filter: not empty");
+            for (SimpleData data : list) {
+                final String text = data.getHospital().toLowerCase();
+                if (text.contains(query)) {
+                    temp.add(data);
+                }
+            }
+        } else {
+            Log.d("testfilter", "filter: empty");
+            temp = list;
+        }
+
+        return temp;
+    }
 
 
 }

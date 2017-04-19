@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,14 +32,14 @@ public class LoaReqAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private Context context;
      private ArrayList<SimpleData> arrayList;
+    private List<SimpleData> simpleDatas;
 
 
     public LoaReqAdapter(Context context, ArrayList<SimpleData> arrayList ) {
         this.context = context;
         this.arrayList = arrayList;
-
-
     }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -116,6 +117,10 @@ public class LoaReqAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
+    public void filterList(ArrayList<SimpleData> list) {
+        arrayList = list;
+        notifyDataSetChanged();
+    }
 
     public class HolderSelected extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_name)

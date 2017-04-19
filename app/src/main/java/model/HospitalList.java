@@ -196,6 +196,10 @@ public class HospitalList implements Parcelable {
         return "ClassPojo [phoneNo = "+phoneNo+", region = "+region+", streetAddress = "+streetAddress+", category = "+category+", faxno = "+faxno+", alias = "+alias+", keyword = "+keyword+", province = "+province+", hospitalName = "+hospitalName+", hospitalCode = "+hospitalCode+", coordinator = "+coordinator+", contactPerson = "+contactPerson+", city = "+city+"]";
     }
 
+    public String getFullAddress() {
+        return streetAddress + ", " + city.trim() + " ," + province.trim() + ", " + region.trim();
+    }
+
     protected HospitalList(Parcel in) {
         phoneNo = in.readString();
         region = in.readString();

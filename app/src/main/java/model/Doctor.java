@@ -37,6 +37,10 @@ public class Doctor
 
     private String docLname;
 
+    private String schedule;
+
+    private String roomNo;
+
     public String getStreetAddress ()
     {
         return streetAddress;
@@ -187,10 +191,27 @@ public class Doctor
         this.docLname = docLname;
     }
 
+    public String getRoomNo() {
+        return roomNo;
+    }
+
+    public void setRoomNo(String roomNo) {
+        this.roomNo = roomNo;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
     @Override
     public String toString()
     {
         return "ClassPojo [streetAddress = "+streetAddress+", region = "+region+", docFname = "+docFname+", specDesc = "+specDesc+", contactNumber = "+contactNumber+", doctorCode = "+doctorCode+", docMname = "+docMname+", vat = "+vat+", wtax = "+wtax+", gracePeriod = "+gracePeriod+", city = "+city+", specCode = "+specCode+", prc = "+prc+", province = "+province+", docLname = "+docLname+"]";
     }
+
 }
 
