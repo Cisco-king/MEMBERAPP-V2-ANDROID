@@ -174,7 +174,7 @@
     <string name="doctor_has_no">Doctor has no MACE Provider Application account, \n Please download and print this form</string>
     <string name="i_confirm_that">I accept the</string>
     <string name="this_approval_shall">This form shall be subject to existing benefits and actual available limits under the plan. Member may still be billed for the amount paid. \n \n This form serves as your request form. There is no need to go
-        to MediCard Coordinator. You may go directly to the consulting doctor and present this form. Please take note of the <font fgcolor="black"><b>Reference No.</b></font> and Pin. This
+        to MediCard Coordinator. You may go directly to the consulting doctor and present this form. Please take note of the <font fgcolor="black"><b>Reference No.</b></font> and <font fgcolor="black"><b>PIN</b></font>. This
      information is required during consultation.</string>
     <string name="no_registered_pin">No registered PIN. \n PIN is required in Requesting LOA.</string>
     <string name="retype_pin">Re-type PIN</string>
@@ -251,5 +251,6 @@
         Reference No : MACE-xxxxxxx
     </string>
     <string name="maternity_consulation">(MATERNITY CONSULATION)</string>
+    <string name="select_hospital_clinic_for_availment">Select Hospital/Clinic for Availment</string>
 
 </resources>

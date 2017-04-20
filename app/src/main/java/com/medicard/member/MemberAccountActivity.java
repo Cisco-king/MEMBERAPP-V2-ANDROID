@@ -76,7 +76,9 @@ import utilities.StatusSetter;
 import v2.RequestButtonsActivity;
 
 
-public class MemberAccountActivity extends AppCompatActivity implements View.OnClickListener, Animation.AnimationListener, MemberAccountCallback {
+public class MemberAccountActivity extends AppCompatActivity
+        implements View.OnClickListener, Animation.AnimationListener, MemberAccountCallback {
+
     LinearLayout blackBG;
     FloatingActionButton fab, fab1;
     private Animation animation1;
@@ -136,8 +138,6 @@ public class MemberAccountActivity extends AppCompatActivity implements View.OnC
         implement = new MemberberAccountRetrieve(context, callback);
 
         init();
-
-
     }
 
     private void init() {
@@ -441,9 +441,10 @@ public class MemberAccountActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-
+    /**
+     * TODO goto button
+     */
     private void gotoRequestButton() {
-
         Intent intent = new Intent(context, RequestButtonsActivity.class);
         intent.putExtra(Constant.MEMBER_ID, MEMBER_ID);
         intent.putExtra(Constant.GENDER, getIntent().getExtras().getString(Constant.GENDER));

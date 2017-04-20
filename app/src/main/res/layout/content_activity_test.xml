@@ -21,7 +21,8 @@
         android:background="@color/colorPrimary"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
-        android:text="Request New Approvale"
+        android:textStyle="bold"
+        android:text="Request New Approval"
         android:textColor="@color/white"
         android:textSize="10dp" />
 

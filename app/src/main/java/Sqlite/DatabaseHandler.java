@@ -17,6 +17,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 import adapter.ProvinceAdapter;
@@ -48,6 +51,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //private SQLiteDatabase database;
     // private Cursor cursor;
 
+    String primaryHosp = "MEDICARD PHILIPPINES";
+    String primaryHosp2 = "MEDICard LIFESTYLE CENTER";
     private String TAG = "database";
     private String hospitalCode = "hospitalCode";
     private String hospitalName = "hospitalName";
@@ -577,7 +582,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         sql += " ORDER BY " + sort_by;
 
         //ONLY DESC ON DATE REQUEST
-       // if (sort_by.contains("DATETIME(dateAdmitted)"))
+        // if (sort_by.contains("DATETIME(dateAdmitted)"))
         if (sort_by.contains("approvalNo"))
             sql += " DESC";
         else
@@ -778,9 +783,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                 array.add(p);
             } while (cursor.moveToNext());
-
         }
-
 
         cursor.close();
         database.close();
@@ -817,7 +820,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
 
         }
-
 
         cursor.close();
         database.close();
@@ -915,8 +917,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
             do {
-
-
                 HospitalList hospital = new HospitalList();
                 hospital.setAlias(cursor.getString(cursor.getColumnIndex(alias)));
                 hospital.setCategory(cursor.getString(cursor.getColumnIndex(category)));
@@ -937,9 +937,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Log.e(TAG, "sql: " + cursor.getString(cursor.getColumnIndex(city)));
             } while (cursor.moveToNext());
 
-
         }
-
 
         cursor.close();
         return hospitals;
@@ -1069,15 +1067,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             data_sort = "hospitalName";
 
             //SPECIAL LIST
-            if (s.equals("")) {
-                arrayList.addAll(getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
-            }
-        } else {
-
+            //   if (s.equals("")) {
+            arrayList.addAll(getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
+            //  }
         }
 
-
         arrayList.addAll(getHospitalList(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
+
+
+//        Set<HospitalList> setHospitalList = new HashSet<>(arrayList);
+//        arrayList.clear();
+
+//        arrayList.addAll(setHospitalList);
+
         return arrayList;
     }
 
@@ -1088,103 +1090,41 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = null;
         database = getReadableDatabase();
 
-
-        //specific DATA
-//        String sql = "";
-//        sql += "SELECT * FROM " + hospTable;
-//        sql += " WHERE " + hospitalName + "  = '" + s + "' ";
-//
-//
-//        sql += " AND ( " + excluded + " = 'false' ) ";
-//
-//        if (selectedProvince.size() >= 1) {
-//
-//            for (int x = 0; x < selectedProvince.size(); x++) {
-//                sql += " AND ";
-//                sql += province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' ";
-//            }
-//
-//
-//        }
-//        if (selectedCity.size() != 0) {
-//            sql += " AND ";
-//            for (int x = 0; x < selectedCity.size(); x++) {
-//                sql += " ( " + city + " = '" + selectedCity.get(x).getCityName() + "' ) " + "  OR  ";
-//            }
-//            //remove and
-//            sql = sql.substring(0, sql.length() - 6);
-//        }
-//        sql += " ORDER BY " + data_sort + " ASC ";
-//        Log.e(TAG, "sql: " + sql);
-//
-//        cursor = database.rawQuery(sql, null);
-//        Log.e(TAG, cursor.getCount() + "");
-//        arrayList.addAll(getHospList(cursor));
-
-
         ///WILDCARD AT START
-     //   if (selectedCity.size() == 0) {
-            String sql2 = "";
-            sql2 += "SELECT * FROM " + hospTable;
-            sql2 += " WHERE " + hospitalName + "  LIKE '%" + s + "%' ";
+        //   if (selectedCity.size() == 0) {
+        String sql2 = "";
+        sql2 += "SELECT * FROM " + hospTable;
+        sql2 += " WHERE " + hospitalName + "  LIKE '%" + s + "%' ";
+        sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp + "%' ";
+        sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp2 + "%' ";
 
+        sql2 += " AND ( " + excluded + " = 'false' ) ";
 
-            sql2 += " AND ( " + excluded + " = 'false' ) ";
-
-            if (selectedProvince.size() >= 1) {
-                Log.d("testable", "getHospitalList: this method is called selectedProvince.size())");
-                for (int x = 0; x < selectedProvince.size(); x++) {
-                    sql2 += " AND ";
-                    sql2 += province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' ";
-                }
+        if (selectedProvince.size() >= 1) {
+            Log.d("testable", "getHospitalList: this method is called selectedProvince.size())");
+            for (int x = 0; x < selectedProvince.size(); x++) {
+                sql2 += " AND ";
+                sql2 += province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' ";
             }
+        }
 
-            if (selectedCity.size() != 0) {
-                Log.d("testable", "getHospitalList: this method is called selectedCity.size()");
-                sql2 += " AND (";
-                for (int x = 0; x < selectedCity.size(); x++) {
-                    sql2 += "   " + city + " LIKE '%" + selectedCity.get(x).getCityName() + "%'   " + "  OR  ";
-                }
-                //remove and
-                sql2 = sql2.substring(0, sql2.length() - 6);
-                sql2 += " ) ";
+        if (selectedCity.size() != 0) {
+            Log.d("testable", "getHospitalList: this method is called selectedCity.size()");
+            sql2 += " AND (";
+            for (int x = 0; x < selectedCity.size(); x++) {
+                sql2 += "   " + city + " LIKE '%" + selectedCity.get(x).getCityName() + "%'   " + "  OR  ";
             }
-            sql2 += " ORDER BY " + data_sort + " ASC ";
-            Log.e(TAG, "sql: " + sql2);
+            //remove and
+            sql2 = sql2.substring(0, sql2.length() - 6);
+            sql2 += " ) ";
+        }
+        sql2 += " ORDER BY " + data_sort + " ASC ";
+        Log.e(TAG, "sql: " + sql2);
 
-            cursor = database.rawQuery(sql2, null);
-            Log.e(TAG, cursor.getCount() + "");
-            arrayList.addAll(getHospList(cursor));
+        cursor = database.rawQuery(sql2, null);
+        Log.e(TAG, cursor.getCount() + "");
+        arrayList.addAll(getHospList(cursor));
 
-     //   }
-
-//        ///WILDCARD AT END
-//        String sql3 = "";
-//        sql3 += "SELECT * FROM " + hospTable;
-//        sql3 += " WHERE " + hospitalName + "  LIKE '%" + s + "' AND " + hospitalName + " <> '" + s + "'";
-//        //AND " + hospitalName + " <> '" + s + "' AND " + hospitalName + "  <> '" + s + " %'";
-//
-//
-//        sql3 += " AND ( " + excluded + " = 'false' ) ";
-//        if (! provinceCode.equals(Constant.QUERY_ALL)) {
-//            sql3 += " AND ";
-//            sql3 += province + "  LIKE '%" +  provinceCode + "%' ";
-//        }
-//        if (selectedCity.size() != 0) {
-//            sql3 += " AND ";
-//            for (int x = 0; x < selectedCity.size(); x++) {
-//                sql3 += " ( " + city + " = '" + selectedCity.get(x).getCityName() + "' ) " + "  OR  ";
-//            }
-//            //remove and
-//            sql3 = sql3.substring(0, sql3.length() - 6);
-//        }
-//        sql += " ORDER BY " + data_sort + " ASC ";
-//        Log.e(TAG, "sql: " + sql3);
-//
-//        cursor = database.rawQuery(sql3, null);
-//        Log.e(TAG, cursor.getCount() + "");
-//        arrayList.addAll(getHospList(cursor));
-//
 
         return arrayList;
     }
@@ -1196,33 +1136,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = null;
         database = getReadableDatabase();
 
-        String primaryHosp = "MEDICARD PHILIPPINES, INC. ";
-
 
         String primary = "";
         primary += "SELECT * FROM " + hospTable;
-        primary += " WHERE " + hospitalName + "  LIKE '%" + primaryHosp + "%' ";
-        primary += " AND ( " + hospitalName + " LIKE  '%" + s + "%' ) ";
+        primary += " WHERE ( " + hospitalName + " LIKE  '%" + s + "%' ";
+        primary += " AND " + hospitalName + "  LIKE '%" + primaryHosp + "%' ";
+        primary += " OR " + hospitalName + "  LIKE '%" + primaryHosp2 + "%' )";
+
         primary += " AND ( " + excluded + " = 'false' ) ";
-
-        if (selectedProvince.size() >= 1) {
-
-            for (int x = 0; x < selectedProvince.size(); x++) {
-                primary += " AND ";
-                primary += province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' ";
-            }
-
-
-        }
         if (selectedCity.size() != 0) {
-            primary += " AND ( ";
+            primary += " AND ";
             for (int x = 0; x < selectedCity.size(); x++) {
                 primary += " ( " + city + " LIKE '%" + selectedCity.get(x).getCityName() + "%' ) " + "  OR  ";
             }
             //remove and
             primary = primary.substring(0, primary.length() - 6);
-            primary += ") ";
+            primary += "  ";
         }
+        if (selectedCity.size() == 0) {
+            if (selectedProvince.size() >= 1) {
+
+                for (int x = 0; x < selectedProvince.size(); x++) {
+                    primary += " AND ";
+                    primary += province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' ";
+                }
+
+            }
+        }
+
         primary += " ORDER BY " + data_sort + " ASC ";
         Log.e(TAG, "sql: " + primary);
 
@@ -1309,7 +1250,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String sql = "";
         sql += "SELECT * FROM " + hospTable;
-        sql += " WHERE " + hospitalCode + " = '"+gethospitalCode+"'";
+        sql += " WHERE " + hospitalCode + " = '" + gethospitalCode + "'";
         Log.e(TAG, "objectName: " + sql);
         cursor = database.rawQuery(sql, null);
 

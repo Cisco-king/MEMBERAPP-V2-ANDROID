@@ -186,7 +186,7 @@ public class Member implements Parcelable {
 
     @Override
     public String toString() {
-        return new StringBuilder("Member")
+        return new StringBuilder("\nMember")
                 .append("\nName : " + getName())
                 .append("\nMemberId : " + getMemberId())
                 .append("\nRemarks : " + getRemarks())

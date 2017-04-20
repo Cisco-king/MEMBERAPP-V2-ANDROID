@@ -72,34 +72,27 @@ public class fragment_memberInfo extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_member_info, container, false);
-
-
         init(view);
 
         return view;
     }
 
     private void init(View view) {
-
-
         progressDialog = new ProgressDialog(getContext(), R.style.MyTheme);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading...");
         progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
 
-
         rv_memberInfo = (RecyclerView) view.findViewById(R.id.rv_memberInfo);
         accountAdapter = new AccountAdapter(header, arrayAccounts, getContext(), progressDialog, alertDialogCustom);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rv_memberInfo.setLayoutManager(mLayoutManager);
-
 
         tv_email = (TextView) view.findViewById(R.id.tv_email);
         tv_print = (TextView) view.findViewById(R.id.tv_print);
@@ -122,19 +115,26 @@ public class fragment_memberInfo extends Fragment
         animation1.setAnimationListener(this);
         animation2.setAnimationListener(this);
 
-
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
         fab3.setOnClickListener(this);
         animateFAB();
 
-
         if (NetworkTest.isOnline(getContext())) {
-            getUserData(sharedPref.getStringValue(sharedPref.USER, sharedPref.MEMBERCODE, getContext()));
-        } else
-            alertDialogCustom.showMe(getContext(), alertDialogCustom.NO_Internet_title, alertDialogCustom.NO_Internet, 1);
-
+            getUserData(
+                    sharedPref.getStringValue(
+                            sharedPref.USER,
+                            sharedPref.MEMBERCODE,
+                            getContext()
+                    ));
+        } else {
+            alertDialogCustom.showMe(
+                    getContext(),
+                    alertDialogCustom.NO_Internet_title,
+                    alertDialogCustom.NO_Internet,
+                    1);
+        }
 
         rv_memberInfo.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
             @Override
@@ -145,9 +145,7 @@ public class fragment_memberInfo extends Fragment
                     return false;
             }
         });
-
     }
-
 
     public void getUserData(final String id) {
 

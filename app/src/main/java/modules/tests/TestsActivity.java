@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Button;
 
 import com.medicard.member.R;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 import adapter.TestAdapter;
 import butterknife.BindView;
+import butterknife.OnClick;
 import model.DoctorTest;
 import modules.base.activities.TestTrackableActivity;
 import modules.consultation.ConsultationDetailsActivity;
@@ -27,6 +29,8 @@ public class TestsActivity extends TestTrackableActivity
     @BindView(R.id.rvRequestTest)
     RecyclerView rvRequestTest;
 
+    @BindView(R.id.btnRequestNewApproval) Button btnRequestNewApproval;
+
     private Tests.Presenter presenter;
     private TestAdapter testAdapter;
 
@@ -34,7 +38,7 @@ public class TestsActivity extends TestTrackableActivity
             new TestAdapter.OnClickListener() {
         @Override
         public void onClick(int position) {
-            startActivity(new Intent(TestsActivity.this, ConsultationDetailsActivity.class));
+            onItemClick(position);
         }
     };
 
@@ -70,6 +74,25 @@ public class TestsActivity extends TestTrackableActivity
         presenter.detachView();
     }
 
+    @OnClick(R.id.btnRequestNewApproval)
+    public void startRequestNewApproval() {
+
+    }
+
+    public void onItemClick(int position) {
+        Intent intent = new Intent(TestsActivity.this, ConsultationDetailsActivity.class);
+
+        startActivity(intent);
+    }
+
+    /**
+     * <p>
+     *     This is for test purposes only
+     * </p>
+     *
+     * @return
+     * Dummy DoctorTest Data
+     */
     private List<DoctorTest> doctorTestsDummy() {
         List<DoctorTest> doctorTests = new ArrayList<>();
         doctorTests.add(new DoctorTest.Builder()

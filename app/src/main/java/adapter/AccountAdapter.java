@@ -5,8 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+
 import com.medicard.member.MemberAccountActivity;
 import com.medicard.member.R;
+
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -54,14 +56,15 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     ArrayList<Dependents> arrayAccounts = new ArrayList();
     ArrayList<MemberInfo> header = new ArrayList();
     Context context;
-    ProgressDialog progressDialog ; AlertDialogCustom alertDialogCustom ;
+    ProgressDialog progressDialog;
+    AlertDialogCustom alertDialogCustom;
 
     public AccountAdapter(ArrayList<MemberInfo> header, ArrayList<Dependents> arrayAccounts, Context context, ProgressDialog progressDialog, AlertDialogCustom alertDialogCustom) {
         this.arrayAccounts = arrayAccounts;
         this.context = context;
         this.header = header;
-        this.progressDialog = progressDialog ;
-        this.alertDialogCustom = alertDialogCustom ;
+        this.progressDialog = progressDialog;
+        this.alertDialogCustom = alertDialogCustom;
     }
 
     @Override
@@ -113,11 +116,10 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             itemHolder itemHolder = (AccountAdapter.itemHolder) holder;
             itemHolder.tv_company.setText(header.get(0).getACCOUNT_NAME());
             itemHolder.tv_id.setText(arrayAccounts.get(position - 1).getMemCode());
-            itemHolder.tv_name.setText(arrayAccounts.get(position - 1).getMemFname()+ " " + arrayAccounts.get(position - 1).getMemLname());
+            itemHolder.tv_name.setText(arrayAccounts.get(position - 1).getMemFname() + " " + arrayAccounts.get(position - 1).getMemLname());
 
         }
     }
-
 
     @Override
     public int getItemCount() {
@@ -149,11 +151,9 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             switch (v.getId()) {
 
 
-
-
                 case R.id.cv_account:
 
-                    getUserData(arrayAccounts.get(getAdapterPosition() -1 ).getMemCode());
+                    getUserData(arrayAccounts.get(getAdapterPosition() - 1).getMemCode());
 
                     break;
             }
@@ -237,11 +237,6 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-
-
-
-
-
     public void getUserData(String id) {
 
         progressDialog.show();
@@ -260,7 +255,6 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     @Override
                     public void onError(Throwable e) {
 
-
                         try {
 
                             Log.e("ACCOUNTADAPTER", e.getMessage());
@@ -270,14 +264,14 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             progressDialog.dismiss();
 
 
-                        }catch (Exception error){
+                        } catch (Exception error) {
 
 
                             alertDialogCustom.showMe(context, "Hold On", ErrorMessage.setErrorMessage(e.getMessage()), 1);
                             progressDialog.dismiss();
 
 
-                            Log.e("Rx_ERROR" , error.getMessage());
+                            Log.e("Rx_ERROR", error.getMessage());
                         }
 
                     }
@@ -290,7 +284,7 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         intent.putExtra("BIRTHDAY", memberInfo.getMemberInfo().getBDAY());
                         intent.putExtra("AGE", memberInfo.getMemberInfo().getAGE() + "");
                         intent.putExtra("CIVIL", memberInfo.getMemberInfo().getCIVIL_STATUS() + "");
-                        intent.putExtra("GENDER",String.valueOf( memberInfo.getMemberInfo().getMEM_SEX() ) );
+                        intent.putExtra("GENDER", String.valueOf(memberInfo.getMemberInfo().getMEM_SEX()));
                         intent.putExtra("COMPANY", memberInfo.getMemberInfo().getACCOUNT_NAME() + "");
                         intent.putExtra("STATUS", memberInfo.getMemberInfo().getMem_OStat_Code() + "");
                         intent.putExtra("MEMTYPE", memberInfo.getMemberInfo().getMEM_TYPE() + "");
@@ -311,7 +305,7 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 memberInfo.getMemberInfo().getID_REM7()));
 
 
-                       context.startActivity(intent);
+                        context.startActivity(intent);
                         //  ((Activity)context).finish();
 
                         progressDialog.dismiss();

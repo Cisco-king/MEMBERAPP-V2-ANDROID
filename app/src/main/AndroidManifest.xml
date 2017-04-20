@@ -125,7 +125,8 @@
             android:label="@string/title_activity_sort_loa_req"
             android:theme="@style/AppTheme" />
         <activity android:name="modules.tests.TestsActivity" />
-        <activity android:name="modules.consultation.ConsultationDetailsActivity"></activity>
+        <activity android:name="modules.consultation.ConsultationDetailsActivity" />
+        <activity android:name="modules.selecthospital.SelectHospitalActivity"></activity>
     </application>
 
 </manifest>

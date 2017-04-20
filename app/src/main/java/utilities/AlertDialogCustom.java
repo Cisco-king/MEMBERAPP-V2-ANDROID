@@ -92,6 +92,7 @@ public class AlertDialogCustom {
     public void showMe(Context context, String title, String message, int errorImage) {
 
         final Dialog dialog = new Dialog(context);
+
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.alertshow);
         dialog.getWindow().setWindowAnimations(R.style.CustomDialogAnimation);
@@ -111,9 +112,7 @@ public class AlertDialogCustom {
 
         setDetails(context, message, title, errorImage, btn_accept);
 
-
         dialog.show();
-
 
         int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.70);
 
@@ -122,7 +121,6 @@ public class AlertDialogCustom {
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.width = width;
         dialog.getWindow().setAttributes(lp);
-
     }
 
     public void showMe(Context context, String title, String message, int errorImage, final onClickDialogListener callback) {

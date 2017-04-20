@@ -67,6 +67,4 @@
 
     <include layout="@layout/content_consultation_details" />
 
-
-
 </android.support.design.widget.CoordinatorLayout>

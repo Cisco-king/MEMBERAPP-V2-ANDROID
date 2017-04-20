@@ -11,6 +11,7 @@ import com.medicard.member.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 import butterknife.Unbinder;
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -79,6 +80,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Handle Back navigation event
      */
+
     @OnClick(R.id.btnBack)
     public void backNavigation() {
         finish();
