@@ -53,7 +53,6 @@ public class HospitalListRetrieve {
             array.addAll(handler.retrieveHospital(isMedicardOnly, selectedProvince, data_sort, selectedCity, s));
         hospitalAdapter.notifyDataSetChanged();
 
-
     }
 
     public void updateListUI(ArrayList<HospitalList> array, RecyclerView rv_hospital, TextView tv_hosp_not_found) {

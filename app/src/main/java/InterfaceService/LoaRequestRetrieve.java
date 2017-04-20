@@ -170,7 +170,7 @@ public class LoaRequestRetrieve {
                                     doctorNotFound(doctorCode, arrayList, position, databaseHandler);
                                 } else {
                                     //     if (.getDoctorsToHospital().size() == 0)
-                                    //        doctorNotFound(doctorCode, arrayList, position, databaseHandler);
+                                    //        doctorNotFound(doctorCode, arrayList, position, dbHandler);
                                     //      else
                                     onSuccessListener(databaseHandler, doctorNORoom.getDoctor(), arrayList, position);
                                 }
@@ -295,7 +295,7 @@ public class LoaRequestRetrieve {
 
 
 
-//    public void testDataDownLoadRequirement(ArrayList<LoaList> arrayListfromDB, DatabaseHandler databaseHandler) {
+//    public void testDataDownLoadRequirement(ArrayList<LoaList> arrayListfromDB, DatabaseHandler dbHandler) {
 //
 //
 //        if (arrayListfromDB.size() == 0) {

@@ -272,6 +272,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             remarks2 + " TEXT ," +
             room + " TEXT )";
 
+    private static DatabaseHandler instance;
+
+
+    public static synchronized DatabaseHandler getInstance(Context context) {
+
+        if (instance == null) {
+            instance = new DatabaseHandler(context.getApplicationContext());
+        }
+        return instance;
+    }
 
     public DatabaseHandler(Context context) {
         super(context, databaseName, null, version);
