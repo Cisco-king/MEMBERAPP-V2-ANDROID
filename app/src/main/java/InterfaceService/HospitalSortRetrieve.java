@@ -208,4 +208,8 @@ public class HospitalSortRetrieve implements View.OnClickListener {
         setCityText(tv_city, selectedCity);
 
     }
+
+    public void resetCheckBox(CheckBox cb_med_clinic) {
+        cb_med_clinic.setChecked(false);
+    }
 }

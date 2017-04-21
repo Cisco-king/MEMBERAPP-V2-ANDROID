@@ -1,7 +1,9 @@
 package InterfaceService;
 
 import android.content.Context;
+
 import com.medicard.member.R;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -40,16 +42,19 @@ public class HospitalListRetrieve {
             data_sort = "province";
         } else if (sortBy.equals(context.getString(R.string.city))) {
             data_sort = "city";
-        } else if (sortBy.equals("")){
+        } else if (sortBy.equals("")) {
             data_sort = "";
         }
 
         array.clear();
 
         //ONLY MEDICARD
-        if (isMedicardOnly.equals("true"))
-            array.addAll(handler.getOnlyMedicardClinics(selectedProvince , data_sort , selectedCity , isMedicardOnly , s));
-        else
+        if (isMedicardOnly.equals("true")) {
+            if (data_sort.equals("") || data_sort.equals("category")) {
+                data_sort = "hospitalName";
+            }
+            array.addAll(handler.getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
+        } else
             array.addAll(handler.retrieveHospital(isMedicardOnly, selectedProvince, data_sort, selectedCity, s));
         hospitalAdapter.notifyDataSetChanged();
 

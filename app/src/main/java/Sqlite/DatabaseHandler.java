@@ -37,6 +37,7 @@ import model.SimpleData;
 import model.SpecializationList;
 import model.Specializations;
 import model.SpecsAdapter;
+import timber.log.Timber;
 import utilities.Constant;
 import utilities.DateConverter;
 import utilities.SharedPref;
@@ -51,7 +52,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //private SQLiteDatabase database;
     // private Cursor cursor;
 
-    String primaryHosp = "MEDICARD PHILIPPINES";
+    String primaryHosp = "MEDICARD PHILIPPINES, INC.";
     String primaryHosp2 = "MEDICard LIFESTYLE CENTER";
     private String TAG = "database";
     private String hospitalCode = "hospitalCode";
@@ -706,6 +707,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 loa.add(p);
                 Log.d("LOAD_DATE", getCursor(cursor, id));
                 Log.d("LOAD_DATE", getCursor(cursor, dateAdmitted));
+                Log.d("LOAD_DATE", getCursor(cursor, docName) + " <<<" );
             } while (cursor.moveToNext());
 
         }
@@ -1070,20 +1072,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<HospitalList> arrayList = new ArrayList<>();
         String s = data.toUpperCase().replace("'", "`");
         //TEST IF QUERY IS ONLY FOR MEDICARD CLINICS
-
         if (data_sort.equals("") || data_sort.equals("category")) {
-
-            // if (data_sort.equals(""))
             data_sort = "hospitalName";
-
-            //SPECIAL LIST
-            //   if (s.equals("")) {
-            arrayList.addAll(getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
-            //  }
         }
-
+        arrayList.addAll(getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
         arrayList.addAll(getHospitalList(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
-
 
 //        Set<HospitalList> setHospitalList = new HashSet<>(arrayList);
 //        arrayList.clear();
@@ -1149,19 +1142,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String primary = "";
         primary += "SELECT * FROM " + hospTable;
-        primary += " WHERE ( " + hospitalName + " LIKE  '%" + s + "%' ";
-        primary += " AND " + hospitalName + "  LIKE '%" + primaryHosp + "%' ";
+        primary += " WHERE " + hospitalName + " LIKE  '%" + s + "%' ";
+        primary += " AND (" + hospitalName + "  LIKE '%" + primaryHosp + "%' ";
         primary += " OR " + hospitalName + "  LIKE '%" + primaryHosp2 + "%' )";
 
         primary += " AND ( " + excluded + " = 'false' ) ";
         if (selectedCity.size() != 0) {
-            primary += " AND ";
+            primary += " AND  (";
             for (int x = 0; x < selectedCity.size(); x++) {
-                primary += " ( " + city + " LIKE '%" + selectedCity.get(x).getCityName() + "%' ) " + "  OR  ";
+                primary += "   " + city + " LIKE '%" + selectedCity.get(x).getCityName() + "%'  " + "  OR  ";
             }
             //remove and
             primary = primary.substring(0, primary.length() - 6);
-            primary += "  ";
+            primary += " ) ";
         }
         if (selectedCity.size() == 0) {
             if (selectedProvince.size() >= 1) {
@@ -1174,7 +1167,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
         }
 
-        primary += " ORDER BY " + data_sort + " ASC ";
+        primary += " ORDER BY " + data_sort + " COLLATE NOCASE ";
         Log.e(TAG, "sql: " + primary);
 
         cursor = database.rawQuery(primary, null);
@@ -1231,6 +1224,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "'," + room + " = '" + getRoom +
                 "' WHERE " + id + " = '" + ID + "'";
         db.execSQL(sql);
+
         Log.d("ID", sql);
         Log.d("ID", getDocName);
         Log.d("ID", getDocSpec);

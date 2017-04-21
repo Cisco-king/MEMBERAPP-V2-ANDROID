@@ -109,6 +109,7 @@ public class SortHospitalActivity extends AppCompatActivity implements HospitalS
                 implement.resetDetails(tv_province, tv_city, tv_sort_by);
                 implement.setResetCity(tv_city, selectedCity, et_search);
                 implement.setResetProvince(tv_province, selectedProvince);
+                implement.resetCheckBox(cb_med_clinic);
                 break;
             case R.id.btn_show:
                 Intent intent = new Intent();
