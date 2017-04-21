@@ -1,5 +1,6 @@
 package modules.base.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private Unbinder unbinder;
 
+    protected Context context;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +57,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void initViews() {
         setContentView(getLayoutResource());
         unbinder = ButterKnife.bind(this);
+
+        context = this;
     }
 
     /**

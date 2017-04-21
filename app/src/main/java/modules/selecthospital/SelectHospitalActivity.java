@@ -1,5 +1,6 @@
 package modules.selecthospital;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import adapter.HospitalClinicAdapter;
 import butterknife.BindView;
 import model.HospitalClinic;
 import modules.base.activities.TestTrackableActivity;
+import modules.selecttest.SelectTestActivity;
 import timber.log.Timber;
 
 public class SelectHospitalActivity extends TestTrackableActivity {
@@ -57,6 +59,7 @@ public class SelectHospitalActivity extends TestTrackableActivity {
 
     private void onItemViewClick(int position) {
         Timber.d("The button position that click %s", position);
+        startActivity(new Intent(this, SelectTestActivity.class));
     }
 
     public List<HospitalClinic> dummies() {

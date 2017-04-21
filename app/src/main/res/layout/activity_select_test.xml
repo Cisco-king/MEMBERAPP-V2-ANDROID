@@ -67,6 +67,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_selectable_hospitals" />
+    <include layout="@layout/content_select_test" />
 
 </android.support.design.widget.CoordinatorLayout>
