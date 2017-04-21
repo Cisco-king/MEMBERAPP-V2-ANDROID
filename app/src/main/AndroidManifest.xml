@@ -126,7 +126,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name="modules.tests.TestsActivity" />
         <activity android:name="modules.consultation.ConsultationDetailsActivity" />
-        <activity android:name="modules.selecthospital.SelectHospitalActivity"></activity>
+        <activity android:name="modules.selecthospital.SelectHospitalActivity" />
+        <activity android:name="modules.selecttest.SelectTestActivity"></activity>
     </application>
 
 </manifest>

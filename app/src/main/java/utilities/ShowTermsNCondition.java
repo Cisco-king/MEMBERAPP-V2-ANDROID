@@ -3,6 +3,8 @@ package utilities;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
+
+import com.medicard.member.BuildConfig;
 import com.medicard.member.R;
 import com.medicard.member.RegistrationActivity;
 import android.view.View;
@@ -10,13 +12,35 @@ import android.widget.Button;
 
 import org.greenrobot.eventbus.EventBus;
 
+import timber.log.Timber;
+
 
 /**
  * Created by mpx-pawpaw on 10/22/16.
  */
 
-public class ShowTermsNCondition extends Application{
+public class ShowTermsNCondition extends Application {
+
     final public   String TO_REGISTRATION = "REGISTER";
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree() {
+                @Override
+                protected String createStackElementTag(StackTraceElement element) {
+                    return super.createStackElementTag(element)
+                            + "/"
+                            + element.getMethodName()
+                            + ":"
+                            + element.getLineNumber();
+                }
+            });
+        }
+
+    }
 
     public void showTerms(Context context) {
 
@@ -48,7 +72,6 @@ public class ShowTermsNCondition extends Application{
 
         dialog.setCancelable(false);
         dialog.show();
-
 
     }
 }

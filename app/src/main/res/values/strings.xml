@@ -252,5 +252,6 @@
     </string>
     <string name="maternity_consulation">(MATERNITY CONSULATION)</string>
     <string name="select_hospital_clinic_for_availment">Select Hospital/Clinic for Availment</string>
+    <string name="select_test_s">Select Test/s</string>
 
 </resources>

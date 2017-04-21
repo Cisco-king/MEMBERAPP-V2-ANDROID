@@ -64,6 +64,8 @@ public class HospitalClinicAdapter extends RecyclerView.Adapter<HospitalClinicAd
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+
+            view.setOnClickListener(this);
         }
 
         @Override

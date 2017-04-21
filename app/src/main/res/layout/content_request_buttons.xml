@@ -95,7 +95,6 @@
             android:layout_margin="2dp"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            android:visibility="gone"
             app:cardElevation="@dimen/card_elevation">
 
             <LinearLayout

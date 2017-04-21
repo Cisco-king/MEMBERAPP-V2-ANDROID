@@ -14,6 +14,7 @@ import adapter.HospitalClinicAdapter;
 import butterknife.BindView;
 import model.HospitalClinic;
 import modules.base.activities.TestTrackableActivity;
+import timber.log.Timber;
 
 public class SelectHospitalActivity extends TestTrackableActivity {
 
@@ -55,7 +56,7 @@ public class SelectHospitalActivity extends TestTrackableActivity {
     }
 
     private void onItemViewClick(int position) {
-        Log.d(TAG, "onItemViewClick: " + hospitalClinics.get(position).getName());
+        Timber.d("The button position that click %s", position);
     }
 
     public List<HospitalClinic> dummies() {

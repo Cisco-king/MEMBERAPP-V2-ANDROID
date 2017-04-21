@@ -81,7 +81,6 @@ public class TestsActivity extends TestTrackableActivity
 
     public void onItemClick(int position) {
         Intent intent = new Intent(TestsActivity.this, ConsultationDetailsActivity.class);
-
         startActivity(intent);
     }
 
@@ -109,6 +108,5 @@ public class TestsActivity extends TestTrackableActivity
 
         return doctorTests;
     }
-
 
 }

@@ -32,6 +32,8 @@ final MATERIAL_RANGEBAR_LIBRARY = '1.3'
 
 final EXPANDABLE_LAYOUT_LIBRARY = '2.8'
 
+final TIMBER_LIBRARY = '4.5.1';
+
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.1'
@@ -103,6 +105,8 @@ dependencies {
     compile "com.appyvet:materialrangebar:$MATERIAL_RANGEBAR_LIBRARY"
 
     compile "net.cachapa.expandablelayout:expandablelayout:$EXPANDABLE_LAYOUT_LIBRARY"
+
+    compile "com.jakewharton.timber:timber:$TIMBER_LIBRARY"
 
     compile project(':fancybuttons_library')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
