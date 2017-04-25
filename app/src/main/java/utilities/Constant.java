@@ -75,11 +75,6 @@ public class Constant {
     public static String SEARCHED_DATA = "SEARCHED_DATA";
     public static String SPEC_SEARCH = "SPEC_SEARCH";
 
-
-
-
-
-
     public static String SERVICE_TYPE = "SERVICE_TYPE";
 
 }

@@ -144,7 +144,6 @@ public class ProvinceRetrieve {
 
     public void tagSelectedToMasterList(ArrayList<SimpleData> prevSelected, ArrayList<SimpleData> arrayHospitals) {
         for (int prev = 0; prev < prevSelected.size(); prev++) {
-
             if (prevSelected.get(prev).getSelected().equals("true")) {
                 arrayHospitals.get(prev).setSelected("true");
             }

@@ -1,5 +1,6 @@
 package modules.selecttest;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -9,8 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import mehdi.sakout.fancybuttons.FancyButton;
 import model.ItemSelectTest;
 import modules.base.activities.TestTrackableActivity;
+import modules.requestapproval.RequestApprovalDetailsActivity;
 import modules.selecttest.adapter.SelectTestAdapter;
 import timber.log.Timber;
 
@@ -19,6 +23,9 @@ public class SelectTestActivity extends TestTrackableActivity
 
 
     @BindView(R.id.rvSelectTest) RecyclerView rvSelectTest;
+
+    @BindView(R.id.fbDone) FancyButton fbDone;
+
 
     private List<ItemSelectTest> selectTests;
 
@@ -54,6 +61,11 @@ public class SelectTestActivity extends TestTrackableActivity
         itemClick = isCheck ? (itemClick + 1) : (itemClick - 1);
         Timber.d("Item Position %s and checked %s", position, Boolean.toString(isCheck));
         Timber.d("Total Item Check : %s ", itemClick);
+    }
+
+    @OnClick(R.id.fbDone)
+    public void done() {
+        startActivity(new Intent(this, RequestApprovalDetailsActivity.class));
     }
 
     private List<ItemSelectTest> tests() {

@@ -250,6 +250,18 @@
         Date of Consultation : April 2, 2016\n
         Reference No : MACE-xxxxxxx
     </string>
+
+    <string name="reason_for_consult_message">
+        Please make sure that all information entered and selected in the following
+        screens should be the same as the reason for consult, diagnosis, tests/procedures
+        in the actual prescription
+    </string>
+
+    <string name="note_upload">
+        Note: Please attach a clear copy of your documents, maximum file size of 5MB.
+        Acceptable file types are jpg, jpeg, tiff, pdf, doc, docx, xls, xlsx
+    </string>
+
     <string name="maternity_consulation">(MATERNITY CONSULATION)</string>
     <string name="select_hospital_clinic_for_availment">Select Hospital/Clinic for Availment</string>
     <string name="select_test_s">Select Test/s</string>

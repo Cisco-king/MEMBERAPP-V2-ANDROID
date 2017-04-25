@@ -59,10 +59,14 @@ public class SelectTestAdapter extends RecyclerView.Adapter<SelectTestAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        @BindView(R.id.tvTestName) TextView tvTestName;
-        @BindView(R.id.tvCostCenter) TextView tvCostCenter;
-        @BindView(R.id.tvDiagnosis) TextView tvDiagnosis;
-        @BindView(R.id.cbTestSelect) CheckBox cbTestSelect;
+        @BindView(R.id.tvTestName)
+        TextView tvTestName;
+        @BindView(R.id.tvCostCenter)
+        TextView tvCostCenter;
+        @BindView(R.id.tvDiagnosis)
+        TextView tvDiagnosis;
+        @BindView(R.id.cbTestSelect)
+        CheckBox cbTestSelect;
 
         public ViewHolder(View view) {
             super(view);
@@ -73,12 +77,9 @@ public class SelectTestAdapter extends RecyclerView.Adapter<SelectTestAdapter.Vi
 
         @Override
         public void onClick(View v) {
-            CheckBox checkBox = (CheckBox) v;
-
-            if (v.getId() == R.id.cbTestSelect) {
-                clickListener.onItemCheck(
-                        getAdapterPosition(),
-                        checkBox.isChecked() ? true : false);
+            if (v instanceof CheckBox && v.getId() == R.id.cbTestSelect) {
+                CheckBox checkBox = (CheckBox) v;
+                clickListener.onItemCheck(getAdapterPosition(), checkBox.isChecked() ? true : false);
             } else {
                 clickListener.onItemClick(getAdapterPosition());
             }
@@ -87,6 +88,7 @@ public class SelectTestAdapter extends RecyclerView.Adapter<SelectTestAdapter.Vi
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+
         void onItemCheck(int position, boolean isCheck);
     }
 

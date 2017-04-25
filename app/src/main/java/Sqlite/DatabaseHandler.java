@@ -707,7 +707,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 loa.add(p);
                 Log.d("LOAD_DATE", getCursor(cursor, id));
                 Log.d("LOAD_DATE", getCursor(cursor, dateAdmitted));
-                Log.d("LOAD_DATE", getCursor(cursor, docName) + " <<<" );
+                Log.d("LOAD_DATE", getCursor(cursor, docName) + " <<<");
             } while (cursor.moveToNext());
 
         }
@@ -1072,18 +1072,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ArrayList<HospitalList> arrayList = new ArrayList<>();
         String s = data.toUpperCase().replace("'", "`");
         //TEST IF QUERY IS ONLY FOR MEDICARD CLINICS
-        if (data_sort.equals("") || data_sort.equals("category")) {
-            data_sort = "hospitalName";
+
+
+        if (!getSortByProvinceCityOrHospName(data_sort)) {
+            arrayList.addAll(getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
         }
-        arrayList.addAll(getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
         arrayList.addAll(getHospitalList(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
 
-//        Set<HospitalList> setHospitalList = new HashSet<>(arrayList);
-//        arrayList.clear();
-
-//        arrayList.addAll(setHospitalList);
 
         return arrayList;
+    }
+
+    private boolean getSortByProvinceCityOrHospName(String data_sort) {
+        Timber.d("Sort By : %s", data_sort);
+        return data_sort.equalsIgnoreCase(hospitalName) || data_sort.equalsIgnoreCase(city) ||
+                data_sort.equalsIgnoreCase(province);
     }
 
     private Collection<? extends HospitalList> getHospitalList(ArrayList<ProvincesAdapter> selectedProvince, String data_sort, ArrayList<CitiesAdapter> selectedCity, String isMedicardOnly, String s) {
@@ -1098,17 +1101,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String sql2 = "";
         sql2 += "SELECT * FROM " + hospTable;
         sql2 += " WHERE " + hospitalName + "  LIKE '%" + s + "%' ";
-        sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp + "%' ";
-        sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp2 + "%' ";
-
+        if (!getSortByProvinceCityOrHospName(data_sort)) {
+            sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp + "%' ";
+            sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp2 + "%' ";
+        }
         sql2 += " AND ( " + excluded + " = 'false' ) ";
 
         if (selectedProvince.size() >= 1) {
             Log.d("testable", "getHospitalList: this method is called selectedProvince.size())");
+            sql2 += "  AND ( ";
             for (int x = 0; x < selectedProvince.size(); x++) {
-                sql2 += " AND ";
-                sql2 += province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' ";
+                sql2 += province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%'   OR  ";
             }
+            String temp;
+            temp = sql2;
+            sql2 = "";
+            sql2 = temp.substring(0, temp.length() - 4);
+            sql2 += " ) ";
         }
 
         if (selectedCity.size() != 0) {
@@ -1121,7 +1130,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             sql2 = sql2.substring(0, sql2.length() - 6);
             sql2 += " ) ";
         }
-        sql2 += " ORDER BY " + data_sort + " ASC ";
+        sql2 += " ORDER BY " + sortDefault(data_sort) + " COLLATE NOCASE ";
         Log.e(TAG, "sql: " + sql2);
 
         cursor = database.rawQuery(sql2, null);
@@ -1167,7 +1176,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
         }
 
-        primary += " ORDER BY " + data_sort + " COLLATE NOCASE ";
+
+        primary += " ORDER BY " +  data_sort  + " COLLATE NOCASE ";
         Log.e(TAG, "sql: " + primary);
 
         cursor = database.rawQuery(primary, null);
@@ -1178,6 +1188,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return arrayList;
     }
 
+    private String sortDefault(String dat) {
+
+        return dat.equals("") || dat.equals("category") ? "hospitalName" : dat;
+    }
 
     public String getHospitalName(String searchCode) {
         String sql = " SELECT * FROM " + hospTable +

@@ -50,6 +50,7 @@ import java.util.ArrayList;
 
 import InterfaceService.MemberAccountCallback;
 import InterfaceService.MemberberAccountRetrieve;
+import constants.MemberStatus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import mehdi.sakout.fancybuttons.FancyButton;
 import okhttp3.MediaType;
@@ -62,6 +63,7 @@ import services.App;
 import services.AppInterface;
 import services.AppService;
 import services.AppServicewithBasicAuth;
+import timber.log.Timber;
 import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
@@ -110,6 +112,8 @@ public class MemberAccountActivity extends AppCompatActivity
     public String MEMBER_ID = "";
     public String BIRTHDAY = "";
     final String TAG = "ACCOUNT_act";
+
+    private String memberStatus = "";
 
     File output = null;
     boolean userIsPrincipal = false;
@@ -173,6 +177,8 @@ public class MemberAccountActivity extends AppCompatActivity
         MEMBER_ID = getIntent().getExtras().getString("MEMCODE");
         BIRTHDAY = getIntent().getExtras().getString("BIRTHDAY");
         permission = new Permission();
+
+        memberStatus = getIntent().getExtras().getString("STATUS");
 
         circleImageView2 = (CircleImageView) findViewById(R.id.circleImageView2);
 
@@ -268,7 +274,7 @@ public class MemberAccountActivity extends AppCompatActivity
 
         getPhoto();
         animateFAB();
-        setFlag(getIntent().getExtras().getString("STATUS"));
+      //  setFlag(getIntent().getExtras().getString("STATUS"));
     }
 
     private void setFlag(String status) {
@@ -428,16 +434,30 @@ public class MemberAccountActivity extends AppCompatActivity
                 break;
 
             case R.id.fab1:
-
-                if (implement.testPinAvailable()) {
-                    animateFAB();
-                    gotoRequestButton();
+                // todo change member status
+                if (true) {
+//                if (memberStatus.equalsIgnoreCase("ACTIVE")) {
+                    if (implement.testPinAvailable()) {
+                        animateFAB();
+                        gotoRequestButton();
+                    } else {
+                        alertDialogCustom.showMe(
+                                context,
+                                alertDialogCustom.HOLD_ON_title,
+                                alertDialogCustom.A_VALID_PIN,
+                                1);
+                    }
                 } else {
-                    alertDialogCustom.showMe(context , alertDialogCustom.HOLD_ON_title , alertDialogCustom.A_VALID_PIN  , 1);
+                    Timber.d("Member Status : %s", memberStatus);
+                    animateFAB();
+                    alertDialogCustom.showMe(
+                            context,
+                            alertDialogCustom.HOLD_ON_title,
+                            StatusSetter.setRemarks(memberStatus),
+                            1);
                 }
+
                 break;
-
-
         }
     }
 
@@ -634,11 +654,11 @@ public class MemberAccountActivity extends AppCompatActivity
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), memberCode);
         RequestBody username = RequestBody.create(MediaType.parse("text/plain"),
                 SharedPref.getStringValue(SharedPref.USER, SharedPref.masterUSERNAME, context));
-        RequestBody type = RequestBody.create(MediaType.parse("text/plain"),  "MEMBER");
+        RequestBody type = RequestBody.create(MediaType.parse("text/plain"), "MEMBER");
         Log.v("Upload", file.toString());
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-        appInterface.upload(fbody, name  , username , type)
+        appInterface.upload(fbody, name, username, type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())

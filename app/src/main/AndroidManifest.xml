@@ -127,7 +127,14 @@
         <activity android:name="modules.tests.TestsActivity" />
         <activity android:name="modules.consultation.ConsultationDetailsActivity" />
         <activity android:name="modules.selecthospital.SelectHospitalActivity" />
-        <activity android:name="modules.selecttest.SelectTestActivity"></activity>
+        <activity android:name="modules.selecttest.SelectTestActivity" />
+        <activity android:name="modules.requestapproval.RequestApprovalDetailsActivity" />
+        <activity android:name="modules.requestnewapproval.RequestNewActivity" />
+        <activity android:name="modules.requestforconsult.RequestForConsultActivity" />
+        <activity android:name="modules.requestdoctor.RequestDoctorActivity" />
+        <activity android:name="modules.diagnosis.DiagnosisActivity" />
+        <activity android:name="modules.diagnosistest.DiagnosisTestActivity" />
+        <activity android:name="modules.testattachment.TestAttachmentActivity"></activity>
     </application>
 
 </manifest>

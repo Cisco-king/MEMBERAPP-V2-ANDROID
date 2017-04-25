@@ -106,7 +106,8 @@ public class SelectProvinceActivity extends AppCompatActivity {
 
         alertDialogCustom = new AlertDialogCustom();
         ORIGIN = getIntent().getStringExtra(Constant.SELECT);
-        SPEC_SEARCH = getIntent().getStringExtra(Constant.SPEC_SEARCH);
+//        SPEC_SEARCH = getIntent().getStringExtra(Constant.SPEC_SEARCH);
+        SPEC_SEARCH = "";
         ed_search.setText(SPEC_SEARCH);
         if (implement.testOriginFromCity(ORIGIN)) {
             rv_provinces.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
