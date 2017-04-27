@@ -61,6 +61,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:gravity="center"
+                    android:visibility="gone"
                     fancy:fb_defaultColor="@color/transparent"
                     fancy:fb_focusColor="@color/colorPrimaryBlueDark"
                     fancy:fb_text="Done" />

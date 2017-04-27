@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +8,7 @@
     tools:context="modules.requestdoctor.RequestDoctorActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp"
@@ -45,26 +45,33 @@
 
                 <TextView
                     android:id="@+id/tvToolbarTitle"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/btn_back_width"
+                    android:layout_weight="1"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_main" />
 
-                <ImageButton
-                    android:id="@+id/btn_next"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_action_arrow_left" />
 
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/fbDone"
+                    android:layout_width="@dimen/btn_back_width"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    fancy:fb_defaultColor="@color/transparent"
+                    fancy:fb_focusColor="@color/colorPrimaryBlueDark"
+                    fancy:fb_text="Done" />
 
             </LinearLayout>
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_diagnosis"  />
+    <include layout="@layout/content_request_doctor" />
 
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

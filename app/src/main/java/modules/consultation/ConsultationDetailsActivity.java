@@ -1,6 +1,5 @@
 package modules.consultation;
 
-import android.animation.IntArrayEvaluator;
 import android.content.Intent;
 import android.widget.Button;
 
