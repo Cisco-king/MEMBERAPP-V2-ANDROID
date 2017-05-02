@@ -3,6 +3,7 @@ package v2;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +32,7 @@ import mehdi.sakout.fancybuttons.FancyButton;
 import model.Loa;
 import model.LoaFetch;
 import model.SimpleData;
+import timber.log.Timber;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.DateConverter;
@@ -103,14 +105,19 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         View view = inflater.inflate(R.layout.fragment_loarequest, container, false);
         ButterKnife.bind(this, view);
 
-        init();
+//        init();
 
 
         return view;
     }
 
-    private void init() {
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        init();
+    }
 
+    private void init() {
         callback = this;
         sort_by = getString(R.string.request_date);
         context = getActivity();
@@ -243,6 +250,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         if (implement != null) {
             implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
                     service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
+
             implement.getDoctorCreds(arrayList, databaseHandler);
         }
     }
@@ -250,12 +258,14 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @Override
     public void onErrorFetchingDoctorCreds(String message) {
-        //   alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
+
+        //  alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override
     public void doneFetchingDoctorData() {
         if (implement != null) {
+            Timber.d("fetching doctor....");
             implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
                     service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
             implement.updateHospitals(arrayList, databaseHandler);
@@ -265,6 +275,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     @Override
     public void doneUpdatingHosp() {
         if (implement != null) {
+            Timber.d("done doctor update...");
             implement.UIUpdateShowLoad(false, pb, rv_loa_request, btn_sort);
             implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
                     service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);

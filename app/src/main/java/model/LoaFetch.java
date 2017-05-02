@@ -547,4 +547,12 @@ public class LoaFetch implements Parcelable {
             return new LoaFetch[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return new StringBuilder("Doctor Details :\n")
+                .append(doctorName).append("\n")
+                .append(doctorSpec).append("\n")
+                .append(hospitalName).toString();
+    }
 }

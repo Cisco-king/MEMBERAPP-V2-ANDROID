@@ -47,6 +47,7 @@
                     android:id="@+id/tvToolbarTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:text="Tests"
                     android:layout_weight="1"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
@@ -61,7 +62,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:gravity="center"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     fancy:fb_defaultColor="@color/transparent"
                     fancy:fb_focusColor="@color/colorPrimaryBlueDark"
                     fancy:fb_text="Done" />

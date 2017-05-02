@@ -26,10 +26,13 @@ public class RequestDoctorAdapter extends
     private LayoutInflater inflater;
     private List<String> doctors;
 
-    public RequestDoctorAdapter(Context context, List<String> doctors) {
+    private RequestDoctorAdapter.OnItemClickListener listener;
+
+    public RequestDoctorAdapter(Context context, List<String> doctors, OnItemClickListener listener) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.doctors = doctors;
+        this.listener = listener;
     }
 
     @Override
@@ -49,14 +52,25 @@ public class RequestDoctorAdapter extends
         return doctors.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.tvDoctorName) TextView tvDoctorName;
 
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+
+            view.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            listener.onItemClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 
 }

@@ -574,6 +574,7 @@ public class MemberAccountActivity extends AppCompatActivity
 
 
                 try {
+
                     //get file
                     Uri selectedImageUri = data.getData();
                     String imagepath = imageConverter.getRealPathFromURI(selectedImageUri, context);
@@ -716,9 +717,7 @@ public class MemberAccountActivity extends AppCompatActivity
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
 
-
                 setDetails(items[item]);
-
 
             }
         }).show();
@@ -730,13 +729,12 @@ public class MemberAccountActivity extends AppCompatActivity
 
         if (item.equals(GALLERY)) {
             if (Permission.checkPermissionStorage(context)) {
-
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryIntent, GALLERY_RQ);
             }
-
         }
+
         if (item.equals(CAMERA)) {
 
 

@@ -74,4 +74,5 @@
 
     <include layout="@layout/content_diagnosis_test" />
 
+
 </android.support.design.widget.CoordinatorLayout>

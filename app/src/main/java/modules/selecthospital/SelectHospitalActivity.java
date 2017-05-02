@@ -15,6 +15,8 @@ import adapter.HospitalClinicAdapter;
 import butterknife.BindView;
 import model.HospitalClinic;
 import modules.base.activities.TestTrackableActivity;
+import modules.diagnosis.DiagnosisActivity;
+import modules.requestdoctor.RequestDoctorActivity;
 import modules.selecttest.SelectTestActivity;
 import timber.log.Timber;
 
@@ -22,6 +24,8 @@ public class SelectHospitalActivity extends TestTrackableActivity {
 
     public static final String TAG =
             SelectHospitalActivity.class.getSimpleName();
+
+    private boolean fromRequestDoctor = false;
 
 
     @BindView(R.id.rvHospitalClickForAvailment) RecyclerView rvHospitalClickForAvailment;
@@ -48,6 +52,8 @@ public class SelectHospitalActivity extends TestTrackableActivity {
         super.initViews();
         setToolbarCustomableTitle("Tests");
 
+        fromRequestDoctor = getIntent().getBooleanExtra(RequestDoctorActivity.REQUEST_DOCTOR, false);
+
         hospitalClinics = new ArrayList<>();
         hospitalClinics = dummies();
 
@@ -59,7 +65,11 @@ public class SelectHospitalActivity extends TestTrackableActivity {
 
     private void onItemViewClick(int position) {
         Timber.d("The button position that click %s", position);
-        startActivity(new Intent(this, SelectTestActivity.class));
+        if (fromRequestDoctor) {
+            startActivity(new Intent(this, DiagnosisActivity.class));
+        } else {
+            startActivity(new Intent(this, SelectTestActivity.class));
+        }
     }
 
     public List<HospitalClinic> dummies() {

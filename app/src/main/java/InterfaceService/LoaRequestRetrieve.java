@@ -34,6 +34,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
+import timber.log.Timber;
 
 /**
  * Created by mpx-pawpaw on 1/18/17.
@@ -230,6 +231,7 @@ public class LoaRequestRetrieve {
             protected Object doInBackground(Object[] objects) {
                 for (int x = 0; x < arrayList.size(); x++) {
                     String hospName = databaseHandler.getHospitalName(arrayList.get(x).getHospitalCode());
+                    Timber.d("%s", hospName);
                     databaseHandler.setHospitalToLoaReq(arrayList.get(x).getId(), hospName);
                 }
                 return null;

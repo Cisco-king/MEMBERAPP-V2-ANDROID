@@ -1,5 +1,6 @@
 package modules.requestdoctor;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -12,9 +13,13 @@ import adapter.RequestDoctorAdapter;
 import butterknife.BindView;
 import model.Doctor;
 import modules.base.activities.TestTrackableActivity;
+import modules.selecthospital.SelectHospitalActivity;
+import timber.log.Timber;
 
-public class RequestDoctorActivity extends TestTrackableActivity {
+public class RequestDoctorActivity extends TestTrackableActivity implements RequestDoctorAdapter.OnItemClickListener {
 
+
+    public static final String REQUEST_DOCTOR = "requestDoctor";
 
     @BindView(R.id.rvSelectDoctors) RecyclerView rvSelectDoctors;
 
@@ -30,8 +35,11 @@ public class RequestDoctorActivity extends TestTrackableActivity {
     protected void initViews() {
         super.initViews();
 
+        doctors = new ArrayList<>();
         doctors = dummyDoctors();
-        doctorAdapter = new RequestDoctorAdapter(this, doctors);
+
+        doctorAdapter = new RequestDoctorAdapter(context, doctors, this);
+        Timber.d("doctor count %s", doctorAdapter.getItemCount());
 
         rvSelectDoctors.setLayoutManager(new LinearLayoutManager(this));
         rvSelectDoctors.setAdapter(doctorAdapter);
@@ -44,4 +52,10 @@ public class RequestDoctorActivity extends TestTrackableActivity {
         return dummys;
     }
 
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(this, SelectHospitalActivity.class);
+        intent.putExtra(REQUEST_DOCTOR, true);
+        startActivity(intent);
+    }
 }

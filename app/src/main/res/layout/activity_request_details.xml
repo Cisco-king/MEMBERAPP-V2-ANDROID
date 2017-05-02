@@ -47,6 +47,7 @@
                     android:id="@+id/tvToolbarTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Tests"
                     android:layout_marginRight="@dimen/btn_back_width"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"

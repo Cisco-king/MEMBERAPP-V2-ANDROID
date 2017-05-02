@@ -6,6 +6,12 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+    <android.support.v4.widget.NestedScrollView
+        android:layout_above="@+id/llAggrementAndFooter"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -208,21 +214,28 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:text="@string/note_upload"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"/>
 
         </LinearLayout>
 
-
-
-
     </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/llAggrementAndFooter"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <!-- Aggrement layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/llFooter"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -274,8 +287,6 @@
         android:id="@+id/llFooter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
         android:layout_margin="10dp"
         android:gravity="center"
         android:orientation="horizontal">
@@ -300,6 +311,8 @@
             android:layout_weight="1"
             android:text="Cancel"
             android:textAllCaps="false" />
+
+    </LinearLayout>
 
     </LinearLayout>
 

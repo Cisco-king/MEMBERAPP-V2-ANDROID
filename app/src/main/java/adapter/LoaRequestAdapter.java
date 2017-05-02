@@ -29,6 +29,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
+import timber.log.Timber;
 import utilities.DateConverter;
 
 
@@ -62,19 +63,20 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
     }
 
     @Override
-    public void onBindViewHolder(LoaRequestAdapter.Holder viewHolder, final int position) {
+    public void onBindViewHolder(LoaRequestAdapter.Holder holder, int position) {
 
+        LoaFetch loaFetch = arrayList.get(position);
+        Timber.d("%s", loaFetch.toString());
 
-        final Holder holder = (Holder) viewHolder;
-        holder.tv_remark.setText(arrayList.get(position).getRemarks());
-        holder.tv_req_date.setText("Request Date: " + DateConverter.convertDateToMMddyyyy(DateConverter.convertDatetoMMMddyyy(arrayList.get(position).getApprovalDate())));
-        holder.tv_status.setText(arrayList.get(position).getStatus());
-        holder.tv_doctor.setText(arrayList.get(position).getDoctorName());
-        holder.tv_spec.setText(arrayList.get(position).getDoctorSpec());
-        holder.tv_hospname.setText(arrayList.get(position).getHospitalName());
+        holder.tv_remark.setText(loaFetch.getRemarks());
+        holder.tv_req_date.setText("Request Date: " + DateConverter.convertDateToMMddyyyy(DateConverter.convertDatetoMMMddyyy(loaFetch.getApprovalDate())));
+        holder.tv_status.setText(loaFetch.getStatus());
+        holder.tv_doctor.setText(loaFetch.getDoctorName());
+        holder.tv_spec.setText(loaFetch.getDoctorSpec());
+        holder.tv_hospname.setText(loaFetch.getHospitalName());
 
-        holder.tv_sched.setText(arrayList.get(position).getSchedule());
-        holder.tv_room.setText(arrayList.get(position).getRoom());
+//        holder.tv_sched.setText(arrayList.get(position).getSchedule());
+//        holder.tv_room.setText(arrayList.get(position).getRoom());
 
         holder.tv_sched.setVisibility(View.GONE);
         holder.tv_room.setVisibility(View.GONE);

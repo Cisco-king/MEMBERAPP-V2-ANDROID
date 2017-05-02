@@ -1,50 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:orientation="vertical">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
 
     <LinearLayout
-        android:id="@+id/llSearchTest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:focusableInTouchMode="true"
+        android:layout_above="@+id/cvFooter"
+        android:elevation="10dp"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/llSearchTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/sub_margin"
-            android:text="@string/select_test_s"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_main" />
+            android:background="@color/colorPrimary"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/edSearchTest"
+            <TextView
+                android:id="@+id/diagnosisTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/sub_margin"
+                android:text="Select Test/s For "
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_main" />
+
+            <EditText
+                android:id="@+id/edSearchTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sub_margin"
+                android:background="@drawable/edit_text_rounded_corner"
+                android:hint="Search..."
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="@dimen/sub_margin"
+                android:textColor="@color/BLACK"
+                android:textSize="@dimen/text_main" />
+
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvDiagnosisTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/sub_margin"
-            android:background="@drawable/edit_text_rounded_corner"
-            android:hint="Search..."
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLines="1"
-            android:padding="@dimen/sub_margin"
-            android:textColor="@color/BLACK"
-            android:textSize="@dimen/text_main" />
-
+            android:layout_below="@+id/llSearchTest" />
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvSelectTest"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvFooter"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/llSearchTest" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp">
 
-</LinearLayout>
+            <Button
+                android:id="@+id/btnAddMoreDiagnosis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="Add More Diagnosis"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

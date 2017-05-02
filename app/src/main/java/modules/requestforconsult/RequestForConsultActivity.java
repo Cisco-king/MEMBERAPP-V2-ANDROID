@@ -23,11 +23,13 @@ public class RequestForConsultActivity extends TestTrackableActivity {
     @Override
     protected void initViews() {
         super.initViews();
+        setToolbarCustomableTitle("Tests");
     }
 
     @OnClick(R.id.btnReasonForConsultOk)
     public void startRequestingDoctor() {
         startActivity(new Intent(this, RequestDoctorActivity.class));
     }
+
 
 }

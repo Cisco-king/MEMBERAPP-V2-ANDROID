@@ -48,6 +48,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text="Tests"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_main" />
@@ -61,7 +62,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:gravity="center"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     fancy:fb_defaultColor="@color/transparent"
                     fancy:fb_focusColor="@color/colorPrimaryBlueDark"
                     fancy:fb_text="Done" />

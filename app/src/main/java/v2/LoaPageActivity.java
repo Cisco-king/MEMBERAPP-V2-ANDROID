@@ -118,6 +118,7 @@ public class LoaPageActivity extends AppCompatActivity
     @BindView(R.id.tvDateApproved) TextView tvDateApproved;
     @BindView(R.id.tvRemarks) TextView tvRemakrs;
 
+    @BindView(R.id.tvHospitalClinicName) TextView tvHospitalClinicName;
     @BindView(R.id.tvHopitalClinicLocation) TextView tvHopitalClinicLocation;
     @BindView(R.id.tvHopitalClinicContacts) TextView tvHopitalClinicContacts;
     @BindView(R.id.tvHopitalClinicDoctorName) TextView tvHopitalClinicDoctorName;
@@ -232,7 +233,7 @@ public class LoaPageActivity extends AppCompatActivity
 
         tv_spec.setText(testData(loa.getDoctorSpec()));
 
-        tvHopitalClinicLocation.setText(hospital.getHospitalName());
+        tvHospitalClinicName.setText(hospital.getHospitalName());
         tvHopitalClinicLocation.setText(hospital.getFullAddress());
         tvHopitalClinicContacts.setText(hospital.getPhoneNo());
         tvHopitalClinicDoctorName.setText(hospital.getContactPerson());

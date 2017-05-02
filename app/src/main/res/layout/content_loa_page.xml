@@ -116,7 +116,6 @@
                                 android:id="@+id/tv_approval_code"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-
                                 android:gravity="end"
                                 android:text="@string/hospital_clinic"
                                 android:textColor="@color/BLACK"
@@ -408,37 +407,40 @@
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_small" />
 
+                        <!-- EMPIRE MEDICINE EXCELLENT HEALTH SERVICES AND DIAGNOSTIC CENTER -->
                         <TextView
                             android:id="@+id/tvHospitalClinicName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/sub_margin"
-                            android:text="EMPIRE MEDICINE EXCELLENT HEALTH SERVICES AND DIAGNOSTIC CENTER"
                             android:textAppearance="@style/TextAppearance.AppCompat.Title"
                             android:textColor="@color/BLACK" />
 
+                        <!-- Abangan Sur, McArthur Highway Hi-way -->
                         <TextView
                             android:id="@+id/tvHopitalClinicLocation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Abangan Sur, McArthur Highway Hi-way"
+                            android:text=""
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
 
+                        <!-- (044) 248-3353 / xxxxxxxxx / xxxxxxxxxy -->
                         <TextView
                             android:id="@+id/tvHopitalClinicContacts"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/sub_margin"
-                            android:text="(044) 248-3353 / xxxxxxxxx / xxxxxxxxxy"
+                            android:text=""
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
+                        <!-- Ms. Tony Gonzaga -->
                         <TextView
                             android:id="@+id/tvHopitalClinicDoctorName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/sub_margin"
-                            android:text="Ms. Tony Gonzaga"
+                            android:text=""
                             android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
 
