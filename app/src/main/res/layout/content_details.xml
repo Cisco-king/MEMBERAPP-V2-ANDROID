@@ -321,7 +321,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine"
                     android:isScrollContainer="false"
-                    android:maxLength="500"
+                    android:maxLength="250"
                     android:minHeight="100dp"
                     android:padding="10dp"
                     android:singleLine="true"

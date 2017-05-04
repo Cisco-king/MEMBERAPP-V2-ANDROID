@@ -83,6 +83,10 @@ public class AlertDialogCustom {
     public String start_must_lesser = "Start Date should be lesser than End Date.";
     public String data_not_avilable = "List is not available";
     public  String successfully_updated = "Setting is successfully updated.";
+
+    public static final String LOA_GENERATE_PDF_SUCCESS =
+            "LOA request has been saved to MediCard folder in DCIM";
+
     TextView tv_message, tv_title;
     CircleImageView ci_error_image;
     Button btn_accept, btn_cancel;

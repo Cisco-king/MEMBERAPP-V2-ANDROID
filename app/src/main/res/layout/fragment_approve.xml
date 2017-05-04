@@ -81,15 +81,12 @@
                                 android:gravity="center"
                                 android:text="@string/this_approval_shall" />
 
-
                             <ImageView
-
                                 android:id="@+id/img_qrcode"
                                 android:layout_width="200dp"
                                 android:layout_height="200dp"
                                 android:layout_margin="@dimen/sub_margin"
                                 android:src="@drawable/card" />
-
 
                             <TextView
                                 android:id="@+id/tv_ref_code"
@@ -100,8 +97,6 @@
                                 android:textColor="@color/colorPrimaryLight"
                                 android:textSize="@dimen/text_small"
                                 android:textStyle="bold" />
-
-
 
                             <TextView
                                 android:textStyle="bold"
@@ -135,7 +130,6 @@
                                 android:text="10/26/2016 to 10/28/2016"
                                 android:textSize="@dimen/text_small" />
                         </LinearLayout>
-
 
                         <LinearLayout
                             android:id="@+id/ll_pending"
@@ -173,7 +167,6 @@
                             android:orientation="horizontal">
 
                             <TextView
-
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/date_requested"
@@ -184,14 +177,12 @@
                                 android:id="@+id/tv_date_requested"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-
                                 android:gravity="end"
                                 android:text="@string/hospital_clinic"
                                 android:textColor="@color/BLACK"
                                 android:textSize="@dimen/text_small" />
 
                         </LinearLayout>
-
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -205,7 +196,6 @@
                                 android:text="@string/member_code_"
                                 android:textColor="@color/colorPrimaryLight"
                                 android:textSize="@dimen/text_small" />
-
 
                             <TextView
                                 android:id="@+id/tv_member_code"
@@ -593,7 +583,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/sub_margin"
-                            android:text="@string/prob_cond"
+                            android:text="@string/reason_for_consult"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_small" />
 

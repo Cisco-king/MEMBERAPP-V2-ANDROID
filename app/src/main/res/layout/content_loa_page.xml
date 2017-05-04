@@ -80,6 +80,7 @@
                             android:textSize="@dimen/text_small" />
 
                         <TextView
+                            android:id="@+id/tvServiceType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -314,7 +315,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/date_approved_"
+                                android:text="@string/date_requested"
                                 android:textColor="@color/colorPrimaryLight"
                                 android:textSize="@dimen/text_small" />
 
@@ -655,7 +656,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/prob_cond"
+                            android:text="@string/reason_for_consult"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_small" />
 
@@ -731,7 +732,7 @@
                             android:layout_weight="1"
                             fancy:fb_defaultColor="@color/colorPrimary"
                             fancy:fb_focusColor="@color/colorPrimaryBlueDark"
-                            fancy:fb_text="Download Loa" />
+                            fancy:fb_text="@string/download_loa" />
 
 
                     </LinearLayout>

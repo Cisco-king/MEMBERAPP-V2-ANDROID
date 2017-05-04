@@ -434,9 +434,9 @@ public class MemberAccountActivity extends AppCompatActivity
                 break;
 
             case R.id.fab1:
-                // todo change member status
-                if (true) {
-//                if (memberStatus.equalsIgnoreCase("ACTIVE")) {
+                // todo change member serviceType
+//                if (true) {
+                if (memberStatus.equalsIgnoreCase("ACTIVE")) {
                     if (implement.testPinAvailable()) {
                         animateFAB();
                         gotoRequestButton();

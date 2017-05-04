@@ -331,10 +331,9 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/date_approved_"
+                                    android:text="@string/date_requested"
                                     android:textColor="@color/colorPrimaryLight"
                                     android:textSize="@dimen/text_small" />
 
@@ -342,7 +341,6 @@
                                     android:id="@+id/tv_date_requested"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-
                                     android:gravity="end"
                                     android:text="@string/hospital_clinic"
                                     android:textColor="@color/BLACK"
@@ -356,13 +354,11 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/remarks_"
                                     android:textColor="@color/colorPrimaryLight"
                                     android:textSize="@dimen/text_small" />
-
 
                                 <TextView
                                     android:id="@+id/tv_remarks"
@@ -374,9 +370,11 @@
                                     android:textSize="@dimen/text_small" />
 
                             </LinearLayout>
+
                         </LinearLayout>
 
                     </LinearLayout>
+
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView

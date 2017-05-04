@@ -44,22 +44,32 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
     private ArrayList<LoaFetch> arrayList;
     LOARequestCallback callback;
 
+    private LayoutInflater inflater;
+
 
     public LoaRequestAdapter(Context context, ArrayList<LoaFetch> arrayList, DatabaseHandler databaseHandler, LOARequestCallback callback) {
         this.arrayList = arrayList;
         this.context = context;
         this.databaseHandler = databaseHandler;
         this.callback = callback;
+
+        inflater = LayoutInflater.from(context);
     }
 
     @Override
     public LoaRequestAdapter.Holder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = null;
-
-        view = LayoutInflater.from(context).inflate(R.layout.row_loa_request, parent, false);
+        View view = inflater.inflate(R.layout.row_loa_request, parent, false);
+       /* View view = null;
+        view = LayoutInflater.from(context).inflate(R.layout.row_loa_request, parent, false);*/
         return new Holder(view);
 
+    }
+
+    public void update(ArrayList<LoaFetch> loaFetches) {
+        arrayList = new ArrayList<>();
+        arrayList = loaFetches;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -74,6 +84,7 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
         holder.tv_doctor.setText(loaFetch.getDoctorName());
         holder.tv_spec.setText(loaFetch.getDoctorSpec());
         holder.tv_hospname.setText(loaFetch.getHospitalName());
+
 
 //        holder.tv_sched.setText(arrayList.get(position).getSchedule());
 //        holder.tv_room.setText(arrayList.get(position).getRoom());

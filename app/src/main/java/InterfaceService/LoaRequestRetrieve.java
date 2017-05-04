@@ -29,7 +29,10 @@ import model.Loa;
 import model.LoaFetch;
 import model.SimpleData;
 import model.TheDoctor;
+import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
@@ -44,6 +47,7 @@ public class LoaRequestRetrieve {
 
     Context context;
     LOARequestCallback callback;
+    Subscription doctorSubscriber;
 
     public LoaRequestRetrieve(Context context, LOARequestCallback callback) {
         this.context = context;
@@ -56,17 +60,16 @@ public class LoaRequestRetrieve {
         if (arrayList.size() == 0) {
             list.setVisibility(View.GONE);
             tv_list.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             list.setVisibility(View.VISIBLE);
             tv_list.setVisibility(View.GONE);
         }
     }
 
-
     public void getLoa(String memberCode) {
 
-        AppInterface appInterface;
-        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+//        AppInterface appInterface;
+        AppInterface appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
         appInterface.getLoaList(memberCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -89,7 +92,6 @@ public class LoaRequestRetrieve {
                 });
 
 
-
     }
 
     public void getData(Loa loa, DatabaseHandler databaseHandler) {
@@ -98,7 +100,36 @@ public class LoaRequestRetrieve {
 
     public void getDoctorCreds(final ArrayList<LoaFetch> arrayList, final DatabaseHandler databaseHandler) {
 
-        AsyncTask asyncTask = new AsyncTask() {
+        doctorSubscriber = Observable.create(new Observable.OnSubscribe<Boolean>() {
+
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                for (int x = 0; x < arrayList.size(); x++) {
+                    fetchDoctor(arrayList.get(x).getDoctorCode(), x, arrayList, databaseHandler);
+                }
+                subscriber.onNext(Boolean.TRUE);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("process completed");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d("error %s", e.toString());
+                    }
+
+                    @Override
+                    public void onNext(Boolean success) {
+                        if (success) {
+                            callback.doneFetchingDoctorData();
+                        }
+                    }
+                });
+        /*AsyncTask asyncTask = new AsyncTask() {
 
 
             @Override
@@ -108,10 +139,7 @@ public class LoaRequestRetrieve {
 
             @Override
             protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
                 callback.doneFetchingDoctorData();
-
-
             }
 
             @Override
@@ -126,7 +154,15 @@ public class LoaRequestRetrieve {
         };
 
 
-        asyncTask.execute();
+        asyncTask.execute();*/
+    }
+
+    public void detachSubscription() {
+        try {
+            if (!doctorSubscriber.isUnsubscribed()) doctorSubscriber.unsubscribe();
+        } catch (Exception e) {
+            Timber.d("subscribe error %s", e.toString());
+        }
     }
 
     private void fetchDoctor(final String doctorCode, final int position, final ArrayList<LoaFetch> arrayList, final DatabaseHandler databaseHandler) {
@@ -134,57 +170,56 @@ public class LoaRequestRetrieve {
         Log.d("DOCTOR_CODE", doctorCode);
 
 
-        AsyncTask asyncTask = new AsyncTask() {
+    /*    AsyncTask asyncTask = new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
+*/
 
+        AppInterface appInterface;
+        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+        appInterface.getDoctorData(doctorCode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<DoctorNORoom>() {
+                    @Override
+                    public void onCompleted() {
 
-                AppInterface appInterface;
-                appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-                appInterface.getDoctorData(doctorCode)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .unsubscribeOn(Schedulers.io())
-                        .subscribe(new Subscriber<DoctorNORoom>() {
-                            @Override
-                            public void onCompleted() {
+                    }
 
-                            }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("DOCTOR_CODE", e.getMessage());
 
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.d("DOCTOR_CODE", e.getMessage());
+                        if (e.getMessage().contains("Expected BEGIN_OBJECT but was STRING")) {
+                            doctorNotFound(doctorCode, arrayList, position, databaseHandler);
+                        } else {
+                            callback.onErrorFetchingDoctorCreds(e.getMessage());
+                        }
 
-                                if (e.getMessage().contains("Expected BEGIN_OBJECT but was STRING")) {
-                                    doctorNotFound(doctorCode, arrayList, position, databaseHandler);
-                                } else {
-                                    callback.onErrorFetchingDoctorCreds(e.getMessage());
-                                }
+                    }
 
+                    @Override
+                    public void onNext(DoctorNORoom doctorNORoom) {
 
-                            }
+                        if (doctorNORoom.getResponseCode().equals("210")) {
+                            doctorNotFound(doctorCode, arrayList, position, databaseHandler);
+                        } else {
+                            //     if (.getDoctorsToHospital().size() == 0)
+                            //        doctorNotFound(doctorCode, arrayList, position, dbHandler);
+                            //      else
+                            onSuccessListener(databaseHandler, doctorNORoom.getDoctor(), arrayList, position);
+                        }
+                    }
+                });
 
-                            @Override
-                            public void onNext(DoctorNORoom doctorNORoom) {
-
-                                if (doctorNORoom.getResponseCode().equals("210")) {
-                                    doctorNotFound(doctorCode, arrayList, position, databaseHandler);
-                                } else {
-                                    //     if (.getDoctorsToHospital().size() == 0)
-                                    //        doctorNotFound(doctorCode, arrayList, position, dbHandler);
-                                    //      else
-                                    onSuccessListener(databaseHandler, doctorNORoom.getDoctor(), arrayList, position);
-                                }
-                            }
-                        });
-
-
+/*
                 return null;
             }
-        };
+        };*/
 
 
-        asyncTask.execute();
+//        asyncTask.execute();
 
     }
 
@@ -261,7 +296,7 @@ public class LoaRequestRetrieve {
     private String dateSortUpdate(String sort_by) {
         String returnData = "";
         if (sort_by.equals(context.getString(R.string.status))) {
-            returnData = "status";
+            returnData = "serviceType";
         } else if (sort_by.equals(context.getString(R.string.request_date))) {
             // returnData = "DATETIME(dateAdmitted)";
             returnData = "approvalNo";
@@ -270,7 +305,7 @@ public class LoaRequestRetrieve {
         } else if (sort_by.equals(context.getString(R.string.service_type))) {
             returnData = "remarks";
         } else if (sort_by.equals("")) {
-            returnData = "status";
+            returnData = "serviceType";
         }
         return returnData;
     }
@@ -293,8 +328,6 @@ public class LoaRequestRetrieve {
             btn_sort.setVisibility(View.VISIBLE);
         }
     }
-
-
 
 
 //    public void testDataDownLoadRequirement(ArrayList<LoaList> arrayListfromDB, DatabaseHandler dbHandler) {

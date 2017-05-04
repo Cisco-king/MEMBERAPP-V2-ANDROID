@@ -126,7 +126,6 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return arrayAccounts.size() + 1;
     }
 
-
     public class itemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView tv_name, tv_id, tv_company;

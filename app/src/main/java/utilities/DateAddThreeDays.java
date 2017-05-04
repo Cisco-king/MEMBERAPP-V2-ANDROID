@@ -33,7 +33,7 @@ public class DateAddThreeDays {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        c.add(Calendar.DATE, 3);  // number of days to add, can also use Calendar.DAY_OF_MONTH in place of Calendar.DATE
+        c.add(Calendar.DATE, 2);  // number of days to add, can also use Calendar.DAY_OF_MONTH in place of Calendar.DATE
         SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
         String output = sdf1.format(c.getTime());
 

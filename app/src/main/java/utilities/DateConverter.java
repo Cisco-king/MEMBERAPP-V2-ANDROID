@@ -29,7 +29,7 @@ public class DateConverter {
         SimpleDateFormat month = new SimpleDateFormat("MM");
         SimpleDateFormat year = new SimpleDateFormat("yyyy");
 
-        int addedDay = Integer.parseInt(day.format(date)) + dayToADD;
+        int addedDay = Integer.parseInt(day.format(date)) + (dayToADD-1);
         String dateRaw = (Integer.parseInt(month.format(date))) + " " + addedDay + " , " + year.format(date);
 
 

@@ -1,8 +1,10 @@
 package fragments;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,21 +12,37 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.medicard.member.R;
+
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.io.InputStream;
+
 import InterfaceService.ScreenshotCallback;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import constants.OutPatientConsultationForm;
+import constants.StatusType;
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
+import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
+import utilities.DateConverter;
+import utilities.GenderPicker;
 import utilities.ImageSaver;
 import utilities.Loader;
+import utilities.PdfGenerator;
 import utilities.PdfSaver;
 import utilities.Permission;
+import utilities.PermissionUtililities;
 import utilities.QrCodeCreator;
 import utilities.ResultSetters;
 import utilities.Screenshot;
@@ -120,6 +138,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     @BindView(R.id.tv_sched_doctor)
     TextView tv_sched_doctor;
 
+    private OutPatientConsultationForm.Builder loaFormBuilder;
 
     Context context;
     ///  TextView tv_contact_person, tv_sched, tv_contact, tv_spec, tv_sched_doctor;
@@ -137,7 +156,6 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     private static final String ARG_valDate = "valDate";
     private static final String ARG_withProvider = "wWithProvider";
     private static final String ARG_approved = "aproved";
-
 
     String refCode;
     String memId;
@@ -211,6 +229,8 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
         alertDialogCustom = new AlertDialogCustom();
         loader = new Loader(context);
 
+        // init here
+
     }
 
     @Override
@@ -239,7 +259,6 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
 
 
     private void setDetails() {
-
 
         tv_contact_person.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, context));
         tv_contact.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, context));
@@ -281,6 +300,35 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
             setPending();
         }
 
+        int position = valDate.indexOf("to");
+        Timber.d("sxz %s", valDate);
+        String validFrom = valDate.substring(0, position - 1);
+        String validUntil = valDate.substring(position + 2);
+//        String validFrom = "";
+//        String validUntil = "";
+
+        Timber.d("position %s, validFrom %s, validUntil %s", position, validFrom, validUntil);
+
+        String remarkTemp = remark.replace("\n", ", ").replace("\r", "");
+
+        loaFormBuilder = new OutPatientConsultationForm.Builder()
+                .validFrom(validFrom)
+                .validUntil(validUntil)
+                .dateOfConsult(reqDate)
+                .referenceNumber(refCode)
+                .doctor(ResultSetters.nameSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, context), context))
+                .hospital(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, context))
+                .memberName(name)
+                .age(AgeCorrector.age(SharedPref.getStringValue(SharedPref.USER, SharedPref.AGE, getActivity())))
+                .gender(GenderPicker.setGender(Integer.parseInt(SharedPref.getStringValue(SharedPref.USER, SharedPref.GENDER, getActivity()))))
+                .memberId(memId)
+                .company(company)
+                .remarks(remarkTemp)
+                .chiefComplaint(condition)
+                .validityDate(SharedPref.getStringValue(SharedPref.USER, SharedPref.VAL_DATE, context))
+                .dateEffectivity(SharedPref.getStringValue(SharedPref.USER, SharedPref.EFF_DATE, context))
+                .serviceType(StatusType.CONSULTATION);
+
         ResultSetters.setDoctorWithProvider(withProvider, tv_doc_app);
     }
 
@@ -317,7 +365,6 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     }
 
 
-
     @OnClick(R.id.btn_shot)
     public void onClick(View v) {
 
@@ -325,17 +372,20 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
             case R.id.btn_shot:
 
 
-
                 Bitmap bitmap = Screenshot.loadBitmapFromView(sv_whole);
 
+                // todo download loa
                 if (Permission.checkPermissionStorage(context)) {
                     btn_ok.setVisibility(View.GONE);
                     btn_shot.setVisibility(View.GONE);
-                    new ImageSaver(context).
+
+                    /*new ImageSaver(context).
                             setFileName(refCode + "_Consultation.jpg").
                             setDirectoryName("MediCard")
                             .setExternal(false)
-                            .save(bitmap, callback);
+                            .save(bitmap, callback);*/
+                    generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form));
+
                 }
 
                 break;
@@ -344,6 +394,25 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Timber.d("request code for storate %s permission response %s", PermissionUtililities.READ_WRITE_PERMISSION, requestCode);
+        switch (requestCode) {
+            case PermissionUtililities.REQUESTCODE_STORAGE_PERMISSION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+                    generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form));
+
+                } else {
+                    Timber.d("permission denied");
+                }
+            }
+
+            return;
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -362,8 +431,6 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     public void onScreenShotListener() {
         Log.d("TRIGGERED", "TRIGGERED");
 
-
-
         if (Permission.checkPermissionStorage(context)) {
             btn_shot.setVisibility(View.GONE);
             btn_ok.setVisibility(View.GONE);
@@ -373,7 +440,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
                     setDirectoryName("MediCard")
                     .setExternal(false)
                     .save(bitmap, callback);
-        }else{
+        } else {
             btn_shot.setVisibility(View.VISIBLE);
             btn_ok.setVisibility(View.VISIBLE);
         }
@@ -385,5 +452,56 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
         btn_shot.setVisibility(View.VISIBLE);
 
         alertDialogCustom.showMe(getActivity(), alertDialogCustom.CONGRATULATIONS_title, alertDialogCustom.Saved_Screenshot, 2);
+    }
+
+    public void generateLoaForm(final OutPatientConsultationForm outPatientConsultationForm, final InputStream stream) {
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                try {
+                    PdfGenerator.generatePdfLoaConsultationForm(
+                            outPatientConsultationForm, stream);
+                    subscriber.onNext(Boolean.TRUE);
+                } catch (Exception e) {
+                    Timber.d("error %s", e.toString());
+                    subscriber.onNext(Boolean.FALSE);
+                }
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("completed process");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d("error message %s", e.toString());
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean success) {
+                        Timber.d("onNext");
+                        if (success) {
+                            onGenerateLoaFormSuccess();
+                        } else {
+
+                        }
+                    }
+                });
+    }
+
+    public void onGenerateLoaFormSuccess() {
+        btn_ok.setVisibility(View.VISIBLE);
+        btn_shot.setVisibility(View.VISIBLE);
+
+        alertDialogCustom.showMe(
+                context,
+                alertDialogCustom.CONGRATULATIONS_title,
+                alertDialogCustom.LOA_GENERATE_PDF_SUCCESS,
+                2);
     }
 }

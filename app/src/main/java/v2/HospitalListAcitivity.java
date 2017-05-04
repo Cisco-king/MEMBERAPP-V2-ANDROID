@@ -137,7 +137,6 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
             }
         });
 
-
     }
 
 
@@ -170,7 +169,6 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
 
     @Override
     public void onClickListener(int position) {
-
 
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, array.get(position).getHospitalName(), context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, array.get(position).getHospitalCode(), context);
@@ -217,6 +215,12 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
     @Override
     public void onSuccess() {
         retrieveHosp("");
+        alertDialogCustom.showMe(
+                context,
+                alertDialogCustom.HOLD_ON_title,
+                "Hospitals that are not in the list are not included in your benefit",
+                1);
+
     }
 
 

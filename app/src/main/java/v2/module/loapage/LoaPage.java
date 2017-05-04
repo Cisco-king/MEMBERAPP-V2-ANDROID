@@ -1,5 +1,8 @@
 package v2.module.loapage;
 
+import java.io.InputStream;
+
+import constants.OutPatientConsultationForm;
 import model.Doctor;
 import model.GetUSER;
 
@@ -24,6 +27,9 @@ public interface LoaPage {
         void onNetworkError();
 
         void displayDoctor(Doctor doctor);
+
+        void onGenerateLoaFormSuccess();
+        void onGenerateLoaFormError();
     }
 
     interface Presenter<T> {
@@ -48,6 +54,8 @@ public interface LoaPage {
         void initUserInformation(String id);
 
         void requestDoctorByCode(String doctorCode);
+
+        void generateLoaForm(OutPatientConsultationForm outPatientConsultationForm, InputStream stream);
     }
 
 }

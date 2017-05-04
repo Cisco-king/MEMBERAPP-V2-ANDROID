@@ -2,8 +2,10 @@ package fragments;
 
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,21 +13,36 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.medicard.member.R;
+
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.io.InputStream;
+
 import InterfaceService.MaternityCallback;
 import InterfaceService.ScreenshotCallback;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import constants.OutPatientConsultationForm;
+import constants.StatusType;
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
+import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
+import utilities.GenderPicker;
 import utilities.ImageSaver;
+import utilities.PdfGenerator;
 import utilities.Permission;
+import utilities.PermissionUtililities;
 import utilities.QrCodeCreator;
 import utilities.ResultSetters;
 import utilities.Screenshot;
@@ -61,6 +78,8 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
     ImageView img_qrcode;
     ScreenshotCallback callback;
     AlertDialogCustom alertDialogCustom;
+
+    private OutPatientConsultationForm.Builder loaFormBuilder;
 
     private static final String ARG_refCode = "refCode";
     private static final String ARG_memId = "memId";
@@ -123,6 +142,8 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            Timber.d("refCode %s", getArguments().getString(ARG_refCode));
+
             refCode = getArguments().getString(ARG_refCode);
             memId = getArguments().getString(ARG_memId);
             age = getArguments().getString(ARG_age);
@@ -187,6 +208,33 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         tv_condition = (TextView) view.findViewById(R.id.tv_condition);
         tv_date = (TextView) view.findViewById(R.id.tv_date);
 
+        int position = valDate.indexOf("to");
+        Timber.d("sxz %s", valDate);
+        String validFrom = valDate.substring(0, position - 1);
+        String validUntil = valDate.substring(position + 2);
+
+        Timber.d("position %s, validFrom %s, validUntil %s", position, validFrom, validUntil);
+
+        String remarkTemp = remark.replace("\n", ", ").replace("\r", "");
+
+        loaFormBuilder = new OutPatientConsultationForm.Builder()
+                .validFrom(validFrom)
+                .validUntil(validUntil)
+                .dateOfConsult(reqDate)
+                .referenceNumber(refCode)
+                .doctor(ResultSetters.nameSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, context), context))
+                .hospital(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, context))
+                .memberName(name)
+                .age(AgeCorrector.age(SharedPref.getStringValue(SharedPref.USER, SharedPref.AGE, getActivity())))
+                .gender(GenderPicker.setGender(Integer.parseInt(SharedPref.getStringValue(SharedPref.USER, SharedPref.GENDER, getActivity()))))
+                .memberId(memId)
+                .company(company)
+                .chiefComplaint(condition)
+                .remarks(remarkTemp)
+                .validityDate(SharedPref.getStringValue(SharedPref.USER, SharedPref.VAL_DATE, context))
+                .dateEffectivity(SharedPref.getStringValue(SharedPref.USER, SharedPref.EFF_DATE, context))
+                .serviceType(StatusType.MATERNITY_CONSULTATION);
+
         btn_ok = (Button) view.findViewById(R.id.btn_ok);
 
 
@@ -197,7 +245,6 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
             }
         });
         setDetails();
-
 
     }
 
@@ -263,18 +310,23 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         switch (v.getId()) {
             case R.id.btn_shot:
 
-
-
                 if (Permission.checkPermissionStorage(context)) {
                     btn_shot.setVisibility(View.GONE);
                     btn_ok.setVisibility(View.GONE);
-                    Bitmap bitmap = Screenshot.loadBitmapFromView(sv_whole);
+                    /*Bitmap bitmap = Screenshot.loadBitmapFromView(sv_whole);
                     new ImageSaver(context).
                             setFileName(refCode + "_Maternity.jpg").
                             setDirectoryName("MediCard")
                             .setExternal(false)
-                            .save(bitmap, callback);
-                }else{
+                            .save(bitmap, callback);*/
+                    if (Permission.checkPermissionStorage(context)) {
+                        btn_ok.setVisibility(View.GONE);
+                        btn_shot.setVisibility(View.GONE);
+
+                        generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form));
+
+                    }
+                } else {
                     btn_shot.setVisibility(View.VISIBLE);
                     btn_ok.setVisibility(View.VISIBLE);
                 }
@@ -285,6 +337,76 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Timber.d("request code for storate %s permission response %s", PermissionUtililities.READ_WRITE_PERMISSION, requestCode);
+        switch (requestCode) {
+            case PermissionUtililities.REQUESTCODE_STORAGE_PERMISSION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+                    generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form));
+
+                } else {
+                    Timber.d("permission denied");
+                }
+            }
+
+            return;
+        }
+    }
+
+    private void generateLoaForm(final OutPatientConsultationForm build, final InputStream stream) {
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                try {
+                    PdfGenerator.generatePdfLoaConsultationForm(
+                            build, stream);
+                    subscriber.onNext(Boolean.TRUE);
+                } catch (Exception e) {
+                    Timber.d("error %s", e.toString());
+                    subscriber.onNext(Boolean.FALSE);
+                }
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("completed process");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d("error message %s", e.toString());
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean success) {
+                        Timber.d("onNext");
+                        if (success) {
+                            onGenerateLoaFormSuccess();
+                        } else {
+
+                        }
+                    }
+                });
+    }
+
+    public void onGenerateLoaFormSuccess() {
+        btn_ok.setVisibility(View.VISIBLE);
+        btn_shot.setVisibility(View.VISIBLE);
+
+        alertDialogCustom.showMe(
+                context,
+                alertDialogCustom.CONGRATULATIONS_title,
+                alertDialogCustom.LOA_GENERATE_PDF_SUCCESS,
+                2);
+    }
 
     @Override
     public void onAttach(Context context) {

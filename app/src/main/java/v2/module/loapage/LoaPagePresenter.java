@@ -2,21 +2,28 @@ package v2.module.loapage;
 
 import android.util.Log;
 
+import com.medicard.member.R;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import constants.OutPatientConsultationForm;
 import model.DoctorNORoom;
 import model.GetUSER;
 import model.MemberInfo;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
+import timber.log.Timber;
+import utilities.PdfGenerator;
 
 /**
  * Created by John Paul Cas on 4/18/2017.
@@ -90,6 +97,47 @@ public class LoaPagePresenter
                         loaPageView.displayDoctor(doctorNORoom.getDoctor());
                     }
                 });
+    }
+
+    @Override
+    public void generateLoaForm(final OutPatientConsultationForm outPatientConsultationForm, final InputStream stream) {
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                try {
+                    PdfGenerator.generatePdfLoaConsultationForm(
+                            outPatientConsultationForm, stream);
+                    subscriber.onNext(Boolean.TRUE);
+                } catch (Exception e) {
+                    Timber.d("error %s", e.toString());
+                    subscriber.onNext(Boolean.FALSE);
+                }
+            }
+        }).subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Observer<Boolean>() {
+            @Override
+            public void onCompleted() {
+                Timber.d("completed process");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Timber.d("error message %s", e.toString());
+                loaPageView.onGenerateLoaFormError();
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                Timber.d("onNext");
+                if (success) {
+                    loaPageView.onGenerateLoaFormSuccess();
+                } else {
+                    loaPageView.onGenerateLoaFormError();
+                }
+            }
+        });
     }
 
     private void initRemarks(MemberInfo memberInfo) {

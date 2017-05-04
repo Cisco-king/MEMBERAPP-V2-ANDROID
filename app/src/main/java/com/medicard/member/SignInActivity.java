@@ -302,7 +302,6 @@ public class SignInActivity extends AppCompatActivity
                     }
                 });
 
-
     }
 
     private void setToDatabase(final Hospital hospital, final SignInDetails responseBody) {

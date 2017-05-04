@@ -35,6 +35,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
+import timber.log.Timber;
 import utilities.AlertDialogCustom;
 import utilities.DatepickerSet;
 import utilities.ErrorMessage;
@@ -380,16 +381,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                     @Override
                     public void onNext(VerifyMemberData verifyMember) {
-                        Log.e(TAG, verifyMember.toString());
+                        Timber.d(verifyMember.toString());
 
+                        if (!verifyMember.getResponseCode().toString().equals("200")) {
 
-                        if (verifyMember.getResponseCode().toString().equals("230")) {
-
-                            alert.showMe(context, alert.HOLD_ON_title, alert.ALREADY_message, 1);
-
-                        } else if (verifyMember.getResponseCode().toString().equals("210")) {
-
-                            alert.showMe(context, alert.HOLD_ON_title, alert.MemberAccountDidNotMatch, 1);
+                            alert.showMe(context, alert.HOLD_ON_title, verifyMember.getResponseDesc(), 1);
 
                         } else {
 

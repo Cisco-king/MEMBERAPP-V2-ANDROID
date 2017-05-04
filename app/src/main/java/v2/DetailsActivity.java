@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -113,6 +114,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
         setContentView(R.layout.activity_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         callbackDialog = this;
         context = this;
         implement = new DetailsRetieve(context, this);
@@ -123,6 +125,17 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
 
         cb_confirm.setChecked(false);
         cb_confirm.setOnCheckedChangeListener(this);
+
+        et_input_diagnosis.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    return true;
+                }
+                return false;
+            }
+        });
 
         et_doctor.setImeOptions(EditorInfo.IME_ACTION_DONE);
         et_doctor.addTextChangedListener(new TextWatcher() {

@@ -17,8 +17,6 @@ import com.medicard.member.R;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 import InterfaceService.LOARequestCallback;
@@ -64,7 +62,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     LinearLayoutManager llm;
     LoaRequestAdapter adapter;
-    ArrayList<LoaFetch> arrayList = new ArrayList<>();
+    ArrayList<LoaFetch> loaFetches = new ArrayList<>();
     ArrayList<LoaFetch> arrayMASTERList = new ArrayList<>();
 
     LoaRequestRetrieve implement;
@@ -96,7 +94,11 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        callback = this;
+        sort_by = getString(R.string.request_date);
+        context = getActivity();
+        databaseHandler = new DatabaseHandler(context);
+        implement = new LoaRequestRetrieve(context, callback);
     }
 
     @Override
@@ -118,17 +120,17 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     }
 
     private void init() {
-        callback = this;
-        sort_by = getString(R.string.request_date);
-        context = getActivity();
-        databaseHandler = new DatabaseHandler(context);
-        implement = new LoaRequestRetrieve(context, callback);
+//        callback = this;
+//        sort_by = getString(R.string.request_date);
+//        context = getActivity();
+//        databaseHandler = new DatabaseHandler(context);
+//        implement = new LoaRequestRetrieve(context, callback);
         alertDialogCustom = new AlertDialogCustom();
         llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
         rv_loa_request.setLayoutManager(llm);
-        adapter = new LoaRequestAdapter(context, arrayList, databaseHandler, callback);
+        adapter = new LoaRequestAdapter(context, loaFetches, databaseHandler, callback);
         rv_loa_request.setAdapter(adapter);
 
         databaseHandler.dropLoa();
@@ -162,8 +164,6 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
                 gotoSort.putParcelableArrayListExtra(Constant.SELECT_DOCTOR, doctor_sort);
                 startActivityForResult(gotoSort, CALL_SORT_LOA);
                 break;
-
-
         }
 
     }
@@ -185,13 +185,13 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
                 implement.replactDataArray(doctor_sort, temp);
                 seachedData = data.getStringExtra(Constant.SEARCHED_DATA);
 
-                implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
+                implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
                         service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort),
                         DateConverter.converttoyyyymmddEnd(date_end_sort), doctor_sort, hospital_sort, seachedData);
-                adapter.notifyDataSetChanged();
+//                adapter.notifyDataSetChanged();
+                adapter.update(loaFetches);
 
-
-                implement.updateUIList(rv_loa_request, tv_list, arrayList);
+                implement.updateUIList(rv_loa_request, tv_list, loaFetches);
             }
             //used if user cancelled a request to update current list
         } else if (requestCode == CALL_LOA_VIEW && resultCode == RESULT_OK) {
@@ -248,10 +248,10 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     @Override
     public void onDbLoaSuccessListener() {
         if (implement != null) {
-            implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
+            implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
                     service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
 
-            implement.getDoctorCreds(arrayList, databaseHandler);
+            implement.getDoctorCreds(loaFetches, databaseHandler);
         }
     }
 
@@ -266,9 +266,9 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     public void doneFetchingDoctorData() {
         if (implement != null) {
             Timber.d("fetching doctor....");
-            implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
+            implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
                     service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
-            implement.updateHospitals(arrayList, databaseHandler);
+            implement.updateHospitals(loaFetches, databaseHandler);
         }
     }
 
@@ -277,18 +277,26 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         if (implement != null) {
             Timber.d("done doctor update...");
             implement.UIUpdateShowLoad(false, pb, rv_loa_request, btn_sort);
-            implement.updateList(arrayList, databaseHandler, sort_by, status_sort,
+            implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
                     service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
 
-            arrayMASTERList.addAll(arrayList);
-            adapter.notifyDataSetChanged();
-            implement.updateUIList(rv_loa_request, tv_list, arrayList);
+            arrayMASTERList.addAll(loaFetches);
+            adapter.update(loaFetches);
+            implement.updateUIList(rv_loa_request, tv_list, loaFetches);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Timber.d("destroyView was called");
+        implement.detachSubscription();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Timber.d("onDestroy was called");
         implement = null;
     }
 }

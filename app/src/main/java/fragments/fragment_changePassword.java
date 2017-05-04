@@ -299,7 +299,7 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     @Override
     public void onErrorFetchDisclaimer(String message) {
         implement.setDisclaimerUI(true, pb_disclaimer, btn_disclamer);
-        implement.setDisclaimerStatus(btn_disclamer, "0", "Unable to fetch status");
+        implement.setDisclaimerStatus(btn_disclamer, "0", "Unable to fetch serviceType");
     }
 
     @Override
