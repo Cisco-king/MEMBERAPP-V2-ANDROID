@@ -6,7 +6,7 @@ import timber.log.Timber;
  * Created by casjohnpaul on 5/4/2017.
  */
 
-public class StatusType {
+public class FileGenerator {
 
 
     public static final String CONSULTATION = "CONSULTATION";

@@ -1,4 +1,4 @@
-package modules.requestdoctor;
+package modules.requestdoctor2;
 
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +11,6 @@ import java.util.List;
 
 import adapter.RequestDoctorAdapter;
 import butterknife.BindView;
-import model.Doctor;
 import modules.base.activities.TestTrackableActivity;
 import modules.selecthospital.SelectHospitalActivity;
 import timber.log.Timber;

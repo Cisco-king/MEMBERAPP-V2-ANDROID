@@ -1,12 +1,15 @@
 package model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import database.table.Table;
 
 /**
  * Created by mpx-pawpaw on 1/4/17.
  */
-public class HospitalList implements Parcelable {
+public class HospitalList implements Parcelable, Table.Hospital {
 
     private String phoneNo;
 
@@ -42,6 +45,22 @@ public class HospitalList implements Parcelable {
     public HospitalList(String hospitalName, String hospitalCode) {
         this.hospitalName = hospitalName;
         this.hospitalCode = hospitalCode;
+    }
+
+    public HospitalList(Cursor cursor) {
+        setPhoneNo(getStringCursorValue(cursor, PHONE_NUMBER));
+        setRegion(getStringCursorValue(cursor, REGION));
+        setStreetAddress(getStringCursorValue(cursor, STREET_ADDRESS));
+        setCategory(getStringCursorValue(cursor, CATEGORY));
+        setFaxno(getStringCursorValue(cursor, FAX_NUMBER));
+        setAlias(getStringCursorValue(cursor, ALIEAS));
+        setKeyword(getStringCursorValue(cursor, KEYWORD));
+        setProvince(getStringCursorValue(cursor, PROVINCE));
+        setHospitalName(getStringCursorValue(cursor, HOSPITAL_NAME));
+        setHospitalCode(getStringCursorValue(cursor, HOSPITAL_CODE));
+        setCoordinator(getStringCursorValue(cursor, COORDINATOR));
+        setContactPerson(getStringCursorValue(cursor, CONTACT_PERSON));
+        setCity(getStringCursorValue(cursor, CITY));
     }
 
     public HospitalList(String phoneNo, String region, String streetAddress, String category, String faxno, String alias, String keyword, String province, String hospitalName, String hospitalCode, String coordinator, String contactPerson, String city) {
@@ -250,4 +269,9 @@ public class HospitalList implements Parcelable {
             return new HospitalList[size];
         }
     };
+
+    public String getStringCursorValue(Cursor cursor, String key) {
+        return cursor.getString(cursor.getColumnIndex(key));
+    }
+
 }

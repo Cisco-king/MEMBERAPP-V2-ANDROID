@@ -15,6 +15,8 @@ public class SignInDetails {
 
     private UserAccount UserAccount;
 
+    private Boolean hasMaternity;
+
     public ArrayList<MemberAccounts> getMemberAccounts ()
     {
         return MemberAccounts;
@@ -53,6 +55,14 @@ public class SignInDetails {
     public void setUserAccount (UserAccount UserAccount)
     {
         this.UserAccount = UserAccount;
+    }
+
+    public Boolean getHasMaternity() {
+        return hasMaternity;
+    }
+
+    public void setHasMaternity(Boolean hasMaternity) {
+        this.hasMaternity = hasMaternity;
     }
 
     @Override

@@ -88,7 +88,8 @@ public class LoaPagePresenter
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Timber.d("error %s", e.toString());
+                        loaPageView.onNetworkError();
                     }
 
                     @Override

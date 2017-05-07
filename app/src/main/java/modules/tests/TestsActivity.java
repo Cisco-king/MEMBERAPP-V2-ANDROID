@@ -17,7 +17,8 @@ import butterknife.OnClick;
 import model.DoctorTest;
 import modules.base.activities.TestTrackableActivity;
 import modules.consultation.ConsultationDetailsActivity;
-import modules.requestforconsult.RequestForConsultActivity;
+import modules.newtest.NewTestActivity;
+import modules.requestforconsult2.RequestForConsultActivity;
 
 public class TestsActivity extends TestTrackableActivity
         implements Tests.View {
@@ -77,7 +78,9 @@ public class TestsActivity extends TestTrackableActivity
 
     @OnClick(R.id.btnRequestNewApproval)
     public void startRequestNewApproval() {
-        startActivity(new Intent(this, RequestForConsultActivity.class));
+        Intent intent = new Intent(this, NewTestActivity.class);
+        intent.putExtra(NewTestActivity.CONTENT, NewTestActivity.REQUEST_FOR_CONSULT);
+        startActivity(intent);
     }
 
     public void onItemClick(int position) {

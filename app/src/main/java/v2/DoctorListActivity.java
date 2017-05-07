@@ -233,7 +233,8 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
         }
 
-
+        // todo add indicator for activity to go to diagnosis list
+        // origin is indicator from {$RequestButtonsActivity#origin}
         if (origin.equals(RequestButtonsActivity.TO_DETAILS_ACT)) {
             Intent gotoDetails = new Intent(context, DetailsActivity.class);
             gotoDetails.putExtra(RequestButtonsActivity.ORIGIN, origin);

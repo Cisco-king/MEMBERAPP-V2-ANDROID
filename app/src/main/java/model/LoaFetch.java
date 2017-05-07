@@ -529,8 +529,9 @@ public class LoaFetch implements Parcelable {
         dest.writeString(doctorName);
         dest.writeString(doctorSpec);
         dest.writeString(doctorSpecCode);
-        dest.writeString(schedule);
         dest.writeString(hospitalName);
+        dest.writeString(schedule);
+
 
 
     }

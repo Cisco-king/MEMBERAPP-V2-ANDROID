@@ -268,4 +268,12 @@
     <string name="reason_for_consult">Reason For Consult</string>
     <string name="download_loa">Download LOA</string>
 
+    <string name="info_hospital">
+        Hospitals that are not in the list might not be included in your benefit. Please call 841-8480 for verification
+    </string>
+
+    <string name="maternity_consultation_not_available">
+        Maternity Consultation is not available for the member.
+    </string>
+
 </resources>

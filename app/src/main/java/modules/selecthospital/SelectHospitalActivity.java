@@ -1,10 +1,8 @@
 package modules.selecthospital;
 
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.medicard.member.R;
 
@@ -16,7 +14,7 @@ import butterknife.BindView;
 import model.HospitalClinic;
 import modules.base.activities.TestTrackableActivity;
 import modules.diagnosis.DiagnosisActivity;
-import modules.requestdoctor.RequestDoctorActivity;
+import modules.requestdoctor2.RequestDoctorActivity;
 import modules.selecttest.SelectTestActivity;
 import timber.log.Timber;
 

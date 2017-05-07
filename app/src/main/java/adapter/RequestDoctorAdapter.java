@@ -13,7 +13,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import model.Doctor;
 
 /**
  * Created by casjohnpaul on 4/27/2017.
@@ -37,7 +36,7 @@ public class RequestDoctorAdapter extends
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View row = inflater.inflate(R.layout.item_doctor, parent, false);
+        View row = inflater.inflate(R.layout.item_doctor2, parent, false);
         return new ViewHolder(row);
     }
 

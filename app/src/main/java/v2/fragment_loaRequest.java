@@ -27,9 +27,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
-import model.Loa;
 import model.LoaFetch;
 import model.SimpleData;
+import services.response.LoaListResponse;
 import timber.log.Timber;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
@@ -239,19 +239,19 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     }
 
     @Override
-    public void onSuccessLoaListener(Loa loa) {
+    public void onSuccessLoaListener(LoaListResponse loa) {
         Log.d("LOA_SUCCESS", loa.toString());
         if (implement != null)
             implement.getData(loa, databaseHandler);
     }
 
     @Override
-    public void onDbLoaSuccessListener() {
+    public void onDbLoaSuccessListener(LoaListResponse loa) {
         if (implement != null) {
             implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
                     service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
 
-            implement.getDoctorCreds(loaFetches, databaseHandler);
+            implement.getDoctorCreds(loa, databaseHandler);
         }
     }
 

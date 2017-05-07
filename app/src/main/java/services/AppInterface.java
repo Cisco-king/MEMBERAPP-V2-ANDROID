@@ -41,6 +41,7 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
+import services.response.LoaListResponse;
 import utilities.SharedPref;
 
 /**
@@ -137,8 +138,11 @@ public interface AppInterface {
     @POST("/v2/updatePin/")
     Observable<Pinned> updatePin(@Body UpdatePin updatePin);
 
-    @GET("/v2/getLoaByMemberCode/?")
-    Observable<Loa> getLoaList(@Query("memberCode") String memberCode);
+    @GET("/v2/getLoaByMemberCode2/?")
+    Observable<LoaListResponse> getLoaList(@Query("memberCode") String memberCode);
+
+// @GET("/v2/getLoaByMemberCode/?")
+//    Observable<LoaListResponse> getLoaList(@Query("memberCode") String memberCode);
 
     @GET("/listing/getDoctorByCode/?")
     Observable<DoctorNORoom> getDoctorData(@Query("doctorCode") String doctorCode);
@@ -147,7 +151,7 @@ public interface AppInterface {
     Observable<TheDoctor> getDoctorDataWithRoom(@Query("doctorCode") String doctorCode);
 
     @POST("/memberloa/cancelLOA/")
-    Observable<ResponseBody> setRequestCancel(@Query("approvalNo") String approvalNo);
+    Observable<ResponseBody> setRequestCancel(@Query("batchCode") String batchCode);
 
     @POST("/coordinator/v2/approveLOA")
     Observable<Confirm> confirmLoaConsult(@Query("batchCode") String batchCode);

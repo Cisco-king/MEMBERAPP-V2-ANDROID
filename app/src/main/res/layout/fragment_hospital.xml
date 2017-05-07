@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="modules.hospital.HospitalFragment">
+
+    <LinearLayout
+        android:id="@+id/llSearchHospitalOrClinic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/sub_margin"
+            android:text="@string/select_hospital_clinic_for_availment"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_main" />
+
+        <EditText
+            android:id="@+id/edSearchHospitalClinic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/sub_margin"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:hint="Search..."
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="@dimen/sub_margin"
+            android:textColor="@color/BLACK"
+            android:textSize="@dimen/text_main" />
+
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvHospitalClinic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/llSearchHospitalOrclinic" />
+
+</LinearLayout>

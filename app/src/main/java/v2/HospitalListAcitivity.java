@@ -174,6 +174,9 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, array.get(position).getHospitalCode(), context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD, array.get(position).getStreetAddress(), context);
 
+        SharedPref.setAppPreference(context, SharedPref.KEY_HOSPITAL_FULL_ADDRESS, array.get(position).getFullAddress());
+
+
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, array.get(position).getPhoneNo(), context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, array.get(position).getContactPerson(), context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_U, "", context);
@@ -218,7 +221,7 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
         alertDialogCustom.showMe(
                 context,
                 alertDialogCustom.HOLD_ON_title,
-                "Hospitals that are not in the list are not included in your benefit",
+                getString(R.string.info_hospital),
                 1);
 
     }

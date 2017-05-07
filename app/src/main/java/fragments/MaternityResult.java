@@ -3,7 +3,6 @@ package fragments;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -22,13 +21,12 @@ import android.widget.TextView;
 
 import java.io.InputStream;
 
-import InterfaceService.MaternityCallback;
 import InterfaceService.ScreenshotCallback;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import constants.OutPatientConsultationForm;
-import constants.StatusType;
+import constants.FileGenerator;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -37,15 +35,12 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
-import utilities.Constant;
 import utilities.GenderPicker;
-import utilities.ImageSaver;
 import utilities.PdfGenerator;
 import utilities.Permission;
 import utilities.PermissionUtililities;
 import utilities.QrCodeCreator;
 import utilities.ResultSetters;
-import utilities.Screenshot;
 import utilities.SharedPref;
 
 public class MaternityResult extends Fragment implements ScreenshotCallback {
@@ -233,7 +228,7 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
                 .remarks(remarkTemp)
                 .validityDate(SharedPref.getStringValue(SharedPref.USER, SharedPref.VAL_DATE, context))
                 .dateEffectivity(SharedPref.getStringValue(SharedPref.USER, SharedPref.EFF_DATE, context))
-                .serviceType(StatusType.MATERNITY_CONSULTATION);
+                .serviceType(FileGenerator.MATERNITY_CONSULTATION);
 
         btn_ok = (Button) view.findViewById(R.id.btn_ok);
 
@@ -262,7 +257,9 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
 
         tv_ref_code.setText("Reference No: " + refCode);
         tv_hospName.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, context));
-        tv_hospAddress.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD, context));
+//        tv_hospAddress.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD, context));
+        tv_hospAddress.setText(SharedPref.getPreferenceByKey(context, SharedPref.KEY_HOSPITAL_FULL_ADDRESS));
+
         tv_doc_det.setText(ResultSetters.descSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, context)));
         tv_doc_name.setText(ResultSetters.nameSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, context), context));
 

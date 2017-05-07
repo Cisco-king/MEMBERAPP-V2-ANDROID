@@ -8,11 +8,15 @@ import android.content.SharedPreferences;
  */
 
 public class SharedPref {
-    public static String masterPASSWORD = "masterPASSWORD";
-    public static String masterUSERNAME = "masterUSERNAME" ;
 
-    public static String PIN = "PIN" ;
+    // application preference
     public static String USER = "USER";
+
+    // value
+    public static String masterPASSWORD = "masterPASSWORD";
+    public static String masterUSERNAME = "masterUSERNAME";
+
+    public static String PIN = "PIN";
     public static String MEMBERCODE = "MEMBERCODE";
     public static String NAME = "NAME";
 
@@ -25,11 +29,11 @@ public class SharedPref {
     public static String DAY = "DAY";
     public static String MONTH = "MONTH";
 
-    public static String DOCTOR_NAME = "DOCTOR_NAME" ;
-    public static String DOCTOR_CODE = "DOCTOR_CODE" ;
-    public static String DOCTOR_DESC = "DOCTOR_DESC" ;
-    public static String DOCTOR_U = "DOCTOR_U" ;
-    public static String DOCTOR_ROOM = "DOCTOR_ROOM" ;
+    public static String DOCTOR_NAME = "DOCTOR_NAME";
+    public static String DOCTOR_CODE = "DOCTOR_CODE";
+    public static String DOCTOR_DESC = "DOCTOR_DESC";
+    public static String DOCTOR_U = "DOCTOR_U";
+    public static String DOCTOR_ROOM = "DOCTOR_ROOM";
 
     public static String HOSPITAL_NAME = "HOSPITAL_NAME";
     public static String HOSPITAL_CODE = "HOSPITAL_CODE";
@@ -40,14 +44,20 @@ public class SharedPref {
 
     public static String DESTINATION = "DESTINATION";
 
-    public static String FIRST_TIME = "FIRST_TIME" ;
-    public static String VAL_DATE = "VAL_DATE" ;
+    public static String FIRST_TIME = "FIRST_TIME";
+    public static String VAL_DATE = "VAL_DATE";
     public static String EFF_DATE = "EFF_DATE";
-        public static String PIN_IS_AVAILABLE = "PIN_IS_AVAILABLE" ;
-    public static String PROVINCE_CODE = "PROVINCE_CODE" ;
-    public static String AGE = "AGE" ;
-    public static String GENDER = "GENDER" ;
+    public static String PIN_IS_AVAILABLE = "PIN_IS_AVAILABLE";
+    public static String PROVINCE_CODE = "PROVINCE_CODE";
+    public static String AGE = "AGE";
+    public static String GENDER = "GENDER";
 
+    // the value of this key is base on the response of {@link services.AppInterface#logInUser} maternity
+    public static final String KEY_HAS_MATERNITY = "hasMaternity";
+
+    public static final String KEY_REASON_FOR_CONSULT = "reasonForConsult";
+
+    public static final String KEY_HOSPITAL_FULL_ADDRESS = "fullAddress";
 
 
     public void setBoolValue(String Key, boolean value, Context context) {
@@ -73,5 +83,30 @@ public class SharedPref {
         SharedPreferences preferences = context.getSharedPreferences(Key, Context.MODE_PRIVATE);
         return preferences.getString(specID, "null");
     }
+
+    public static void setAppPreference(Context context, String key, String value) {
+        SharedPreferences prefs = context.getSharedPreferences(USER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static String getPreferenceByKey(Context context, String key) {
+        SharedPreferences preferences = context.getSharedPreferences(USER, Context.MODE_PRIVATE);
+        return preferences.getString(key, "null");
+    }
+
+    public static void setBoolValue(Context context, String key, boolean value) {
+        SharedPreferences prefs = context.getSharedPreferences(USER, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+    public static boolean getBooleanValue(Context context, String key) {
+        SharedPreferences preferences = context.getSharedPreferences(USER, Context.MODE_PRIVATE);
+        return preferences.getBoolean(key, false);
+    }
+
 
 }

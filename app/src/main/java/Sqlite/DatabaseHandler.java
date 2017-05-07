@@ -2,43 +2,31 @@ package Sqlite;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.medicard.member.NavigationActivity;
-
 import android.util.Log;
 
-import java.security.PublicKey;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
-import adapter.ProvinceAdapter;
+import database.entity.Doctor;
 import model.Cities;
 import model.CitiesAdapter;
 import model.GetDoctorsToHospital;
-import model.Hospital;
 import model.HospitalList;
-import model.Loa;
 import model.LoaFetch;
 import model.LoaList;
 import model.Provinces;
 import model.ProvincesAdapter;
 import model.SimpleData;
-import model.SpecializationList;
 import model.Specializations;
 import model.SpecsAdapter;
 import timber.log.Timber;
-import utilities.Constant;
 import utilities.DateConverter;
 import utilities.SharedPref;
 
@@ -302,6 +290,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(createLoaRequest);
         Log.e(TAG, createLoaRequest);
 
+        db.execSQL(Doctor.getTableStructure());
+
         String data = "";
         String filterNull = "";
         try {
@@ -332,11 +322,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS " + Doctor.TABLE_NAME);
+        db.execSQL("");
     }
 
 
-    public void insertLoa(LoaList loa) {
+    public void insertLoa(services.model.LoaList loa) {
         boolean createSuccessful = false;
 
         SQLiteDatabase db = this.getWritableDatabase();

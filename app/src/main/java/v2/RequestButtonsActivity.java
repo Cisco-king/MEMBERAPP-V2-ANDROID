@@ -35,6 +35,7 @@ public class RequestButtonsActivity extends AppCompatActivity {
     public static final String ORIGIN = "ORIGIN";
     public static final String CONSULT = "CONSULT";
     public static final String MATERNITY = "MATERNITY";
+    public static final String TEST = "TEST";
     public static final String TO_DETAILS_ACT = "TO_DETAILS_ACT";
 
     @BindView(R.id.cvConsultanty) CardView cvConsultanty;
@@ -77,6 +78,8 @@ public class RequestButtonsActivity extends AppCompatActivity {
     public void onStartMaternityConsultation() {
         if (getIntent().getExtras().getString(Constant.GENDER).equals("1")) {
             alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.maternity_not_available, 1);
+        } else if (!SharedPref.getBooleanValue(this, SharedPref.KEY_HAS_MATERNITY)) {
+            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, getString(R.string.maternity_consultation_not_available), 1);
         } else {
             gotoRequest(MATERNITY);
         }
@@ -118,6 +121,7 @@ public class RequestButtonsActivity extends AppCompatActivity {
         unbinder.unbind();
     }
 
+    // todo copy this for test
     private void gotoRequest(String DESTINATION) {
 
         SharedPref.setStringValue(SharedPref.USER, SharedPref.DESTINATION, DESTINATION, context);

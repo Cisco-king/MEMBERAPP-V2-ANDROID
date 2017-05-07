@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import com.medicard.member.R;
@@ -35,6 +37,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Unbinder unbinder;
 
     protected Context context;
+
+    // disabled the key enter listener
+    protected View.OnKeyListener onKeyDisableEnterListener = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                    (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

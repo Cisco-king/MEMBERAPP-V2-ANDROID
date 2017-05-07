@@ -18,6 +18,9 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import InterfaceService.SignInCallback;
 import InterfaceService.SignInRetrieve;
 import Sqlite.DatabaseHandler;
@@ -29,17 +32,25 @@ import Sqlite.SetSpecializationTodDatabase;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import database.dao.DoctorDao;
+import database.entity.Doctor;
 import model.City;
 import model.Hospital;
 import model.LogIn;
 import model.Province;
 import model.SignInDetails;
 import model.SpecializationList;
+import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
+import services.client.DoctorClient;
+import services.model.DoctorList;
+import services.response.DoctorListResponse;
+import timber.log.Timber;
 import utilities.AccessGooglePlay;
 import utilities.AlertDialogCustom;
 import utilities.ErrorMessage;
@@ -176,7 +187,6 @@ public class SignInActivity extends AppCompatActivity
 
                     @Override
                     public void onNext(SignInDetails responseBody) {
-                        Log.d("HAHAHAHA", responseBody.toString());
 
                         if (responseBody.getResponseCode().equals("210")) {
                             alertDialogCustom.showMe(context,
@@ -214,6 +224,7 @@ public class SignInActivity extends AppCompatActivity
                             signInDetails = responseBody;
                             username = getUsername;
                             password = getPassword;
+
                             UpdateCaller.showUpdateCall(
                                     context,
                                     "Optional Update Available",
@@ -237,6 +248,10 @@ public class SignInActivity extends AppCompatActivity
     }
 
     private void signinCredential(SignInDetails responseBody) {
+
+        SharedPref.setBoolValue(this, SharedPref.KEY_HAS_MATERNITY, signInDetails.getHasMaternity());
+        Timber.d("hasMaternity %s", signInDetails.getHasMaternity());
+
         pd.setMessage("Updating Hospitals...");
         getHospitalList(responseBody, username, password);
 
@@ -290,7 +305,6 @@ public class SignInActivity extends AppCompatActivity
                             Log.d("ERROR_SIGN", e.getMessage());
                         }
 
-
                     }
 
                     @Override
@@ -343,24 +357,109 @@ public class SignInActivity extends AppCompatActivity
                     databaseHandler.dropSpecialization();
                     implement.getProvince();
                 } else {
-
+//                    loadDoctorList(responseBody);
                     gotoNavigationTest(responseBody);
-
-
                 }
 
-
             }
+
         };
 
-
         setHosp.execute();
+    }
 
+    private void loadDoctorList(final SignInDetails responseBody) {
+        DoctorClient doctorClient = AppService.createApiService(DoctorClient.class, AppInterface.ENDPOINT);
+        pd.setMessage("Loading resources...");
+        doctorClient.getAllDoctorsRx()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DoctorListResponse>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("process complete");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (pd.isShowing()) pd.dismiss();
+                        Timber.d("Error was encounter, Error message %s", e.toString());
+                    }
+
+                    @Override
+                    public void onNext(DoctorListResponse doctorListResponse) {
+                        insertAllDoctorToDatabase(responseBody, doctorListResponse);
+                    }
+                });
+    }
+
+    public void insertAllDoctorToDatabase(final SignInDetails responseBody, final DoctorListResponse doctorListResponse) {
+        pd.setMessage("Loading Doctors...");
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                DoctorDao doctorDao = new DoctorDao(SignInActivity.this);
+
+                List<Doctor> doctors = new ArrayList<>();
+                List<DoctorList> doctorList = doctorListResponse.getDoctorList();
+
+                doctorDao.deleteAll();
+
+                for (DoctorList doctor : doctorList) {
+                    doctors.add(new Doctor(
+                            doctor.getDoctorCode(),
+                            doctor.getLastName(),
+                            doctor.getDocFname(),
+                            doctor.getDocMname(),
+                            doctor.getSpecDesc(),
+                            doctor.getSpecCode(),
+                            doctor.getWtax(),
+                            doctor.getGracePeriod(),
+                            doctor.getVat(),
+                            doctor.getContactNumber(),
+                            doctor.getCity(),
+                            doctor.getProvince(),
+                            doctor.getRegion(),
+                            doctor.getPrc(),
+                            doctor.getStreetAddress(),
+                            doctor.getRoomNo(),
+                            doctor.getSchedule()
+                    ));
+                }
+
+                Boolean success = doctorDao.insertAllDoctors(doctors);
+                subscriber.onNext(success);
+            }
+        }).subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Observer<Boolean>() {
+            @Override
+            public void onCompleted() {
+                Timber.d("doctor load complete");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (pd.isShowing()) pd.dismiss();
+                Timber.d("something happen while inseting all doctor to database %s", e.toString());
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                if (success == Boolean.TRUE) {
+                    Timber.d("all doctor data is inserted");
+                } else {
+                    Timber.d("kindly check the log in DoctorDao for more information");
+                }
+
+                gotoNavigationTest(responseBody);
+            }
+
+        });
 
     }
 
     private void gotoNavigationTest(SignInDetails responseBody) {
-
 
         SharedPref.setStringValue(SharedPref.USER, SharedPref.MEMBERCODE, memCode, context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.NAME, name, context);
@@ -383,19 +482,15 @@ public class SignInActivity extends AppCompatActivity
             startActivity(new Intent(context, NavigationActivity.class));
             finish();
             pd.dismiss();
-
         }
-
 
     }
 
     @Override
     public void onClick(View view) {
-
-
         switch (view.getId()) {
-            case R.id.btn_signIn:
 
+            case R.id.btn_signIn:
 
                 if (ed_userid.getText().toString().equals("") || ed_password.getText().toString().trim().equals("")) {
                     ed_password.setText("");
@@ -479,7 +574,8 @@ public class SignInActivity extends AppCompatActivity
 
     @Override
     public void onSpecsToDBListener() {
-        gotoNavigationTest(signInDetails);
+        loadDoctorList(signInDetails);
+//        gotoNavigationTest(signInDetails);
     }
 
     @Override

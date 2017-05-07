@@ -131,7 +131,8 @@ public class LoaPageActivity extends AppCompatActivity
     @BindView(R.id.tvDoctorInfo)
     TextView tvDoctorInfo;
 
-    @BindView(R.id.tvServiceType) TextView tvServiceType;
+    @BindView(R.id.tvServiceType)
+    TextView tvServiceType;
 
     private int RESULT_GETTER;
     int position;
@@ -167,6 +168,8 @@ public class LoaPageActivity extends AppCompatActivity
         callback = this;
 
         dbHandler = new DatabaseHandler(context);
+
+        loader = new Loader(context);
 
         implement = new LoaPageRetieve(context, callback);
         loader = new Loader(context);
@@ -207,13 +210,15 @@ public class LoaPageActivity extends AppCompatActivity
 
         serviceType = "( " + loa.getRemarks() + " )";
 
-        presenter.requestDoctorByCode(loa.getDoctorCode());
+        /*loader.startLad();
+        loader.setMessage("Loading...");*/
+//        presenter.requestDoctorByCode(loa.getDoctorCode());
         String changeFormat = DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate());
         // todo init lao form data
 
         HospitalList hospital =
                 dbHandler.getHospitalContact(loa.getHospitalCode());
-        
+
         Timber.d("serviceType : %s approval code : %s", loa.getRemarks(), loa.getApprovalNo());
 
         loaFormBuilder = new OutPatientConsultationForm.Builder()
@@ -272,6 +277,22 @@ public class LoaPageActivity extends AppCompatActivity
         tvHopitalClinicLocation.setText(hospital.getFullAddress());
         tvHopitalClinicContacts.setText(hospital.getPhoneNo());
         tvHopitalClinicDoctorName.setText(hospital.getContactPerson());
+
+        tvDoctorName.setText(loa.getDoctorName());
+
+        String doctorInfo = new StringBuilder()
+                .append(loa.getDoctorSpec())
+                .append(!(loa.getRoom() == null || loa.getRoom().equals("null")) ? "\n\n" + loa.getRoom() : "")
+                .append(!(loa.getSchedule() == null || loa.getSchedule().equals("null")) ? "\n\n" + loa.getSchedule() : "")
+                .toString();
+
+        Timber.d("doctorSpec %s, loaRoom %s, loaSchedule %s", loa.getDoctorSpec(), loa.getRoom(), loa.getSchedule());
+
+        if (!doctorInfo.trim().isEmpty()) {
+            tvDoctorInfo.setText(doctorInfo);
+        } else {
+            tvDoctorInfo.setVisibility(View.GONE);
+        }
 
     }
 
@@ -398,7 +419,7 @@ public class LoaPageActivity extends AppCompatActivity
     public void onCancelRequestListener() {
         loader.startLad();
         loader.setMessage("Cancelling Request");
-        implement.cancelRequest(loa.getApprovalNo());
+        implement.cancelRequest(loa.getBatchCode());
     }
 
     @Override
@@ -429,19 +450,23 @@ public class LoaPageActivity extends AppCompatActivity
     @Override
     public void onNetworkError() {
         Log.d("UserInformationxxx", "onNetworkError:");
+//        loader.stopLoad();
     }
 
     @Override
     public void displayDoctor(Doctor doctor) {
         Log.d("testtesttest", "displayDoctor: " + doctor.getSpecDesc());
-        tvDoctorName.setText(loa.getDoctorName());
-        String doctorInfo = new StringBuilder()
-                .append(doctor.getSpecDesc())
-                .append(doctor.getRoomNo() != null ? "\n\n" + doctor.getRoomNo() : "")
-                .append(doctor.getSchedule() != null ? "\n\n" + doctor.getSchedule() : "")
-                .toString();
-
-        tvDoctorInfo.setText(doctorInfo);
+//        loader.stopLoad();
+//        tvDoctorName.setText(loa.getDoctorName());
+//        String doctorInfo = new StringBuilder()
+//                .append(doctor.getSpecDesc())
+//                .append(!(doctor.getRoomNo() == null || doctor.getRoomNo().equals("null"))
+//                        ? "\n\n" + doctor.getRoomNo() : "")
+//                .append(!(doctor.getSchedule() == null || doctor.getSchedule().equals("null"))
+//                        ? "\n\n" + doctor.getSchedule() : "")
+//                .toString();
+//
+//        tvDoctorInfo.setText(doctorInfo);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package model;
 
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 

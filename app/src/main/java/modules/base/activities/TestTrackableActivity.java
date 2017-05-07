@@ -27,7 +27,6 @@ public abstract class TestTrackableActivity extends BaseActivity {
         } catch (Exception e) {
             // do some logging here...
         }
-
     }
 
     @Override

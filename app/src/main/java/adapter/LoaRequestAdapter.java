@@ -1,7 +1,9 @@
 package adapter;
 
 import android.content.Context;
+
 import com.medicard.member.R;
+
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 
@@ -77,13 +79,14 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
 
         LoaFetch loaFetch = arrayList.get(position);
         Timber.d("%s", loaFetch.toString());
-
+// TODO REPLACE DUMMY DATA
         holder.tv_remark.setText(loaFetch.getRemarks());
         holder.tv_req_date.setText("Request Date: " + DateConverter.convertDateToMMddyyyy(DateConverter.convertDatetoMMMddyyy(loaFetch.getApprovalDate())));
         holder.tv_status.setText(loaFetch.getStatus());
         holder.tv_doctor.setText(loaFetch.getDoctorName());
         holder.tv_spec.setText(loaFetch.getDoctorSpec());
-        holder.tv_hospname.setText(loaFetch.getHospitalName());
+         holder.tv_hospname.setText(loaFetch.getHospitalName());
+//        holder.tv_hospname.setText(loaFetch.getId());
 
 
 //        holder.tv_sched.setText(arrayList.get(position).getSchedule());

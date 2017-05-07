@@ -40,7 +40,7 @@ public class HospitalClinicAdapter extends RecyclerView.Adapter<HospitalClinicAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View row = inflater.inflate(R.layout.item_hospital, parent, false);
+        View row = inflater.inflate(R.layout.item_hospital2, parent, false);
         return new ViewHolder(row);
     }
 

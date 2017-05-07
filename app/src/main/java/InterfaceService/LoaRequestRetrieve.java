@@ -37,6 +37,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
+import services.response.LoaListResponse;
 import timber.log.Timber;
 
 /**
@@ -74,7 +75,7 @@ public class LoaRequestRetrieve {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<Loa>() {
+                .subscribe(new Subscriber<LoaListResponse>() {
                     @Override
                     public void onCompleted() {
 
@@ -86,26 +87,42 @@ public class LoaRequestRetrieve {
                     }
 
                     @Override
-                    public void onNext(Loa loa) {
-                        callback.onSuccessLoaListener(loa);
+                    public void onNext(LoaListResponse loaListResponse) {
+                        callback.onSuccessLoaListener(loaListResponse);
                     }
                 });
+//                .subscribe(new Subscriber<LoaListResponse>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        callback.onErrorLoaListener(e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onNext(LoaListResponse loa) {
+//                        callback.onSuccessLoaListener(loa);
+//                    }
+//                });
 
 
     }
 
-    public void getData(Loa loa, DatabaseHandler databaseHandler) {
+    public void getData(LoaListResponse loa, DatabaseHandler databaseHandler) {
         SetLoaToDatabase.setLoaToDb(loa, databaseHandler, callback);
     }
 
-    public void getDoctorCreds(final ArrayList<LoaFetch> arrayList, final DatabaseHandler databaseHandler) {
+    public void getDoctorCreds(final LoaListResponse loa, final DatabaseHandler databaseHandler) {
 
         doctorSubscriber = Observable.create(new Observable.OnSubscribe<Boolean>() {
 
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                for (int x = 0; x < arrayList.size(); x++) {
-                    fetchDoctor(arrayList.get(x).getDoctorCode(), x, arrayList, databaseHandler);
+                for (int x = 0; x < loa.getLoaList().size(); x++) {
+                    fetchDoctor(loa.getLoaList().get(x).getDoctorCode() ,loa.getLoaList().get(x).getId(), loa.getLoaList().get(x).getDoctor(), databaseHandler);
                 }
                 subscriber.onNext(Boolean.TRUE);
             }
@@ -165,9 +182,22 @@ public class LoaRequestRetrieve {
         }
     }
 
-    private void fetchDoctor(final String doctorCode, final int position, final ArrayList<LoaFetch> arrayList, final DatabaseHandler databaseHandler) {
-        Log.d("DOCTOR_CODE", doctorCode);
-        Log.d("DOCTOR_CODE", doctorCode);
+    private void fetchDoctor(String doctorCode, Integer id, services.model.Doctor doctor, final DatabaseHandler databaseHandler) {
+
+        // todo we remove the not specified that making things shit
+        if (doctor == null) {
+            databaseHandler.setDoctorToLoaReq(
+                    String.valueOf(id),
+                    doctorCode,
+                    "",
+                    "",
+                    "",
+                    "");
+        } else {
+            onSuccessListener(databaseHandler, doctor, id);
+        }
+//        Log.d("DOCTOR_CODE", doctorCode);
+//        Log.d("DOCTOR_CODE", doctorCode);
 
 
     /*    AsyncTask asyncTask = new AsyncTask() {
@@ -175,43 +205,43 @@ public class LoaRequestRetrieve {
             protected Object doInBackground(Object[] objects) {
 */
 
-        AppInterface appInterface;
-        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-        appInterface.getDoctorData(doctorCode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<DoctorNORoom>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d("DOCTOR_CODE", e.getMessage());
-
-                        if (e.getMessage().contains("Expected BEGIN_OBJECT but was STRING")) {
-                            doctorNotFound(doctorCode, arrayList, position, databaseHandler);
-                        } else {
-                            callback.onErrorFetchingDoctorCreds(e.getMessage());
-                        }
-
-                    }
-
-                    @Override
-                    public void onNext(DoctorNORoom doctorNORoom) {
-
-                        if (doctorNORoom.getResponseCode().equals("210")) {
-                            doctorNotFound(doctorCode, arrayList, position, databaseHandler);
-                        } else {
-                            //     if (.getDoctorsToHospital().size() == 0)
-                            //        doctorNotFound(doctorCode, arrayList, position, dbHandler);
-                            //      else
-                            onSuccessListener(databaseHandler, doctorNORoom.getDoctor(), arrayList, position);
-                        }
-                    }
-                });
+//        AppInterface appInterface;
+//        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+//        appInterface.getDoctorData(doctorCode)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .unsubscribeOn(Schedulers.io())
+//                .subscribe(new Subscriber<DoctorNORoom>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Log.d("DOCTOR_CODE", e.getMessage());
+//
+//                        if (e.getMessage().contains("Expected BEGIN_OBJECT but was STRING")) {
+//                            doctorNotFound(doctorCode, arrayList, position, databaseHandler);
+//                        } else {
+//                            callback.onErrorFetchingDoctorCreds(e.getMessage());
+//                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(DoctorNORoom doctorNORoom) {
+//
+//                        if (doctorNORoom.getResponseCode().equals("210")) {
+//                            doctorNotFound(doctorCode, arrayList, position, databaseHandler);
+//                        } else {
+//                            //     if (.getDoctorsToHospital().size() == 0)
+//                            //        doctorNotFound(doctorCode, arrayList, position, dbHandler);
+//                            //      else
+//                            onSuccessListener(databaseHandler, doctorNORoom.getDoctor(), arrayList, position);
+//                        }
+//                    }
+//                });
 
 /*
                 return null;
@@ -224,40 +254,40 @@ public class LoaRequestRetrieve {
     }
 
 
-    public void onSuccessListener(DatabaseHandler databaseHandler, Doctor theDoctor, ArrayList<LoaFetch> arrayList, int position) {
-        Log.d("DOCTOR_CODE_COUNT", position + "");
+    public void onSuccessListener(DatabaseHandler databaseHandler, services.model.Doctor doctor, Integer id) {
 
-        arrayList.get(position).setDoctorName(theDoctor.getDocFname() + " " +
-                theDoctor.getDocLname());
-        arrayList.get(position).setDoctorSpec(theDoctor.getSpecDesc());
-        arrayList.get(position).setDoctorSpecCode(theDoctor.getSpecCode());
-
+//
+//        arrayList.get(position).setDoctorName(theDoctor.getDocFname() + " " +
+//                theDoctor.getDocLname());
+//        arrayList.get(position).setDoctorSpec(theDoctor.getSpecDesc());
+//        arrayList.get(position).setDoctorSpecCode(theDoctor.getSpecCode());
+//
 
         databaseHandler.setDoctorToLoaReq(
-                arrayList.get(position).getId(),
-                theDoctor.getDocFname() + " " + theDoctor.getDocLname(),
-                theDoctor.getSpecDesc(),
-                theDoctor.getSpecCode(), "", "");
+                id + "",
+                doctor.getDocFname() + " " + doctor.getDocLname(),
+                doctor.getSpecDesc(),
+                doctor.getSpecCode(),doctor.getSchedule(), doctor.getRoomNo());
         // theDoctor.getSchedule(),
         // theDoctor.getRoom());
 
     }
 
-
-    public void doctorNotFound(String doctorCode, ArrayList<LoaFetch> arrayList, int position, DatabaseHandler databaseHandler) {
-
-        arrayList.get(position).setDoctorName(doctorCode);
-        arrayList.get(position).setDoctorSpec("Not Specified");
-        arrayList.get(position).setDoctorSpecCode("Not Specified");
-
-        databaseHandler.setDoctorToLoaReq(
-                arrayList.get(position).getId(),
-                doctorCode,
-                "Not Specified",
-                "Not Specified",
-                "Not Specified",
-                "Not Specified");
-    }
+//
+//    public void doctorNotFound(String doctorCode, ArrayList<LoaFetch> arrayList, int position, DatabaseHandler databaseHandler) {
+//
+//        arrayList.get(position).setDoctorName(doctorCode);
+//        arrayList.get(position).setDoctorSpec("Not Specified");
+//        arrayList.get(position).setDoctorSpecCode("Not Specified");
+//
+//        databaseHandler.setDoctorToLoaReq(
+//                arrayList.get(position).getId(),
+//                doctorCode,
+//                "Not Specified",
+//                "Not Specified",
+//                "Not Specified",
+//                "Not Specified");
+//    }
 
     public void updateHospitals(final ArrayList<LoaFetch> arrayList, final DatabaseHandler databaseHandler) {
         AsyncTask asyncTask = new AsyncTask() {

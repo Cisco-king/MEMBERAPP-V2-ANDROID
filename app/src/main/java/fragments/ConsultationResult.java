@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import constants.OutPatientConsultationForm;
-import constants.StatusType;
+import constants.FileGenerator;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -35,12 +35,10 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
-import utilities.DateConverter;
 import utilities.GenderPicker;
 import utilities.ImageSaver;
 import utilities.Loader;
 import utilities.PdfGenerator;
-import utilities.PdfSaver;
 import utilities.Permission;
 import utilities.PermissionUtililities;
 import utilities.QrCodeCreator;
@@ -270,7 +268,9 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
         tv_ref_code.setText("Reference No: " + refCode);
         tv_ref_code2.setText(refCode);
         tv_hospName.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, context));
-        tv_hospAddress.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD, context));
+//        tv_hospAddress.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD, context));
+        tv_hospAddress.setText(SharedPref.getPreferenceByKey(context, SharedPref.KEY_HOSPITAL_FULL_ADDRESS));
+
         tv_doc_det.setText(ResultSetters.descSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, context)));
         tv_doc_name.setText(ResultSetters.nameSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, context), context));
 
@@ -327,7 +327,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
                 .chiefComplaint(condition)
                 .validityDate(SharedPref.getStringValue(SharedPref.USER, SharedPref.VAL_DATE, context))
                 .dateEffectivity(SharedPref.getStringValue(SharedPref.USER, SharedPref.EFF_DATE, context))
-                .serviceType(StatusType.CONSULTATION);
+                .serviceType(FileGenerator.CONSULTATION);
 
         ResultSetters.setDoctorWithProvider(withProvider, tv_doc_app);
     }

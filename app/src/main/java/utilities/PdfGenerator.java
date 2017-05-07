@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import constants.OutPatientConsultationForm;
-import constants.StatusType;
+import constants.FileGenerator;
 import timber.log.Timber;
 
 /**
@@ -36,7 +36,7 @@ public class PdfGenerator {
         String remarks = patientForm.getRemarks();
         Timber.d("remarks ############################### : %s", remarks);
 
-        String loaFileName = StatusType.genFileName(patientForm.getServiceType(), patientForm.getReferenceNumber());
+        String loaFileName = FileGenerator.genFileName(patientForm.getServiceType(), patientForm.getReferenceNumber());
 
         try {
             File pdfFolder = new File(Environment.getExternalStoragePublicDirectory(

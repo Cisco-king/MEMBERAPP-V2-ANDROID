@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import fragments.ConsultationResult;
 import fragments.MaternityResult;
 import mehdi.sakout.fancybuttons.FancyButton;
+import timber.log.Timber;
 import utilities.Constant;
 import utilities.DateAddThreeDays;
 import utilities.HeaderNameSetter;
@@ -112,6 +113,9 @@ public class ResultActivity extends AppCompatActivity {
         } else if (origin.equals(RequestButtonsActivity.MATERNITY)) {
 
             if (getIntent().getStringExtra(Constant.REQUEST).equals(Approved)) {
+
+                Timber.d("reference number : %s", getIntent().getExtras().getString(Constant.REFERENCECODE));
+
                 fragment = new MaternityResult().newInstance(
                         getIntent().getExtras().getString(Constant.REFERENCECODE),
                         getIntent().getStringExtra(Constant.MEMBER_ID),

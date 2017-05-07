@@ -23,11 +23,11 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <mehdi.sakout.fancybuttons.FancyButton
-android:visibility="gone"
                 android:id="@+id/btn_back"
                 android:layout_width="@dimen/btn_back_width"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:visibility="gone"
                 fancy:fb_defaultColor="@color/transparent"
                 fancy:fb_focusColor="@color/colorPrimaryBlueDark"
 
@@ -44,12 +44,12 @@ android:visibility="gone"
                 android:textSize="@dimen/text_main" />
 
             <ImageButton
-                android:visibility="gone"
                 android:id="@+id/btn_next"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_action_arrow_left" />
+                android:src="@drawable/ic_action_arrow_left"
+                android:visibility="gone" />
 
 
         </android.support.v7.widget.Toolbar>

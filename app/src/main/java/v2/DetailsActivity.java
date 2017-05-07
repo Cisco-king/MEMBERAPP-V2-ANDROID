@@ -219,7 +219,9 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
 
     private void setDetails() {
         hospital_name = SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, context);
-        hospital_address = SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD, context);
+//        hospital_address = SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD, context);
+        hospital_address = SharedPref.getPreferenceByKey(context, SharedPref.KEY_HOSPITAL_FULL_ADDRESS);
+
         hospital_code = SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context);
 
         doctor_name = SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, context);
