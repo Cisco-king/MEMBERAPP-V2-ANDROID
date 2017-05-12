@@ -16,6 +16,8 @@ public interface NewTestMvp {
 
         void displayHospitalView(HospitalsToDoctor doctor);
 
+        void displayDiagnosis();
+
     }
 
     interface Presenter extends Mvp.Presenter<View> {

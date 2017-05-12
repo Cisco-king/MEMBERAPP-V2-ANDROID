@@ -63,4 +63,9 @@ public class NewTestActivity extends BaseActivity implements NewTestMvp.View {
                 .commit();
     }
 
+    @Override
+    public void displayDiagnosis() {
+
+    }
+
 }

@@ -120,7 +120,7 @@ public class DoctorPresenter implements DoctorMvp.Presenter {
                                     response.body().getDoctorsToHospital()
                             );
                         } else {
-                            doctorView.onErrorRequest("response");
+                            doctorView.onErrorRequest("Error Occured");
                         }
                     }
 

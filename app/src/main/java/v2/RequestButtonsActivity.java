@@ -76,7 +76,7 @@ public class RequestButtonsActivity extends AppCompatActivity {
         isMaternityIsVisibleForThisUser(hasMaternity, gender);
 
         Log.d(TAG, "gotoRequest: memberID : " + getIntent().getExtras().getString(Constant.MEMBER_ID));
-        ViewUtilities.hideView(cvTests);
+//        ViewUtilities.hideView(cvTests);
     }
 
     private void isMaternityIsVisibleForThisUser(boolean hasMaternity, String gender) {
