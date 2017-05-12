@@ -140,6 +140,8 @@ public class LoaPageActivity extends AppCompatActivity
 
     @BindView(R.id.tvDisclaimerInfo) TextView tvDisclaimerInfo;
 
+    @BindView(R.id.tvDisclaimerInfo2) TextView tvDisclaimerInfo2;
+
     private int RESULT_GETTER;
     int position;
     ArrayList<LoaFetch> loaList = new ArrayList<>();
@@ -309,10 +311,23 @@ public class LoaPageActivity extends AppCompatActivity
 
         if (isCancelledORExpired(loa.getStatus())) {
             ViewUtilities.hideView(tvDisclaimerInfo);
+            ViewUtilities.hideView(tvDisclaimerInfo2);
         } else {
             // todo with provider
             ViewUtilities.showView(tvDisclaimerInfo);
+            if (loa.getBooleanWithProvider()) {
+                ViewUtilities.hideView(tvDisclaimerInfo2);
+                tvDisclaimerInfo.setText(getString(R.string.doctor_with_app));
+            } else {
+                ViewUtilities.showView(tvDisclaimerInfo2);
+                tvDisclaimerInfo2.setText(getString(R.string.doctor_without_app2));
+                tvDisclaimerInfo.setText(getString(R.string.doctor_without_app));
+            }
         }
+
+        //cas
+        Timber.d("WithProvider ......... %s", loa.getWithProvider());
+
     }
 
     @Override

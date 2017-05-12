@@ -104,8 +104,12 @@ public class HospitalFragment extends Fragment
 
         edSearchHospitalClinic.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            public void beforeTextChanged(CharSequence query, int start, int count, int after) {
+                if (query.length() > 0) {
+                    presenter.filterHospitals(hospitals, query.toString());
+                } else {
+                    hospitalAdapter.update(hospitals);
+                }
             }
 
             @Override
@@ -134,11 +138,12 @@ public class HospitalFragment extends Fragment
 
     @Override
     public void displayFilterHospitalClinics(List<HospitalList> hospitalLists) {
-
+        hospitalAdapter.update(hospitalLists);
     }
 
     @Override
     public void onItemClick(int position) {
+        Timber.d("item click position %s", position);
 
     }
 

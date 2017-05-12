@@ -389,8 +389,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(docSpecCode, "");
         values.put(hospitalName, "");
         values.put(schedule, "");
+
         values.put(withProvider, (loa.getWithProvider() ? 1 : 0) );
 
+        Timber.d("loa actual value : %s", loa.getWithProvider());
         Timber.d("with provider is inserted %s", (loa.getWithProvider() ? 1 : 0));
 
         createSuccessful = db.insert(loaTable, null, values) > 0;
@@ -707,9 +709,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         getCursor(cursor, docSpec),
                         getCursor(cursor, docSpecCode),
                         getCursor(cursor, hospitalName),
-                        getCursor(cursor, schedule)
-
-
+                        getCursor(cursor, schedule),
+                        getIntValue(cursor, withProvider)
                 );
 
                 loa.add(p);
@@ -717,15 +718,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Log.d("LOAD_DATE", getCursor(cursor, dateAdmitted));
                 Log.d("LOAD_DATE", getCursor(cursor, docName) + " <<<");
             } while (cursor.moveToNext());
-
         }
-
 
         return loa;
     }
 
     private String getCursor(Cursor cursor, String data) {
         return cursor.getString(cursor.getColumnIndex(data));
+    }
+
+    private int getIntValue(Cursor cursor, String key) {
+        return cursor.getInt(cursor.getColumnIndex(key));
     }
 
 
@@ -1345,6 +1348,89 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         setDocs.setRoom(cursor.getString(cursor.getColumnIndex(room)));
 
         return setDocs;
+    }
+
+    public ArrayList<LoaFetch> retrieveHospital(ArrayList<SimpleData> getHospList) {
+        SQLiteDatabase database;
+        Cursor cursor;
+        ArrayList<LoaFetch> hosp = new ArrayList<>();
+        database = getReadableDatabase();
+
+
+        String sql = "";
+        sql += "SELECT * FROM " + loaTable;
+
+
+        if (getHospList.size() != 0) {
+            sql += " WHERE  ( ";
+            for (int x = 0; x < getHospList.size(); x++) {
+                if (getHospList.get(x).getSelected().equals("true")) {
+                    sql += hospitalName + " = '" + getHospList.get(x).getHospital() + "' OR ";
+                }
+            }
+
+            sql = sql.substring(0, sql.length() - 3);
+            sql += " ) ";
+
+        }
+
+        Log.e(TAG, "objectName: " + sql);
+        cursor = database.rawQuery(sql, null);
+        Log.e(TAG, "Count " + cursor.getCount());
+        hosp.addAll(getDataLoa(cursor));
+
+        database.close();
+        return hosp;
+    }
+
+    public Collection<? extends LoaFetch> retrieveDoctor(ArrayList<LoaFetch> dataLoa) {
+        SQLiteDatabase database;
+        Cursor cursor;
+        ArrayList<LoaFetch> hosp = new ArrayList<>();
+        database = getReadableDatabase();
+
+
+        String sql = "";
+        sql += "SELECT * FROM " + loaTable;
+
+
+        if (dataLoa.size() != 0) {
+            sql += " WHERE  ( ";
+            for (int x = 0; x < dataLoa.size(); x++) {
+                if (setDataDetailsSpecCharacters(dataLoa.get(x).getDoctorCode())) {
+                    sql += doctorCode + " = '" + dataLoa.get(x).getDoctorCode() + "' OR ";
+                }
+            }
+
+            sql = sql.substring(0, sql.length() - 3);
+            sql += " ) ";
+
+        }
+
+        Log.e(TAG, "objectName: " + sql);
+        cursor = database.rawQuery(sql, null);
+        Log.e(TAG, "Count " + cursor.getCount());
+        hosp.addAll(getDataLoa(cursor));
+
+        database.close();
+        return hosp;
+    }
+
+
+    private boolean setDataDetailsSpecCharacters(String doctorCode) {
+        boolean data = true;
+
+        for (int x = 0; x < doctorCode.length(); x++) {
+
+            String character = String.valueOf(doctorCode.charAt(x));
+
+            if (character.equals(" ")) {
+                data = false;
+                break;
+            }
+        }
+
+        return data;
     }
 
 

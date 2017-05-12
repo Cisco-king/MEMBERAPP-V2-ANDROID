@@ -53,17 +53,16 @@ public class HospitalPresenter implements HospitalMvp.Presenter {
     public void filterHospitals(List<HospitalList> hospitals, String query) {
         try {
             query = query.toLowerCase();
-            List<HospitalList> hospitalsTemp = new ArrayList<>();
+            List<HospitalList> hospitalFilteredResults = new ArrayList<>();
             for (HospitalList hospital : hospitals) {
                 String hospitalName =
                         hospital.getHospitalName() != null ? hospital.getHospitalName().toLowerCase() : "";
-
                 if (hospitalName.contains(query)) {
-                    hospitalsTemp.add(hospital);
+                    hospitalFilteredResults.add(hospital);
                 }
             }
 
-
+            hospitalView.displayFilterHospitalClinics(hospitalFilteredResults);
         } catch (Exception e) {
             Timber.d("error message %s", e.toString());
         }

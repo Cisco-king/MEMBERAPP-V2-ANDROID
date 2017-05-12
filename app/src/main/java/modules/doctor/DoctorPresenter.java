@@ -37,8 +37,8 @@ public class DoctorPresenter implements DoctorMvp.Presenter {
 
     public DoctorPresenter(Context context) {
         doctorDao = new DoctorDao(context);
-//        doctorHttpClient = AppService.createApiService(DoctorClient.class, AppInterface.ENDPOINT);
-        doctorHttpClient = ServiceGenerator.createApiService(DoctorClient.class);
+        doctorHttpClient = AppService.createApiService(DoctorClient.class, AppInterface.ENDPOINT);
+//        doctorHttpClient = ServiceGenerator.createApiService(DoctorClient.class);
         doctorsWithHospitals = new ArrayList<>();
     }
 
