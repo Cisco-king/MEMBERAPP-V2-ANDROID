@@ -19,7 +19,9 @@ import adapter.SpecializationAdapter;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.Cities;
 import model.CitiesAdapter;
+import model.GetDoctorsToHospital;
 import model.HospitalList;
+import model.Loa;
 import model.LoaFetch;
 import model.Province;
 import model.Provinces;
@@ -48,7 +50,7 @@ public class ProvinceRetrieve {
     }
 
     public ArrayList<CitiesAdapter> setArrayCity(DatabaseHandler databaseHandler, ArrayList<ProvincesAdapter> prevSelectedProvince, String SPEC_SEARCH) {
-        return databaseHandler.retrieveCity(prevSelectedProvince , SPEC_SEARCH);
+        return databaseHandler.retrieveCity(prevSelectedProvince, SPEC_SEARCH);
     }
 
 
@@ -119,34 +121,29 @@ public class ProvinceRetrieve {
 
     // GET ONLY ITEM WITHOUT REPETITION
     public ArrayList<SimpleData> getOnlyHospitalWithOneCount(ArrayList<LoaFetch> arrayListMaster) {
+
+
         ArrayList<SimpleData> array = new ArrayList<>();
-        ArrayList<SimpleData> arraySorter = new ArrayList<>();
+        ArrayList<String> arraySorter = new ArrayList<>();
 
         for (int mid = 0; mid < arrayListMaster.size(); mid++) {
-
-            SimpleData data = new SimpleData();
-            data.setId(arrayListMaster.get(mid).getHospitalCode());
-            data.setSelected("false");
-            data.setHospital(arrayListMaster.get(mid).getHospitalName());
-            arraySorter.add(data);
-
+            arraySorter.add(arrayListMaster.get(mid).getHospitalName());
         }
-        Set<SimpleData> s = new HashSet<SimpleData>(arraySorter);
-        Set<SimpleData> alpha = new TreeSet<>(s);
-
+        Set<String> s = new HashSet<String>(arraySorter);
+        Set<String> alpha = new TreeSet<>(s);
 
         arraySorter.clear();
         arraySorter.addAll(alpha);
         for (int x = 0; x < arraySorter.size(); x++) {
             SimpleData data = new SimpleData();
-            data.setHospital(arraySorter.get(x).getHospital());
-            data.setSelected(arraySorter.get(x).getSelected());
-            data.setId(arraySorter.get(x).getId());
+            data.setHospital(arraySorter.get(x));
+            data.setSelected("false");
             array.add(data);
         }
 
 
         return array;
+
 
     }
 
@@ -170,35 +167,36 @@ public class ProvinceRetrieve {
     }
 
 
-    public Collection<? extends SimpleData> getOnlyDoctorWithOneCount(ArrayList<LoaFetch> arrayListMaster, ArrayList<SimpleData> hosp) {
+    public ArrayList<SimpleData> getOnlyDoctorWithOneCount(ArrayList<SimpleData> hosp, DatabaseHandler handler) {
 
+        ArrayList<LoaFetch> dataLOA = new ArrayList<>();
+        dataLOA.addAll(handler.retrieveHospital(hosp));
+
+        Log.d("DATA_LOA", dataLOA.toString());
+
+        ArrayList<LoaFetch> dataDoc = new ArrayList<>();
+        dataDoc.addAll(handler.retrieveDoctor(dataLOA));
+
+        Log.d("DATA_LOA2", dataDoc.toString());
 
         ArrayList<SimpleData> array = new ArrayList<>();
-        ArrayList<SimpleData> arraySorter = new ArrayList<>();
+        ArrayList<String> arraySorter = new ArrayList<>();
 
-        for (int mid = 0; mid < arrayListMaster.size(); mid++) {
-
-            SimpleData data = new SimpleData();
-            data.setId(arrayListMaster.get(mid).getDoctorCode());
-            data.setSelected("false");
-            data.setHospital(arrayListMaster.get(mid).getDoctorName());
-            arraySorter.add(data);
-
+        for (int mid = 0; mid < dataDoc.size(); mid++) {
+            arraySorter.add(dataDoc.get(mid).getDoctorName());
         }
-        Set<SimpleData> s = new HashSet<SimpleData>(arraySorter);
-        Set<SimpleData> alpha = new TreeSet<>(s);
+        Set<String> s = new HashSet<String>(arraySorter);
+        Set<String> alpha = new TreeSet<>(s);
 
 
         arraySorter.clear();
         arraySorter.addAll(alpha);
         for (int x = 0; x < arraySorter.size(); x++) {
             SimpleData data = new SimpleData();
-            data.setHospital(arraySorter.get(x).getHospital());
-            data.setSelected(arraySorter.get(x).getSelected());
-            data.setId(arraySorter.get(x).getId());
+            data.setHospital(arraySorter.get(x));
+            data.setSelected("false");
             array.add(data);
         }
-
 
         return array;
 
@@ -243,7 +241,6 @@ public class ProvinceRetrieve {
     }
 
     public void setSelectedDataProvince(ArrayList<ProvincesAdapter> arrayProvince, ArrayList<ProvincesAdapter> selectedProvince) {
-
 
 
         if (selectedProvince.size() != 0) {

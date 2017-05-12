@@ -156,10 +156,14 @@ public class SelectProvinceActivity extends AppCompatActivity {
             ArrayList<LoaFetch> temp;
             temp = getIntent().getParcelableArrayListExtra(Constant.DOCTOR_LIST);
             arrayListMaster.addAll(temp);
-            ArrayList<SimpleData> temporary2 = new ArrayList<>();
-            temporary2 = getIntent().getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
-            prevSelectedHosp.addAll(temporary2);
-            arrayDoctors.addAll(implement.getOnlyDoctorWithOneCount(arrayListMaster , prevSelectedHosp));
+            ArrayList<SimpleData> temp1;
+            temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
+            prevSelectedHosp.clear();
+            prevSelectedHosp.addAll(temp1);
+            for (SimpleData simpleData : prevSelectedHosp){
+                Log.d("TAG_DATA", "onCreate: " + simpleData.getHospital());
+            }
+            arrayDoctors.addAll(implement.getOnlyDoctorWithOneCount(prevSelectedHosp, handler));
             prevSelectedDoctor = getIntent().getParcelableArrayListExtra(Constant.SELECTED_DOCTOR);
             implement.tagSelectedToMasterList(prevSelectedDoctor, arrayDoctors);
             adapterLoa = new LoaReqAdapter(context, arrayDoctors);

@@ -230,14 +230,17 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
 
 
         if (requestCode == CALL_HOSPITALS && resultCode == RESULT_OK) {
-            ArrayList<SimpleData> temp;
-            temp = data.getParcelableArrayListExtra("LOA_REQUEST");
+            ArrayList<SimpleData> temp = data.getParcelableArrayListExtra("LOA_REQUEST");
+            for (SimpleData simpleData : temp) {
+                Log.d("DAYDAY", "onActivityResult: " + simpleData.getSelected());
+            }
+            tv_doctor.setText("");
+            prevSelectedDoctor.clear();
             prevSelected.clear();
             prevSelected.addAll(temp);
             implement.setFetchHospitals(tv_hosp_clinic, temp);
         } else if (requestCode == CALL_DOCTORS && resultCode == RESULT_OK) {
-            ArrayList<SimpleData> temp;
-            temp = data.getParcelableArrayListExtra("DOCTOR");
+            ArrayList<SimpleData> temp = data.getParcelableArrayListExtra("DOCTOR");
             prevSelectedDoctor.clear();
             prevSelectedDoctor.addAll(temp);
             implement.setFetchHospitals(tv_doctor, temp);
