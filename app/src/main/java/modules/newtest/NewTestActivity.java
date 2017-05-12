@@ -5,7 +5,9 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.medicard.member.R;
 
+import model.HospitalList;
 import modules.base.activities.BaseActivity;
+import modules.diagnosis.DiagnosisFragment;
 import modules.doctor.DoctorFragment;
 import modules.hospital.HospitalFragment;
 import modules.requestforconsult.RequestForConsultFragment;
@@ -36,7 +38,6 @@ public class NewTestActivity extends BaseActivity implements NewTestMvp.View {
     }
 
     private void initComponents() {
-
         int defaultLayout = getIntent().getIntExtra(CONTENT, REQUEST_FOR_CONSULT);
         displayLayout(defaultLayout);
     }
@@ -64,8 +65,11 @@ public class NewTestActivity extends BaseActivity implements NewTestMvp.View {
     }
 
     @Override
-    public void displayDiagnosis() {
-
+    public void displayDiagnosis(HospitalList hospitalList) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.flNewTest, DiagnosisFragment.newInstance(hospitalList), null)
+                .commit();
     }
+
 
 }

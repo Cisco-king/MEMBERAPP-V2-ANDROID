@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/sub_margin"
-            android:text="@string/select_hospital_clinic_for_availment"
+            android:text="Select Diagnosis"
             android:textColor="@color/white"
             android:textSize="@dimen/text_main" />
 

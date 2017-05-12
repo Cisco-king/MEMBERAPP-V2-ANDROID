@@ -20,6 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import core.callback.RecyclerViewOnClickListener;
+import model.HospitalList;
 import modules.diagnosis.adapter.DiagnosisAdapter;
 import services.model.Diagnosis;
 import utilities.AlertDialogCustom;
@@ -42,6 +43,15 @@ public class DiagnosisFragment extends Fragment implements DiagnosisMvp.View, Re
 
     public DiagnosisFragment() {
 
+    }
+
+    public static DiagnosisFragment newInstance(HospitalList hospital) {
+        
+        Bundle args = new Bundle();
+        
+        DiagnosisFragment fragment = new DiagnosisFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override

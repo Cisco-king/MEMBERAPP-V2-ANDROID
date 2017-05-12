@@ -144,7 +144,7 @@ public class HospitalFragment extends Fragment
     @Override
     public void onItemClick(int position) {
         Timber.d("item click position %s", position);
-
+        newTestNavigator.displayDiagnosis(hospitals.get(position));
     }
 
 }
