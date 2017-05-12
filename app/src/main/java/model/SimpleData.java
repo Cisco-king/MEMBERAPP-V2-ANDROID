@@ -8,17 +8,14 @@ import android.os.Parcelable;
  */
 public class SimpleData implements Parcelable {
 
-    private String selected ;
+    private String selected;
 
-    public String getHospital() {
-        return Hospital;
+    private String Hospital;
+
+    private String id;
+
+    public SimpleData() {
     }
-
-    public void setHospital(String hospital) {
-        Hospital = hospital;
-    }
-
-    private String Hospital ;
 
     public String getSelected() {
         return selected;
@@ -28,12 +25,33 @@ public class SimpleData implements Parcelable {
         this.selected = selected;
     }
 
-    public SimpleData() {
+    public String getHospital() {
+        return Hospital;
     }
 
-    public SimpleData(Parcel in) {
+    public void setHospital(String hospital) {
+        Hospital = hospital;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    protected SimpleData(Parcel in) {
         selected = in.readString();
         Hospital = in.readString();
+        id = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(selected);
+        dest.writeString(Hospital);
+        dest.writeString(id);
     }
 
     @Override
@@ -41,14 +59,7 @@ public class SimpleData implements Parcelable {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(selected);
-        dest.writeString(Hospital);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<SimpleData> CREATOR = new Parcelable.Creator<SimpleData>() {
+    public static final Creator<SimpleData> CREATOR = new Creator<SimpleData>() {
         @Override
         public SimpleData createFromParcel(Parcel in) {
             return new SimpleData(in);

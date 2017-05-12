@@ -26,5 +26,7 @@ public interface OutPatientConsultation {
     String HISTORY_oF_PERSENT_ILLNESS = "historyOfPresentIllness";
     String PAST_OR_FAMILY_HISTORY = "pastOrFamilyHistory";
 
+    String BATCH_CODE = "batchCode";
+
 
 }

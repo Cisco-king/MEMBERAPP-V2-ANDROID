@@ -235,7 +235,7 @@ public class LoaRequestRetrieve {
 //                        if (doctorNORoom.getResponseCode().equals("210")) {
 //                            doctorNotFound(doctorCode, arrayList, position, databaseHandler);
 //                        } else {
-//                            //     if (.getDoctorsToHospital().size() == 0)
+//                            //     if (.getHospitalsByDoctorCode().size() == 0)
 //                            //        doctorNotFound(doctorCode, arrayList, position, dbHandler);
 //                            //      else
 //                            onSuccessListener(databaseHandler, doctorNORoom.getDoctor(), arrayList, position);
@@ -326,7 +326,7 @@ public class LoaRequestRetrieve {
     private String dateSortUpdate(String sort_by) {
         String returnData = "";
         if (sort_by.equals(context.getString(R.string.status))) {
-            returnData = "serviceType";
+            returnData = "status";
         } else if (sort_by.equals(context.getString(R.string.request_date))) {
             // returnData = "DATETIME(dateAdmitted)";
             returnData = "approvalNo";
@@ -335,7 +335,7 @@ public class LoaRequestRetrieve {
         } else if (sort_by.equals(context.getString(R.string.service_type))) {
             returnData = "remarks";
         } else if (sort_by.equals("")) {
-            returnData = "serviceType";
+            returnData = "status";
         }
         return returnData;
     }

@@ -131,7 +131,6 @@ public class SignInActivity extends AppCompatActivity
     public void signIn(final String getUsername, final String getPassword) {
         pd.show();
 
-
         s.setStringValue(s.USER, s.USERNAME, getUsername, context);
 
         LogIn logIn = new LogIn();
@@ -368,6 +367,7 @@ public class SignInActivity extends AppCompatActivity
         setHosp.execute();
     }
 
+    // currently not use
     private void loadDoctorList(final SignInDetails responseBody) {
         DoctorClient doctorClient = AppService.createApiService(DoctorClient.class, AppInterface.ENDPOINT);
         pd.setMessage("Loading resources...");
@@ -573,9 +573,24 @@ public class SignInActivity extends AppCompatActivity
     }
 
     @Override
+    public void onLoadProcedureSuccess(SignInDetails signInDetails) {
+        gotoNavigationTest(signInDetails);
+    }
+
+    @Override
     public void onSpecsToDBListener() {
-        loadDoctorList(signInDetails);
+        // todo done listener
+        implement.loadProcedures(signInDetails);
+        //loadDoctorList(signInDetails);
 //        gotoNavigationTest(signInDetails);
+    }
+
+
+
+    @Override
+    public void onLoadProcedureError(String message) {
+        pd.dismiss();
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override

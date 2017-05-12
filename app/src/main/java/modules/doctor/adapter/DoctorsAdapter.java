@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import database.entity.Doctor;
+import services.model.HospitalsToDoctor;
 
 /**
  * Created by casjohnpaul on 5/7/2017.
@@ -25,13 +26,13 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.ViewHold
 
 
     private Context context;
-    private List<Doctor> doctors;
+    private List<HospitalsToDoctor> doctors;
 
     private LayoutInflater inflater;
 
     private OnItemClickListener listener;
 
-    public DoctorsAdapter(Context context, List<Doctor> doctors, DoctorsAdapter.OnItemClickListener listener) {
+    public DoctorsAdapter(Context context, List<HospitalsToDoctor> doctors, DoctorsAdapter.OnItemClickListener listener) {
         this.context = context;
         this.doctors = doctors;
 
@@ -48,13 +49,13 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Doctor doctor = doctors.get(position);
+        HospitalsToDoctor doctor = doctors.get(position);
         holder.tvDoctorName.setText(doctor.getFullName());
-        holder.tvSpecialization.setText(doctor.getSpecializationDescription());
-//        holder.tvHospitalClinic()
+        holder.tvSpecialization.setText(doctor.getSpecDesc());
+        holder.tvHospitalClinic.setText(doctor.getHospitalName());
     }
 
-    public void update(List<Doctor> doctors) {
+    public void update(List<HospitalsToDoctor> doctors) {
         this.doctors = doctors;
         notifyDataSetChanged();
     }

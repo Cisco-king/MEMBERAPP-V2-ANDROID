@@ -26,7 +26,9 @@ import model.ProvincesAdapter;
 import model.SimpleData;
 import model.Specializations;
 import model.SpecsAdapter;
+import services.model.Procedure;
 import timber.log.Timber;
+import utilities.Constant;
 import utilities.DateConverter;
 import utilities.SharedPref;
 
@@ -76,6 +78,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // private String phoneNo = "phoneNo";
     private String specCode = "specCode";
     private String schedule = "schedule";
+
+    private String withProvider = "withProvider";
     //  private String faxno = "faxno";
     //   private String province = "province";
     //    private String hospitalName = "hospitalName";
@@ -149,9 +153,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     protected static final String databaseName = "Medicard";
     private String hospTable = "hospital";
 
-    private static final int version = 1;
+    // added new column
 
+    private static final int version = 2;
 
+    //
     private String createLoaRequest = " CREATE TABLE " +
             loaTable + " ( " +
             primaryComplaint + " TEXT ," +
@@ -192,7 +198,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             docSpecCode + " TEXT ," +
             hospitalName + " TEXT ," +
             schedule + " TEXT ," +
-            room + " TEXT )  ";
+            room + " TEXT, " +
+            withProvider + " INTEGER DEFAULT 0 )";
 
 
     private String createSpecialization = " CREATE TABLE " +
@@ -291,6 +298,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.e(TAG, createLoaRequest);
 
         db.execSQL(Doctor.getTableStructure());
+        db.execSQL(Procedure.getTableStructure());
 
         String data = "";
         String filterNull = "";
@@ -323,7 +331,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + Doctor.TABLE_NAME);
-        db.execSQL("");
+        db.execSQL("DROP TABLE IF EXISTS " + Procedure.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + hospTable);
+        db.execSQL("DROP TABLE IF EXISTS " + doctable);
+        db.execSQL("DROP TABLE IF EXISTS " + loaTable);
+//        db.execSQL("");
+        onCreate(db);
     }
 
 
@@ -374,6 +387,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(docSpecCode, "");
         values.put(hospitalName, "");
         values.put(schedule, "");
+        values.put(withProvider, (loa.getWithProvider() ? 1 : 0) );
+
+        Timber.d("with provider is inserted %s", (loa.getWithProvider() ? 1 : 0));
 
         createSuccessful = db.insert(loaTable, null, values) > 0;
 
@@ -386,15 +402,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private String testStatusExpiration(String remarks, String status, String approvalDate) {
         String data = "";
 
-        if (remarks.contains("AVAILED"))
+        if (status.equals(Constant.CANCELLED)) {
+            data = Constant.CANCELLED;
+        } else if (remarks.contains("AVAILED")) {
             data = status;
-        else if (DateConverter.testExpiration(DateConverter.convertDate(approvalDate, new SimpleDateFormat("yyyy-MM-dd HH:mm")))) {
+        } else if (DateConverter.testExpiration(DateConverter.convertDate(approvalDate, new SimpleDateFormat("yyyy-MM-dd HH:mm")))) {
             if (remarks.contains("CONSULTATION") && status.contains("APPROVED"))
                 data = "OUTSTANDING";
             else
                 data = status;
-        } else
+        } else {
             data = "EXPIRED";
+        }
 
 
         return data;
@@ -460,12 +479,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (createsuccessful) {
             Log.e(TAG, specializationDescription + " created.");
         }
-
     }
 
     public void insertHospital(HospitalList hosp) {
-
-
         boolean createSuccessful = false;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -493,7 +509,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (createSuccessful) {
             Log.e(TAG, hospitalName + " created.");
         }
-
     }
 
 
@@ -1021,23 +1036,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private void getFalse(Cursor cursor) {
         String gHosp = "";
         if (cursor.moveToFirst()) {
-
-
             do {
                 gHosp = cursor.getString(cursor.getColumnIndex(hospitalCode));
                 setExcludedToFalse(gHosp);
                 Log.d("HOSP-ID", gHosp);
             } while (cursor.moveToNext());
-
-
         }
-
         cursor.close();
     }
 
-
     public void setExcludedToTrue(String ID) {
-
         String sql = "";
         SQLiteDatabase db = this.getWritableDatabase();
         sql = "UPDATE " + hospTable + " SET " + excluded + " = 'true' WHERE " + hospitalCode + " = '" + ID + "'";
@@ -1065,9 +1073,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //TEST IF QUERY IS ONLY FOR MEDICARD CLINICS
 
 
-        if (!getSortByProvinceCityOrHospName(data_sort)) {
+      // if (!getSortByProvinceCityOrHospName(data_sort)) {
             arrayList.addAll(getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
-        }
+     //   }
         arrayList.addAll(getHospitalList(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
 
 
@@ -1092,10 +1100,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String sql2 = "";
         sql2 += "SELECT * FROM " + hospTable;
         sql2 += " WHERE " + hospitalName + "  LIKE '%" + s + "%' ";
-        if (!getSortByProvinceCityOrHospName(data_sort)) {
+     //   if (!getSortByProvinceCityOrHospName(data_sort)) {
             sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp + "%' ";
             sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp2 + "%' ";
-        }
+      //  }
         sql2 += " AND ( " + excluded + " = 'false' ) ";
 
         if (selectedProvince.size() >= 1) {

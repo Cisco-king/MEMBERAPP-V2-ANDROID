@@ -36,6 +36,8 @@ final TIMBER_LIBRARY = '4.5.1'
 
 final ITEXTG_LIBRARY = '5.5.10'
 
+final HTTP_LOGGING_LIBRARY = '3.2.0';
+
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.1'
@@ -84,6 +86,9 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$RETROFIT_NETWORK_LIBRARY"
     compile "com.squareup.retrofit2:converter-gson:$RETROFIT_NETWORK_LIBRARY"
     compile "com.squareup.retrofit2:adapter-rxjava:$RETROFIT_NETWORK_LIBRARY"
+
+    // for retrofit logging
+    compile "com.squareup.okhttp3:logging-interceptor:$HTTP_LOGGING_LIBRARY";
 
     compile "io.reactivex:rxandroid:$RX_ANDROID_LIBRARY"
     compile "io.reactivex:rxjava:$RX_JAVA_LIBRARY"

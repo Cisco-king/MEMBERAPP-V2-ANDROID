@@ -120,20 +120,28 @@ public class ProvinceRetrieve {
     // GET ONLY ITEM WITHOUT REPETITION
     public ArrayList<SimpleData> getOnlyHospitalWithOneCount(ArrayList<LoaFetch> arrayListMaster) {
         ArrayList<SimpleData> array = new ArrayList<>();
-        ArrayList<String> arraySorter = new ArrayList<>();
+        ArrayList<SimpleData> arraySorter = new ArrayList<>();
 
         for (int mid = 0; mid < arrayListMaster.size(); mid++) {
-            arraySorter.add(arrayListMaster.get(mid).getHospitalName());
+
+            SimpleData data = new SimpleData();
+            data.setId(arrayListMaster.get(mid).getHospitalCode());
+            data.setSelected("false");
+            data.setHospital(arrayListMaster.get(mid).getHospitalName());
+            arraySorter.add(data);
+
         }
-        Set<String> s = new HashSet<String>(arraySorter);
-        Set<String> alpha = new TreeSet<>(s);
+        Set<SimpleData> s = new HashSet<SimpleData>(arraySorter);
+        Set<SimpleData> alpha = new TreeSet<>(s);
+
 
         arraySorter.clear();
         arraySorter.addAll(alpha);
         for (int x = 0; x < arraySorter.size(); x++) {
             SimpleData data = new SimpleData();
-            data.setHospital(arraySorter.get(x));
-            data.setSelected("false");
+            data.setHospital(arraySorter.get(x).getHospital());
+            data.setSelected(arraySorter.get(x).getSelected());
+            data.setId(arraySorter.get(x).getId());
             array.add(data);
         }
 
@@ -162,24 +170,32 @@ public class ProvinceRetrieve {
     }
 
 
-    public Collection<? extends SimpleData> getOnlyDoctorWithOneCount(ArrayList<LoaFetch> arrayListMaster) {
+    public Collection<? extends SimpleData> getOnlyDoctorWithOneCount(ArrayList<LoaFetch> arrayListMaster, ArrayList<SimpleData> hosp) {
 
 
         ArrayList<SimpleData> array = new ArrayList<>();
-        ArrayList<String> arraySorter = new ArrayList<>();
+        ArrayList<SimpleData> arraySorter = new ArrayList<>();
 
         for (int mid = 0; mid < arrayListMaster.size(); mid++) {
-            arraySorter.add(arrayListMaster.get(mid).getDoctorName());
+
+            SimpleData data = new SimpleData();
+            data.setId(arrayListMaster.get(mid).getDoctorCode());
+            data.setSelected("false");
+            data.setHospital(arrayListMaster.get(mid).getDoctorName());
+            arraySorter.add(data);
+
         }
-        Set<String> s = new HashSet<String>(arraySorter);
-        Set<String> alpha = new TreeSet<>(s);
+        Set<SimpleData> s = new HashSet<SimpleData>(arraySorter);
+        Set<SimpleData> alpha = new TreeSet<>(s);
+
 
         arraySorter.clear();
         arraySorter.addAll(alpha);
         for (int x = 0; x < arraySorter.size(); x++) {
             SimpleData data = new SimpleData();
-            data.setHospital(arraySorter.get(x));
-            data.setSelected("false");
+            data.setHospital(arraySorter.get(x).getHospital());
+            data.setSelected(arraySorter.get(x).getSelected());
+            data.setId(arraySorter.get(x).getId());
             array.add(data);
         }
 

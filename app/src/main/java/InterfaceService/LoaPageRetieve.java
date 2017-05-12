@@ -45,7 +45,6 @@ public class LoaPageRetieve {
 
     public void cancelRequest(String approvalNo) {
 
-
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
         appInterface.setRequestCancel(approvalNo)

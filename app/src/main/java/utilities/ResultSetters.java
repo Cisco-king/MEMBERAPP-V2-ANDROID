@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 public class ResultSetters {
 
-    private static String Approved = "Approved";
-    public static String REQUEST_APPROVED = "REQUEST SUBMITTED";
-    public static String REQUEST_DISAPPROVED = "REQUEST DISAPPROVED";
-    public static String REQUEST_APPROVAL = "PENDING APPROVAL";
-    private static String WITHPROVIDER = "withProvider";
+    public static final String Approved = "Approved";
+    public static final String REQUEST_APPROVED = "REQUEST SUBMITTED";
+    public static final String REQUEST_DISAPPROVED = "REQUEST DISAPPROVED";
+    public static final String REQUEST_APPROVAL = "PENDING APPROVAL";
+    public static final String WITHPROVIDER = "withProvider";
 
     public static String nameSetter(String name, Context context) {
 

@@ -20,6 +20,6 @@ public class Doctors {
 
     @Override
     public String toString() {
-        return "ClassPojo [getDoctorsToHospital = " + getDoctorsToHospital + "]";
+        return "ClassPojo [getHospitalsByDoctorCode = " + getDoctorsToHospital + "]";
     }
 }

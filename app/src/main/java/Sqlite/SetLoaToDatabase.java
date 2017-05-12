@@ -9,6 +9,7 @@ import InterfaceService.LOARequestCallback;
 import model.Loa;
 import model.LoaList;
 import services.response.LoaListResponse;
+import timber.log.Timber;
 
 /**
  * Created by mpx-pawpaw on 2/16/17.
@@ -44,6 +45,7 @@ public class SetLoaToDatabase {
 
 
         for (int x = 0; x < loa.getLoaList().size(); x++) {
+            Timber.d("loa list to db %s", loa.getLoaList().get(x).getStatus());
             databaseHandler.insertLoa(loa.getLoaList().get(x));
         }
 

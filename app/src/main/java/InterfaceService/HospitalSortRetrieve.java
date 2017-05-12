@@ -49,7 +49,6 @@ public class HospitalSortRetrieve implements View.OnClickListener {
         FancyButton province;
         FancyButton cancel;
 
-
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

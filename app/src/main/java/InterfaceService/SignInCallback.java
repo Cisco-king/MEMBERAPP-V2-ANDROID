@@ -23,5 +23,9 @@ public interface SignInCallback {
 
     void onSuccessSpecs(SpecializationList specializationList);
 
+    void onLoadProcedureSuccess(SignInDetails signInDetails);
+    void onLoadProcedureError(String message);
+
+
     void onSpecsToDBListener();
 }

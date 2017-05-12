@@ -75,7 +75,9 @@ public class SortHospitalActivity extends AppCompatActivity implements HospitalS
         selectedProvince = getIntent().getParcelableArrayListExtra(Constant.SELECTED_PROVINCE);
         searchString = getIntent().getStringExtra(Constant.SEARCH_STRING);
         et_search.setText(searchString);
-        tv_sort_by.setText(getIntent().getStringExtra(Constant.SORT_BY));
+        String sortBy = getIntent().getStringExtra(Constant.SORT_BY);
+        sortBy = sortBy.equalsIgnoreCase("MediCard Clinics First") ? "" : sortBy;
+        tv_sort_by.setText(sortBy);
 
         implement.setCityText(tv_city, selectedCity);
         implement.setProvinceText(tv_province, selectedProvince);

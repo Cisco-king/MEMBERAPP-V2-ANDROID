@@ -43,7 +43,7 @@ public class HospitalListRetrieve {
         } else if (sortBy.equals(context.getString(R.string.city))) {
             data_sort = "city";
         } else if (sortBy.equals("")) {
-            data_sort = "";
+            data_sort = "category";
         }
 
         array.clear();

@@ -13,7 +13,7 @@ import adapter.HospitalClinicAdapter;
 import butterknife.BindView;
 import model.HospitalClinic;
 import modules.base.activities.TestTrackableActivity;
-import modules.diagnosis.DiagnosisActivity;
+import modules.diagnosis2.DiagnosisActivity;
 import modules.requestdoctor2.RequestDoctorActivity;
 import modules.selecttest.SelectTestActivity;
 import timber.log.Timber;

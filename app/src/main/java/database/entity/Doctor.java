@@ -4,7 +4,10 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 import database.table.Table;
+import services.model.HospitalsByDoctorCode;
 
 /**
  * Created by casjohnpaul on 5/5/2017.
@@ -12,6 +15,42 @@ import database.table.Table;
 
 public class Doctor implements Table.Doctor, Parcelable {
 
+
+    private String doctorCode;
+
+    private String lastName;
+
+    private String firstName;
+
+    private String middleName;
+
+    private String specializationDescription;
+
+    private String specializationCode;
+
+    private String wtax;
+
+    private Integer gracePeriod;
+
+    private String vat;
+
+    private String contactNumber;
+
+    private String city;
+
+    private String province;
+
+    private String region;
+
+    private String prc;
+
+    private String streetAddress;
+
+    private String roomNo;
+
+    private String schedule;
+
+    private List<HospitalsByDoctorCode> hospitals;
 
     /**
      *
@@ -109,40 +148,6 @@ public class Doctor implements Table.Doctor, Parcelable {
         roomNo = in.readString();
         schedule = in.readString();
     }
-
-    private String doctorCode;
-
-    private String lastName;
-
-    private String firstName;
-
-    private String middleName;
-
-    private String specializationDescription;
-
-    private String specializationCode;
-
-    private String wtax;
-
-    private Integer gracePeriod;
-
-    private String vat;
-
-    private String contactNumber;
-
-    private String city;
-
-    private String province;
-
-    private String region;
-
-    private String prc;
-
-    private String streetAddress;
-
-    private String roomNo;
-
-    private String schedule;
 
 
     @Override
@@ -320,6 +325,14 @@ public class Doctor implements Table.Doctor, Parcelable {
 
     public String getFullName() {
         return lastName + ", " + firstName;
+    }
+
+    public List<HospitalsByDoctorCode> getHospitals() {
+        return hospitals;
+    }
+
+    public void setHospitals(List<HospitalsByDoctorCode> hospitals) {
+        this.hospitals = hospitals;
     }
 
     public static final String getTableStructure() {

@@ -35,14 +35,14 @@
                     android:orientation="vertical">
 
                     <EditText
-                        android:imeOptions="actionDone"
-                        android:maxLines="1"
-                        android:inputType="text"
                         android:id="@+id/et_search"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_rounded_corner"
                         android:hint="Find by Hospital Name"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:maxLines="1"
                         android:padding="@dimen/sub_margin"
                         android:textColor="@color/BLACK"
                         android:textSize="@dimen/text_main" />
@@ -53,10 +53,10 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:background="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/sub_margin">
+                android:layout_margin="@dimen/sub_margin"
+                android:background="@android:color/white">
 
                 <LinearLayout
 
@@ -75,14 +75,14 @@
                         android:textSize="@dimen/text_main" />
 
                     <TextView
-
-                        android:textColor="@color/BLACK"
                         android:id="@+id/tv_sort_by"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_rounded_corner"
                         android:padding="@dimen/sub_margin"
+                        android:hint="Sort By..."
                         android:text="@string/sample"
+                        android:textColor="@color/BLACK"
                         android:textSize="@dimen/text_main" />
 
 
@@ -146,13 +146,13 @@
                         android:textSize="@dimen/text_main" />
 
                     <TextView
-                        android:textColor="@color/BLACK"
                         android:id="@+id/tv_province"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_rounded_corner"
                         android:padding="@dimen/sub_margin"
                         android:text="All Provinces"
+                        android:textColor="@color/BLACK"
                         android:textSize="@dimen/text_main" />
 
 
@@ -173,21 +173,21 @@
 
 
                     <TextView
-                        android:textColor="@color/colorPrimary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/sub_margin"
                         android:text="@string/city"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/text_main" />
 
                     <TextView
-                        android:textColor="@color/BLACK"
                         android:id="@+id/tv_city"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_rounded_corner"
                         android:padding="@dimen/sub_margin"
                         android:text="All Cities"
+                        android:textColor="@color/BLACK"
 
                         android:textSize="@dimen/text_main" />
 
@@ -239,7 +239,6 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
 
 
 </RelativeLayout>

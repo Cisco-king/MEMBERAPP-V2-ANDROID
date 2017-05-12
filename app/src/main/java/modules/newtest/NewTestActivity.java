@@ -5,11 +5,11 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.medicard.member.R;
 
-import database.entity.Doctor;
 import modules.base.activities.BaseActivity;
 import modules.doctor.DoctorFragment;
 import modules.hospital.HospitalFragment;
 import modules.requestforconsult.RequestForConsultFragment;
+import services.model.HospitalsToDoctor;
 
 public class NewTestActivity extends BaseActivity implements NewTestMvp.View {
 
@@ -57,7 +57,7 @@ public class NewTestActivity extends BaseActivity implements NewTestMvp.View {
     }
 
     @Override
-    public void displayHospitalView(Doctor doctor) {
+    public void displayHospitalView(HospitalsToDoctor doctor) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.flNewTest, HospitalFragment.newInstance(doctor), null)
                 .commit();

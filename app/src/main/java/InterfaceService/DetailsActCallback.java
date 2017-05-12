@@ -23,5 +23,7 @@ public interface DetailsActCallback {
 
     void onErrorConfirm(String message);
 
+    void onBlockRequest(String message);
+
     void onSuccessConfirm(RequestResult requestResult);
 }

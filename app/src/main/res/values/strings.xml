@@ -268,12 +268,40 @@
     <string name="reason_for_consult">Reason For Consult</string>
     <string name="download_loa">Download LOA</string>
 
+
+    <string name="maternity_consultation_not_available">
+        Maternity Consultation is not available for the member.
+    </string>
+    <string name="tap_to_view">To view your information or to request a LOA, tap your display picture</string>
+
+    <string name="doctor_with_app">
+        You may go directly to the consulting doctor and present the Reference QR code.
+        Your PIN is required for the confirmation of availment.
+        \n\n
+        This shall be subject to existing benefits and actual available limits under the plan.
+        Member may still be billed for the amount.
+    </string>
+
+    <string name="doctor_without_app">
+        \n\n
+        This shall be subject to existing benefits and actual available limits under the plan.
+        Member may still be billed for the amount.
+    </string>
+
+    <string name="doctor_without_app2">
+        Doctor has no app. Please print 2 copies of the dowloaded LOA form to present directly to your consulting doctor or
+            go to the coordinator for the issuance of LOA.
+    </string>
+
+    <string name="login">Login</string>
+
+    <!--Load notification-->
     <string name="info_hospital">
         Hospitals that are not in the list might not be included in your benefit. Please call 841-8480 for verification
     </string>
 
-    <string name="maternity_consultation_not_available">
-        Maternity Consultation is not available for the member.
+    <string name="success_load_doctors">
+        Schedule of the doctor is subject to changes. Please call the clinic or coordinator for confirmation
     </string>
 
 </resources>

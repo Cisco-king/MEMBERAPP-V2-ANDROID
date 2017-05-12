@@ -20,6 +20,12 @@ public class ViewUtilities {
         }
     }
 
+    public static void showView(View view) {
+        if (view.getVisibility() == View.INVISIBLE || view.getVisibility() == View.GONE) {
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
     /**
      *
      * @param view

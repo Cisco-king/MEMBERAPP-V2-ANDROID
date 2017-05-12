@@ -121,6 +121,10 @@ public class LoaList {
     @Expose
     private String requestOrigin;
 
+    @SerializedName("withProvider")
+    @Expose
+    private boolean withProvider;
+
     public Integer getId() {
         return id;
     }
@@ -417,4 +421,11 @@ public class LoaList {
         this.requestOrigin = requestOrigin;
     }
 
+    public boolean getWithProvider() {
+        return withProvider;
+    }
+
+    public void setWithProvider(boolean withProvider) {
+        this.withProvider = withProvider;
+    }
 }

@@ -3,15 +3,26 @@ package InterfaceService;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import database.dao.ProcedureDao;
 import model.City;
 import model.Province;
+import model.SignInDetails;
 import model.SpecializationList;
+import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.App;
 import services.AppInterface;
 import services.AppService;
+import services.client.ProcedureClient;
+import services.model.Procedure;
+import services.response.ProcedureResponse;
+import timber.log.Timber;
 
 /**
  * Created by mpx-pawpaw on 1/24/17.
@@ -141,4 +152,73 @@ public class SignInRetrieve {
                     }
                 });
     }
+
+    public void loadProcedures(final SignInDetails signInDetails) {
+
+        final ProcedureClient procedureClient = AppService.createApiService(ProcedureClient.class, AppInterface.ENDPOINT);
+        procedureClient.getAllProceduresRx()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ProcedureResponse>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("load procedure completed");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d("error message %s", e.toString());
+                        callback.onLoadProcedureError(e.toString());
+                    }
+
+                    @Override
+                    public void onNext(ProcedureResponse procedureResponse) {
+                        saveAllToDataabse(signInDetails, procedureResponse);
+                    }
+                });
+    }
+
+
+    public void saveAllToDataabse(final SignInDetails signInDetails, final ProcedureResponse procedureResponse) {
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                ProcedureDao procedureDao = new ProcedureDao(context);
+
+                List<Procedure> procedures = procedureResponse.getProceduresList();
+
+                procedureDao.deleteAll();
+
+                Boolean success = procedureDao.insertAllProcedues(procedures);
+
+                subscriber.onNext(success);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("doctor load complete");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onLoadProcedureError(e.toString());
+                        Timber.d("something happen while inseting all doctor to database %s", e.toString());
+                    }
+
+                    @Override
+                    public void onNext(Boolean success) {
+                        if (success == Boolean.TRUE) {
+                            Timber.d("all doctor data is inserted");
+                        } else {
+                            Timber.d("kindly check the log in DoctorDao for more information");
+                        }
+
+                        callback.onLoadProcedureSuccess(signInDetails);
+                    }
+
+                });
+    }
+
 }

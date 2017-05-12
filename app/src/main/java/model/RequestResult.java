@@ -17,7 +17,7 @@ public class RequestResult {
 
     private String withProvider;
 
-    private String batchCode ;
+    private String batchCode;
 
     public String getBatchCode() {
         return batchCode;

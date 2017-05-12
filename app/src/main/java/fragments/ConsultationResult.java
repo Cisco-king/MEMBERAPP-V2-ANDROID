@@ -45,6 +45,7 @@ import utilities.QrCodeCreator;
 import utilities.ResultSetters;
 import utilities.Screenshot;
 import utilities.SharedPref;
+import utilities.ViewUtilities;
 
 public class ConsultationResult extends Fragment implements ScreenshotCallback {
 
@@ -115,6 +116,9 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
 
     @BindView(R.id.tv_disclaimer)
     TextView tv_disclaimer;
+
+    @BindView(R.id.tvWithAppUser2) TextView tvWithAppUser2;
+
     @BindView(R.id.tv_ref_code2)
     TextView tv_ref_code2;
 
@@ -154,6 +158,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     private static final String ARG_valDate = "valDate";
     private static final String ARG_withProvider = "wWithProvider";
     private static final String ARG_approved = "aproved";
+    private static final String KEY_BATCH_CODE = "batchCode";
 
     String refCode;
     String memId;
@@ -167,6 +172,8 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     String reqDate;
     String valDate;
     String withProvider;
+
+    String batchCode;
 
     QrCodeCreator qrCodeCreator = new QrCodeCreator();
     ScreenshotCallback callback;
@@ -184,7 +191,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
                                                  String getRequest, String getReqDate,
                                                  String getValDate, String getWithProvider,
                                                  String doctor_u, String doc_room, String hosp_contact,
-                                                 String hosp_contact_per, String hosp_u
+                                                 String hosp_contact_per, String hosp_u, String batchCode
     ) {
         ConsultationResult fragment = new ConsultationResult();
         Bundle args = new Bundle();
@@ -200,6 +207,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
         args.putString(ARG_valDate, getValDate);
         args.putString(ARG_reqDate, getReqDate);
         args.putString(ARG_withProvider, getWithProvider);
+        args.putString(KEY_BATCH_CODE, batchCode);
 
         fragment.setArguments(args);
         return fragment;
@@ -221,6 +229,8 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
             valDate = getArguments().getString(ARG_valDate);
             reqDate = getArguments().getString(ARG_reqDate);
             withProvider = getArguments().getString(ARG_withProvider);
+
+            batchCode = getArguments().getString(KEY_BATCH_CODE);
         }
 
         callback = this;
@@ -242,19 +252,30 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     }
 
     private void init() {
-
         context = getContext();
+        // todo button ok change functionality
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                alertDialogCustom.successDialog(context,
+                        alertDialogCustom.CONGRATULATIONS_title,
+                        alertDialogCustom.SAVE_LOA_REQUEST,
+                        2,
+                        new AlertDialogCustom.OnDialogClickListener() {
+                            @Override
+                            public void onOkClick() {
+                                getActivity().finish();
+                            }
+
+                            @Override
+                            public void onCancelClick() {
+
+                            }
+                        });
             }
         });
         setDetails();
-
-
     }
-
 
     private void setDetails() {
 
@@ -327,9 +348,19 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
                 .chiefComplaint(condition)
                 .validityDate(SharedPref.getStringValue(SharedPref.USER, SharedPref.VAL_DATE, context))
                 .dateEffectivity(SharedPref.getStringValue(SharedPref.USER, SharedPref.EFF_DATE, context))
-                .serviceType(FileGenerator.CONSULTATION);
+                .serviceType(FileGenerator.CONSULTATION)
+                .bactchCode(batchCode);
 
-        ResultSetters.setDoctorWithProvider(withProvider, tv_doc_app);
+//        ResultSetters.setDoctorWithProvider(withProvider, tv_doc_app);
+
+        if (withProvider.equals(ResultSetters.WITHPROVIDER)) {
+            ViewUtilities.hideView(tvWithAppUser2);
+            tv_disclaimer.setText(getString(R.string.doctor_with_app));
+        } else {
+            ViewUtilities.showView(tvWithAppUser2);
+            tvWithAppUser2.setText(getString(R.string.doctor_without_app2));
+            tv_disclaimer.setText(getString(R.string.doctor_without_app));
+        }
     }
 
 
@@ -339,11 +370,17 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
         ll_approved_req.setVisibility(View.VISIBLE);
         ll_ref_code_details.setVisibility(View.GONE);
         ll_pending.setVisibility(View.VISIBLE);
-        tv_disclaimer.setVisibility(View.GONE);
+//        tv_disclaimer.setVisibility(View.GONE);
         //   img_qrcode.setVisibility(View.GONE);
         ll_approved_validity.setVisibility(View.GONE);
         tv_sub_title.setVisibility(View.VISIBLE);
         ll_ref_code_details.setVisibility(View.GONE);
+
+        if (withProvider.equals(ResultSetters.WITHPROVIDER)) {
+            tv_disclaimer.setText(getString(R.string.doctor_with_app));
+        } else {
+            tv_disclaimer.setText(getString(R.string.doctor_without_app));
+        }
     }
 
     private void setDisapproved() {

@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +16,22 @@ import android.widget.EditText;
 
 import com.medicard.member.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import database.entity.Doctor;
+import core.callback.RecyclerViewOnClickListener;
+import database.dao.DoctorDao;
 import model.HospitalList;
+import modules.hospital.adapter.HospitalDoctorAdapter;
 import modules.newtest.NewTestMvp;
+import services.model.HospitalsToDoctor;
+import timber.log.Timber;
 
 
-public class HospitalFragment extends Fragment implements HospitalMvp.View {
+public class HospitalFragment extends Fragment
+        implements HospitalMvp.View, RecyclerViewOnClickListener {
 
     public static final String KEY_DOCTOR = "doctor";
 
@@ -32,7 +40,10 @@ public class HospitalFragment extends Fragment implements HospitalMvp.View {
 
     private NewTestMvp.View newTestNavigator;
 
-    private Doctor doctor;
+    private HospitalsToDoctor doctor;
+    private List<HospitalList> hospitals;
+
+    private HospitalDoctorAdapter hospitalAdapter;
 
     private HospitalMvp.Presenter presenter;
 
@@ -40,7 +51,7 @@ public class HospitalFragment extends Fragment implements HospitalMvp.View {
 
     }
 
-    public static HospitalFragment newInstance(Doctor doctor) {
+    public static HospitalFragment newInstance(HospitalsToDoctor doctor) {
 
         Bundle args = new Bundle();
         args.putParcelable(KEY_DOCTOR, doctor);
@@ -81,14 +92,53 @@ public class HospitalFragment extends Fragment implements HospitalMvp.View {
     }
 
     private void initComponents(View view) {
+        hospitals = new ArrayList<>();
+
         presenter = new HospitalPresenter(getContext());
         presenter.attachView(this);
 
         rvHospitalClinic.setLayoutManager(new LinearLayoutManager(getContext()));
+        Timber.d("doctorCode %s", doctor.getDoctorCode());
+
+        presenter.loadHospitalClinic();
+
+        edSearchHospitalClinic.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence query, int start, int before, int count) {
+                if (query.length() > 0) {
+                    presenter.filterHospitals(hospitals, query.toString());
+                } else {
+                    hospitalAdapter.update(hospitals);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
     public void displayHospitalClinic(List<HospitalList> hospitals) {
+        this.hospitals = hospitals;
+        hospitalAdapter = new HospitalDoctorAdapter(getContext(), hospitals, this);
+
+        rvHospitalClinic.setAdapter(hospitalAdapter);
+    }
+
+    @Override
+    public void displayFilterHospitalClinics(List<HospitalList> hospitalLists) {
+
+    }
+
+    @Override
+    public void onItemClick(int position) {
 
     }
 

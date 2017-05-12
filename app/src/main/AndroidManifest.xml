@@ -132,7 +132,7 @@
         <activity android:name="modules.requestnewapproval.RequestNewActivity" />
         <activity android:name="modules.requestforconsult2.RequestForConsultActivity" />
         <activity android:name="modules.requestdoctor2.RequestDoctorActivity" />
-        <activity android:name="modules.diagnosis.DiagnosisActivity" />
+        <activity android:name="modules.diagnosis2.DiagnosisActivity" />
         <activity android:name="modules.diagnosistest.DiagnosisTestActivity" />
         <activity android:name="modules.testattachment.TestAttachmentActivity" />
         <activity android:name="modules.newtest.NewTestActivity"></activity>

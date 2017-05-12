@@ -35,6 +35,7 @@ import model.Doctors;
 import model.GetDoctorsToHospital;
 import model.SpecsAdapter;
 import services.OnClicklistener;
+import timber.log.Timber;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.ErrorMessage;
@@ -44,6 +45,7 @@ import utilities.NetworkTest;
 import utilities.SharedPref;
 
 public class DoctorListActivity extends AppCompatActivity implements OnClicklistener, DoctorInterface {
+
     @BindView(R.id.btn_sort)
     FancyButton btn_sort;
     @BindView(R.id.btn_back)
@@ -109,7 +111,6 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
         implement.getDoctors(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context));
         doctorAdapter = new DoctorAdapter(context, array);
 
-
         rv_doctor.setAdapter(doctorAdapter);
         doctorAdapter.setClickListener(this);
         btn_proceed.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +121,6 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
         });
 
         tv_header.setText(HeaderNameSetter.setHeader(SharedPref.getStringValue(SharedPref.USER, SharedPref.DESTINATION, context)));
-
 
         btn_back = (FancyButton) findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
@@ -158,9 +158,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
             }
         });
 
-
     }
-
 
     @OnClick({R.id.btn_sort})
     public void onClick(View view) {
@@ -179,11 +177,9 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
     private void getSearchDoctor(String editable, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number) {
 
-
         array.clear();
         array.addAll(databaseHandler.retrieveDoctor(String.valueOf(editable), selectedSpec, implement.testSort(sort_by), room_number));
         doctorAdapter.notifyDataSetChanged();
-
 
         if (array.size() == 0) {
 
@@ -196,8 +192,6 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
             ll_no_doctor_found.setVisibility(View.GONE);
             tv_no_doc.setVisibility(View.GONE);
         }
-
-
     }
 
 
@@ -251,7 +245,6 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
             finish();
         }
 
-
     }
 
 
@@ -265,6 +258,15 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     @Override
     public void onSuccess(Doctors doctors) {
         loader.stopLoad();
+
+        Timber.d("doctor list : %s", doctors.toString());
+        if (doctors.getGetDoctorsToHospital() != null && doctors.getGetDoctorsToHospital().size() > 0) {
+            alertDialogCustom.showMe(
+                    context,
+                    alertDialogCustom.HOLD_ON_title,
+                    getString(R.string.success_load_doctors),
+                    1);
+        }
         getSearchDoctor("", selectedSpec, sort_by, "");
     }
 

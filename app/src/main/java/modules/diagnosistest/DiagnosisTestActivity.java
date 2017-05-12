@@ -14,11 +14,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
-import model.ItemSelectTest;
 import modules.base.activities.TestTrackableActivity;
-import modules.diagnosis.DiagnosisActivity;
+import modules.diagnosis2.DiagnosisActivity;
 import modules.diagnosistest.adapter.DiagnosisTestAdapter;
-import modules.selecttest.adapter.SelectTestAdapter;
 import modules.testattachment.TestAttachmentActivity;
 import timber.log.Timber;
 

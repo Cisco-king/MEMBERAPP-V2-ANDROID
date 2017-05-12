@@ -29,6 +29,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
+import timber.log.Timber;
 import utilities.Constant;
 import utilities.Permission;
 import utilities.PhoneInformations;
@@ -80,6 +81,7 @@ public class DetailsRetieve {
                 dialog.dismiss();
                 pd.show();
                 if (destination.equals(CONSULTATION)) {
+                    // todo request
                     sendConsultation(pd, condition);
                 } else if (destination.equals(MATERNITY)) {
                     sendMaternity(pd, condition);
@@ -161,11 +163,13 @@ public class DetailsRetieve {
                     public void onNext(RequestResult requestResult) {
                      //   Log.d("REQUEST", requestResult.toString());
 
-                        if (requestResult.getResponseCode().equals("210"))
+                        if (requestResult.getResponseCode().equals("210")) {
                             callback.onDuplicateRequest(requestResult);
-                        else
+                        } else if (requestResult.getResponseCode().equals("210")) {
+                            callback.onBlockRequest(requestResult.getResponseDesc());
+                        } else {
                             callback.onSuccess(requestResult);
-
+                        }
 
                         pd.dismiss();
                     }
@@ -213,7 +217,7 @@ public class DetailsRetieve {
 
 
                         try {
-
+                            Timber.d("error %s", e.toString());
                             pd.dismiss();
                             callback.onError(e.getMessage());
                         } catch (Exception error) {
@@ -229,11 +233,16 @@ public class DetailsRetieve {
                     @Override
                     public void onNext(RequestResult requestResult) {
                         Log.d("REQUEST", requestResult.toString());
+                        Timber.d("response %s", requestResult.toString());
 
-                        if (requestResult.getResponseCode().equals("210"))
+                        if (requestResult.getResponseCode().equals("210")) {
+                            // todo for consultation request
                             callback.onDuplicateRequest(requestResult);
-                        else
+                        } else if (requestResult.getResponseCode().equals("220")) {
+                            callback.onBlockRequest(requestResult.getResponseDesc());
+                        } else {
                             callback.onSuccess(requestResult);
+                        }
 
 
                         pd.dismiss();

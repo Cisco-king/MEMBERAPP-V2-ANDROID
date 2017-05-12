@@ -26,17 +26,21 @@ import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.ResetDatabase;
 import utilities.SharedPref;
+import utilities.ViewUtilities;
 
 public class RequestButtonsActivity extends AppCompatActivity {
 
     public static final String TAG =
             RequestButtonsActivity.class.getSimpleName();
 
+    public static final String MALE = "1";
+
     public static final String ORIGIN = "ORIGIN";
     public static final String CONSULT = "CONSULT";
     public static final String MATERNITY = "MATERNITY";
     public static final String TEST = "TEST";
     public static final String TO_DETAILS_ACT = "TO_DETAILS_ACT";
+
 
     @BindView(R.id.cvConsultanty) CardView cvConsultanty;
     @BindView(R.id.cvMaternityConsultation) CardView cvMaternityConsultation;
@@ -59,6 +63,9 @@ public class RequestButtonsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        boolean hasMaternity = SharedPref.getBooleanValue(this, SharedPref.KEY_HAS_MATERNITY);
+        String gender = getIntent().getExtras().getString(Constant.GENDER);
+
         unbinder = ButterKnife.bind(this);
 
         context = this;
@@ -66,8 +73,20 @@ public class RequestButtonsActivity extends AppCompatActivity {
 
         ResetDatabase.resetDB(context, databaseHandler);
 
+        isMaternityIsVisibleForThisUser(hasMaternity, gender);
+
         Log.d(TAG, "gotoRequest: memberID : " + getIntent().getExtras().getString(Constant.MEMBER_ID));
+        ViewUtilities.hideView(cvTests);
     }
+
+    private void isMaternityIsVisibleForThisUser(boolean hasMaternity, String gender) {
+        if (!hasMaternity || gender.equals(MALE)) {
+            cvMaternityConsultation.setVisibility(View.GONE);
+        } else {
+            cvMaternityConsultation.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     @OnClick(R.id.cvConsultanty)
     public void onStartConsultanty() {
@@ -76,13 +95,13 @@ public class RequestButtonsActivity extends AppCompatActivity {
 
     @OnClick(R.id.cvMaternityConsultation)
     public void onStartMaternityConsultation() {
-        if (getIntent().getExtras().getString(Constant.GENDER).equals("1")) {
+        /*if (getIntent().getExtras().getString(Constant.GENDER).equals("1")) {
             alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.maternity_not_available, 1);
         } else if (!SharedPref.getBooleanValue(this, SharedPref.KEY_HAS_MATERNITY)) {
             alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, getString(R.string.maternity_consultation_not_available), 1);
-        } else {
+        } else {*/
             gotoRequest(MATERNITY);
-        }
+//        }
     }
 
     @OnClick(R.id.cvTests)

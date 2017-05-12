@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.RequestResult;
+import timber.log.Timber;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.DateAddThreeDays;
@@ -280,6 +281,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
 
     private void gotoResult(RequestResult data) {
 
+        Timber.d("batchCode %s", data.getBatchCode());
         Intent gotoResult = new Intent(DetailsActivity.this, ResultActivity.class);
         gotoResult.putExtra(Constant.REFERENCECODE, data.getApprovalNo());
         gotoResult.putExtra(Constant.REQUEST, "Approved");
@@ -298,6 +300,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
         gotoResult.putExtra(Constant.HOSP_CONTACT, tv_contact.getText().toString());
         gotoResult.putExtra(Constant.HOSP_CONTACT_PER, tv_contact_person.getText().toString());
         gotoResult.putExtra(Constant.HOSP_U, tv_sched.getText().toString());
+        gotoResult.putExtra(Constant.BATCH_CODE, data.getBatchCode());
 
         startActivity(gotoResult);
         finish();
@@ -321,13 +324,10 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
         alertDialogCustom.showMeValidateReq(requestResult, callbackDialog ,context);
     }
 
-
-
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         implement.setSubmitButtonDisabled(cb_confirm, btn_submit);
     }
-
 
     @Override
     protected void onResume() {
@@ -363,6 +363,16 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
     @Override
     public void onErrorConfirm(String message) {
         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
+    }
+
+    @Override
+    public void onBlockRequest(String message) {
+        // todo on message for blocking
+        alertDialogCustom.showMe(
+                context,
+                alertDialogCustom.HOLD_ON_title,
+                message,
+                1);
     }
 
     @Override

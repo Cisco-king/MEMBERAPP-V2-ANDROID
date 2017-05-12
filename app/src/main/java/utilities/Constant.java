@@ -17,6 +17,12 @@ public class Constant {
     public static String CANCELLED = "CANCELLED";
     public static String MEDICARD_ONLY = "MEDICARD_ONLY";
 
+    // for loa key
+    public static final String BATCH_CODE = "batchCode";
+
+    // for loa status
+    public static final String EXPIRED = "EXPIRED";
+
     public static String MEMTYPE = "MEMTYPE";
     public static String EFFECTIVE = "EFFECTIVE";
     public static String VALIDITY = "VALIDITY";

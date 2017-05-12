@@ -152,6 +152,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 getListDoc.putExtra(Constant.SELECT, Constant.SELECT_DOCTOR);
                 getListDoc.putParcelableArrayListExtra(Constant.DOCTOR_LIST, arrayListMaster);
                 getListDoc.putParcelableArrayListExtra(Constant.SELECTED_DOCTOR, prevSelectedDoctor);
+                getListDoc.putParcelableArrayListExtra(Constant.SELECTED_HOSPITAL, prevSelected);
                 startActivityForResult(getListDoc, CALL_DOCTORS);
                 break;
 
@@ -217,10 +218,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 tv_req_date_end.setText(date_end_sort);
                 et_search.setText("");
 
-
                 break;
-
-
         }
 
     }

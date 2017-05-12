@@ -55,7 +55,6 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
     @BindView(R.id.btn_sort)
     FancyButton btn_sort;
 
-
     Context context;
     HospitalListRetrieve implement;
     DatabaseHandler databaseHandler;
@@ -64,7 +63,6 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
     private int SORT_CALL = 100;
     String origin = " ";
     ArrayList<HospitalList> array = new ArrayList<>();
-
 
     String sortBy = "";
     ArrayList<CitiesAdapter> selectedCity = new ArrayList<>();
@@ -136,12 +134,9 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
                 finish();
             }
         });
-
     }
 
-
     private void retrieveHosp(String s) {
-
         implement.updateList(isMedicardOnly,selectedProvince, sortBy, selectedCity, hospitalAdapter, array, s);
         implement.updateListUI(array, rv_hospital, tv_hosp_not_found);
     }
@@ -176,11 +171,9 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
 
         SharedPref.setAppPreference(context, SharedPref.KEY_HOSPITAL_FULL_ADDRESS, array.get(position).getFullAddress());
 
-
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, array.get(position).getPhoneNo(), context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, array.get(position).getContactPerson(), context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_U, "", context);
-
 
         SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, Constant.NOT_SET, context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, Constant.NOT_SET, context);
@@ -203,7 +196,6 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
         gotoDoctor.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
         gotoDoctor.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
 
-
         startActivity(gotoDoctor);
         finish();
 
@@ -218,11 +210,11 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
     @Override
     public void onSuccess() {
         retrieveHosp("");
-        alertDialogCustom.showMe(
+        /*alertDialogCustom.showMe(
                 context,
                 alertDialogCustom.HOLD_ON_title,
                 getString(R.string.info_hospital),
-                1);
+                1);*/
 
     }
 

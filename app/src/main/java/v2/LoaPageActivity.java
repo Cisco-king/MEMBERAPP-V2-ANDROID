@@ -9,6 +9,7 @@ import com.medicard.member.R;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +45,7 @@ import utilities.NetworkTest;
 import utilities.PermissionUtililities;
 import utilities.QrCodeCreator;
 import utilities.SharedPref;
+import utilities.ViewUtilities;
 import v2.module.loapage.LoaPage;
 import v2.module.loapage.LoaPagePresenter;
 
@@ -134,6 +136,10 @@ public class LoaPageActivity extends AppCompatActivity
     @BindView(R.id.tvServiceType)
     TextView tvServiceType;
 
+    @BindView(R.id.cvHospitalClinic) CardView cvHospitalClinic;
+
+    @BindView(R.id.tvDisclaimerInfo) TextView tvDisclaimerInfo;
+
     private int RESULT_GETTER;
     int position;
     ArrayList<LoaFetch> loaList = new ArrayList<>();
@@ -219,7 +225,8 @@ public class LoaPageActivity extends AppCompatActivity
         HospitalList hospital =
                 dbHandler.getHospitalContact(loa.getHospitalCode());
 
-        Timber.d("serviceType : %s approval code : %s", loa.getRemarks(), loa.getApprovalNo());
+        Timber.d("serviceType : %s approval code : %s batchCode %s", loa.getRemarks(), loa.getApprovalNo(), loa.getBatchCode());
+
 
         loaFormBuilder = new OutPatientConsultationForm.Builder()
                 .validFrom(DateConverter.convertDateToMMddyyyy(changeFormat))
@@ -235,7 +242,8 @@ public class LoaPageActivity extends AppCompatActivity
                 .company(loa.getMemCompany())
                 .remarks(loa.getRemarks())
                 .chiefComplaint(loa.getPrimaryComplaint())
-                .serviceType(loa.getRemarks());
+                .serviceType(loa.getRemarks())
+                .bactchCode(loa.getBatchCode());
 
 
         ivQrApprovalNumber.setImageBitmap(QrCodeCreator.getBitmapFromString2(loa.getApprovalNo()));
@@ -273,10 +281,15 @@ public class LoaPageActivity extends AppCompatActivity
 
         tv_spec.setText(testData(loa.getDoctorSpec()));
 
-        tvHospitalClinicName.setText(hospital.getHospitalName());
-        tvHopitalClinicLocation.setText(hospital.getFullAddress());
-        tvHopitalClinicContacts.setText(hospital.getPhoneNo());
-        tvHopitalClinicDoctorName.setText(hospital.getContactPerson());
+        if (hospital.getHospitalName() != null && !hospital.getHospitalName().isEmpty()) {
+            cvHospitalClinic.setVisibility(View.VISIBLE);
+            tvHospitalClinicName.setText(hospital.getHospitalName());
+            tvHopitalClinicLocation.setText(hospital.getFullAddress());
+            tvHopitalClinicContacts.setText(hospital.getPhoneNo());
+            tvHopitalClinicDoctorName.setText(hospital.getContactPerson());
+        } else {
+            cvHospitalClinic.setVisibility(View.GONE);
+        }
 
         tvDoctorName.setText(loa.getDoctorName());
 
@@ -294,6 +307,12 @@ public class LoaPageActivity extends AppCompatActivity
             tvDoctorInfo.setVisibility(View.GONE);
         }
 
+        if (isCancelledORExpired(loa.getStatus())) {
+            ViewUtilities.hideView(tvDisclaimerInfo);
+        } else {
+            // todo with provider
+            ViewUtilities.showView(tvDisclaimerInfo);
+        }
     }
 
     @Override
@@ -409,6 +428,7 @@ public class LoaPageActivity extends AppCompatActivity
         tv_status.setText("REQUEST CANCELLED");
         btn_download.setVisibility(View.GONE);
         btn_cancel_req.setVisibility(View.GONE);
+        tvDisclaimerInfo.setVisibility(View.GONE);
 
         loader.stopLoad();
         alertDialogCustom.showMe(context, alertDialogCustom.success, alertDialogCustom.data_cancelled, 2);
@@ -485,6 +505,10 @@ public class LoaPageActivity extends AppCompatActivity
     @Override
     public void onGenerateLoaFormError() {
         Timber.d("generated loa form encounter an error!");
+    }
+
+    private boolean isCancelledORExpired(String loaStatus) {
+        return (loaStatus.equals(Constant.CANCELLED) || loaStatus.equals(Constant.EXPIRED));
     }
 
 }

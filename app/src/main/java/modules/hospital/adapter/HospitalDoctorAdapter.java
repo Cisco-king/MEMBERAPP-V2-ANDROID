@@ -12,6 +12,7 @@ import com.medicard.member.R;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import core.callback.RecyclerViewOnClickListener;
 import model.HospitalList;
 
@@ -41,14 +42,20 @@ public class HospitalDoctorAdapter extends
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_doctor, parent, false);
+        View view = inflater.inflate(R.layout.item_hospital, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         HospitalList hospital = hospitals.get(position);
-        holder.tvHospitalCLinicName.setText(hospital.getHospitalName());
+        String hospitalName = (hospital.getHospitalName() != null) ? hospital.getHospitalName() : "";
+        holder.tvHospitalOrClinicName.setText(hospitalName);
+    }
+
+    public void update(List<HospitalList> hospitals) {
+        this.hospitals = hospitals;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -56,12 +63,16 @@ public class HospitalDoctorAdapter extends
         return hospitals.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
 
-        @BindView(R.id.tvHospitalClinicName) TextView tvHospitalCLinicName;
+        @BindView(R.id.tvHospitalOrClinicName) TextView tvHospitalOrClinicName;
 
         public ViewHolder(View view) {
             super(view);
+            ButterKnife.bind(this, view);
+
+            view.setOnClickListener(this);
         }
 
         @Override

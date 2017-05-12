@@ -57,6 +57,7 @@
             fancy:fb_textSize="@dimen/text_main" />
 
         <mehdi.sakout.fancybuttons.FancyButton
+            android:visibility="gone"
             android:id="@+id/med_clinic_first"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

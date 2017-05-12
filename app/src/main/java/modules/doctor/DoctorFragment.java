@@ -16,31 +16,39 @@ import android.widget.EditText;
 
 import com.medicard.member.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import adapter.DoctorAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import database.entity.Doctor;
 import modules.doctor.adapter.DoctorsAdapter;
 import modules.newtest.NewTestMvp;
+import services.model.HospitalsToDoctor;
+import timber.log.Timber;
+import utilities.AlertDialogCustom;
+import utilities.ErrorMessage;
+import utilities.Loader;
 
 
 public class DoctorFragment extends Fragment
         implements DoctorMvp.View, DoctorsAdapter.OnItemClickListener {
 
 
-    @BindView(R.id.etSearchDoctor) EditText etSearchDoctor;
+    @BindView(R.id.etSearchDoctor)
+    EditText etSearchDoctor;
 
-    @BindView(R.id.rvDoctors) RecyclerView rvDoctors;
+    @BindView(R.id.rvDoctors)
+    RecyclerView rvDoctors;
 
     private NewTestMvp.View newTestNovigator;
     private DoctorMvp.Presenter presenter;
 
-    private List<Doctor> doctors;
+    private List<HospitalsToDoctor> doctors;
 
     private DoctorsAdapter doctorAdapter;
+
+    private Loader loader;
+
+    private AlertDialogCustom notificationMessage;
 
 
     public DoctorFragment() {
@@ -69,6 +77,8 @@ public class DoctorFragment extends Fragment
         super.onCreate(savedInstanceState);
         presenter = new DoctorPresenter(getContext());
         presenter.attachView(this);
+
+        notificationMessage = new AlertDialogCustom();
     }
 
     @Override
@@ -81,6 +91,9 @@ public class DoctorFragment extends Fragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+
+        loader = new Loader(getContext());
+
         initComponents(view);
     }
 
@@ -93,7 +106,10 @@ public class DoctorFragment extends Fragment
 
     private void initComponents(View view) {
         rvDoctors.setLayoutManager(new LinearLayoutManager(getContext()));
-        presenter.getAllDoctors();
+
+        loader.startLad();
+        loader.setMessage("Loading resource...");
+        presenter.loadAllDoctors();
 
         etSearchDoctor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -118,20 +134,37 @@ public class DoctorFragment extends Fragment
     }
 
     @Override
-    public void displayDoctors(List<Doctor> doctors) {
+    public void displayDoctorsByHospital(List<HospitalsToDoctor> doctors) {
+        Timber.d("doctors total : %s", doctors.size());
+        loader.stopLoad();
+
         this.doctors = doctors;
+
         doctorAdapter = new DoctorsAdapter(getContext(), doctors, this);
         rvDoctors.setAdapter(doctorAdapter);
     }
 
     @Override
-    public void displayFilteredDoctors(List<Doctor> doctors) {
-        doctorAdapter.update(doctors);
+    public void displayFilteredDoctors(List<HospitalsToDoctor> doctors) {
+        if (doctors != null && doctors.size() > 0) {
+            doctorAdapter.update(doctors);
+        } else {
+            doctorAdapter.update(this.doctors);
+        }
+    }
+
+    @Override
+    public void onErrorRequest(String message) {
+        loader.stopLoad();
+        notificationMessage.showMe(
+                getContext(),
+                notificationMessage.HOLD_ON_title,
+                ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override
     public void onItemClick(int position) {
-        Doctor doctor = doctors.get(position);
+        HospitalsToDoctor doctor = doctors.get(position);
         newTestNovigator.displayHospitalView(doctor);
     }
 

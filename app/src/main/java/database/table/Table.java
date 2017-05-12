@@ -131,4 +131,28 @@ public interface Table {
         };
     }
 
+    interface Procedure {
+
+        String TABLE_NAME = "procedure";
+
+        String ID = "id";
+
+        String SERVICE_CLASS_CODE = "serviceClassCode";
+
+        String CODE = "procedureCode";
+
+        String DESCRIPTION = "procedureDescription";
+
+        String AMOUNT = "procedureAmount";
+
+        String COLUMN[] = {
+                ID,
+                SERVICE_CLASS_CODE,
+                CODE,
+                DESCRIPTION,
+                AMOUNT
+        };
+
+    }
+
 }

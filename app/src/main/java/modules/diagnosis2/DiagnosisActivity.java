@@ -1,4 +1,4 @@
-package modules.diagnosis;
+package modules.diagnosis2;
 
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;

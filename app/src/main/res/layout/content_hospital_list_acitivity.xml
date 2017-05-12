@@ -6,8 +6,8 @@
     android:id="@+id/content_doctor_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/l_gray_bg"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="v2.DoctorListActivity"
     tools:showIn="@layout/activity_hospital_list_acitivity">
@@ -22,15 +22,15 @@
 
 
         <EditText
-            android:imeOptions="actionDone"
-            android:maxLines="1"
-            android:inputType="text"
             android:id="@+id/ed_searchHosp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/sub_margin"
             android:background="@drawable/edit_text_rounded_corner"
             android:hint="Search..."
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
             android:padding="@dimen/sub_margin"
             android:textColor="@color/BLACK"
             android:textSize="@dimen/text_main" />
@@ -42,9 +42,9 @@
         android:id="@+id/rv_doctor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/btn_sort"
         android:layout_below="@+id/textView2"
-        android:visibility="gone"
-        android:layout_above="@+id/btn_sort" />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_hosp_not_found"
@@ -71,7 +71,6 @@
         android:textSize="@dimen/text_main" />
 
     <mehdi.sakout.fancybuttons.FancyButton
-        android:textSize="@dimen/text_main"
         android:id="@+id/btn_sort"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,9 +78,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:gravity="center"
+        android:textSize="@dimen/text_main"
         fancy:fb_defaultColor="@color/colorPrimary"
         fancy:fb_focusColor="@color/colorPrimaryBlueDark"
 
-        fancy:fb_text="SORT AND FILTER"  />
+        fancy:fb_text="SORT AND FILTER" />
 
 </RelativeLayout>

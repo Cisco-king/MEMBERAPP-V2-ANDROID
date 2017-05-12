@@ -65,7 +65,7 @@ public class DoctorDao extends AbstractDao<Doctor> implements Dao<Doctor> {
     @Override
     public Doctor find(String uniqueValue) {
         // todo find
-
+//        _findAllByFields(Doctor. + EQUALS + D)
         return null;
     }
 

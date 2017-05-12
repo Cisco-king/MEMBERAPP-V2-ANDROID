@@ -29,6 +29,7 @@ public class OutPatientConsultationForm implements OutPatientConsultation {
     private String pastOrFamilyHistory;
 
     private String serviceType;
+    private String batchCode;
 
     public OutPatientConsultationForm(Builder builder) {
         validFrom = builder.validFrom;
@@ -52,6 +53,7 @@ public class OutPatientConsultationForm implements OutPatientConsultation {
         pastOrFamilyHistory = builder.pastOrFamilyHistory;
 
         serviceType = builder.serviceType;
+        batchCode = builder.batchCode;
     }
 
     public String getValidFrom() {
@@ -126,6 +128,10 @@ public class OutPatientConsultationForm implements OutPatientConsultation {
         return serviceType;
     }
 
+    public String getBatchCode() {
+        return batchCode;
+    }
+
     public static class Builder {
 
         private String validFrom;
@@ -149,6 +155,7 @@ public class OutPatientConsultationForm implements OutPatientConsultation {
         private String pastOrFamilyHistory;
 
         private String serviceType;
+        private String batchCode;
 
         public Builder() {
         }
@@ -240,6 +247,11 @@ public class OutPatientConsultationForm implements OutPatientConsultation {
 
         public Builder serviceType(String serviceType) {
             this.serviceType = serviceType;
+            return this;
+        }
+
+        public Builder bactchCode(String batchCode) {
+            this.batchCode = batchCode;
             return this;
         }
 

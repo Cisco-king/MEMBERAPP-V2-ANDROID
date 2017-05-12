@@ -51,8 +51,9 @@ public class StatusSetter {
         } else if (status.equalsIgnoreCase(MemberStatus.MEDICAL_EVALUATION)) { // MEDICAL EVALUATION
             setRemark = "Your request is subject to medical evaluation.";
         } else if (status.equalsIgnoreCase(MemberStatus.ON_HOLD)) { // ON HOLD
-            setRemark = "Your request is currently put on-hold.\n" +
-                    "Please contact your HRD/Medicard account offer.";
+//            setRemark = "Your request is currently put on-hold.\n" +
+//                    "Please contact your HRD/Medicard account offer.";
+            setRemark = "Your Account is on hold. Please contact your MediCard Account Officer.";
         } else if (status.equalsIgnoreCase(MemberStatus.FOR_APPROVAL)) { // FOR APPROVAL
             setRemark = "Your request is subject to approval.";
         } else if (status.equalsIgnoreCase(MemberStatus.RESIGNED)) { // RESIGNED
@@ -62,13 +63,17 @@ public class StatusSetter {
         } else if (status.equalsIgnoreCase(MemberStatus.LAPSE_NON_RENEW)) { // LAPSE (NON RENEW)
             setRemark = "Your request is denied. Account is no longer active.";
         } else if (status.equalsIgnoreCase(MemberStatus.FOR_REACTIVATION)) { // FOR REACTIVATION
-            setRemark = "Your request is denied. Account is subject to reactivation.";
+//            setRemark = "Your request is denied. Account is subject to reactivation.";
+            setRemark = "Your account is for Reactivation. Please contact your MediCard Account Officer.";
         } else if (status.equalsIgnoreCase(MemberStatus.VERIFY_MEMBERSHIP)) { // VERIFY MEMBERSHIP
-            setRemark = "Please contact your HRD/Medicard account officer.";
+//            setRemark = "Please contact your HRD/Medicard account officer.";
+            setRemark = "Your request cannot be processed at this time. Please call 841-8080";
         } else if (status.equalsIgnoreCase(MemberStatus.VERIFY_PAYMENT_WITH_RMD)) { // VERIFY PAYMENT WITH RMD
-            setRemark = "Please contact your HRD/Medicard account officer.";
+//            setRemark = "Please contact your HRD/Medicard account officer.";
+            setRemark = "Your request cannot be processed at this time. Please call 841-8080";
         } else if (status.equalsIgnoreCase(MemberStatus.VERIFY_RENEWAL_FROM_MARKETING_SALES)) { // VERIFY RENEWAL FROM MARKETING / SALES
-            setRemark = "Please contact your HRD/Medicard account officer.";
+//            setRemark = "Please contact your HRD/Medicard account officer.";
+            setRemark = "Your request cannot be processed at this time. Please call 841-8080";
         } else if (status.equalsIgnoreCase(MemberStatus.PENDING_E_MEDICARD)) {
             setRemark = "Your request is currently on-process.";
         }

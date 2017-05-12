@@ -16,11 +16,17 @@ public interface HospitalMvp {
 
         void displayHospitalClinic(List<HospitalList> hospitals);
 
+        void displayFilterHospitalClinics(List<HospitalList> hospitalLists);
+
     }
 
     interface Presenter extends Mvp.Presenter<View> {
 
         void getHospitalListByDoctor(Doctor doctor);
+
+        void filterHospitals(List<HospitalList> hospitals, String query);
+
+        void loadHospitalClinic();
 
     }
 

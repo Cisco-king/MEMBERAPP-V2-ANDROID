@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -88,6 +89,17 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
     Loader loader;
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
 
+    @BindView(R.id.tvHideShowPassword) FancyButton tvHideShowPassword;
+    @BindView(R.id.tvHideShowPin) FancyButton tvHideShowPin;
+    @BindView(R.id.btnRegisterPin) FancyButton btnRegisterPin;
+
+    @BindView(R.id.llChangePassword) LinearLayout llChangePassword;
+    @BindView(R.id.llChangePin) LinearLayout llChangePin;
+
+    @BindView(R.id.elChangePassword) ExpandableLayout elChangePassword;
+    @BindView(R.id.elChangePin) ExpandableLayout elChangePin;
+
+    @BindView(R.id.elRegisterPin) ExpandableLayout elRegisterPin;
 
     Context context;
     ChangePasswordWithPinRetrieve implement;
@@ -166,6 +178,32 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
         }
     }
 
+    @OnClick(R.id.tvHideShowPassword)
+    public void hideShowPassword() {
+        if (elChangePassword.isExpanded()) {
+            elChangePassword.collapse();
+        } else {
+            elChangePassword.expand();
+        }
+    }
+
+    @OnClick(R.id.tvHideShowPin)
+    public void hideShowPin() {
+        if (elChangePin.isExpanded()) {
+            elChangePin.collapse();
+        } else {
+            elChangePin.expand();
+        }
+    }
+
+    @OnClick(R.id.btnRegisterPin)
+    public void hideShowRegisterPin() {
+        if (elRegisterPin.isExpanded()) {
+            elRegisterPin.collapse();
+        } else {
+            elRegisterPin.expand();
+        }
+    }
 
     @Override
     public void onSuccess() {

@@ -42,6 +42,7 @@ import utilities.PermissionUtililities;
 import utilities.QrCodeCreator;
 import utilities.ResultSetters;
 import utilities.SharedPref;
+import utilities.ViewUtilities;
 
 public class MaternityResult extends Fragment implements ScreenshotCallback {
 
@@ -59,6 +60,9 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
     LinearLayout ll_approved_validity_date;
     @BindView(R.id.ll_approved_effective_date)
     LinearLayout ll_approved_effective_date;
+
+    @BindView(R.id.tvWithAppUser) TextView tvWithAppUser;
+    @BindView(R.id.tvWithAppUser2) TextView tvWithAppUser2;
 
 
     LinearLayout ll_disapproved1, ll_disapproved3, ll_disapproved2;
@@ -88,6 +92,7 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
     private static final String ARG_reqDate = "reqDate";
     private static final String ARG_valDate = "valDate";
     private static final String ARG_withProvider = "wWithProvider";
+    private static final String KEY_BATCH_CODE = "batchCode";
 
     String refCode;
     String memId;
@@ -102,6 +107,7 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
     String valDate;
     String withProvider;
 
+    String batchCode;
 
     public MaternityResult() {
         // Required empty public constructor
@@ -114,7 +120,7 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
                                               String getRequest, String getReqDate,
                                               String getValDate, String getWithProvider,
                                               String doctor_u, String doc_room, String hosp_contact,
-                                              String hosp_contact_per, String hosp_u) {
+                                              String hosp_contact_per, String hosp_u, String batchCode) {
         MaternityResult fragment = new MaternityResult();
         Bundle args = new Bundle();
         args.putString(ARG_refCode, getRefCode);
@@ -129,6 +135,7 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         args.putString(ARG_valDate, getValDate);
         args.putString(ARG_reqDate, getReqDate);
         args.putString(ARG_withProvider, getWithProvider);
+        args.putString(KEY_BATCH_CODE, batchCode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -151,6 +158,8 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
             valDate = getArguments().getString(ARG_valDate);
             reqDate = getArguments().getString(ARG_reqDate);
             withProvider = getArguments().getString(ARG_withProvider);
+
+            batchCode = getArguments().getString(KEY_BATCH_CODE);
         }
 
         alertDialogCustom = new AlertDialogCustom();
@@ -228,10 +237,10 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
                 .remarks(remarkTemp)
                 .validityDate(SharedPref.getStringValue(SharedPref.USER, SharedPref.VAL_DATE, context))
                 .dateEffectivity(SharedPref.getStringValue(SharedPref.USER, SharedPref.EFF_DATE, context))
-                .serviceType(FileGenerator.MATERNITY_CONSULTATION);
+                .serviceType(FileGenerator.MATERNITY_CONSULTATION)
+                .bactchCode(batchCode);
 
         btn_ok = (Button) view.findViewById(R.id.btn_ok);
-
 
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,7 +253,6 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
     }
 
     private void setDetails() {
-
         img_qrcode.setVisibility(View.VISIBLE);
         img_qrcode.setImageBitmap(qrCodeCreator.getBitmapFromString(refCode));
 
@@ -254,7 +262,6 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         tv_spec.setText(ResultSetters.specSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, context)));
         tv_sched_doctor.setText(ResultSetters.schedSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_U, context)));
 
-
         tv_ref_code.setText("Reference No: " + refCode);
         tv_hospName.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, context));
 //        tv_hospAddress.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD, context));
@@ -263,10 +270,8 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         tv_doc_det.setText(ResultSetters.descSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, context)));
         tv_doc_name.setText(ResultSetters.nameSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, context), context));
 
-
         tv_validity_date.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.VAL_DATE, context));
         tv_effective_date.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.EFF_DATE, context));
-
 
         tv_member_code.setText(memId);
         tv_age.setText(age);
@@ -298,6 +303,14 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         }
 
         ResultSetters.setDoctorWithProvider(withProvider, tv_doc_app);
+        if (withProvider.equals(ResultSetters.WITHPROVIDER)) {
+            ViewUtilities.hideView(tvWithAppUser2);
+            tvWithAppUser.setText(getString(R.string.doctor_with_app));
+        } else {
+            ViewUtilities.showView(tvWithAppUser2);
+            tvWithAppUser2.setText(getString(R.string.doctor_without_app2));
+            tvWithAppUser.setText(getString(R.string.doctor_without_app));
+        }
 
     }
 

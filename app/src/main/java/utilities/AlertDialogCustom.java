@@ -85,7 +85,9 @@ public class AlertDialogCustom {
     public  String successfully_updated = "Setting is successfully updated.";
 
     public static final String LOA_GENERATE_PDF_SUCCESS =
-            "LOA request has been saved to MediCard folder in DCIM";
+            "Saved to \"MediCard\" folder";
+
+    public static final String SAVE_LOA_REQUEST = "Saved to \"My LOA Request\"";
 
     TextView tv_message, tv_title;
     CircleImageView ci_error_image;
@@ -110,6 +112,41 @@ public class AlertDialogCustom {
         btn_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        setDetails(context, message, title, errorImage, btn_accept);
+
+        dialog.show();
+
+        int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.70);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.width = width;
+        dialog.getWindow().setAttributes(lp);
+    }
+
+    public void successDialog(Context context, String title, String message, int errorImage, final OnDialogClickListener listener) {
+
+        final Dialog dialog = new Dialog(context);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.alertshow);
+        dialog.getWindow().setWindowAnimations(R.style.CustomDialogAnimation);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setCancelable(false);
+
+        ci_error_image = (CircleImageView) dialog.findViewById(R.id.ci_error_image);
+        tv_message = (TextView) dialog.findViewById(R.id.tv_message);
+        tv_title = (TextView) dialog.findViewById(R.id.tv_title);
+        btn_accept = (Button) dialog.findViewById(R.id.btn_accept);
+        btn_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onOkClick();
                 dialog.dismiss();
             }
         });
@@ -274,6 +311,9 @@ public class AlertDialogCustom {
             }
         });
 
+        // todo response description for confirm dialog
+        tv_message.setText(requestResult.getResponseDesc());
+
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -302,6 +342,11 @@ public class AlertDialogCustom {
         void onRequestDupliate();
 
         void loaApprovedListener(RequestResult requestResult);
+    }
+
+    public interface OnDialogClickListener {
+        void onOkClick();
+        void onCancelClick();
     }
 
 }

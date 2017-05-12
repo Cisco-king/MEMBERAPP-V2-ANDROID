@@ -78,7 +78,8 @@ public class ResultActivity extends AppCompatActivity {
                         getIntent().getStringExtra(Constant.DOCTOR_ROOM),
                         getIntent().getStringExtra(Constant.HOSP_CONTACT),
                         getIntent().getStringExtra(Constant.HOSP_CONTACT_PER),
-                        getIntent().getStringExtra(Constant.HOSP_U)
+                        getIntent().getStringExtra(Constant.HOSP_U),
+                        getIntent().getStringExtra(Constant.BATCH_CODE)
 
                 );
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -94,7 +95,6 @@ public class ResultActivity extends AppCompatActivity {
                         getIntent().getStringExtra(Constant.COMPANY),
                         getIntent().getStringExtra(Constant.REMARK),
                         getIntent().getStringExtra(Constant.CONDITION),
-
                         getIntent().getStringExtra(Constant.REQUEST),
                         currentDate,
                         valDate
@@ -103,7 +103,8 @@ public class ResultActivity extends AppCompatActivity {
                         getIntent().getStringExtra(Constant.DOCTOR_ROOM),
                         getIntent().getStringExtra(Constant.HOSP_CONTACT),
                         getIntent().getStringExtra(Constant.HOSP_CONTACT_PER),
-                        getIntent().getStringExtra(Constant.HOSP_U)
+                        getIntent().getStringExtra(Constant.HOSP_U),
+                        getIntent().getStringExtra(Constant.BATCH_CODE)
 
                 );
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -133,7 +134,8 @@ public class ResultActivity extends AppCompatActivity {
                         getIntent().getStringExtra(Constant.DOCTOR_ROOM),
                         getIntent().getStringExtra(Constant.HOSP_CONTACT),
                         getIntent().getStringExtra(Constant.HOSP_CONTACT_PER),
-                        getIntent().getStringExtra(Constant.HOSP_U)
+                        getIntent().getStringExtra(Constant.HOSP_U),
+                        getIntent().getStringExtra(Constant.BATCH_CODE)
 
                 );
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -157,7 +159,8 @@ public class ResultActivity extends AppCompatActivity {
                         getIntent().getStringExtra(Constant.DOCTOR_ROOM),
                         getIntent().getStringExtra(Constant.HOSP_CONTACT),
                         getIntent().getStringExtra(Constant.HOSP_CONTACT_PER),
-                        getIntent().getStringExtra(Constant.HOSP_U)
+                        getIntent().getStringExtra(Constant.HOSP_U),
+                        getIntent().getStringExtra(Constant.BATCH_CODE)
 
                 );
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();

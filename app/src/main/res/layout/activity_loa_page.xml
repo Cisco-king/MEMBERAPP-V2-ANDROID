@@ -78,8 +78,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        layout="@layout/content_loa_page" />
+    <include layout="@layout/content_loa_page" />
 
 
 </android.support.design.widget.CoordinatorLayout>
