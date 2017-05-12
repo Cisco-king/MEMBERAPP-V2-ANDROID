@@ -155,7 +155,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // added new column
 
-    private static final int version = 2;
+    private static final int version = 3;
 
     //
     private String createLoaRequest = " CREATE TABLE " +
@@ -330,6 +330,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Timber.d("Upgrading the database ... oldVersion : %s, newVersion %s", oldVersion, newVersion);
+
         db.execSQL("DROP TABLE IF EXISTS " + Doctor.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Procedure.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + hospTable);
