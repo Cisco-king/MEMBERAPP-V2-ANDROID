@@ -1071,7 +1071,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<HospitalList> retrieveHospital(String isMedicardOnly, ArrayList<ProvincesAdapter> selectedProvince, String data_sort, ArrayList<CitiesAdapter> selectedCity, String data) {
+    public ArrayList<HospitalList> retrieveHospital(String isMedicardOnly, ArrayList<ProvincesAdapter> selectedProvince,
+                                                    String data_sort, ArrayList<CitiesAdapter> selectedCity, String data) {
 
         ArrayList<HospitalList> arrayList = new ArrayList<>();
         String s = data.toUpperCase().replace("'", "`");
@@ -1171,11 +1172,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         if (selectedCity.size() == 0) {
             if (selectedProvince.size() >= 1) {
-
+                primary += " AND (";
                 for (int x = 0; x < selectedProvince.size(); x++) {
-                    primary += " AND ";
-                    primary += province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' ";
+                    primary += " "+ province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' OR ";
                 }
+
+                //remove and
+                primary = primary.substring(0, primary.length() - 3);
+                primary += " ) ";
 
             }
         }
