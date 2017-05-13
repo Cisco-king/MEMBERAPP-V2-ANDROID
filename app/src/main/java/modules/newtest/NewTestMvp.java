@@ -3,6 +3,7 @@ package modules.newtest;
 import database.entity.Doctor;
 import model.HospitalList;
 import modules.base.Mvp;
+import services.model.Diagnosis;
 import services.model.HospitalsToDoctor;
 
 /**
@@ -18,6 +19,8 @@ public interface NewTestMvp {
         void displayHospitalView(HospitalsToDoctor doctor);
 
         void displayDiagnosis(HospitalList hospitalList);
+
+        void onStartDiagnosisProcedure(Diagnosis diagnosis);
 
     }
 

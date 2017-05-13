@@ -85,6 +85,7 @@ public class RequestForConsultFragment extends Fragment implements RequestForRes
                 ViewUtilities.getEditValue(etReasonForConsult));
 
         newTestNavigator.displayDoctorView();
+
         Timber.d("proceed success");
     }
 

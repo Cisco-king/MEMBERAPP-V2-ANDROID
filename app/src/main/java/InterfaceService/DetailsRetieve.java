@@ -165,7 +165,7 @@ public class DetailsRetieve {
 
                         if (requestResult.getResponseCode().equals("210")) {
                             callback.onDuplicateRequest(requestResult);
-                        } else if (requestResult.getResponseCode().equals("210")) {
+                        } else if (requestResult.getResponseCode().equals("220")) {
                             callback.onBlockRequest(requestResult.getResponseDesc());
                         } else {
                             callback.onSuccess(requestResult);
@@ -356,15 +356,12 @@ public class DetailsRetieve {
             public void onClick(View v) {
                 dialog.dismiss();
                 callback.cancelRequest();
-
-
             }
         });
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialog.dismiss();
             }
         });

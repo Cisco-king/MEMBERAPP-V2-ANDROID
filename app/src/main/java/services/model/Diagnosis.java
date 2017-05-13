@@ -1,5 +1,8 @@
 package services.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by casjohnpaul on 5/8/2017.
  */
 
-public class Diagnosis {
+public class Diagnosis implements Parcelable {
 
     @SerializedName("diagCode")
     @Expose
@@ -33,6 +36,46 @@ public class Diagnosis {
     @SerializedName("status")
     @Expose
     private String status;
+
+    protected Diagnosis(Parcel in) {
+        diagCode = in.readString();
+        diagDesc = in.readString();
+        diagRemarks = in.readString();
+        type = in.readString();
+        typeDesc = in.readString();
+        icd10Code = in.readString();
+        icd10Desc = in.readString();
+        status = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(diagCode);
+        dest.writeString(diagDesc);
+        dest.writeString(diagRemarks);
+        dest.writeString(type);
+        dest.writeString(typeDesc);
+        dest.writeString(icd10Code);
+        dest.writeString(icd10Desc);
+        dest.writeString(status);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Diagnosis> CREATOR = new Creator<Diagnosis>() {
+        @Override
+        public Diagnosis createFromParcel(Parcel in) {
+            return new Diagnosis(in);
+        }
+
+        @Override
+        public Diagnosis[] newArray(int size) {
+            return new Diagnosis[size];
+        }
+    };
 
     public String getDiagCode() {
         return diagCode;

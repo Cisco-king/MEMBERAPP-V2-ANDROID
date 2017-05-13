@@ -1,6 +1,7 @@
 package modules.diagnosis;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.medicard.member.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,7 +24,9 @@ import butterknife.ButterKnife;
 import core.callback.RecyclerViewOnClickListener;
 import model.HospitalList;
 import modules.diagnosis.adapter.DiagnosisAdapter;
+import modules.newtest.NewTestMvp;
 import services.model.Diagnosis;
+import timber.log.Timber;
 import utilities.AlertDialogCustom;
 import utilities.ErrorMessage;
 import utilities.Loader;
@@ -33,6 +37,8 @@ public class DiagnosisFragment extends Fragment implements DiagnosisMvp.View, Re
     @BindView(R.id.edSearchDiagnosis) TextView edSearchDiagnosis;
     @BindView(R.id.rvHospitalDiagnosis) RecyclerView rvHospitalDiagnosis;
 
+    NewTestMvp.View newTestNavigator;
+
     DiagnosisAdapter diagnosisAdapter;
 
     private DiagnosisMvp.Presenter presenter;
@@ -40,6 +46,9 @@ public class DiagnosisFragment extends Fragment implements DiagnosisMvp.View, Re
     private Loader loader;
 
     private AlertDialogCustom notificationMessage;
+
+    List<Diagnosis> diagnosisList;
+
 
     public DiagnosisFragment() {
 
@@ -55,6 +64,15 @@ public class DiagnosisFragment extends Fragment implements DiagnosisMvp.View, Re
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof NewTestMvp.View) {
+            newTestNavigator = (NewTestMvp.View) context;
+        }
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_diagnosis, container, false);
@@ -64,6 +82,8 @@ public class DiagnosisFragment extends Fragment implements DiagnosisMvp.View, Re
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+
+        diagnosisList = new ArrayList<>();
 
         rvHospitalDiagnosis.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -108,7 +128,8 @@ public class DiagnosisFragment extends Fragment implements DiagnosisMvp.View, Re
 
     @Override
     public void onItemClick(int position) {
-
+        Diagnosis diagnosis = diagnosisList.get(position);
+        newTestNavigator.onStartDiagnosisProcedure(diagnosis);
     }
 
     @Override
@@ -123,6 +144,11 @@ public class DiagnosisFragment extends Fragment implements DiagnosisMvp.View, Re
     @Override
     public void onDisplayDiagnosis(List<Diagnosis> diagnosisList) {
         loader.stopLoad();
+
+        Timber.d("diagnosisByCodeId %s", diagnosisList.get(0).getDiagCode());
+
+        this.diagnosisList = diagnosisList;
+
         diagnosisAdapter = new DiagnosisAdapter(getContext(), diagnosisList, this);
         rvHospitalDiagnosis.setAdapter(diagnosisAdapter);
     }

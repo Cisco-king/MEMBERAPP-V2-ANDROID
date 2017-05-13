@@ -2,7 +2,9 @@ package services.client;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
+import services.response.ProcedureByDiagnosisCodeResponse;
 import services.response.ProcedureResponse;
 
 /**
@@ -16,5 +18,11 @@ public interface ProcedureClient {
 
     @GET("listing/getProceduresList/")
     Observable<ProcedureResponse> getAllProceduresRx();
+
+    @GET("listing/getProceduresByDiagnosisCode/?")
+    Call<ProcedureByDiagnosisCodeResponse> getProceduresByDiagnosisCode(@Query("diagCode") String diagnosisCode);
+
+    @GET("listing/getProceduresByDiagnosisCode/?")
+    Observable<ProcedureByDiagnosisCodeResponse> getProceduresByDiagnosisCodeRx(@Query("diagCode") String diagnosisCode);
 
 }

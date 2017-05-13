@@ -9,8 +9,11 @@ import modules.base.Mvp;
 public interface RequestForResultMvp {
 
     interface View extends Mvp.View {
+
         void onProceedSuccess();
+
         void onProceedError(String message);
+
     }
 
     interface Presenter extends Mvp.Presenter<View> {
