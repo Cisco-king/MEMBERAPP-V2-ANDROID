@@ -1,5 +1,6 @@
 package modules.procedure;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import timber.log.Timber;
 public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View {
 
     public static final String KEY_DIAGNOSIS = "diagnosisKey";
+    public static final String KEY_SELECTED_DIAGNOSIS = "selectedDiagnosisKey";
 
 
     @BindView(R.id.rvProcedures) RecyclerView rvProcedures;
@@ -29,12 +31,12 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
     @BindView(R.id.fbDone) FancyButton fbDone;
     @BindView(R.id.fbAddMoreDiagnosis) FancyButton fbAddMoreDiagnosis;
 
-    Diagnosis diagnosis;
-    ProcedureMvp.Presenter presenter;
+    private Diagnosis diagnosis;
+    private ProcedureMvp.Presenter presenter;
 
-    List<Procedure> procedures;
+    private List<Procedure> procedures;
 
-    ProcedureAdapter procedureAdapter;
+    private ProcedureAdapter procedureAdapter;
 
     @Override
     protected int getLayoutResource() {
@@ -61,12 +63,17 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
 
     @OnClick(R.id.fbDone)
     public void done() {
-
+        for (Procedure procedure : getSelectedProcedures()) {
+            Timber.d("");
+        }
     }
 
     @OnClick(R.id.fbAddMoreDiagnosis)
     public void addMoreDiagnosis() {
-        setResult(RESULT_OK);
+        Intent intent = new Intent();
+        intent.putParcelableArrayListExtra(KEY_SELECTED_DIAGNOSIS, getSelectedProcedures());
+        
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -75,6 +82,17 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
         this.procedures = procedures;
         procedureAdapter = new ProcedureAdapter(this.procedures);
         rvProcedures.setAdapter(procedureAdapter);
+    }
+
+    public ArrayList<Procedure> getSelectedProcedures() {
+        ArrayList<Procedure> selectedProcedures = new ArrayList<>();
+        for (Procedure procedure : procedures) {
+            if (procedure.isSelected()) {
+                selectedProcedures.add(procedure);
+            }
+        }
+
+        return selectedProcedures;
     }
 
 }

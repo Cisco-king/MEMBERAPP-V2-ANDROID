@@ -614,8 +614,10 @@ public class MemberAccountActivity extends AppCompatActivity
                             uploadImage(file, memberID);
                         } else {
                             getPhoto();
-                            alertDialogCustom.showMe(context, alertDialogCustom.NO_Internet_title, alertDialogCustom.NO_Internet, 1);
-
+                            alertDialogCustom.showMe(
+                                    context,
+                                    alertDialogCustom.NO_Internet_title,
+                                    alertDialogCustom.NO_Internet, 1);
                         }
 
                     }

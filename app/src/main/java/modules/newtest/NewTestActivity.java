@@ -1,10 +1,13 @@
 package modules.newtest;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 import com.medicard.member.R;
+
+import java.util.ArrayList;
 
 import model.HospitalList;
 import modules.base.activities.BaseActivity;
@@ -15,6 +18,7 @@ import modules.procedure.ProcedureActivity;
 import modules.requestforconsult.RequestForConsultFragment;
 import services.model.Diagnosis;
 import services.model.HospitalsToDoctor;
+import services.model.Procedure;
 import timber.log.Timber;
 
 public class NewTestActivity extends BaseActivity implements NewTestMvp.View {
@@ -88,7 +92,13 @@ public class NewTestActivity extends BaseActivity implements NewTestMvp.View {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PROCEDURE_CODE && resultCode == RESULT_OK) {
-            Timber.d("request is okay");
+            ArrayList<Procedure> selectedDiagnosis = data.getParcelableArrayListExtra(ProcedureActivity.KEY_SELECTED_DIAGNOSIS);
+            Timber.d("##########################");
+            if (selectedDiagnosis != null) {
+                for (Procedure procedure : selectedDiagnosis) {
+                    Timber.d("procedure %s", procedure.getProcedureDesc());
+                }
+            }
         }
     }
 }

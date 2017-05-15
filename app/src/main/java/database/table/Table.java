@@ -155,4 +155,34 @@ public interface Table {
 
     }
 
+    interface Diagnosis {
+
+        String DIAGNOSIS_CODE = "diagCode";
+
+        String DIAGNOSIS_DESCRIPTION = "diagDesc";
+
+        String DIAGNOSIS_REMARKS = "diagRemarks";
+
+        String TYPE = "type";
+
+        String TYPE_DESCRIPTION = "typeDesc";
+
+        String ICD_CODE = "icd10Code";
+
+        String ICD_DESCRIPTION = "icd10Desc";
+
+        String STATUS = "status";
+
+        String COLUMNS[] = {
+                DIAGNOSIS_CODE,
+                DIAGNOSIS_DESCRIPTION,
+                DIAGNOSIS_REMARKS,
+                TYPE,
+                TYPE_DESCRIPTION,
+                ICD_CODE,
+                ICD_DESCRIPTION,
+                STATUS};
+
+    }
+
 }
