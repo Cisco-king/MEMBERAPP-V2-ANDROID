@@ -30,6 +30,8 @@ public class Procedure implements Table.Procedure {
     @Expose
     private Integer procedureAmount;
 
+    private boolean isSelected;
+
     public Procedure(Cursor cursor) {
         setId(cursor.getInt(cursor.getColumnIndex(ID)));
         setServiceClassCode(cursor.getString(cursor.getColumnIndex(SERVICE_CLASS_CODE)));
@@ -76,6 +78,14 @@ public class Procedure implements Table.Procedure {
 
     public void setProcedureAmount(Integer procedureAmount) {
         this.procedureAmount = procedureAmount;
+    }
+
+    public boolean isSelected() {
+        return this.isSelected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 
     public static final String getTableStructure() {

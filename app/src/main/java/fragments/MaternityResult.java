@@ -245,7 +245,22 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                alertDialogCustom.successDialog(context,
+                        alertDialogCustom.CONGRATULATIONS_title,
+                        alertDialogCustom.SAVE_LOA_REQUEST,
+                        2,
+                        new AlertDialogCustom.OnDialogClickListener() {
+                            @Override
+                            public void onOkClick() {
+                                getActivity().finish();
+                            }
+
+                            @Override
+                            public void onCancelClick() {
+
+                            }
+                        });
+//                getActivity().finish();
             }
         });
         setDetails();

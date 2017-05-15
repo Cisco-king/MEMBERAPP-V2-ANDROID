@@ -137,7 +137,8 @@
         <activity android:name="modules.testattachment.TestAttachmentActivity" />
         <activity android:name="modules.newtest.NewTestActivity" />
         <activity android:name="modules.procedure.DiagnosisActivity" />
-        <activity android:name="modules.procedure.ProcedureActivity"></activity>
+        <activity android:name="modules.procedure.ProcedureActivity" />
+        <activity android:name="modules.prescriptionattachment.PrescriptionAttachmentActivity"></activity>
     </application>
 
 </manifest>

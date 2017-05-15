@@ -1,5 +1,6 @@
 package modules.procedure;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
 
@@ -12,6 +13,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 import modules.base.activities.BaseActivity;
+import modules.procedure.adapter.ProcedureAdapter;
 import services.model.Diagnosis;
 import services.model.Procedure;
 import timber.log.Timber;
@@ -32,6 +34,8 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
 
     List<Procedure> procedures;
 
+    ProcedureAdapter procedureAdapter;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_procedure;
@@ -45,7 +49,11 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
         if (diagnosis == null) { finish(); Timber.d("finish this activity"); }
 
         presenter = new ProcedurePresenter(this);
+        presenter.attachView(this);
+
         procedures = new ArrayList<>();
+
+        rvProcedures.setLayoutManager(new LinearLayoutManager(this));
 
         presenter.loadProcedureByDiagnosisCode(diagnosis.getDiagCode());
 
@@ -65,6 +73,8 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
     @Override
     public void displayProcedureByCodeResult(List<Procedure> procedures) {
         this.procedures = procedures;
+        procedureAdapter = new ProcedureAdapter(this.procedures);
+        rvProcedures.setAdapter(procedureAdapter);
     }
 
 }

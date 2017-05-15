@@ -330,7 +330,6 @@ public class MemberAccountActivity extends AppCompatActivity
         dialog.getWindow().setLayout(width, Toolbar.LayoutParams.WRAP_CONTENT);
     }
 
-
     private void animateFAB() {
 
         if (isFabOpen) {
@@ -352,7 +351,6 @@ public class MemberAccountActivity extends AppCompatActivity
             fab.startAnimation(rotate_forward);
             fab1.startAnimation(fab_open);
 
-
             tv_view.setAnimation(fab_open);
 
             blackBG.startAnimation(fade_in);
@@ -361,20 +359,12 @@ public class MemberAccountActivity extends AppCompatActivity
             fab1.setClickable(true);
 
             isFabOpen = true;
-
-
         }
     }
 
-
     private void getPhoto() {
-
-
         progressBar.setVisibility(View.VISIBLE);
-
-
         Picasso.with(context)
-
                 .load(AppInterface.PHOTOLINK + MEMBER_ID)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
@@ -456,7 +446,6 @@ public class MemberAccountActivity extends AppCompatActivity
                             StatusSetter.setRemarks(memberStatus),
                             1);
                 }
-
                 break;
         }
     }

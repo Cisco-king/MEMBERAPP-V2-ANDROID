@@ -85,7 +85,6 @@ public abstract class AbstractDao<T> implements EntityConvertable<T> {
     protected boolean _delete(String conditions) {
         try {
             open();
-
             boolean ret = database.delete(TABLE_NAME, conditions, null) > 0 ? true : false;
             return ret;
         } finally {

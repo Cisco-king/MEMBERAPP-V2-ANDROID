@@ -38,7 +38,7 @@ public class ProcedureDao extends AbstractDao<Procedure>
             Timber.d("procedure id %s, code %s", procedure.getId(), procedure.getProcedureCode());
             boolean isInserted = insert(procedure) > 0 ? true : false;
             if (isInserted) {
-                Timber.d("doctor inserted");
+                Timber.d("procedure inserted");
                 inserted ++;
             } else {
                 Timber.d("fail inseting");
@@ -63,8 +63,12 @@ public class ProcedureDao extends AbstractDao<Procedure>
 
     @Override
     public Procedure find(String uniqueValue) {
+        open();
         Cursor cursor = _findAllByFields(Procedure.ID + EQUALS + uniqueValue);
-        return convertCursorToObject(cursor);
+        Procedure procedure = convertCursorToObject(cursor);
+        close();
+
+        return procedure;
     }
 
     @Override

@@ -348,17 +348,17 @@ public class SignInActivity extends AppCompatActivity
                 } catch (Exception e) {
 
                 }
-                Log.d("LOG_IN", data);
-                if (data.equals("TRUE") || data.equals("")) {
+                /*Log.d("LOG_IN", data);*/
+                /*if (data.equals("TRUE") || data.equals("")) {*/
                     pd.setMessage("Updating Database...");
                     databaseHandler.dropProvince();
                     databaseHandler.dropCity();
                     databaseHandler.dropSpecialization();
                     implement.getProvince();
-                } else {
+               /* } else {
 //                    loadDoctorList(responseBody);
                     gotoNavigationTest(responseBody);
-                }
+                }*/
 
             }
 

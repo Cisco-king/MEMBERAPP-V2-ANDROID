@@ -41,7 +41,7 @@ public class StatusSetter {
     }
 
     public static String setRemarks(String status) {
-
+        Timber.d("status %s", status);
         String setRemark = "";
 
         if (status.equalsIgnoreCase(MemberStatus.DISAPPROVED)) { // DISAPPROVED
@@ -54,10 +54,12 @@ public class StatusSetter {
 //            setRemark = "Your request is currently put on-hold.\n" +
 //                    "Please contact your HRD/Medicard account offer.";
             setRemark = "Your Account is on hold. Please contact your MediCard Account Officer.";
+//            setRemark = "Your account is inactive. Please call 841-8080 to verify account status";
         } else if (status.equalsIgnoreCase(MemberStatus.FOR_APPROVAL)) { // FOR APPROVAL
             setRemark = "Your request is subject to approval.";
         } else if (status.equalsIgnoreCase(MemberStatus.RESIGNED)) { // RESIGNED
             setRemark = "Your request is denied. Account is no longer active.";
+//            setRemark = "Your account is inactive. Please call 841-8080 to verify account status";
         } else if (status.equalsIgnoreCase(MemberStatus.CANCELLED)) { // CANCELLED
             setRemark = "Your Request is denied. Account is no longer active.";
         } else if (status.equalsIgnoreCase(MemberStatus.LAPSE_NON_RENEW)) { // LAPSE (NON RENEW)

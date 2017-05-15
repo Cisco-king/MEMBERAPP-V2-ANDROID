@@ -34,6 +34,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
+import timber.log.Timber;
 import utilities.AlertDialogCustom;
 import utilities.DialogAddDependence;
 import utilities.ErrorMessage;
@@ -148,7 +149,7 @@ public class fragment_memberInfo extends Fragment
     }
 
     public void getUserData(final String id) {
-
+        Timber.d("################################\n %s ###########################", id);
         progressDialog.show();
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
