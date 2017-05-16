@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.ViewUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -43,6 +44,7 @@ import model.SimpleData;
 import model.SpecsAdapter;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
+import utilities.ViewUtilities;
 
 
 public class SelectProvinceActivity extends AppCompatActivity {
@@ -58,6 +60,8 @@ public class SelectProvinceActivity extends AppCompatActivity {
     EditText ed_search;
     @BindView(R.id.linearLayout3)
     LinearLayout linearLayout3;
+
+    @BindView(R.id.tvNoData) TextView tvNoData;
 
     DatabaseHandler handler;
 
@@ -146,9 +150,16 @@ public class SelectProvinceActivity extends AppCompatActivity {
             prevSelectedHosp = getIntent().getParcelableArrayListExtra(Constant.SELECTED_REQUEST);
 
             implement.tagSelectedToMasterList(prevSelectedHosp, arrayHospitals);
+            if (arrayHospitals != null) {
+                ViewUtilities.hideView(tvNoData);
 
-            adapterLoa = new LoaReqAdapter(context, arrayHospitals);
-            rv_provinces.setAdapter(adapterLoa);
+                adapterLoa = new LoaReqAdapter(context, arrayHospitals);
+                rv_provinces.setAdapter(adapterLoa);
+            } else {
+                ViewUtilities.hideView(rv_provinces);
+                ViewUtilities.showView(tvNoData);
+            }
+
             implement.setOkVISIBILITY(true, true, btn_ok);
         } else if (implement.testOriginFromDoctors(ORIGIN)) {
             rv_provinces.setLayoutManager(new LinearLayoutManager(this));

@@ -48,6 +48,8 @@ public class AlertDialogCustom {
     public String InvalidUsername = "Username invalid. It must not contain blank spaces.";
     public String spec_not_good = "Please proceed to Coordinator to request for LOA.";
 
+    public String noSpecialCharacter = "Please enter only a-zA-Z and dot(.) character.";
+
     public String successfullyAddedDep = "You have successfully added a dependent.";
     public String INVALID_PASS_USER = "You have entered an incorrect password. After 3 unsuccessful attempts your account will be locked.";
     public String NO_Internet = "Please check your internet connection.";

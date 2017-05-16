@@ -47,6 +47,8 @@ import utilities.PasswordTester;
 import utilities.Permission;
 import utilities.PhoneInformations;
 import utilities.ShowTermsNCondition;
+import utilities.ValidatorUtils;
+import views.NoSpecialCharacterChecker;
 
 import static android.R.color.black;
 
@@ -123,6 +125,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         ed_memberName = (TextView) findViewById(R.id.ed_memberName);
 
         ed_username = (EditText) findViewById(R.id.ed_username);
+        ed_username.addTextChangedListener(new NoSpecialCharacterChecker(ed_username));
+
         ed_email = (EditText) findViewById(R.id.ed_email);
         ed_password = (EditText) findViewById(R.id.ed_password);
         ed_repassword = (EditText) findViewById(R.id.ed_repassword);
@@ -214,6 +218,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             alert.showMe(context, alert.HOLD_ON_title, alert.InvalidUsername, 1);
 
+        } else if (ValidatorUtils.noSpecialCharacter(ed_username.toString())) {
+            alert.showMe(context, alert.HOLD_ON_title, alert.noSpecialCharacter, 1);
         } else {
             boolean passwordCorrect = pTest.tester(ed_password.getText().toString().trim());
             boolean emailCorrect = eTest.isEmailValid(ed_email.getText().toString().trim());

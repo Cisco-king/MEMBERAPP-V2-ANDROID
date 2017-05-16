@@ -137,6 +137,7 @@ public class SignInActivity extends AppCompatActivity
         logIn.setUsername(getUsername);
         logIn.setPassword(getPassword);
         logIn.setVersionNo(BuildConfig.VERSION_NAME);
+
         Gson gson = new Gson();
         Log.d("JSON", gson.toJson(logIn));
 

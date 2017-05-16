@@ -43,4 +43,13 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
 
+    <TextView
+        android:id="@+id/tvNoData"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:text="@string/no_data_found"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

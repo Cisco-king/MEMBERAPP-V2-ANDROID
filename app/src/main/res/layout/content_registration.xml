@@ -5,8 +5,8 @@
     android:id="@+id/content_registration"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/l_gray_bg"
+    android:orientation="vertical"
     tools:context="com.medicard.member.RegistrationActivity"
     tools:showIn="@layout/activity_registration">
 
@@ -41,16 +41,16 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:padding="@dimen/sub_margin"
-                            android:background="@drawable/button_border"
                             android:id="@+id/ed_idNumber"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/sub_margin"
                             android:layout_weight="1"
+                            android:background="@drawable/button_border"
                             android:hint="@string/reg_medicard_id"
                             android:inputType="number"
                             android:maxLength="8"
+                            android:padding="@dimen/sub_margin"
                             android:textColorHint="@color/colorAccent"
                             android:textSize="@dimen/text_small" />
 
@@ -77,14 +77,14 @@
 
 
                         <TextView
-                            android:padding="@dimen/sub_margin"
-                            android:background="@drawable/button_border"
                             android:id="@+id/ed_birth"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
+                            android:background="@drawable/button_border"
                             android:hint="@string/reg_date_of_birth"
+                            android:padding="@dimen/sub_margin"
                             android:textColor="@android:color/black"
                             android:textColorHint="@color/colorAccent"
                             android:textSize="@dimen/text_small" />
@@ -101,15 +101,15 @@
                     </LinearLayout>
 
                     <TextView
-                        android:padding="@dimen/sub_margin"
-                        android:background="@drawable/button_border"
                         android:id="@+id/ed_memberName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/sub_margin"
                         android:layout_weight="1"
+                        android:background="@drawable/button_border"
                         android:gravity="center"
                         android:hint="@string/reg_member_name"
+                        android:padding="@dimen/sub_margin"
                         android:textColorHint="@color/colorAccent"
                         android:textSize="@dimen/text_small" />
 
@@ -151,16 +151,16 @@
 
 
                         <EditText
-                            android:background="@drawable/button_border"
-                            android:padding="@dimen/sub_margin"
                             android:id="@+id/ed_username"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/sub_margin"
                             android:layout_weight="1"
+                            android:background="@drawable/button_border"
                             android:hint="@string/reg_username"
                             android:inputType="text"
                             android:maxLength="16"
+                            android:padding="@dimen/sub_margin"
                             android:textColorHint="@color/colorAccent"
                             android:textSize="@dimen/text_small" />
 
@@ -185,15 +185,15 @@
 
 
                         <EditText
-                            android:background="@drawable/button_border"
-                            android:padding="@dimen/sub_margin"
                             android:id="@+id/ed_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/sub_margin"
                             android:layout_weight="1"
+                            android:background="@drawable/button_border"
                             android:hint="@string/reg_password"
                             android:inputType="textPassword"
+                            android:padding="@dimen/sub_margin"
                             android:textColorHint="@color/colorAccent"
                             android:textSize="@dimen/text_small" />
 
@@ -236,15 +236,15 @@
 
 
                         <EditText
-                            android:background="@drawable/button_border"
-                            android:padding="@dimen/sub_margin"
                             android:id="@+id/ed_repassword"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/sub_margin"
                             android:layout_weight="1"
+                            android:background="@drawable/button_border"
                             android:hint="@string/reg_retypepass"
                             android:inputType="textPassword"
+                            android:padding="@dimen/sub_margin"
                             android:textColorHint="@color/colorAccent"
                             android:textSize="@dimen/text_small" />
 
@@ -269,16 +269,16 @@
 
 
                         <EditText
-                            android:background="@drawable/button_border"
-                            android:padding="@dimen/sub_margin"
                             android:id="@+id/ed_contact"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/sub_margin"
                             android:layout_weight="1"
+                            android:background="@drawable/button_border"
                             android:hint="@string/reg_contact"
                             android:inputType="number"
                             android:maxLength="11"
+                            android:padding="@dimen/sub_margin"
                             android:textColorHint="@color/colorAccent"
                             android:textSize="@dimen/text_small" />
 
@@ -302,15 +302,15 @@
 
 
                         <EditText
-                            android:background="@drawable/button_border"
-                            android:padding="@dimen/sub_margin"
                             android:id="@+id/ed_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/sub_margin"
                             android:layout_weight="1"
+                            android:background="@drawable/button_border"
                             android:hint="@string/reg_email"
                             android:inputType="textEmailAddress"
+                            android:padding="@dimen/sub_margin"
                             android:textColorHint="@color/colorAccent"
                             android:textSize="@dimen/text_small" />
 

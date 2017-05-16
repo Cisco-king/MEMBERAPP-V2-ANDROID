@@ -246,8 +246,7 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
         loader.stopLoad();
         if (returnChangePassword.getResponseCode().equals("200")) {
             alertDialogCustom.showMe(getContext(), alertDialogCustom.success, alertDialogCustom.successChangePass, 2);
-            et_newPass.setText("");
-            et_oldPass.setText("");
+            clearChangePasswordFields();
         } else {
             alertDialogCustom.showMe(getContext(), alertDialogCustom.HOLD_ON_title, alertDialogCustom.errorUnableToChangePass, 1);
         }
@@ -346,6 +345,12 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
         implement.setDisclaimerUI(true, pb_disclaimer, btn_disclamer);
 
         implement.setDisclaimerStatus(btn_disclamer, responseBody.getHasDisclaimer(), getString(R.string.disclaimer_btn));
-
     }
+
+    private void clearChangePasswordFields() {
+        et_newPass.setText("");
+        et_oldPass.setText("");
+        et_retypePass.setText("");
+    }
+
 }
