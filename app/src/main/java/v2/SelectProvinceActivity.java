@@ -151,12 +151,13 @@ public class SelectProvinceActivity extends AppCompatActivity {
             prevSelectedHosp = getIntent().getParcelableArrayListExtra(Constant.SELECTED_REQUEST);
 
             implement.tagSelectedToMasterList(prevSelectedHosp, arrayHospitals);
+            adapterLoa = new LoaReqAdapter(context, arrayHospitals);
             if (arrayHospitals != null) {
                 if (arrayHospitals.size() != 0) {
 
                     ViewUtilities.hideView(tvNoData);
 
-                    adapterLoa = new LoaReqAdapter(context, arrayHospitals);
+
                     rv_provinces.setAdapter(adapterLoa);
                 } else {
                     ViewUtilities.hideView(rv_provinces);
@@ -193,7 +194,7 @@ public class SelectProvinceActivity extends AppCompatActivity {
 
                     ViewUtilities.hideView(tvNoData);
 
-                    adapterLoa = new LoaReqAdapter(context, arrayDoctors);
+
                     rv_provinces.setAdapter(adapterLoa);
                 } else {
                     ViewUtilities.hideView(rv_provinces);
