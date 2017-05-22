@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_select_province"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="v2.SelectProvinceActivity"
@@ -38,6 +38,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:visibility="visible"
         android:id="@+id/rv_provinces"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

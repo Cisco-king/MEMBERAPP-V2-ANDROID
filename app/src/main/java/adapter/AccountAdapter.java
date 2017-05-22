@@ -89,6 +89,7 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             headerHolder.tv_name.setText(header.get(0).getMEM_NAME());
             headerHolder.tv_company.setText(header.get(0).getACCOUNT_NAME());
             headerHolder.tv_id.setText(header.get(0).getPRIN_CODE());
+            headerHolder.tv_member_type.setText(header.get(0).getMEM_TYPE());
 
             headerHolder.progressBar.setVisibility(View.VISIBLE);
             Picasso.with(context)
@@ -172,7 +173,7 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
         CircleImageView iv_user;
-        public TextView tv_name, tv_id, tv_company;
+        public TextView tv_name, tv_id, tv_company, tv_member_type;
 
         CardView cv_account;
         ProgressBar progressBar;
@@ -184,6 +185,7 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             tv_id = (TextView) itemView.findViewById(R.id.tv_idNumber);
             tv_company = (TextView) itemView.findViewById(R.id.tv_company);
+            tv_member_type = (TextView) itemView.findViewById(R.id.tv_member_type);
 
             cv_account = (CardView) itemView.findViewById(R.id.cv_account);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);

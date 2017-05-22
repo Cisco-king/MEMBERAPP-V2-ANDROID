@@ -48,7 +48,7 @@ public class AlertDialogCustom {
     public String InvalidUsername = "Username invalid. It must not contain blank spaces.";
     public String spec_not_good = "Please proceed to Coordinator to request for LOA.";
 
-    public String noSpecialCharacter = "Please enter only a-zA-Z and dot(.) character.";
+    public String noSpecialCharacter = "Please use only letters (a-z), numbers, and periods.";
 
     public String successfullyAddedDep = "You have successfully added a dependent.";
     public String INVALID_PASS_USER = "You have entered an incorrect password. After 3 unsuccessful attempts your account will be locked.";
@@ -84,7 +84,7 @@ public class AlertDialogCustom {
     public String end_must_greater = "End date should be greater than Start Date.";
     public String start_must_lesser = "Start Date should be lesser than End Date.";
     public String data_not_avilable = "List is not available";
-    public  String successfully_updated = "Setting is successfully updated.";
+    public String successfully_updated = "Setting is successfully updated.";
 
     public static final String LOA_GENERATE_PDF_SUCCESS =
             "Saved to \"MediCard\" folder";
@@ -348,6 +348,7 @@ public class AlertDialogCustom {
 
     public interface OnDialogClickListener {
         void onOkClick();
+
         void onCancelClick();
     }
 

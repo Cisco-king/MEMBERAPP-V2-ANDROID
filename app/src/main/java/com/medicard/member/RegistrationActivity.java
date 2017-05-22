@@ -150,11 +150,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         switch (view.getId()) {
             case R.id.btn_verify:
-/**
- * SEND member_ID and BIRTHDAY
- * GET : AUTO FILL MEMBER NAME
- * ENABLE REGISTRATION
- */
+
                 btnVerifyFunction();
                 break;
             case R.id.btn_regAccount:

@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/mini_margin"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorPrimary"
             android:text="OK"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
@@ -80,7 +80,7 @@
             android:layout_height="70dp"
             android:layout_alignParentTop="true"
             android:layout_marginTop="10dp"
-            android:src="@drawable/logout"
+            android:src="@drawable/success"
             app:civ_border_color="@android:color/white"
             app:civ_border_width="10px" />
 

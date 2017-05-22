@@ -31,7 +31,7 @@ public class NoSpecialCharacterChecker implements TextWatcher {
     public void onTextChanged(CharSequence str, int start, int before, int count) {
         if (str.toString().length() <= 0 || ValidatorUtils.noSpecialCharacter(str.toString())) {
             Timber.d("typing ... %s", str.toString());
-            editText.setError("please enter only a-zA-z and a (.) dot character");
+            editText.setError("Please use only letters (a-z), numbers, and periods.");
         } else {
             editText.setError(null);
             Timber.d("no error while typing...");

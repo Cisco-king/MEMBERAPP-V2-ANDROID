@@ -61,7 +61,8 @@ public class SelectProvinceActivity extends AppCompatActivity {
     @BindView(R.id.linearLayout3)
     LinearLayout linearLayout3;
 
-    @BindView(R.id.tvNoData) TextView tvNoData;
+    @BindView(R.id.tvNoData)
+    TextView tvNoData;
 
     DatabaseHandler handler;
 
@@ -145,16 +146,22 @@ public class SelectProvinceActivity extends AppCompatActivity {
             temp = getIntent().getParcelableArrayListExtra(Constant.LOA_REQUEST);
             arrayListMaster.addAll(temp);
             Log.d("COUNT_LOA", arrayListMaster.size() + "");
-            Log.d("HOSP_GET_NAME", arrayListMaster.get(0).getHospitalName());
+
             arrayHospitals.addAll(implement.getOnlyHospitalWithOneCount(arrayListMaster));
             prevSelectedHosp = getIntent().getParcelableArrayListExtra(Constant.SELECTED_REQUEST);
 
             implement.tagSelectedToMasterList(prevSelectedHosp, arrayHospitals);
             if (arrayHospitals != null) {
-                ViewUtilities.hideView(tvNoData);
+                if (arrayHospitals.size() != 0) {
 
-                adapterLoa = new LoaReqAdapter(context, arrayHospitals);
-                rv_provinces.setAdapter(adapterLoa);
+                    ViewUtilities.hideView(tvNoData);
+
+                    adapterLoa = new LoaReqAdapter(context, arrayHospitals);
+                    rv_provinces.setAdapter(adapterLoa);
+                } else {
+                    ViewUtilities.hideView(rv_provinces);
+                    ViewUtilities.showView(tvNoData);
+                }
             } else {
                 ViewUtilities.hideView(rv_provinces);
                 ViewUtilities.showView(tvNoData);
@@ -171,7 +178,7 @@ public class SelectProvinceActivity extends AppCompatActivity {
             temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
             prevSelectedHosp.clear();
             prevSelectedHosp.addAll(temp1);
-            for (SimpleData simpleData : prevSelectedHosp){
+            for (SimpleData simpleData : prevSelectedHosp) {
                 Log.d("TAG_DATA", "onCreate: " + simpleData.getHospital());
             }
             arrayDoctors.addAll(implement.getOnlyDoctorWithOneCount(prevSelectedHosp, handler));
@@ -179,6 +186,25 @@ public class SelectProvinceActivity extends AppCompatActivity {
             implement.tagSelectedToMasterList(prevSelectedDoctor, arrayDoctors);
             adapterLoa = new LoaReqAdapter(context, arrayDoctors);
             rv_provinces.setAdapter(adapterLoa);
+
+
+            if (arrayDoctors != null) {
+                if (arrayDoctors.size() != 0) {
+
+                    ViewUtilities.hideView(tvNoData);
+
+                    adapterLoa = new LoaReqAdapter(context, arrayDoctors);
+                    rv_provinces.setAdapter(adapterLoa);
+                } else {
+                    ViewUtilities.hideView(rv_provinces);
+                    ViewUtilities.showView(tvNoData);
+                }
+            } else {
+                ViewUtilities.hideView(rv_provinces);
+                ViewUtilities.showView(tvNoData);
+            }
+
+
             implement.setOkVISIBILITY(true, true, btn_ok);
         }
 
