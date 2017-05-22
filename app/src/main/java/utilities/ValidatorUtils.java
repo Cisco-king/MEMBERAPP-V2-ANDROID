@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 
 public class ValidatorUtils {
 
-  //  public static Pattern charPattern = Pattern.compile("[^a-zA-Z. ]", Pattern.CASE_INSENSITIVE);
-  public static Pattern charPattern = Pattern.compile("[^a-zA-Z0-9. ]", Pattern.CASE_INSENSITIVE);
+    //  public static Pattern charPattern = Pattern.compile("[^a-zA-Z. ]", Pattern.CASE_INSENSITIVE);
+    public static Pattern charPattern = Pattern.compile("[^a-zA-Z0-9.]", Pattern.CASE_INSENSITIVE);
 
     public static boolean noSpecialCharacter(String str) {
         Matcher matcher = charPattern.matcher(str);

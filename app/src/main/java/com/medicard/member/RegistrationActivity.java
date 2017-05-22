@@ -214,7 +214,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             alert.showMe(context, alert.HOLD_ON_title, alert.InvalidUsername, 1);
 
-        } else if (ValidatorUtils.noSpecialCharacter(ed_username.toString())) {
+        } else if (ValidatorUtils.noSpecialCharacter(ed_username.getText().toString().trim())) {
             alert.showMe(context, alert.HOLD_ON_title, alert.noSpecialCharacter, 1);
         } else {
             boolean passwordCorrect = pTest.tester(ed_password.getText().toString().trim());
@@ -369,7 +369,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                         try {
 
-                            alert.showMe(context, alert.HOLD_ON_title, alert.ALREADY_message, 1);
+                            alert.showMe(context, alert.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
                             Log.d("RETURN", e.getMessage());
                             pd.dismiss();
                         } catch (Exception error) {
