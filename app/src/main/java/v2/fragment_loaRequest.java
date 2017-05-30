@@ -109,7 +109,6 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
 //        init();
 
-
         return view;
     }
 
@@ -150,7 +149,6 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     public void onClick(View v) {
 
         switch (v.getId()) {
-
             case R.id.btn_sort:
                 Intent gotoSort = new Intent(context, SortLoaReqActivity.class);
                 gotoSort.putParcelableArrayListExtra(Constant.LOA_REQUEST, arrayMASTERList);
@@ -165,7 +163,6 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
                 startActivityForResult(gotoSort, CALL_SORT_LOA);
                 break;
         }
-
     }
 
     @Override

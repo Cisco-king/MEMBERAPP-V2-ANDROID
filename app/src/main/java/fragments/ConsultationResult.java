@@ -1,9 +1,13 @@
 package fragments;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,7 +22,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.io.InputStream;
 
 import InterfaceService.ScreenshotCallback;
@@ -35,6 +41,7 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
+import utilities.FileUtils;
 import utilities.GenderPicker;
 import utilities.ImageSaver;
 import utilities.Loader;
@@ -46,6 +53,7 @@ import utilities.ResultSetters;
 import utilities.Screenshot;
 import utilities.SharedPref;
 import utilities.ViewUtilities;
+import v2.LoaPageActivity;
 
 public class ConsultationResult extends Fragment implements ScreenshotCallback {
 
@@ -117,7 +125,8 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     @BindView(R.id.tv_disclaimer)
     TextView tv_disclaimer;
 
-    @BindView(R.id.tvWithAppUser2) TextView tvWithAppUser2;
+    @BindView(R.id.tvWithAppUser2)
+    TextView tvWithAppUser2;
 
     @BindView(R.id.tv_ref_code2)
     TextView tv_ref_code2;
@@ -353,14 +362,14 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
 
 //        ResultSetters.setDoctorWithProvider(withProvider, tv_doc_app);
 
-        if (withProvider.equals(ResultSetters.WITHPROVIDER)) {
+       /* if (withProvider.equals(ResultSetters.WITHPROVIDER)) {
             ViewUtilities.hideView(tvWithAppUser2);
             tv_disclaimer.setText(getString(R.string.doctor_with_app));
         } else {
             ViewUtilities.showView(tvWithAppUser2);
             tvWithAppUser2.setText(getString(R.string.doctor_without_app2));
             tv_disclaimer.setText(getString(R.string.doctor_without_app));
-        }
+        }*/
     }
 
 
@@ -421,7 +430,13 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
                             setDirectoryName("MediCard")
                             .setExternal(false)
                             .save(bitmap, callback);*/
-                    generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form));
+
+                    OutPatientConsultationForm build = loaFormBuilder.build();
+                    if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
+                        onShowNotifyExistingPdfDialog(build.getServiceType(), build.getReferenceNumber());
+                    } else {
+                        generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form));
+                    }
 
                 }
 
@@ -534,11 +549,49 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     public void onGenerateLoaFormSuccess() {
         btn_ok.setVisibility(View.VISIBLE);
         btn_shot.setVisibility(View.VISIBLE);
-
-        alertDialogCustom.showMe(
+        OutPatientConsultationForm build = loaFormBuilder.build();
+        onShowNotifyExistingPdfDialog(build.getServiceType(), build.getReferenceNumber());
+        /*alertDialogCustom.showMe(
                 context,
                 alertDialogCustom.CONGRATULATIONS_title,
                 alertDialogCustom.LOA_GENERATE_PDF_SUCCESS,
-                2);
+                2);*/
     }
+
+    public void showLoaForm(Context context, String serviceType, String referenceNumber) {
+
+        try {
+            File pdfFolder = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DCIM), "MediCard");
+
+            String loaFileName = FileGenerator.genFileName(serviceType, referenceNumber);
+            File loaFormFile = new File(pdfFolder, loaFileName + ".pdf");
+
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(loaFormFile), "application/pdf");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, "No PDF Viewer Installed", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void onShowNotifyExistingPdfDialog(final String serviceType, final String referenceNumber) {
+        btn_ok.setVisibility(View.VISIBLE);
+        btn_shot.setVisibility(View.VISIBLE);
+        alertDialogCustom.showMe(context, alertDialogCustom.CONGRATULATIONS_title, alertDialogCustom.LOA_GENERATE_PDF_SUCCESS, 2,
+                new AlertDialogCustom.OnCustomDialogClickListener() {
+                    @Override
+                    public void onOkClick() {
+                        Timber.d("on ok with cancel functionality was clicked");
+                    }
+
+                    @Override
+                    public void onViewPdf() {
+                        showLoaForm(context, serviceType, referenceNumber);
+                    }
+                });
+    }
+
 }

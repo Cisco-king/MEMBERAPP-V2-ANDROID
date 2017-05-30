@@ -61,6 +61,25 @@ public class ProcedureDao extends AbstractDao<Procedure>
         _deleteAll();
     }
 
+    public void update(Procedure procedure) {
+        boolean isUpdated = _update(getContentValues(procedure, procedure.isSelected()), Procedure.ID + EQUALS + procedure.getId());
+        if (isUpdated)
+            Timber.d("update success ...");
+        else
+            Timber.d("update fail");
+    }
+
+    public void resetAllSelectedStatusToFalse() {
+        open();
+        Cursor cursor = _findAllByFields(Procedure.IS_SELECTED + EQUALS + 1);
+        List<Procedure> procedures = convertCursorToList(cursor);
+
+        close();
+        for (Procedure procedure : procedures) {
+            update(procedure);
+        }
+    }
+
     @Override
     public Procedure find(String uniqueValue) {
         open();
@@ -69,6 +88,15 @@ public class ProcedureDao extends AbstractDao<Procedure>
         close();
 
         return procedure;
+    }
+
+    public List<Procedure> findAllById(String id) {
+        open();
+        Cursor cursor = _findAllByFields(Procedure.ID + EQUALS + id);
+        List<Procedure> procedures = convertCursorToList(cursor);
+
+        close();
+        return procedures;
     }
 
     @Override
@@ -114,6 +142,13 @@ public class ProcedureDao extends AbstractDao<Procedure>
         values.put(Procedure.CODE, procedure.getProcedureCode());
         values.put(Procedure.DESCRIPTION, procedure.getProcedureDesc());
         values.put(Procedure.AMOUNT, procedure.getProcedureAmount());
+
+        return values;
+    }
+
+    public ContentValues getContentValues(Procedure procedure, boolean isSelected) {
+        ContentValues values = this.getContentValues(procedure);
+        values.put(Procedure.IS_SELECTED, isSelected == true ? 1 : 0);
 
         return values;
     }

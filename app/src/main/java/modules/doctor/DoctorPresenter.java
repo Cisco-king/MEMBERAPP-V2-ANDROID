@@ -89,27 +89,6 @@ public class DoctorPresenter implements DoctorMvp.Presenter {
     @Override
     public void loadAllDoctors() {
 
-        /*doctorHttpClient.getAllDoctorsToHospitalRx()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HospitalsToDoctorResponse>() {
-                    @Override
-                    public void onCompleted() {
-                        Timber.d("complete download");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.d("error encounter %s", e.toString());
-                        doctorView.onErrorRequest(e.toString());
-                    }
-
-                    @Override
-                    public void onNext(HospitalsToDoctorResponse hospitalsToDoctorResponse) {
-                        Timber.d("hospital retrieve %s", hospitalsToDoctorResponse.getDoctorsToHospital().size());
-                        doctorView.displayDoctorsByHospital(hospitalsToDoctorResponse.getDoctorsToHospital());
-                    }
-                });*/
         doctorHttpClient.getAllDoctorsToHospital()
                 .enqueue(new Callback<HospitalsToDoctorResponse>() {
                     @Override

@@ -11,7 +11,6 @@
 
     <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED" />
 
-
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="false"
@@ -139,7 +138,8 @@
         <activity android:name="modules.newtest.NewTestActivity" />
         <activity android:name="modules.procedure.DiagnosisActivity" />
         <activity android:name="modules.procedure.ProcedureActivity" />
-        <activity android:name="modules.prescriptionattachment.PrescriptionAttachmentActivity"></activity>
+        <activity android:name="modules.prescriptionattachment.PrescriptionAttachmentActivity" />
+        <activity android:name="modules.dummy.DummyActivity"></activity>
     </application>
 
 </manifest>

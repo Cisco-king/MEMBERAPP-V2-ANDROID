@@ -81,7 +81,6 @@ public class DetailsRetieve {
                 dialog.dismiss();
                 pd.show();
                 if (destination.equals(CONSULTATION)) {
-                    // todo request
                     sendConsultation(pd, condition);
                 } else if (destination.equals(MATERNITY)) {
                     sendMaternity(pd, condition);
@@ -236,7 +235,6 @@ public class DetailsRetieve {
                         Timber.d("response %s", requestResult.toString());
 
                         if (requestResult.getResponseCode().equals("210")) {
-                            // todo for consultation request
                             callback.onDuplicateRequest(requestResult);
                         } else if (requestResult.getResponseCode().equals("220")) {
                             callback.onBlockRequest(requestResult.getResponseDesc());

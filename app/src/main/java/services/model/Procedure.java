@@ -40,6 +40,7 @@ public class Procedure implements Parcelable, Table.Procedure {
         setProcedureCode(cursor.getString(cursor.getColumnIndex(CODE)));
         setProcedureDesc(cursor.getString(cursor.getColumnIndex(DESCRIPTION)));
         setProcedureAmount(cursor.getInt(cursor.getColumnIndex(AMOUNT)));
+        setSelected(cursor.getInt(cursor.getColumnIndex(IS_SELECTED)) > 0);
     }
 
     protected Procedure(Parcel in) {
@@ -129,7 +130,8 @@ public class Procedure implements Parcelable, Table.Procedure {
                 SERVICE_CLASS_CODE + " TEXT ," +
                 CODE + " TEXT ," +
                 DESCRIPTION + " TEXT ," +
-                AMOUNT + " INTEGER  )";
+                AMOUNT + " INTEGER, " +
+                IS_SELECTED + " INTEGER DEFAULT 0 )";
     }
 
 }

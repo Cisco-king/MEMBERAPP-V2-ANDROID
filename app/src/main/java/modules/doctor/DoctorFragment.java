@@ -142,6 +142,17 @@ public class DoctorFragment extends Fragment
 
         doctorAdapter = new DoctorsAdapter(getContext(), doctors, this);
         rvDoctors.setAdapter(doctorAdapter);
+        rvDoctors.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 
     @Override

@@ -21,6 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 import InterfaceService.DoctorInterface;
@@ -179,10 +183,17 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
         array.clear();
         array.addAll(databaseHandler.retrieveDoctor(String.valueOf(editable), selectedSpec, implement.testSort(sort_by), room_number));
+
+        // get only the unique value from the set
+        Timber.d("original size with duplicate %s", array.size());
+        Set<GetDoctorsToHospital> uniqueSet = new LinkedHashSet<>(array);
+        array.clear();
+        array.addAll(uniqueSet);
+        Timber.d("new set without duplicate %s", array.size());
+
         doctorAdapter.notifyDataSetChanged();
 
         if (array.size() == 0) {
-
             ll_no_doctor_found.setVisibility(View.VISIBLE);
             rv_doctor.setVisibility(View.GONE);
             tv_no_doc.setVisibility(View.GONE);
@@ -310,4 +321,5 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
 
     }
+
 }

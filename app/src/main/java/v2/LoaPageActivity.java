@@ -1,12 +1,15 @@
 package v2;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import com.medicard.member.R;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -16,7 +19,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import InterfaceService.LoaPageInterface;
@@ -26,6 +31,7 @@ import Sqlite.DatabaseHandler;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import constants.FileGenerator;
 import constants.OutPatientConsultationForm;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.Doctor;
@@ -39,6 +45,7 @@ import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.DateConverter;
 import utilities.ErrorMessage;
+import utilities.FileUtils;
 import utilities.GenderPicker;
 import utilities.Loader;
 import utilities.NetworkTest;
@@ -309,7 +316,12 @@ public class LoaPageActivity extends AppCompatActivity
             tvDoctorInfo.setVisibility(View.GONE);
         }
 
-        if (isCancelledORExpired(loa.getStatus())) {
+        OutPatientConsultationForm build = loaFormBuilder.build();
+        if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
+            btn_download.setText(getString(R.string.view_loa));
+        }
+
+        /*if (isCancelledORExpired(loa.getStatus())) {
             ViewUtilities.hideView(tvDisclaimerInfo);
             ViewUtilities.hideView(tvDisclaimerInfo2);
         } else {
@@ -323,7 +335,7 @@ public class LoaPageActivity extends AppCompatActivity
                 tvDisclaimerInfo2.setText(getString(R.string.doctor_without_app2));
                 tvDisclaimerInfo.setText(getString(R.string.doctor_without_app));
             }
-        }
+        }*/
 
         //cas
         Timber.d("WithProvider ......... %s", loa.getWithProvider());
@@ -341,7 +353,12 @@ public class LoaPageActivity extends AppCompatActivity
 
         switch (v.getId()) {
             case R.id.btn_download:
-                screenshotCallback.onScreenShotListener();
+                OutPatientConsultationForm build = loaFormBuilder.build();
+                if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
+                    showLoaForm(this, build.getServiceType(), build.getReferenceNumber());
+                } else {
+                    screenshotCallback.onScreenShotListener();
+                }
                 break;
 
             case R.id.btn_cancel:
@@ -389,7 +406,13 @@ public class LoaPageActivity extends AppCompatActivity
         // todo generate pdf form
 //        if (Permission.checkPermissionStorage(context)) {
         if (PermissionUtililities.hasPermissionToReadAndWriteStorage(this)) {
-            generateLoaConsultationForm();
+            OutPatientConsultationForm build = loaFormBuilder.build();
+            if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
+//                showLoaForm(this, build.getServiceType(), build.getReferenceNumber());
+                onShowNotifyExistingPdfDialog(build.getServiceType(), build.getReferenceNumber());
+            } else {
+                generateLoaConsultationForm();
+            }
 
             /*Bitmap bitmap = Screenshot.loadBitmapFromView(content_loa_page);
             new ImageSaver(context).
@@ -419,6 +442,8 @@ public class LoaPageActivity extends AppCompatActivity
         btn_cancel.setVisibility(View.VISIBLE);
         btn_cancel_req.setVisibility(View.VISIBLE);
         btn_download.setVisibility(View.VISIBLE);
+
+//        btn_download.setText(getString(R.string.view_loa));
 
         alertDialogCustom.showMe(context, alertDialogCustom.CONGRATULATIONS_title, alertDialogCustom.Saved_Screenshot, 2);
     }
@@ -510,11 +535,47 @@ public class LoaPageActivity extends AppCompatActivity
         btn_cancel_req.setVisibility(View.VISIBLE);
         btn_download.setVisibility(View.VISIBLE);
 
+        btn_download.setText(getString(R.string.view_loa));
+
         alertDialogCustom.showMe(
                 context,
                 alertDialogCustom.CONGRATULATIONS_title,
                 alertDialogCustom.LOA_GENERATE_PDF_SUCCESS,
                 2);
+    }
+
+    public void onShowNotifyExistingPdfDialog(final String serviceType, final String referenceNumber) {
+        alertDialogCustom.showMe(context, alertDialogCustom.CONGRATULATIONS_title, alertDialogCustom.LOA_GENERATE_PDF_SUCCESS, 2,
+                new AlertDialogCustom.OnCustomDialogClickListener() {
+                    @Override
+                    public void onOkClick() {
+                        Timber.d("on ok with cancel functionality was clicked");
+                    }
+
+                    @Override
+                    public void onViewPdf() {
+                        showLoaForm(LoaPageActivity.this, serviceType, referenceNumber);
+                    }
+                });
+    }
+
+    public void showLoaForm(Context context, String serviceType, String referenceNumber) {
+
+        try {
+            File pdfFolder = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DCIM), "MediCard");
+
+            String loaFileName = FileGenerator.genFileName(serviceType, referenceNumber);
+            File loaFormFile = new File(pdfFolder, loaFileName + ".pdf");
+
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(loaFormFile), "application/pdf");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, "No PDF Viewer Installed", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

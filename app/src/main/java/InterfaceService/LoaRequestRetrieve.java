@@ -184,7 +184,6 @@ public class LoaRequestRetrieve {
 
     private void fetchDoctor(String doctorCode, Integer id, services.model.Doctor doctor, final DatabaseHandler databaseHandler) {
 
-        // todo we remove the not specified that making things shit
         if (doctor == null) {
             databaseHandler.setDoctorToLoaReq(
                     String.valueOf(id),

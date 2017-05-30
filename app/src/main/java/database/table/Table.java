@@ -145,12 +145,15 @@ public interface Table {
 
         String AMOUNT = "procedureAmount";
 
+        String IS_SELECTED = "isSelected";
+
         String COLUMN[] = {
                 ID,
                 SERVICE_CLASS_CODE,
                 CODE,
                 DESCRIPTION,
-                AMOUNT
+                AMOUNT,
+                IS_SELECTED
         };
 
     }

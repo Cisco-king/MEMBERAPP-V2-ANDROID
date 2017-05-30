@@ -1,5 +1,6 @@
 package modules.procedure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import modules.base.Mvp;
@@ -20,6 +21,8 @@ public interface ProcedureMvp {
     interface Presenter extends Mvp.Presenter<ProcedureMvp.View> {
 
         void loadProcedureByDiagnosisCode(final String diagnosisCode);
+
+        void updateProcedureSelectStatus(List<Procedure> procedures);
 
     }
 

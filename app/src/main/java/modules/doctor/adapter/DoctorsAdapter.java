@@ -55,6 +55,7 @@ public class DoctorsAdapter extends RecyclerView.Adapter<DoctorsAdapter.ViewHold
         holder.tvHospitalClinic.setText(doctor.getHospitalName());
     }
 
+
     public void update(List<HospitalsToDoctor> doctors) {
         this.doctors = doctors;
         notifyDataSetChanged();

@@ -1,34 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:padding="10dp"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/edSearchPrescribeAttachment"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/sub_margin"
-            android:layout_marginLeft="@dimen/sub_margin"
-            android:layout_marginRight="@dimen/sub_margin"
-            android:layout_weight="1"
-            android:background="@drawable/button_border"
-            android:hint="Search..."
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLines="1"
-            android:padding="@dimen/sub_margin"
-            android:textColor="@color/BLACK"
-            android:textSize="@dimen/text_small" />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/prescription_other_attachment"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <Button
+            android:id="@+id/btnUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_upload"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Upload Attachment"
+            android:textAllCaps="false" />
+
+
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

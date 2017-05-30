@@ -94,6 +94,9 @@ public class AlertDialogCustom {
     TextView tv_message, tv_title;
     CircleImageView ci_error_image;
     Button btn_accept, btn_cancel;
+
+    private Button onViewPdf;
+
     onClickDialogListener callback;
 
 
@@ -115,6 +118,55 @@ public class AlertDialogCustom {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+            }
+        });
+
+        setDetails(context, message, title, errorImage, btn_accept);
+
+        dialog.show();
+
+        int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.70);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.width = width;
+        dialog.getWindow().setAttributes(lp);
+    }
+
+    /**
+     *
+     * @param context
+     * @param title
+     * @param message
+     * @param errorImage
+     */
+    public void showMe(Context context, String title, String message, int errorImage, final OnCustomDialogClickListener listener) {
+
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.alert_view_pdf);
+        dialog.getWindow().setWindowAnimations(R.style.CustomDialogAnimation);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setCancelable(false);
+
+        ci_error_image = (CircleImageView) dialog.findViewById(R.id.ci_error_image);
+        tv_message = (TextView) dialog.findViewById(R.id.tv_message);
+        tv_title = (TextView) dialog.findViewById(R.id.tv_title);
+        btn_accept = (Button) dialog.findViewById(R.id.btnOk);
+        btn_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                listener.onOkClick();
+            }
+        });
+
+        dialog.findViewById(R.id.btnViewLoa)
+                .setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onViewPdf();
             }
         });
 
@@ -313,7 +365,6 @@ public class AlertDialogCustom {
             }
         });
 
-        // todo response description for confirm dialog
         tv_message.setText(requestResult.getResponseDesc());
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -350,6 +401,11 @@ public class AlertDialogCustom {
         void onOkClick();
 
         void onCancelClick();
+    }
+
+    public interface OnCustomDialogClickListener {
+        void onOkClick();
+        void onViewPdf();
     }
 
 }

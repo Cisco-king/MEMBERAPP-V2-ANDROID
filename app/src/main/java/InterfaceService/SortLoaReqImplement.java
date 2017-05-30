@@ -135,7 +135,8 @@ public class SortLoaReqImplement {
         outstanding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callback.onSortStatus(context.getString(R.string.outstanding));
+//                callback.onSortStatus(context.getString(R.string.outstanding));
+                callback.onSortStatus(context.getString(R.string.confirmed));
                 dialog.dismiss();
             }
         });

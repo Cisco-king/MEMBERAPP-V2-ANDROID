@@ -133,6 +133,21 @@
                 android:layout_marginRight="@dimen/sub_margin"
                 android:text="@string/termsNcon_ammendment_msg" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sub_margin"
+                android:text="Waiver"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="@dimen/text_small"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/sub_margin"
+                android:layout_marginRight="@dimen/sub_margin"
+                android:text="@string/waiver" />
 
             <LinearLayout
                 android:layout_width="match_parent"

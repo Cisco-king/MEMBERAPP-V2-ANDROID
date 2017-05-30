@@ -14,12 +14,14 @@
             android:id="@+id/tvHospitalOrClinicName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="Loading File ..." />
 
         <ImageButton
+            android:id="@+id/btnRemove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"

@@ -218,6 +218,8 @@
     <string name="expired">Expired</string>
     <string name="approved">Approved</string>
     <string name="outstanding">Outstanding</string>
+    <string name="confirmed">Confirmed</string>
+
     <string name="pending">Pending</string>
     <string name="cancelled">Cancelled</string>
     <string name="disapproved_">Disapproved</string>
@@ -305,5 +307,25 @@
         Schedule of the doctor is subject to changes. Please call the clinic or coordinator for confirmation
     </string>
     <string name="no_data_found">No data found.</string>
+    <string name="prescription_other_attachment">Prescription / Other Attachment</string>
+
+    <string name="disclaimer_info">
+        Please print 2 copies of the dowloaded LOA form to present directly to your consulting doctor
+        or go to the Coordinator for the issuance of LOA.
+        \n\n
+        This shall be subject to existing benefits and actual available limits under the plan.
+        Member may still be billed for the amount.
+    </string>
+
+    <string name="waiver_1">Consent is hereby given by the patient or by the next of kin (if patient cannot sign) to the disclosure and processing of the
+        patient\'s medical/health information by MediCard and its representatives, it\'s Medical Service Units/Teams and
+        it\'s Accredited Hospitals/Clinics which is determinative for the assessment of the treatment of his
+        or her illness. MediCard and it\'s representatives are also free to disclose the said information including utilization data
+        of the patient to it\'s concerned Company upon demand of the latter for such other legal purpose it may have
+        including for the proper administration of the Company\'s health benefits program. MediCard and it\'s representatives,
+        it\'s Medical Service Units/Teams and its Accredited Hospital/Clinics are hereby released from liability by reason of such disclosure.
+    </string>
+    <string name="waiver_title">Waiver</string>
+    <string name="view_loa">View LOA</string>
 
 </resources>

@@ -14,6 +14,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 import modules.base.activities.BaseActivity;
+import modules.prescriptionattachment.PrescriptionAttachmentActivity;
 import modules.procedure.adapter.ProcedureAdapter;
 import services.model.Diagnosis;
 import services.model.Procedure;
@@ -47,6 +48,7 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
     protected void initViews() {
         super.initViews();
         setToolbarCustomableTitle("Tests");
+
         diagnosis = getIntent().getParcelableExtra(KEY_DIAGNOSIS);
         if (diagnosis == null) { finish(); Timber.d("finish this activity"); }
 
@@ -63,16 +65,16 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
 
     @OnClick(R.id.fbDone)
     public void done() {
-        for (Procedure procedure : getSelectedProcedures()) {
-            Timber.d("");
-        }
+        startActivity(new Intent(this, PrescriptionAttachmentActivity.class));
+        finish();
     }
 
     @OnClick(R.id.fbAddMoreDiagnosis)
     public void addMoreDiagnosis() {
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(KEY_SELECTED_DIAGNOSIS, getSelectedProcedures());
-        
+        presenter.updateProcedureSelectStatus(this.procedures);
+
         setResult(RESULT_OK, intent);
         finish();
     }

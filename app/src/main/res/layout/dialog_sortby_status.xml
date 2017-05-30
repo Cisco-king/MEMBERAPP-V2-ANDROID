@@ -61,7 +61,7 @@
                     android:padding="@dimen/sub_margin"
                     fancy:fb_defaultColor="@color/colorPrimaryLight"
                     fancy:fb_focusColor="@color/colorPrimaryDark"
-                    fancy:fb_text="@string/outstanding"
+                    fancy:fb_text="@string/confirmed"
                     fancy:fb_textSize="@dimen/text_main" />
 
 

@@ -10,7 +10,11 @@ import android.widget.TextView;
 
 import com.medicard.member.R;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +30,7 @@ public class ProcedureAdapter extends RecyclerView.Adapter<ProcedureAdapter.View
     private List<Procedure> procedures;
 
     public ProcedureAdapter(List<Procedure> procedures) {
-        this.procedures = procedures;
+        this.procedures = filterByUniqueSet(procedures);
     }
 
     @Override
@@ -50,12 +54,18 @@ public class ProcedureAdapter extends RecyclerView.Adapter<ProcedureAdapter.View
                 procedures.get(holder.getAdapterPosition()).setSelected(isChecked);
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
         return procedures.size();
+    }
+
+    public List<Procedure> filterByUniqueSet(List<Procedure> procedures) {
+        Set<Procedure> procedureSet = new LinkedHashSet<>(procedures);
+
+        procedures = new ArrayList<>(procedureSet);
+        return procedures;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -73,7 +83,6 @@ public class ProcedureAdapter extends RecyclerView.Adapter<ProcedureAdapter.View
         public void bindData(Procedure procedure) {
             tvProcedureName.setText(procedure.getProcedureDesc());
             tvProcedureType.setText(procedure.getServiceClassCode());
-
         }
     }
 

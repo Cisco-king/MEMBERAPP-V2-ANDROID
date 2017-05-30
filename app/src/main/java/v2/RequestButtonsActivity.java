@@ -21,6 +21,7 @@ import constants.ParcelableObject;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.Member;
 import modules.tests.TestsActivity;
+import timber.log.Timber;
 import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
@@ -76,6 +77,7 @@ public class RequestButtonsActivity extends AppCompatActivity {
         isMaternityIsVisibleForThisUser(hasMaternity, gender);
 
         Log.d(TAG, "gotoRequest: memberID : " + getIntent().getExtras().getString(Constant.MEMBER_ID));
+        
         ViewUtilities.hideView(cvTests);
     }
 

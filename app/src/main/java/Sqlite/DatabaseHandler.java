@@ -12,6 +12,8 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 
 import database.entity.Doctor;
@@ -411,10 +413,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } else if (remarks.contains("AVAILED")) {
             data = status;
         } else if (DateConverter.testExpiration(DateConverter.convertDate(approvalDate, new SimpleDateFormat("yyyy-MM-dd HH:mm")))) {
-            if (remarks.contains("CONSULTATION") && status.contains("APPROVED"))
-                data = "OUTSTANDING";
-            else
+            if (remarks.contains("CONSULTATION") && status.contains("APPROVED")) {
+//                data = "OUTSTANDING";
+                data = "CONFIRMED";
+            } else {
                 data = status;
+            }
         } else {
             data = "EXPIRED";
         }
@@ -884,6 +888,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         doc.addAll(getDoctoList(cursor));
 
         database.close();
+
+        // remove all the duplicate without rearranging the actual list
+        /*Set<GetDoctorsToHospital> uniqueDoctor = new LinkedHashSet<>();
+        uniqueDoctor.addAll(doc);
+        Timber.d("doctor size befor set %s", doc.size());
+        doc.clear();
+        doc.addAll(uniqueDoctor);
+        Timber.d("doctor size after set %s", doc.size());
+        Timber.d("the set is being filter");*/
+
         return doc;
     }
 

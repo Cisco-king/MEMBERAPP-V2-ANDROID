@@ -87,7 +87,7 @@
                                 android:layout_marginLeft="@dimen/sub_margin"
                                 android:layout_marginRight="@dimen/sub_margin"
                                 android:gravity="center"
-                                android:text="" />
+                                android:text="@string/disclaimer_info" />
 
                             <ImageView
                                 android:id="@+id/img_qrcode"

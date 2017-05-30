@@ -4,7 +4,13 @@ import com.medicard.member.R;
 
 import modules.base.activities.TestTrackableActivity;
 
-public class RequestNewActivity extends TestTrackableActivity {
+/**
+ * // todo request new approval
+ */
+public class RequestNewActivity extends TestTrackableActivity implements RequestNewMvp.View {
+
+
+    private RequestNewMvp.Presenter presenter;
 
     @Override
     protected int getLayoutResource() {
@@ -14,6 +20,9 @@ public class RequestNewActivity extends TestTrackableActivity {
     @Override
     protected void initViews() {
         super.initViews();
+
+        presenter = new RequestNewPresenter();
+        presenter.attachView(this);
     }
 
 }

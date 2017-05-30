@@ -72,7 +72,7 @@ public class ProcedurePresenter implements ProcedureMvp.Presenter {
                             for (String code : proceduresCode) {
                                 Procedure procedure = procedureDao.find(code);
                                 if (procedure != null) {
-                                    Timber.d("id %s serviceClassCode %s", procedure.getId(), procedure.getServiceClassCode());
+                                    Timber.d("id %s serviceClassCode %s isSelected %s", procedure.getId(), procedure.getServiceClassCode(), procedure.isSelected());
                                     procedures.add(procedure);
                                 } else {
                                     Timber.d("procedures is black");
@@ -89,7 +89,13 @@ public class ProcedurePresenter implements ProcedureMvp.Presenter {
                         Timber.d("error message %s", t.toString());
                     }
                 });
+    }
 
+    @Override
+    public void updateProcedureSelectStatus(List<Procedure> procedures) {
+        for (Procedure procedure : procedures) {
+            procedureDao.update(procedure);
+        }
     }
 
 }
