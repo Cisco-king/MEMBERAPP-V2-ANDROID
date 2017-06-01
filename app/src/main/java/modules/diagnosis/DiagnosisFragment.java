@@ -31,10 +31,10 @@ import utilities.AlertDialogCustom;
 import utilities.ErrorMessage;
 import utilities.Loader;
 
-public class DiagnosisFragment extends Fragment implements DiagnosisMvp.View, RecyclerViewOnClickListener {
-
-
+public class DiagnosisFragment extends Fragment
+        implements DiagnosisMvp.View, RecyclerViewOnClickListener {
     @BindView(R.id.edSearchDiagnosis) TextView edSearchDiagnosis;
+
     @BindView(R.id.rvHospitalDiagnosis) RecyclerView rvHospitalDiagnosis;
 
     NewTestMvp.View newTestNavigator;
@@ -108,8 +108,12 @@ public class DiagnosisFragment extends Fragment implements DiagnosisMvp.View, Re
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+            public void onTextChanged(CharSequence query, int start, int before, int count) {
+                if (query.length() > 0) {
+                    presenter.filterDianosis(diagnosisList, query.toString());
+                } else {
+                    diagnosisAdapter.update(diagnosisList);
+                }
             }
 
             @Override
@@ -151,6 +155,15 @@ public class DiagnosisFragment extends Fragment implements DiagnosisMvp.View, Re
 
         diagnosisAdapter = new DiagnosisAdapter(getContext(), diagnosisList, this);
         rvHospitalDiagnosis.setAdapter(diagnosisAdapter);
+    }
+
+    @Override
+    public void displayFilteredDiagnosis(List<Diagnosis> diagnosisList) {
+        if (diagnosisList != null && diagnosisList.size() > 0) {
+            diagnosisAdapter.update(diagnosisList);
+        } else {
+            diagnosisAdapter.update(this.diagnosisList);
+        }
     }
 
 }

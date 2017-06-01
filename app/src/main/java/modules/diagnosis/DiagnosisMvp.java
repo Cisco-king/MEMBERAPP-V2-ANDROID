@@ -17,11 +17,15 @@ public interface DiagnosisMvp {
 
         void onDisplayDiagnosis(List<Diagnosis> diagnosisList);
 
+        void displayFilteredDiagnosis(List<Diagnosis> diagnosisList);
+
     }
 
     interface Presenter extends Mvp.Presenter<View> {
 
         void loadAllDiagnosis();
+
+        void filterDianosis(List<Diagnosis> diagnosisList, String query);
 
     }
 

@@ -62,14 +62,14 @@ public interface AppInterface {
 //    String PHOTOLINK = "http://10.10.24.195:8080/downloadpicture/";
 
 
-//    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
-//    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
+    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
+    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
 
 //    String ENDPOINT = "http://macestaging.medicardphils.com:8080/";
 //    String PHOTOLINK = "http://macestaging.medicardphils.com:8080/downloadpicture/";
 
-    String ENDPOINT = "http://125.5.100.202:8080/";
-    String PHOTOLINK = "http://125.5.100.202:8080/downloadpicture/";
+//    String ENDPOINT = "http://125.5.100.202:8080/";
+//    String PHOTOLINK = "http://125.5.100.202:8080/downloadpicture/";
 
 
     @POST("v2/registerAccount/")

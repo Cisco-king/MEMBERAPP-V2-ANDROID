@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.medicard.member.R;
 
@@ -19,6 +20,7 @@ import modules.procedure.adapter.ProcedureAdapter;
 import services.model.Diagnosis;
 import services.model.Procedure;
 import timber.log.Timber;
+import utilities.ViewUtilities;
 
 public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View {
 
@@ -32,12 +34,15 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
     @BindView(R.id.fbDone) FancyButton fbDone;
     @BindView(R.id.fbAddMoreDiagnosis) FancyButton fbAddMoreDiagnosis;
 
+    @BindView(R.id.tvNoProcedures) TextView tvNoProcedures;
+
     private Diagnosis diagnosis;
     private ProcedureMvp.Presenter presenter;
 
     private List<Procedure> procedures;
 
     private ProcedureAdapter procedureAdapter;
+
 
     @Override
     protected int getLayoutResource() {
@@ -81,9 +86,22 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
 
     @Override
     public void displayProcedureByCodeResult(List<Procedure> procedures) {
-        this.procedures = procedures;
-        procedureAdapter = new ProcedureAdapter(this.procedures);
-        rvProcedures.setAdapter(procedureAdapter);
+        if (procedures != null && procedures.size() > 0) {
+            ViewUtilities.showView(rvProcedures);
+            ViewUtilities.hideView(tvNoProcedures);
+
+            this.procedures = procedures;
+
+            procedureAdapter = new ProcedureAdapter(this.procedures);
+            rvProcedures.setAdapter(procedureAdapter);
+        } else {
+            ViewUtilities.hideView(rvProcedures);
+            ViewUtilities.showView(tvNoProcedures);
+
+            tvNoProcedures.setText("No Procedure(s) find on ");
+            tvNoProcedures.append(diagnosis.getDiagDesc());
+            tvNoProcedures.append(" Diagnosis");
+        }
     }
 
     public ArrayList<Procedure> getSelectedProcedures() {

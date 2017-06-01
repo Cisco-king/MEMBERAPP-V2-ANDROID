@@ -1,5 +1,6 @@
 package modules.diagnosis;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -69,6 +70,26 @@ public class DiagnosisPresenter implements DiagnosisMvp.Presenter {
                         diagnosisView.onDisplayErrorDialog(t.toString());
                     }
                 });
+    }
+
+    @Override
+    public void filterDianosis(List<Diagnosis> diagnosisList, String query) {
+        try {
+            query = query.toLowerCase();
+            List<Diagnosis> diagnosises = new ArrayList<>();
+            for (Diagnosis diagnosis : diagnosisList) {
+                String daignosisDescription =
+                        diagnosis.getDiagDesc() != null ? diagnosis.getDiagDesc().toLowerCase() : "";
+
+                if (daignosisDescription.contains(query)) {
+                    diagnosises.add(diagnosis);
+                }
+            }
+
+            diagnosisView.displayFilteredDiagnosis(diagnosises);
+        } catch (Exception e) {
+            Timber.d("error message %s", e.toString());
+        }
     }
 
 }

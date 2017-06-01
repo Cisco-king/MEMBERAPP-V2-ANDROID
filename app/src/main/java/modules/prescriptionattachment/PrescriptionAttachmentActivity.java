@@ -95,9 +95,10 @@ public class PrescriptionAttachmentActivity extends BaseActivity
     @OnClick(R.id.fbDone)
     public void onDoneClick() {
 //        Intent intent = new Intent(this, RequestNewActivity.class);
-        Intent intent = new Intent(this, DummyActivity.class);
+        /*Intent intent = new Intent(this, DummyActivity.class);
         intent.putExtra(ATTACHMENT, new ArrayList<>(attachments));
-        startActivity(intent);
+        startActivity(intent);*/
+        startActivity(new Intent(this, RequestNewActivity.class));
     }
 
     @Override
