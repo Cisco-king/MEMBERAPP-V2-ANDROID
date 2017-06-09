@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import com.medicard.member.R;
 import com.medicard.member.RegistrationActivity;
 
+import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
@@ -173,6 +174,56 @@ public class AlertDialogCustom {
         setDetails(context, message, title, errorImage, btn_accept);
 
         dialog.show();
+
+        int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.70);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.width = width;
+        dialog.getWindow().setAttributes(lp);
+    }
+
+    public static void alertNotification(final Context context, final String title, @StringRes int message, final OnDialogClickListener listener) {
+
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.alertshow2button);
+        dialog.getWindow().setWindowAnimations(R.style.CustomDialogAnimation);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setCancelable(false);
+
+        CircleImageView ci_error_image = (CircleImageView) dialog.findViewById(R.id.ci_error_image);
+        TextView tv_message = (TextView) dialog.findViewById(R.id.tv_message);
+        TextView tv_title = (TextView) dialog.findViewById(R.id.tv_title);
+        Button btn_accept = (Button) dialog.findViewById(R.id.btn_accept);
+        Button btn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        btn_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                listener.onOkClick();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                listener.onCancelClick();
+
+            }
+        });
+        btn_cancel.setBackgroundColor(ContextCompat.getColor(context, R.color.BLACK));
+//        setDetails(context, message, title, errorImage, btn_accept);
+
+        ci_error_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.alert_circle));
+//        btn_accept.setBackgroundColor(ContextCompat.getColor(context, R.color.BLACK));
+
+        tv_message.setText(message);
+        tv_title.setText(title);
+
+        dialog.show();
+
 
         int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.70);
 

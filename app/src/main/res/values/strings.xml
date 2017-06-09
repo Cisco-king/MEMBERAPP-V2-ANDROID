@@ -327,5 +327,7 @@
     </string>
     <string name="waiver_title">Waiver</string>
     <string name="view_loa">View LOA</string>
-
+    
+    <string name="mc_06">All tests that will be selected should be done in this clinic/hospital. Are you sure you want to select this clinic/hospital?</string>
+    <string name="warning">Warning</string>
 </resources>

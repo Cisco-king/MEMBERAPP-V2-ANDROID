@@ -321,10 +321,10 @@ public class LoaPageActivity extends AppCompatActivity
             btn_download.setText(getString(R.string.view_loa));
         }
 
-        /*if (isCancelledORExpired(loa.getStatus())) {
+        if (isCancelledORExpired(loa.getStatus())) {
             ViewUtilities.hideView(tvDisclaimerInfo);
             ViewUtilities.hideView(tvDisclaimerInfo2);
-        } else {
+        } /*else {
             // todo with provider
             ViewUtilities.showView(tvDisclaimerInfo);
             if (loa.getBooleanWithProvider()) {

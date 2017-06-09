@@ -69,6 +69,7 @@ public class PdfGenerator {
 
             if (isFieldPresent(fields, OutPatientConsultation.VALID_FROM)) {
                 fields.setField(OutPatientConsultationForm.VALID_FROM, patientForm.getValidFrom());
+
             }
 
             if (isFieldPresent(fields, OutPatientConsultation.VALID_UNTIL)) {

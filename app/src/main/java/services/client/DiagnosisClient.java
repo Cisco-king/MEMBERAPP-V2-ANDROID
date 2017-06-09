@@ -17,4 +17,12 @@ public interface DiagnosisClient {
     @GET("listing/getFilteredDiagnosisList/")
     Observable<DiagnosisResponse> getFilteredDiagnosisListRx();
 
+    @GET("listing/getDiagnosisList/")
+    Call<DiagnosisResponse> getDiagnosisList();
+
+    @GET("listing/getDiagnosisList/")
+    Observable<DiagnosisResponse> getDiagnosisListRx();
+
+
+
 }

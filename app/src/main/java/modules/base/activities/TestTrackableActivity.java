@@ -3,8 +3,16 @@ package modules.base.activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+
 import constants.ParcelableObject;
+import model.Attachment;
+import model.HospitalList;
 import model.Member;
+import services.model.HospitalsToDoctor;
+import utilities.SharedPref;
 
 /**
  * Created by John Paul Cas on 4/12/2017.
@@ -15,9 +23,11 @@ public abstract class TestTrackableActivity extends BaseActivity {
     private SharedPreferences testSharePref;
     private Member member;
 
+
     @Override
     protected void initViews() {
         super.initViews();
+
         initParcelableMember();
     }
 

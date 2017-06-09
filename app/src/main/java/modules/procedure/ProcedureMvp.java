@@ -3,6 +3,7 @@ package modules.procedure;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.newtest.DiagnosisProcedure;
 import modules.base.Mvp;
 import services.model.Procedure;
 
@@ -20,7 +21,7 @@ public interface ProcedureMvp {
 
     interface Presenter extends Mvp.Presenter<ProcedureMvp.View> {
 
-        void loadProcedureByDiagnosisCode(final String diagnosisCode);
+        void loadProcedureByDiagnosisCode(final String diagnosisCode, final List<DiagnosisProcedure> diagnosisProcedures);
 
         void updateProcedureSelectStatus(List<Procedure> procedures);
 

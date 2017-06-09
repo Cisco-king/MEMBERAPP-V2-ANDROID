@@ -52,6 +52,12 @@ public class DiagnosisAdapter extends
         holder.tvDiagnosisName.setText(diagnosis.getDiagDesc());
     }
 
+    public Diagnosis getDiagnosis(int position) {
+        if (diagnosisList.size() > 0) return diagnosisList.get(position);
+
+        return null;
+    }
+
     public void update(List<Diagnosis> diagnosisList) {
         this.diagnosisList = diagnosisList;
         notifyDataSetChanged();

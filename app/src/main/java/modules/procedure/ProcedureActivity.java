@@ -6,26 +6,34 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.medicard.member.R;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
+import model.newtest.DiagnosisProcedure;
 import modules.base.activities.BaseActivity;
 import modules.prescriptionattachment.PrescriptionAttachmentActivity;
 import modules.procedure.adapter.ProcedureAdapter;
 import services.model.Diagnosis;
 import services.model.Procedure;
 import timber.log.Timber;
+import utilities.SharedPref;
 import utilities.ViewUtilities;
 
 public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View {
 
     public static final String KEY_DIAGNOSIS = "diagnosisKey";
+    public static final String KEY_DIAGNOSIS_LIST = "diagnosisKeyList";
     public static final String KEY_SELECTED_DIAGNOSIS = "selectedDiagnosisKey";
+
+    public static final String KEY_DONE = "procedureDone";
 
 
     @BindView(R.id.rvProcedures) RecyclerView rvProcedures;
@@ -40,6 +48,9 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
     private ProcedureMvp.Presenter presenter;
 
     private List<Procedure> procedures;
+    private List<DiagnosisProcedure> diagnosisProcedures;
+
+    Gson gson;
 
     private ProcedureAdapter procedureAdapter;
 
@@ -54,7 +65,18 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
         super.initViews();
         setToolbarCustomableTitle("Tests");
 
+        gson = new Gson();
+        diagnosisProcedures = new ArrayList<>();
+
+        Type founderListType = new TypeToken<ArrayList<DiagnosisProcedure>>(){}.getType();
+
+        String diagnosisJson = getIntent().getStringExtra(KEY_DIAGNOSIS_LIST);
         diagnosis = getIntent().getParcelableExtra(KEY_DIAGNOSIS);
+
+        if (diagnosisJson != null && !diagnosisJson.equals("") && diagnosisJson.length() > 0) {
+            diagnosisProcedures = gson.fromJson(diagnosisJson, founderListType);
+        }
+
         if (diagnosis == null) { finish(); Timber.d("finish this activity"); }
 
         presenter = new ProcedurePresenter(this);
@@ -64,13 +86,18 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
 
         rvProcedures.setLayoutManager(new LinearLayoutManager(this));
 
-        presenter.loadProcedureByDiagnosisCode(diagnosis.getDiagCode());
+        presenter.loadProcedureByDiagnosisCode(diagnosis.getDiagCode(), diagnosisProcedures);
 
     }
 
     @OnClick(R.id.fbDone)
     public void done() {
-        startActivity(new Intent(this, PrescriptionAttachmentActivity.class));
+        Intent intent = new Intent();
+        intent.putParcelableArrayListExtra(KEY_SELECTED_DIAGNOSIS, getSelectedProcedures());
+        intent.putExtra(KEY_DIAGNOSIS, diagnosis);
+        intent.putExtra(KEY_DONE, true);
+
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -78,7 +105,9 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
     public void addMoreDiagnosis() {
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(KEY_SELECTED_DIAGNOSIS, getSelectedProcedures());
-        presenter.updateProcedureSelectStatus(this.procedures);
+        intent.putExtra(KEY_DIAGNOSIS, diagnosis);
+        intent.putExtra(KEY_DONE, false);
+//        presenter.updateProcedureSelectStatus(this.procedures);
 
         setResult(RESULT_OK, intent);
         finish();
@@ -86,6 +115,10 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
 
     @Override
     public void displayProcedureByCodeResult(List<Procedure> procedures) {
+        for (Procedure procedure : procedures) {
+            Timber.d("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+            Timber.d("name : %s isSelected %s", procedure.getProcedureDesc(), procedure.isSelected());
+        }
         if (procedures != null && procedures.size() > 0) {
             ViewUtilities.showView(rvProcedures);
             ViewUtilities.hideView(tvNoProcedures);

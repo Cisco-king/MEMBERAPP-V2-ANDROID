@@ -56,6 +56,9 @@ public class SharedPref {
     public static final String KEY_HAS_MATERNITY = "hasMaternity";
 
     public static final String KEY_REASON_FOR_CONSULT = "reasonForConsult";
+    public static final String KEY_DOCTOR = "doctor";
+    public static final String KEY_HOSPITAL = "hospital";
+    public static final String KEY_PROCEDURE_DIAGNOSIS = "procedureDiagnosis";
 
     public static final String KEY_HOSPITAL_FULL_ADDRESS = "fullAddress";
 

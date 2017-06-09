@@ -12,24 +12,36 @@ import java.util.List;
 import adapter.HospitalClinicAdapter;
 import butterknife.BindView;
 import model.HospitalClinic;
+import model.HospitalList;
 import modules.base.activities.TestTrackableActivity;
 import modules.diagnosis2.DiagnosisActivity;
+import modules.hospital.HospitalMvp;
+import modules.hospital.HospitalPresenter;
 import modules.requestdoctor2.RequestDoctorActivity;
 import modules.selecttest.SelectTestActivity;
 import timber.log.Timber;
+import utilities.AlertDialogCustom;
 
-public class SelectHospitalActivity extends TestTrackableActivity {
+/**
+ * This is used activities
+ */
+public class SelectHospitalActivity extends TestTrackableActivity implements HospitalMvp.View {
 
     public static final String TAG =
             SelectHospitalActivity.class.getSimpleName();
 
     private boolean fromRequestDoctor = false;
 
-
     @BindView(R.id.rvHospitalClickForAvailment) RecyclerView rvHospitalClickForAvailment;
 
-    private List<HospitalClinic> hospitalClinics;
     private HospitalClinicAdapter hospitalClinicAdapter;
+
+    /**
+     * see the implementation {@link modules.hospital.HospitalPresenter}
+     */
+    private HospitalMvp.Presenter presenter;
+
+    List<HospitalList> hospitals;
 
     private HospitalClinicAdapter.OnClickListener listener =
             new HospitalClinicAdapter.OnClickListener() {
@@ -50,35 +62,57 @@ public class SelectHospitalActivity extends TestTrackableActivity {
         super.initViews();
         setToolbarCustomableTitle("Tests");
 
+        presenter = new HospitalPresenter(this);
+        presenter.attachView(this);
+
+        hospitals = new ArrayList<>();
+
         fromRequestDoctor = getIntent().getBooleanExtra(RequestDoctorActivity.REQUEST_DOCTOR, false);
 
-        hospitalClinics = new ArrayList<>();
-        hospitalClinics = dummies();
-
-        hospitalClinicAdapter = new HospitalClinicAdapter(this, hospitalClinics, listener);
+        hospitalClinicAdapter = new HospitalClinicAdapter(this, hospitals, listener);
 
         rvHospitalClickForAvailment.setLayoutManager(new LinearLayoutManager(this));
         rvHospitalClickForAvailment.setAdapter(hospitalClinicAdapter);
+
+        presenter.loadHospitalClinic();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
     }
 
     private void onItemViewClick(int position) {
         Timber.d("The button position that click %s", position);
-        if (fromRequestDoctor) {
+        AlertDialogCustom.alertNotification(this, getString(R.string.warning), R.string.mc_06, new AlertDialogCustom.OnDialogClickListener() {
+            @Override
+            public void onOkClick() {
+                startActivity(new Intent(SelectHospitalActivity.this, DiagnosisActivity.class));
+            }
+
+            @Override
+            public void onCancelClick() {
+                Timber.d("dimiss was clicked.");
+            }
+        });
+        /*if (fromRequestDoctor) {
             startActivity(new Intent(this, DiagnosisActivity.class));
         } else {
             startActivity(new Intent(this, SelectTestActivity.class));
-        }
+        }*/
     }
 
-    public List<HospitalClinic> dummies() {
-        List<HospitalClinic> dummies = new ArrayList<>();
-        for (int i = 1; i <= 25; i++) {
-            dummies.add(
-                    new HospitalClinic.Builder()
-                            .name("Medicard Hospital " + i)
-                            .build());
-        }
-        return dummies;
+
+    @Override
+    public void displayHospitalClinic(List<HospitalList> hospitals) {
+        this.hospitals = hospitals;
+        hospitalClinicAdapter.update(hospitals);
+    }
+
+    @Override
+    public void displayFilterHospitalClinics(List<HospitalList> hospitalLists) {
+
     }
 
 }

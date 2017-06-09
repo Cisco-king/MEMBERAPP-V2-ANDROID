@@ -15,6 +15,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.HospitalClinic;
+import model.HospitalList;
 
 /**
  * Created by John Paul Cas on 4/19/2017.
@@ -27,10 +28,10 @@ public class HospitalClinicAdapter extends RecyclerView.Adapter<HospitalClinicAd
     private LayoutInflater inflater;
     private Context context;
 
-    private List<HospitalClinic> hospitalClinics;
+    private List<HospitalList> hospitalClinics;
     private OnClickListener listener;
 
-    public HospitalClinicAdapter(Context context, List<HospitalClinic> hospitalClinics, OnClickListener listener) {
+    public HospitalClinicAdapter(Context context, List<HospitalList> hospitalClinics, OnClickListener listener) {
         inflater = LayoutInflater.from(context);
 
         this.context = context;
@@ -40,14 +41,19 @@ public class HospitalClinicAdapter extends RecyclerView.Adapter<HospitalClinicAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View row = inflater.inflate(R.layout.item_hospital2, parent, false);
+        View row = inflater.inflate(R.layout.item_hospital, parent, false);
         return new ViewHolder(row);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        HospitalClinic hospital = hospitalClinics.get(position);
-        holder.tvHospitalName.setText(hospital.getName());
+        HospitalList hospital = hospitalClinics.get(position);
+        holder.tvHospitalName.setText(hospital.getHospitalName());
+    }
+
+    public void update(List<HospitalList> hospitals) {
+        this.hospitalClinics = hospitals;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -58,8 +64,7 @@ public class HospitalClinicAdapter extends RecyclerView.Adapter<HospitalClinicAd
     public class ViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        @BindView(R.id.tvHospitalName) TextView tvHospitalName;
-        @BindView(R.id.ibNext) ImageButton ibNext;
+        @BindView(R.id.tvHospitalOrClinicName) TextView tvHospitalName;
 
         public ViewHolder(View view) {
             super(view);

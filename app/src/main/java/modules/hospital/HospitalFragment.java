@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.medicard.member.R;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import modules.hospital.adapter.HospitalDoctorAdapter;
 import modules.newtest.NewTestMvp;
 import services.model.HospitalsToDoctor;
 import timber.log.Timber;
+import utilities.SharedPref;
 
 
 public class HospitalFragment extends Fragment
@@ -45,6 +47,7 @@ public class HospitalFragment extends Fragment
 
     private HospitalDoctorAdapter hospitalAdapter;
 
+    private Gson gson;
     private HospitalMvp.Presenter presenter;
 
     public HospitalFragment() {
@@ -93,6 +96,7 @@ public class HospitalFragment extends Fragment
 
     private void initComponents(View view) {
         hospitals = new ArrayList<>();
+        gson = new Gson();
 
         presenter = new HospitalPresenter(getContext());
         presenter.attachView(this);
@@ -144,6 +148,7 @@ public class HospitalFragment extends Fragment
     @Override
     public void onItemClick(int position) {
         Timber.d("item click position %s", position);
+        SharedPref.setAppPreference(getContext(), SharedPref.KEY_HOSPITAL, gson.toJson(hospitals.get(position)));
         newTestNavigator.displayDiagnosis(hospitals.get(position));
     }
 

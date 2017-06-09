@@ -51,7 +51,7 @@ public class DiagnosisPresenter implements DiagnosisMvp.Presenter {
 
     @Override
     public void loadAllDiagnosis() {
-        diagnosisClient.getFilteredDiagnosisList()
+        diagnosisClient.getDiagnosisList()
                 .enqueue(new Callback<DiagnosisResponse>() {
                     @Override
                     public void onResponse(Call<DiagnosisResponse> call, Response<DiagnosisResponse> response) {

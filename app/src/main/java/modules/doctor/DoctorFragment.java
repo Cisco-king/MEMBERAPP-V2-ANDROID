@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.medicard.member.R;
 
 import java.util.List;
@@ -27,6 +28,7 @@ import timber.log.Timber;
 import utilities.AlertDialogCustom;
 import utilities.ErrorMessage;
 import utilities.Loader;
+import utilities.SharedPref;
 
 
 public class DoctorFragment extends Fragment
@@ -41,6 +43,8 @@ public class DoctorFragment extends Fragment
 
     private NewTestMvp.View newTestNovigator;
     private DoctorMvp.Presenter presenter;
+
+    private Gson gson;
 
     private List<HospitalsToDoctor> doctors;
 
@@ -77,6 +81,8 @@ public class DoctorFragment extends Fragment
         super.onCreate(savedInstanceState);
         presenter = new DoctorPresenter(getContext());
         presenter.attachView(this);
+
+        gson = new Gson();
 
         notificationMessage = new AlertDialogCustom();
     }
@@ -176,6 +182,7 @@ public class DoctorFragment extends Fragment
     @Override
     public void onItemClick(int position) {
         HospitalsToDoctor doctor = doctors.get(position);
+        SharedPref.setAppPreference(getActivity(), SharedPref.KEY_DOCTOR, gson.toJson(doctor));
         newTestNovigator.displayHospitalView(doctor);
     }
 

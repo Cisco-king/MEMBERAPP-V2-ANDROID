@@ -34,6 +34,19 @@ public class Procedure implements Parcelable, Table.Procedure {
 
     private boolean isSelected;
 
+
+    public Procedure() {
+    }
+
+    public Procedure(Integer id, String serviceClassCode, String procedureCode, String procedureDesc, Integer procedureAmount, boolean isSelected) {
+        this.id = id;
+        this.serviceClassCode = serviceClassCode;
+        this.procedureCode = procedureCode;
+        this.procedureDesc = procedureDesc;
+        this.procedureAmount = procedureAmount;
+        this.isSelected = isSelected;
+    }
+
     public Procedure(Cursor cursor) {
         setId(cursor.getInt(cursor.getColumnIndex(ID)));
         setServiceClassCode(cursor.getString(cursor.getColumnIndex(SERVICE_CLASS_CODE)));
@@ -121,6 +134,36 @@ public class Procedure implements Parcelable, Table.Procedure {
 
     public void setSelected(boolean isSelected) {
         this.isSelected = isSelected;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Procedure)) return false;
+
+        Procedure procedure = (Procedure) o;
+
+        if (isSelected != procedure.isSelected) return false;
+        if (id != null ? !id.equals(procedure.id) : procedure.id != null) return false;
+        if (serviceClassCode != null ? !serviceClassCode.equals(procedure.serviceClassCode) : procedure.serviceClassCode != null)
+            return false;
+        if (procedureCode != null ? !procedureCode.equals(procedure.procedureCode) : procedure.procedureCode != null)
+            return false;
+        if (procedureDesc != null ? !procedureDesc.equals(procedure.procedureDesc) : procedure.procedureDesc != null)
+            return false;
+        return procedureAmount != null ? procedureAmount.equals(procedure.procedureAmount) : procedure.procedureAmount == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (serviceClassCode != null ? serviceClassCode.hashCode() : 0);
+        result = 31 * result + (procedureCode != null ? procedureCode.hashCode() : 0);
+        result = 31 * result + (procedureDesc != null ? procedureDesc.hashCode() : 0);
+        result = 31 * result + (procedureAmount != null ? procedureAmount.hashCode() : 0);
+        result = 31 * result + (isSelected ? 1 : 0);
+        return result;
     }
 
     public static final String getTableStructure() {

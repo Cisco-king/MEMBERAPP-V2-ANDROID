@@ -3,9 +3,12 @@ package modules.procedure;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import database.dao.ProcedureDao;
+import model.newtest.DiagnosisProcedure;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +56,7 @@ public class ProcedurePresenter implements ProcedureMvp.Presenter {
     }
 
     @Override
-    public void loadProcedureByDiagnosisCode(String diagnosisCode) {
+    public void loadProcedureByDiagnosisCode(final String diagnosisCode, final List<DiagnosisProcedure> diagnosisProcedures) {
 
         procedureClient.getProceduresByDiagnosisCode(diagnosisCode)
                 .enqueue(new Callback<ProcedureByDiagnosisCodeResponse>() {
@@ -72,7 +75,7 @@ public class ProcedurePresenter implements ProcedureMvp.Presenter {
                             for (String code : proceduresCode) {
                                 Procedure procedure = procedureDao.find(code);
                                 if (procedure != null) {
-                                    Timber.d("id %s serviceClassCode %s isSelected %s", procedure.getId(), procedure.getServiceClassCode(), procedure.isSelected());
+                                    Timber.d("id %s procedureDesc %s isSelected %s", procedure.getId(), procedure.getProcedureDesc(), procedure.isSelected());
                                     procedures.add(procedure);
                                 } else {
                                     Timber.d("procedures is black");
@@ -80,7 +83,13 @@ public class ProcedurePresenter implements ProcedureMvp.Presenter {
                             }
                             Timber.d("procedures %s", procedures.size());
 //                            procedureView.displayProcedureByCodeResult(procedures);
-                            procedureView.displayProcedureByCodeResult(procedures);
+
+                            List<DiagnosisProcedure> filteredDiagnosisProcedures =
+                                    filterDiagnosisProcedureByDiagnosisCode(diagnosisProcedures, diagnosisCode);
+
+                            List<Procedure> setableProcedureList = getSetableProcedureList(filteredDiagnosisProcedures, procedures);
+
+                            procedureView.displayProcedureByCodeResult(setableProcedureList);
                         }
                     }
 
@@ -91,11 +100,41 @@ public class ProcedurePresenter implements ProcedureMvp.Presenter {
                 });
     }
 
+    private List<DiagnosisProcedure> filterDiagnosisProcedureByDiagnosisCode(List<DiagnosisProcedure> diagnosisProcedures, String diagnosisCode) {
+        List<DiagnosisProcedure> diagnosisProceduresByCode = new ArrayList<>();
+
+        Timber.d("the size of diagnosisprocedure %s", diagnosisProcedures.size());
+        for (DiagnosisProcedure diagnosisProcedure : diagnosisProcedures) {
+            if (diagnosisProcedure.getDiagnosisCode().contains(diagnosisCode)) {
+                diagnosisProceduresByCode.add(diagnosisProcedure);
+            }
+        }
+        return diagnosisProceduresByCode;
+    }
+
+    private List<Procedure> getSetableProcedureList(List<DiagnosisProcedure> diagnosisProcedures, List<Procedure> procedures) {
+
+        Set<Procedure> setableObjects = new LinkedHashSet<>();
+
+        // search for same Procedure in the diagnosisProcedure if exist set the selectable to true
+        for (Procedure procedure : procedures) {
+            for (DiagnosisProcedure diagnosisProcedure : diagnosisProcedures) {
+                Timber.i("diagnosisProcedure %s == %s", diagnosisProcedure.getProcedureCode(), procedure.getProcedureCode());
+                if (diagnosisProcedure.getProcedureCode().equalsIgnoreCase(procedure.getProcedureCode())) {
+                    procedure.setSelected(true);
+                }
+            }
+            setableObjects.add(procedure);
+        }
+
+        return new ArrayList<>(setableObjects);
+    }
+
     @Override
     public void updateProcedureSelectStatus(List<Procedure> procedures) {
-        for (Procedure procedure : procedures) {
+        /*for (Procedure procedure : procedures) {
             procedureDao.update(procedure);
-        }
+        }*/
     }
 
 }

@@ -98,7 +98,9 @@ public class PrescriptionAttachmentActivity extends BaseActivity
         /*Intent intent = new Intent(this, DummyActivity.class);
         intent.putExtra(ATTACHMENT, new ArrayList<>(attachments));
         startActivity(intent);*/
-        startActivity(new Intent(this, RequestNewActivity.class));
+        Intent intent = new Intent(this, RequestNewActivity.class);
+        intent.putExtra(RequestNewActivity.ATTACHMENT, new ArrayList<>(attachments));
+        startActivity(intent);
     }
 
     @Override

@@ -30,12 +30,15 @@ import timber.log.Timber;
 import utilities.AlertDialogCustom;
 import utilities.ErrorMessage;
 import utilities.Loader;
+import utilities.ViewUtilities;
 
 public class DiagnosisFragment extends Fragment
         implements DiagnosisMvp.View, RecyclerViewOnClickListener {
     @BindView(R.id.edSearchDiagnosis) TextView edSearchDiagnosis;
 
     @BindView(R.id.rvHospitalDiagnosis) RecyclerView rvHospitalDiagnosis;
+
+    @BindView(R.id.tvMessage) TextView tvMessage;
 
     NewTestMvp.View newTestNavigator;
 
@@ -69,7 +72,6 @@ public class DiagnosisFragment extends Fragment
         if (context instanceof NewTestMvp.View) {
             newTestNavigator = (NewTestMvp.View) context;
         }
-
     }
 
     @Override
@@ -121,7 +123,6 @@ public class DiagnosisFragment extends Fragment
 
             }
         });
-
     }
 
     @Override
@@ -132,7 +133,8 @@ public class DiagnosisFragment extends Fragment
 
     @Override
     public void onItemClick(int position) {
-        Diagnosis diagnosis = diagnosisList.get(position);
+//        Diagnosis diagnosis = diagnosisList.get(position);
+        Diagnosis diagnosis = diagnosisAdapter.getDiagnosis(position);
         newTestNavigator.onStartDiagnosisProcedure(diagnosis);
     }
 
@@ -160,9 +162,22 @@ public class DiagnosisFragment extends Fragment
     @Override
     public void displayFilteredDiagnosis(List<Diagnosis> diagnosisList) {
         if (diagnosisList != null && diagnosisList.size() > 0) {
+            displayDiagnosisRecyclerView(true);
             diagnosisAdapter.update(diagnosisList);
         } else {
-            diagnosisAdapter.update(this.diagnosisList);
+//            diagnosisAdapter.update(this.diagnosisList);
+            displayDiagnosisRecyclerView(false);
+            tvMessage.setText("No Diagnosis found.");
+        }
+    }
+
+    private void displayDiagnosisRecyclerView(boolean display) {
+        if (display) {
+            ViewUtilities.showView(rvHospitalDiagnosis);
+            ViewUtilities.hideView(tvMessage);
+        } else {
+            ViewUtilities.hideView(rvHospitalDiagnosis);
+            ViewUtilities.showView(tvMessage);
         }
     }
 
