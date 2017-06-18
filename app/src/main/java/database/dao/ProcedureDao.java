@@ -83,7 +83,7 @@ public class ProcedureDao extends AbstractDao<Procedure>
     @Override
     public Procedure find(String uniqueValue) {
         open();
-        Cursor cursor = _findAllByFields(Procedure.ID + EQUALS + uniqueValue);
+        Cursor cursor = _findAllByFields(Procedure.CODE + EQUALS + "\'" + uniqueValue + "\'");
         Procedure procedure = convertCursorToObject(cursor);
         close();
 

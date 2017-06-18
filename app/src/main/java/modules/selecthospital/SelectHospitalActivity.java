@@ -11,14 +11,12 @@ import java.util.List;
 
 import adapter.HospitalClinicAdapter;
 import butterknife.BindView;
-import model.HospitalClinic;
 import model.HospitalList;
 import modules.base.activities.TestTrackableActivity;
 import modules.diagnosis2.DiagnosisActivity;
-import modules.hospital.HospitalMvp;
-import modules.hospital.HospitalPresenter;
+import com.medicard.member.module.hospital.fragment.HospitalMvp;
+import com.medicard.member.module.hospital.fragment.HospitalPresenter;
 import modules.requestdoctor2.RequestDoctorActivity;
-import modules.selecttest.SelectTestActivity;
 import timber.log.Timber;
 import utilities.AlertDialogCustom;
 
@@ -37,7 +35,7 @@ public class SelectHospitalActivity extends TestTrackableActivity implements Hos
     private HospitalClinicAdapter hospitalClinicAdapter;
 
     /**
-     * see the implementation {@link modules.hospital.HospitalPresenter}
+     * see the implementation {@link HospitalPresenter}
      */
     private HospitalMvp.Presenter presenter;
 

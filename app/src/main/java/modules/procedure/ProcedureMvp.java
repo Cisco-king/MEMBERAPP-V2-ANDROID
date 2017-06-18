@@ -23,6 +23,8 @@ public interface ProcedureMvp {
 
         void loadProcedureByDiagnosisCode(final String diagnosisCode, final List<DiagnosisProcedure> diagnosisProcedures);
 
+        void loadAllProcedures();
+
         void updateProcedureSelectStatus(List<Procedure> procedures);
 
     }

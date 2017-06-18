@@ -20,6 +20,8 @@ public interface NewTestMvp {
 
         void displayDiagnosis(HospitalList hospitalList);
 
+        void displayAllDiagnosisProcedure();
+
         void onStartDiagnosisProcedure(Diagnosis diagnosis);
 
     }

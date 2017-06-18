@@ -131,6 +131,7 @@ public class RequestNewActivity extends TestTrackableActivity
         rvAttachments.setLayoutManager(new LinearLayoutManager(this));
         rvDiagnosisDetails.setLayoutManager(new LinearLayoutManager(this));
 
+        Timber.d("the diagnosisProcedures ### %s", diagnosisProcedures.size());
         presenter.loadDiagnosisTest(diagnosisProcedures);
 
         /*if (attachments != null && attachments.size() > 0) {*/

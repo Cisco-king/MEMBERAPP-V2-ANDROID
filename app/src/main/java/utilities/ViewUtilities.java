@@ -19,7 +19,7 @@ public class ViewUtilities {
      * The View to be hide
      */
     public static final void hideView(View view) {
-        if (view.getVisibility() == View.VISIBLE) {
+        if (view.getVisibility() == View.VISIBLE || view.getVisibility() == View.INVISIBLE) {
             view.setVisibility(View.GONE);
         }
     }

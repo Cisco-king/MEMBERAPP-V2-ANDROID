@@ -1,6 +1,8 @@
-package modules.doctor;
+package com.medicard.member.module.doctor.fragment;
 
 import android.content.Context;
+
+import com.medicard.member.module.doctor.fragment.DoctorMvp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +12,11 @@ import database.entity.Doctor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
 import services.ServiceGenerator;
 import services.client.DoctorClient;
 import services.model.HospitalsToDoctor;
-import services.response.HospitalsByDoctorCodeResponse;
 import services.response.HospitalsToDoctorResponse;
 import timber.log.Timber;
 
@@ -37,8 +35,8 @@ public class DoctorPresenter implements DoctorMvp.Presenter {
 
     public DoctorPresenter(Context context) {
         doctorDao = new DoctorDao(context);
-        doctorHttpClient = AppService.createApiService(DoctorClient.class, AppInterface.ENDPOINT);
-//        doctorHttpClient = ServiceGenerator.createApiService(DoctorClient.class);
+//        doctorHttpClient = AppService.createApiService(DoctorClient.class, AppInterface.ENDPOINT);
+        doctorHttpClient = ServiceGenerator.createApiService(DoctorClient.class);
         doctorsWithHospitals = new ArrayList<>();
     }
 
@@ -61,30 +59,6 @@ public class DoctorPresenter implements DoctorMvp.Presenter {
     public void detachCallback() {
 
     }
-
-   /* @Override
-    public void getAllDoctors() {
-
-       *//* List<Doctor> doctors = doctorDao.findAll();
-        Timber.d("total doctors %s", doctors.size());
-        Timber.d("doctorCode %s", doctors.get(0).getDoctorCode());
-        *//**//*for (Doctor doctor : doctors) {
-            doctorHttpClient.getHospitalsByDoctorCode(doctor.getDoctorCode())
-                    .enqueue(new Callback<HospitalsByDoctorCodeResponse>() {
-                        @Override
-                        public void onResponse(Call<HospitalsByDoctorCodeResponse> call, Response<HospitalsByDoctorCodeResponse> response) {
-                            
-                        }
-
-                        @Override
-                        public void onFailure(Call<HospitalsByDoctorCodeResponse> call, Throwable t) {
-
-                        }
-                    });
-        };*//**//*
-
-        doctorView.displayDoctors(doctors);*//*
-    }*/
 
     @Override
     public void loadAllDoctors() {

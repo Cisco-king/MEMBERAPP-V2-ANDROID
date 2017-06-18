@@ -88,6 +88,37 @@ public class HospitalsToDoctor implements Parcelable {
     @Expose
     private String contactPerson;
 
+    public HospitalsToDoctor() {
+    }
+
+    public void init(HospitalsToDoctor doctor) {
+        this.doctorCode = doctor.getDoctorCode();
+        this.docLname = doctor.getDocLname();
+        this.docFname = doctor.getDocFname();
+        this.docMname = doctor.getDocMname();
+        this.hospitalCode = doctor.getHospitalCode();
+        this.hospitalName = doctor.getHospitalName();
+        this.specDesc = doctor.getSpecDesc();
+        this.specCode = doctor.getSpecCode();
+        this.schedule = doctor.getSchedule();
+        this.room = doctor.getRoom();
+        this.wtax = doctor.getWtax();
+        this.gracePeriod = doctor.getGracePeriod();
+        this.vat = doctor.getVat();
+        this.specialRem = doctor.getSpecialRem();
+        this.hospRemarks = doctor.getHospRemarks();
+        this.roomBoard = doctor.getRoomBoard();
+        this.remarks = doctor.getRemarks();
+        this.remarks2 = doctor.getRemarks2();
+        this.streetAddress = doctor.getStreetAddress();
+        this.city = doctor.getCity();
+        this.province = doctor.getProvince();
+        this.region = doctor.getRegion();
+        this.phoneNo = doctor.getPhoneNo();
+        this.faxno = doctor.getFaxno();
+        this.contactPerson = doctor.getContactPerson();
+    }
+
     protected HospitalsToDoctor(Parcel in) {
         doctorCode = in.readString();
         docLname = in.readString();

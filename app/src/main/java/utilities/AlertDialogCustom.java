@@ -216,8 +216,8 @@ public class AlertDialogCustom {
         btn_cancel.setBackgroundColor(ContextCompat.getColor(context, R.color.BLACK));
 //        setDetails(context, message, title, errorImage, btn_accept);
 
-        ci_error_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.alert_circle));
-//        btn_accept.setBackgroundColor(ContextCompat.getColor(context, R.color.BLACK));
+        ci_error_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.warning));
+        btn_accept.setBackgroundColor(ContextCompat.getColor(context, R.color.BLACK));
 
         tv_message.setText(message);
         tv_title.setText(title);

@@ -73,6 +73,19 @@
                     fancy:fb_focusColor="@color/colorPrimaryBlueDark"
                     fancy:fb_text="Done" />
 
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/fbSkip"
+                    android:layout_width="@dimen/btn_back_width"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    fancy:fb_defaultColor="@color/transparent"
+                    fancy:fb_focusColor="@color/colorPrimaryBlueDark"
+                    fancy:fb_text="Skip" />
+
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>

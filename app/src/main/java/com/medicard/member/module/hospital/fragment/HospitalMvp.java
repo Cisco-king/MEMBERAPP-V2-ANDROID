@@ -1,4 +1,4 @@
-package modules.hospital;
+package com.medicard.member.module.hospital.fragment;
 
 import java.util.List;
 

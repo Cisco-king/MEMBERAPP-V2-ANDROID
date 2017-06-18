@@ -16,6 +16,8 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.medicard.member.R;
+import com.medicard.member.module.hospital.fragment.HospitalMvp;
+import com.medicard.member.module.hospital.fragment.HospitalPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import core.callback.RecyclerViewOnClickListener;
-import database.dao.DoctorDao;
 import model.HospitalList;
 import modules.hospital.adapter.HospitalDoctorAdapter;
 import modules.newtest.NewTestMvp;

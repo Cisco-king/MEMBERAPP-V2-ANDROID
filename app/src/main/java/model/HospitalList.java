@@ -79,6 +79,22 @@ public class HospitalList implements Parcelable, Table.Hospital {
         this.city = city;
     }
 
+    public void init(HospitalList hospital) {
+        this.phoneNo = hospital.getPhoneNo();
+        this.region = hospital.getRegion();
+        this.streetAddress = hospital.getStreetAddress();
+        this.category = hospital.getCategory();
+        this.faxno = hospital.getFaxno();
+        this.alias = hospital.getAlias();
+        this.keyword = hospital.getKeyword();
+        this.province = hospital.getProvince();
+        this.hospitalName = hospital.getHospitalName();
+        this.hospitalCode = hospital.getHospitalCode();
+        this.coordinator = hospital.getCoordinator();
+        this.contactPerson = hospital.getContactPerson();
+        this.city = hospital.getCity();
+    }
+
     public String getPhoneNo ()
     {
         return phoneNo;

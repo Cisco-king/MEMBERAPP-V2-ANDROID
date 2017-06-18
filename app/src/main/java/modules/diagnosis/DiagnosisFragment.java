@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.medicard.member.R;
+import com.medicard.member.module.diagnosis.fragment.DiagnosisMvp;
+import com.medicard.member.module.diagnosis.fragment.DiagnosisPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +79,10 @@ public class DiagnosisFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_diagnosis, container, false);
+        View view = inflater.inflate(R.layout.fragment_diagnosis, container, false);
+
+
+        return view;
     }
 
     @Override
@@ -96,7 +101,7 @@ public class DiagnosisFragment extends Fragment
     }
 
     private void initComponents(View view) {
-        presenter = new DiagnosisPresenter();
+        presenter = new DiagnosisPresenter(getContext());
         presenter.attachView(this);
 
         loader.startLad();

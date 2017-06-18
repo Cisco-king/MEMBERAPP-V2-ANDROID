@@ -60,6 +60,8 @@ public class SharedPref {
     public static final String KEY_HOSPITAL = "hospital";
     public static final String KEY_PROCEDURE_DIAGNOSIS = "procedureDiagnosis";
 
+    public static final String KEY_DISPLAY_ALL_PROCEDURE = "displayAllProcedure";
+
     public static final String KEY_HOSPITAL_FULL_ADDRESS = "fullAddress";
 
 

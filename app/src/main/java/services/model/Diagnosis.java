@@ -21,9 +21,15 @@ public class Diagnosis implements Parcelable {
     @SerializedName("diagRemarks")
     @Expose
     private String diagRemarks;
+    @SerializedName("groupDesc")
+    @Expose
+    private String groupDesc;
     @SerializedName("type")
     @Expose
     private String type;
+    @SerializedName("typeOld")
+    @Expose
+    private String typeOld;
     @SerializedName("typeDesc")
     @Expose
     private String typeDesc;
@@ -33,18 +39,32 @@ public class Diagnosis implements Parcelable {
     @SerializedName("icd10Desc")
     @Expose
     private String icd10Desc;
+    @SerializedName("icd104c")
+    @Expose
+    private String icd104c;
     @SerializedName("status")
     @Expose
     private String status;
+
+    public Diagnosis() {
+    }
+
+    public Diagnosis(String diagCode, String diagDesc) {
+        this.diagCode = diagCode;
+        this.diagDesc = diagDesc;
+    }
 
     protected Diagnosis(Parcel in) {
         diagCode = in.readString();
         diagDesc = in.readString();
         diagRemarks = in.readString();
+        groupDesc = in.readString();
         type = in.readString();
+        typeOld = in.readString();
         typeDesc = in.readString();
         icd10Code = in.readString();
         icd10Desc = in.readString();
+        icd104c = in.readString();
         status = in.readString();
     }
 
@@ -53,10 +73,13 @@ public class Diagnosis implements Parcelable {
         dest.writeString(diagCode);
         dest.writeString(diagDesc);
         dest.writeString(diagRemarks);
+        dest.writeString(groupDesc);
         dest.writeString(type);
+        dest.writeString(typeOld);
         dest.writeString(typeDesc);
         dest.writeString(icd10Code);
         dest.writeString(icd10Desc);
+        dest.writeString(icd104c);
         dest.writeString(status);
     }
 
@@ -76,6 +99,20 @@ public class Diagnosis implements Parcelable {
             return new Diagnosis[size];
         }
     };
+
+    public void init(Diagnosis diagnosis) {
+        this.diagCode = diagnosis.getDiagCode();
+        this.diagDesc = diagnosis.getDiagDesc();
+        this.diagRemarks = diagnosis.getDiagRemarks();
+        this.groupDesc = diagnosis.getGroupDesc();
+        this.type = diagnosis.getType();
+        this.typeOld = diagnosis.getTypeOld();
+        this.typeDesc = diagnosis.getTypeDesc();
+        this.icd10Code = diagnosis.getIcd10Code();
+        this.icd10Desc = diagnosis.getIcd10Desc();
+        this.icd104c = diagnosis.getIcd104c();
+        this.status = diagnosis.getStatus();
+    }
 
     public String getDiagCode() {
         return diagCode;
@@ -101,12 +138,28 @@ public class Diagnosis implements Parcelable {
         this.diagRemarks = diagRemarks;
     }
 
+    public String getGroupDesc() {
+        return groupDesc;
+    }
+
+    public void setGroupDesc(String groupDesc) {
+        this.groupDesc = groupDesc;
+    }
+
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getTypeOld() {
+        return typeOld;
+    }
+
+    public void setTypeOld(String typeOld) {
+        this.typeOld = typeOld;
     }
 
     public String getTypeDesc() {
@@ -131,6 +184,14 @@ public class Diagnosis implements Parcelable {
 
     public void setIcd10Desc(String icd10Desc) {
         this.icd10Desc = icd10Desc;
+    }
+
+    public String getIcd104c() {
+        return icd104c;
+    }
+
+    public void setIcd104c(String icd104c) {
+        this.icd104c = icd104c;
     }
 
     public String getStatus() {

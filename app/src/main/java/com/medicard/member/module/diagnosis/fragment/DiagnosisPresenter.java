@@ -1,16 +1,25 @@
-package modules.diagnosis;
+package com.medicard.member.module.diagnosis.fragment;
+
+import android.content.Context;
+
+import com.medicard.member.module.diagnosis.fragment.DiagnosisMvp;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import database.dao.TestDao;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import services.AppInterface;
 import services.AppService;
+import services.ServiceGenerator;
 import services.client.DiagnosisClient;
+import services.client.TestClient;
 import services.model.Diagnosis;
+import services.model.Test;
 import services.response.DiagnosisResponse;
+import services.response.TestResponse;
 import timber.log.Timber;
 
 /**
@@ -23,10 +32,15 @@ public class DiagnosisPresenter implements DiagnosisMvp.Presenter {
     private DiagnosisMvp.View diagnosisView;
     private DiagnosisClient diagnosisClient;
 
+    private TestDao testDao;
+    private TestClient testClient;
 
+    public DiagnosisPresenter(Context context) {
+//        diagnosisClient = AppService.createApiService(DiagnosisClient.class, AppInterface.ENDPOINT);
+        diagnosisClient = ServiceGenerator.createApiService(DiagnosisClient.class);
+        testClient = ServiceGenerator.createApiService(TestClient.class);
 
-    public DiagnosisPresenter() {
-        diagnosisClient = AppService.createApiService(DiagnosisClient.class, AppInterface.ENDPOINT);
+        testDao = new TestDao(context);
     }
 
     @Override
@@ -58,7 +72,8 @@ public class DiagnosisPresenter implements DiagnosisMvp.Presenter {
                         Timber.d("response raw %s", response.raw().toString());
                         if (response.isSuccessful()) {
                             DiagnosisResponse diagnosisResponse = response.body();
-                            diagnosisView.onDisplayDiagnosis(diagnosisResponse.getDiagnosisList());
+                            loadAllTest(diagnosisResponse);
+//                            diagnosisView.onDisplayDiagnosis(diagnosisResponse.getDiagnosisList());
                         } else {
                             diagnosisView.onDisplayErrorDialog("An error occured.");
                         }
@@ -67,6 +82,34 @@ public class DiagnosisPresenter implements DiagnosisMvp.Presenter {
                     @Override
                     public void onFailure(Call<DiagnosisResponse> call, Throwable t) {
                             Timber.d("error message : %s", t.toString());
+                        diagnosisView.onDisplayErrorDialog(t.toString());
+                    }
+                });
+    }
+
+
+    public void loadAllTest(final DiagnosisResponse diagnosisResponse) {
+        testClient.getAllTest()
+                .enqueue(new Callback<TestResponse>() {
+                    @Override
+                    public void onResponse(Call<TestResponse> call, Response<TestResponse> response) {
+                        if (response.isSuccessful()) {
+                            List<Test> tests = response.body().getTestsList();
+                            testDao.deleteAll();
+                            Boolean success = testDao.bulkinsert(tests);
+                            if (success) {
+                                diagnosisView.onDisplayDiagnosis(diagnosisResponse.getDiagnosisList());
+                            } else {
+                                diagnosisView.onDisplayErrorDialog("An error occured.");
+                            }
+
+                        } else {
+                            diagnosisView.onDisplayErrorDialog("An error occured.");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TestResponse> call, Throwable t) {
                         diagnosisView.onDisplayErrorDialog(t.toString());
                     }
                 });

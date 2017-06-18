@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.medicard.member.R;
+import com.medicard.member.module.test.TestActivity;
 
 import Sqlite.DatabaseHandler;
 import butterknife.BindView;
@@ -41,6 +42,9 @@ public class RequestButtonsActivity extends AppCompatActivity {
     public static final String MATERNITY = "MATERNITY";
     public static final String TEST = "TEST";
     public static final String TO_DETAILS_ACT = "TO_DETAILS_ACT";
+
+    public static final int OLD_LAYOUT = 0;
+    public static final int NEW_LAYOUT = 1;
 
 
     @BindView(R.id.cvConsultanty) CardView cvConsultanty;
@@ -109,7 +113,8 @@ public class RequestButtonsActivity extends AppCompatActivity {
     @OnClick(R.id.cvTests)
     public void onStartTests() {
         try {
-            Bundle bundle = getIntent().getExtras();
+            startTest(NEW_LAYOUT);
+           /* Bundle bundle = getIntent().getExtras();
             Member member = new Member.Builder()
                     .name(bundle.getString(Constant.NAME))
                     .memberId(bundle.getString(Constant.MEMBER_ID))
@@ -122,7 +127,7 @@ public class RequestButtonsActivity extends AppCompatActivity {
             Intent intent = new Intent(this, TestsActivity.class);
             intent.putExtra(ParcelableObject.MEMBER, member);
 
-            startActivity(intent);
+            startActivity(intent);*/
 
         } catch (Exception e) {
             // do some loggable thing here
@@ -157,6 +162,25 @@ public class RequestButtonsActivity extends AppCompatActivity {
         gotoMaternity.putExtra(Constant.AGE, ageCorrector.age(getIntent().getExtras().getString(Constant.AGE)));
         startActivity(gotoMaternity);
 
+    }
+
+    public void startTest(int content) {
+        if (content == NEW_LAYOUT) {
+            Intent intent = new Intent(this, TestActivity.class);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, TestsActivity.class);
+            Bundle bundle = getIntent().getExtras();
+            Member member = new Member.Builder()
+                    .name(bundle.getString(Constant.NAME))
+                    .memberId(bundle.getString(Constant.MEMBER_ID))
+                    .company(bundle.getString(Constant.COMPANY))
+                    .gender(bundle.getString(Constant.GENDER))
+                    .age(AgeCorrector.age(bundle.getString(Constant.GENDER)))
+                    .remarks(bundle.getString(Constant.REMARK))
+                    .build();
+            startActivity(intent);
+        }
     }
 
 }

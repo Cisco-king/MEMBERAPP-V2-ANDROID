@@ -245,7 +245,7 @@
     or her illness. MediCard and it\'s representatives are also free to disclose the said information including utilization data
     of the patient to it\'s concerned Company upon demand of the latter for such other legal purpose it may have
     including for the proper administration of the Company\'s health benefits program. MediCard and it\'s representatives,
-     it\'s Medical Service Units/Teams and its Accredited Hospital/Clinics are hereby released from liability by reason of such disclosure.</string>
+     it\'s Medical Service Units/Teams and its Accredited Hospital/Clinics are hereby released from liability by simple of such disclosure.</string>
 
     <string name="consult_text_dummy">
         Hospital/Clinic : Medicard Lifestyle Center\n
@@ -257,7 +257,7 @@
 
     <string name="reason_for_consult_message">
         Please make sure that all information entered and selected in the following
-        screens should be the same as the reason for consult, diagnosis, tests/procedures
+        screens should be the same as the simple for consult, diagnosis, tests/procedures
         in the actual prescription
     </string>
 
@@ -323,11 +323,20 @@
         or her illness. MediCard and it\'s representatives are also free to disclose the said information including utilization data
         of the patient to it\'s concerned Company upon demand of the latter for such other legal purpose it may have
         including for the proper administration of the Company\'s health benefits program. MediCard and it\'s representatives,
-        it\'s Medical Service Units/Teams and its Accredited Hospital/Clinics are hereby released from liability by reason of such disclosure.
+        it\'s Medical Service Units/Teams and its Accredited Hospital/Clinics are hereby released from liability by simple of such disclosure.
     </string>
     <string name="waiver_title">Waiver</string>
     <string name="view_loa">View LOA</string>
-    
+
     <string name="mc_06">All tests that will be selected should be done in this clinic/hospital. Are you sure you want to select this clinic/hospital?</string>
     <string name="warning">Warning</string>
+    <string name="title_activity_test">Test</string>
+    <string name="title_activity_new_test_procedure">NewTestProcedureActivity</string>
+    <string name="title_activity_doctor">Doctor</string>
+    <string name="title_activity_hospital">Hospital</string>
+    <string name="title_activity_diagnosis">Diagnosis</string>
+
+    <string name="field_required">This field is required.</string>
+
+    <!-- all module text here -->
 </resources>

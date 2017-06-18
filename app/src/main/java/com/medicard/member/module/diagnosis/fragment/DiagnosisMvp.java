@@ -1,4 +1,4 @@
-package modules.diagnosis;
+package com.medicard.member.module.diagnosis.fragment;
 
 import java.util.List;
 

@@ -158,6 +158,32 @@ public interface Table {
 
     }
 
+    interface Procedure2 {
+
+        String DIAGNOSIS_CODE = "diagnosisCode";
+
+        String DIAGNOSIS_DESCRIPTION = "diagnosisDescription";
+
+        String ICD_10_CODE = "icd10Code";
+
+        String PROCEDURE_ID = "procedureId";
+
+        String PROCEDURE_CODE = "procedureCode";
+
+        String APPROVAL_ID = "approvalId";
+
+        String APPROVAL_TYPE = "approvalType";
+
+        String AMOUNT = "ammount";
+
+        String DIAGNOSIS_TYPE = "diagnosisType";
+
+        String DIAGNOSIS_TYPE_DESCRIPTION = "diagnosisTypeDescription";
+
+        String PRO_CLASS_CODE = "proClassCode";
+
+    }
+
     interface Diagnosis {
 
         String DIAGNOSIS_CODE = "diagCode";
@@ -186,6 +212,50 @@ public interface Table {
                 ICD_DESCRIPTION,
                 STATUS};
 
+    }
+
+    interface Test {
+
+        String TABLE_NAME = "test";
+
+        String DIAGNOSIS_CODE = "diagnosisCode";
+
+        String DIAGNOSIS_DESCRIPTION = "diagnosisDescription";
+
+        String ICD_CODE = "icdCode";
+
+        String PROCEDURE_CODE = "procedureCode";
+
+        String PROCEDURE_NAME = "procedureName";
+
+        String APPROVAL_ID = "approvalId";
+
+        String APPROVAL_TYPE = "approvalType";
+
+        String AMOUNT = "amount";
+
+        String COST_CENTER = "costCenter";
+
+        String PROCEDURE_GROUP_ID = "procedureGroupId";
+
+        String ACTIVE = "active";
+
+        String IS_SELECTED = "isSelected";
+
+        String COLUMNS[] = {
+                DIAGNOSIS_CODE,
+                DIAGNOSIS_DESCRIPTION,
+                ICD_CODE,
+                PROCEDURE_CODE,
+                PROCEDURE_NAME,
+                APPROVAL_ID,
+                APPROVAL_TYPE,
+                AMOUNT,
+                COST_CENTER,
+                PROCEDURE_GROUP_ID,
+                ACTIVE,
+                IS_SELECTED
+        };
     }
 
 }

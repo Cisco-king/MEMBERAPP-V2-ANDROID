@@ -27,6 +27,7 @@ import services.model.Procedure;
 import services.response.DiagnosisResponse;
 import timber.log.Timber;
 import utilities.DiagnosisUtils;
+import utilities.SharedPref;
 
 /**
  * Created by casjohnpaul on 5/30/2017.
@@ -36,11 +37,17 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
 
     private DiagnosisClient diagnosisClient;
 
+
+    private Context context;
+
     private HospitalDao hospitalDao;
     private ProcedureDao procedureDao;
     private RequestNewMvp.View requestNewView;
 
+
     public RequestNewPresenter(Context context) {
+        this.context = context;
+
         hospitalDao = new HospitalDao(context);
         procedureDao = new ProcedureDao(context);
         diagnosisClient = AppService.createApiService(DiagnosisClient.class, AppInterface.ENDPOINT);
@@ -77,22 +84,41 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
 
     @Override
     public void loadDiagnosisTest(final List<DiagnosisProcedure> diagnosisProcedures) {
-        diagnosisClient.getDiagnosisList()
-                .enqueue(new Callback<DiagnosisResponse>() {
-                    @Override
-                    public void onResponse(Call<DiagnosisResponse> call, Response<DiagnosisResponse> response) {
-                        if (response.isSuccessful()) {
+        boolean isDisplayAll = SharedPref.getBooleanValue(context, SharedPref.KEY_DISPLAY_ALL_PROCEDURE);
+        Timber.d("isDisplayAll %s", isDisplayAll);
+        if (isDisplayAll) {
+            List<DiagnosisDetails> diagnosisDetails = new ArrayList<>();
+            List<Procedure> procedures = new ArrayList<>();
 
-                            Gson gson = new Gson();
+            Diagnosis diagnosis = new Diagnosis("998", "Laboratory");
+            for (DiagnosisProcedure procedure : diagnosisProcedures) {
+                Procedure temp = procedureDao.find(procedure.getProcedureCode());
+                procedures.add(temp);
+            }
 
-                            List<DiagnosisDetails> diagnosisDetails = new ArrayList<>();
+            diagnosisDetails.add(new DiagnosisDetails(diagnosis, procedures));
+            requestNewView.displayDiagnosisDetails(diagnosisDetails);
 
-                            DiagnosisResponse diagnosisResponse = response.body();
-                            List<Diagnosis> diagnosisList = diagnosisResponse.getDiagnosisList();
-                            List<String> allOriginalDiagnosisCode = DiagnosisUtils.getAllOriginalDiagnosisCode(diagnosisProcedures);
+        } else {
+            diagnosisClient.getDiagnosisList()
+                    .enqueue(new Callback<DiagnosisResponse>() {
+                        @Override
+                        public void onResponse(Call<DiagnosisResponse> call, Response<DiagnosisResponse> response) {
+                            if (response.isSuccessful()) {
 
-                            List<Diagnosis> allDiagnosisByCode =
-                                    DiagnosisUtils.getAllDignosisByCode(diagnosisList, allOriginalDiagnosisCode);
+                                Gson gson = new Gson();
+
+                                List<DiagnosisDetails> diagnosisDetails = new ArrayList<>();
+
+                                DiagnosisResponse diagnosisResponse = response.body();
+                                List<Diagnosis> diagnosisList = diagnosisResponse.getDiagnosisList();
+
+                                // get all the diagnosis original code
+                                List<String> allOriginalDiagnosisCode = DiagnosisUtils.getAllOriginalDiagnosisCode(diagnosisProcedures);
+
+                                // get the object of original diagnosis
+                                List<Diagnosis> allDiagnosisByCode =
+                                        DiagnosisUtils.getAllDignosisByCode(diagnosisList, allOriginalDiagnosisCode);
 
                             /*for (DiagnosisProcedure dp : diagnosisProcedures) {
                                 for (Diagnosis diagnosis : allDignosisByCode) {
@@ -101,16 +127,16 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
                                     }
                                 }
                             }*/
-                            for (Diagnosis diagnosis : allDiagnosisByCode) {
-                                List<Procedure> procedures = new ArrayList<Procedure>();
-                                for (DiagnosisProcedure diagnosisProcedure : diagnosisProcedures) {
-                                    if (diagnosis.getDiagCode().equals(diagnosisProcedure.getDiagnosisCode())) {
-                                        Procedure procedure = procedureDao.find(diagnosisProcedure.getProcedureCode());
-                                        procedures.add(procedure);
+                                for (Diagnosis diagnosis : allDiagnosisByCode) {
+                                    List<Procedure> procedures = new ArrayList<>();
+                                    for (DiagnosisProcedure diagnosisProcedure : diagnosisProcedures) {
+                                        if (diagnosis.getDiagCode().equals(diagnosisProcedure.getDiagnosisCode())) {
+                                            Procedure procedure = procedureDao.find(diagnosisProcedure.getProcedureCode());
+                                            procedures.add(procedure);
+                                        }
                                     }
+                                    diagnosisDetails.add(new DiagnosisDetails(diagnosis, procedures));
                                 }
-                                diagnosisDetails.add(new DiagnosisDetails(diagnosis, procedures));
-                            }
 
                             /*for (DiagnosisDetails details : diagnosisDetails) {
                                 Timber.d("diagnosis description : %s", details.getDiagnosis().getDiagDesc());
@@ -119,17 +145,18 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
                                     Timber.i("procedure %s, procedureCode %s", procedure.getProcedureDesc(), procedure.getProcedureCode());
                                 }
                             }*/
-                            Set<DiagnosisDetails> uniqueDetails = new LinkedHashSet<>(diagnosisDetails);
-                            requestNewView.displayDiagnosisDetails(new ArrayList<>(uniqueDetails));
+                                Set<DiagnosisDetails> uniqueDetails = new LinkedHashSet<>(diagnosisDetails);
+                                requestNewView.displayDiagnosisDetails(new ArrayList<>(uniqueDetails));
 
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<DiagnosisResponse> call, Throwable t) {
-                        Timber.e("errorMessage#%s", t.toString());
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<DiagnosisResponse> call, Throwable t) {
+                            Timber.e("errorMessage#%s", t.toString());
+                        }
+                    });
+        }
 
     }
 

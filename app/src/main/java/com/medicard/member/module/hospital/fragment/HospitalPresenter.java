@@ -1,6 +1,8 @@
-package modules.hospital;
+package com.medicard.member.module.hospital.fragment;
 
 import android.content.Context;
+
+import com.medicard.member.module.hospital.fragment.HospitalMvp;
 
 import java.util.ArrayList;
 import java.util.List;

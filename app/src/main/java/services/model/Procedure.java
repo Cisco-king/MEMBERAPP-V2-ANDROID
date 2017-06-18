@@ -13,6 +13,10 @@ import database.table.Table;
  * <p>
  *     This Procedure serve also as database model
  * </p>
+ *
+ * <p>
+ *     (x) This is not use at 6/14/2017 please refer to {@link Procedures}
+ * </p>
  */
 public class Procedure implements Parcelable, Table.Procedure {
 

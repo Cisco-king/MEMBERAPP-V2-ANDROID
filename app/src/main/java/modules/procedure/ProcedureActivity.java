@@ -33,6 +33,8 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
     public static final String KEY_DIAGNOSIS_LIST = "diagnosisKeyList";
     public static final String KEY_SELECTED_DIAGNOSIS = "selectedDiagnosisKey";
 
+    public static final String KEY_DISPLAY_ALL = "displayAll";
+
     public static final String KEY_DONE = "procedureDone";
 
 
@@ -54,6 +56,8 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
 
     private ProcedureAdapter procedureAdapter;
 
+    private boolean displayAll;
+
 
     @Override
     protected int getLayoutResource() {
@@ -70,14 +74,21 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
 
         Type founderListType = new TypeToken<ArrayList<DiagnosisProcedure>>(){}.getType();
 
-        String diagnosisJson = getIntent().getStringExtra(KEY_DIAGNOSIS_LIST);
-        diagnosis = getIntent().getParcelableExtra(KEY_DIAGNOSIS);
+        displayAll = getIntent().getBooleanExtra(KEY_DISPLAY_ALL, false);
 
+        // determine if gonna show all diagnosis or not
+        String diagnosisJson = getIntent().getStringExtra(KEY_DIAGNOSIS_LIST);
         if (diagnosisJson != null && !diagnosisJson.equals("") && diagnosisJson.length() > 0) {
             diagnosisProcedures = gson.fromJson(diagnosisJson, founderListType);
         }
 
-        if (diagnosis == null) { finish(); Timber.d("finish this activity"); }
+        if (!displayAll) {
+            diagnosis = getIntent().getParcelableExtra(KEY_DIAGNOSIS);
+
+            if (diagnosis == null) {
+                Timber.d("finish this activity");
+            }
+        }
 
         presenter = new ProcedurePresenter(this);
         presenter.attachView(this);
@@ -86,8 +97,11 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
 
         rvProcedures.setLayoutManager(new LinearLayoutManager(this));
 
-        presenter.loadProcedureByDiagnosisCode(diagnosis.getDiagCode(), diagnosisProcedures);
-
+        if (displayAll) {
+            presenter.loadAllProcedures();
+        } else {
+            presenter.loadProcedureByDiagnosisCode(diagnosis.getDiagCode(), diagnosisProcedures);
+        }
     }
 
     @OnClick(R.id.fbDone)
@@ -96,6 +110,7 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
         intent.putParcelableArrayListExtra(KEY_SELECTED_DIAGNOSIS, getSelectedProcedures());
         intent.putExtra(KEY_DIAGNOSIS, diagnosis);
         intent.putExtra(KEY_DONE, true);
+        intent.putExtra(KEY_DISPLAY_ALL, displayAll);
 
         setResult(RESULT_OK, intent);
         finish();
@@ -107,6 +122,7 @@ public class ProcedureActivity extends BaseActivity implements ProcedureMvp.View
         intent.putParcelableArrayListExtra(KEY_SELECTED_DIAGNOSIS, getSelectedProcedures());
         intent.putExtra(KEY_DIAGNOSIS, diagnosis);
         intent.putExtra(KEY_DONE, false);
+        intent.putExtra(KEY_DISPLAY_ALL, displayAll);
 //        presenter.updateProcedureSelectStatus(this.procedures);
 
         setResult(RESULT_OK, intent);

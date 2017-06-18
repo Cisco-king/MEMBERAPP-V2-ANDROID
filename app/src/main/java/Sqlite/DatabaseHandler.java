@@ -29,6 +29,7 @@ import model.SimpleData;
 import model.Specializations;
 import model.SpecsAdapter;
 import services.model.Procedure;
+import services.model.Test;
 import timber.log.Timber;
 import utilities.Constant;
 import utilities.DateConverter;
@@ -157,7 +158,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // added new column
 
-    private static final int version = 3;
+    private static final int version = 4;
 
     //
     private String createLoaRequest = " CREATE TABLE " +
@@ -301,6 +302,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.execSQL(Doctor.getTableStructure());
         db.execSQL(Procedure.getTableStructure());
+        db.execSQL(Test.getTableStructure());
 
         String data = "";
         String filterNull = "";
@@ -336,6 +338,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS " + Doctor.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Procedure.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Test.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + hospTable);
         db.execSQL("DROP TABLE IF EXISTS " + doctable);
         db.execSQL("DROP TABLE IF EXISTS " + loaTable);

@@ -32,7 +32,6 @@
 
 
                 <mehdi.sakout.fancybuttons.FancyButton
-
                     android:id="@+id/btnBack"
                     android:layout_width="@dimen/btn_back_width"
                     android:layout_height="match_parent"
@@ -56,6 +55,14 @@
                     android:id="@+id/btnNext"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_action_arrow_left" />
+
+                <ImageButton
+                    android:id="@+id/btnSkip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_action_arrow_left" />
 

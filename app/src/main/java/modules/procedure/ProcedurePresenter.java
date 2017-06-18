@@ -30,6 +30,7 @@ public class ProcedurePresenter implements ProcedureMvp.Presenter {
 
     private ProcedureMvp.View procedureView;
 
+
     public ProcedurePresenter(Context context) {
         procedureClient = AppService.createApiService(ProcedureClient.class, AppInterface.ENDPOINT);
         procedureDao = new ProcedureDao(context);
@@ -78,7 +79,7 @@ public class ProcedurePresenter implements ProcedureMvp.Presenter {
                                     Timber.d("id %s procedureDesc %s isSelected %s", procedure.getId(), procedure.getProcedureDesc(), procedure.isSelected());
                                     procedures.add(procedure);
                                 } else {
-                                    Timber.d("procedures is black");
+                                    Timber.d("procedures is block");
                                 }
                             }
                             Timber.d("procedures %s", procedures.size());
@@ -98,6 +99,12 @@ public class ProcedurePresenter implements ProcedureMvp.Presenter {
                         Timber.d("error message %s", t.toString());
                     }
                 });
+    }
+
+    @Override
+    public void loadAllProcedures() {
+        List<Procedure> all = procedureDao.findAll();
+        procedureView.displayProcedureByCodeResult(all);
     }
 
     private List<DiagnosisProcedure> filterDiagnosisProcedureByDiagnosisCode(List<DiagnosisProcedure> diagnosisProcedures, String diagnosisCode) {

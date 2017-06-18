@@ -141,23 +141,6 @@ public class PdfGenerator {
                 fields.setField(OutPatientConsultationForm.BATCH_CODE, patientForm.getBatchCode());
             }
 
-//            fields.setField(OutPatientConsultationForm.VALID_UNTIL, patientForm.getValidUntil());
-//            fields.setField(OutPatientConsultationForm.DATE_OF_CONSULT, patientForm.getDateOfConsult());
-//            fields.setField(OutPatientConsultationForm.REFERENCE_NUMBER, patientForm.getReferenceNumber());
-//            fields.setField(OutPatientConsultationForm.DOCTOR, patientForm.getDoctor());
-//            fields.setField(OutPatientConsultationForm.HOSPITAL, patientForm.getHospital());
-//            fields.setField(OutPatientConsultationForm.MEMBER_NAME, patientForm.getMemberName());
-//            fields.setField(OutPatientConsultationForm.AGE, patientForm.getAge());
-//            fields.setField(OutPatientConsultationForm.GENDER, patientForm.getGender());
-//            fields.setField(OutPatientConsultationForm.MEMBER_ID, patientForm.getMemberId());
-//            fields.setField(OutPatientConsultationForm.COMPANY, patientForm.getCompany());
-//            fields.setField(OutPatientConsultationForm.REMARKS, remarks);
-//            fields.setField(OutPatientConsultationForm.DATE_EFFECTIVITY, patientForm.getDateEffectivity());
-//            fields.setField(OutPatientConsultationForm.VALIDITY_DATE, patientForm.getValidityDate());
-//            fields.setField(OutPatientConsultationForm.CHIEF_COMPLAINT, patientForm.getChiefComplaint());
-//            fields.setField(OutPatientConsultationForm.HISTORY_oF_PERSENT_ILLNESS, patientForm.getHistoryOfPresentIllness());
-//            fields.setField(OutPatientConsultationForm.PAST_OR_FAMILY_HISTORY, patientForm.getPastOrFamilyHistory());
-
             // remove the field to make the pdf look like clean
             stamper.setFormFlattening(true);
             stamper.close();

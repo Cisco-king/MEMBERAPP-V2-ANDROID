@@ -16,6 +16,8 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.medicard.member.R;
+import com.medicard.member.module.doctor.fragment.DoctorMvp;
+import com.medicard.member.module.doctor.fragment.DoctorPresenter;
 
 import java.util.List;
 

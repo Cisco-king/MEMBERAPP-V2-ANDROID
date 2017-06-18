@@ -567,7 +567,6 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
             String loaFileName = FileGenerator.genFileName(serviceType, referenceNumber);
             File loaFormFile = new File(pdfFolder, loaFileName + ".pdf");
 
-
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.fromFile(loaFormFile), "application/pdf");
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
