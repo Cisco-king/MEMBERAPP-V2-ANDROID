@@ -91,9 +91,10 @@ public class SelectHospitalActivity extends TestTrackableActivity implements Hos
 
             @Override
             public void onCancelClick() {
-                Timber.d("dimiss was clicked.");
+                Timber.d("dismiss was clicked.");
             }
         });
+
         /*if (fromRequestDoctor) {
             startActivity(new Intent(this, DiagnosisActivity.class));
         } else {

@@ -6,6 +6,6 @@ package constants;
 
 public class MedicardConfig {
 
-    public static final String APP_NAME = "member";
+    public static final String APP_NAME = "MEMBER";
 
 }

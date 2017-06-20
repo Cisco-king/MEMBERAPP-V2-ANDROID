@@ -10,6 +10,7 @@ import com.medicard.member.module.base.BaseActivity;
 import com.medicard.member.module.doctor.fragment.DoctorFragment;
 import com.medicard.member.module.hospital.HospitalActivity;
 
+import modules.requestnewapproval.RequestNewActivity;
 import timber.log.Timber;
 
 /**
@@ -32,8 +33,11 @@ public class DoctorActivity extends BaseActivity
     @Override
     protected void initComponents(Bundle savedInstanceState) {
         super.initComponents(savedInstanceState);
+
+        boolean isFromDoctor = getIntent().getBooleanExtra(RequestNewActivity.FROM_DOCTOR, false);
+
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.flContainer, DoctorFragment.newInstance())
+                .replace(R.id.flContainer, DoctorFragment.newInstance(isFromDoctor))
                 .commit();
     }
 
@@ -42,5 +46,11 @@ public class DoctorActivity extends BaseActivity
         Timber.d("doctor %s and hospital %s", DoctorSession.getDoctor().getFullName(), DoctorSession.getDoctor().getHospitalName());
         Timber.d("reason for consult %s", ConsultSession.getReasonForConsult());
         startActivity(new Intent(this, HospitalActivity.class));
+    }
+
+    @Override
+    public void fromNewRequestReselected() {
+        setResult(RESULT_OK);
+        finish();
     }
 }

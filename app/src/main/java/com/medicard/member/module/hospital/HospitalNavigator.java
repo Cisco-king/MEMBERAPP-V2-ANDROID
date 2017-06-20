@@ -10,4 +10,6 @@ public interface HospitalNavigator {
 
     void onHospitalSelected();
 
+    void onHospitalReselected();
+
 }

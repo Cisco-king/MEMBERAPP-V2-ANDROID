@@ -158,7 +158,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // added new column
 
-    private static final int version = 4;
+    private static final int version = 6;
 
     //
     private String createLoaRequest = " CREATE TABLE " +

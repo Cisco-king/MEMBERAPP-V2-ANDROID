@@ -55,7 +55,7 @@ public class TestProcedureAdapter extends RecyclerView.Adapter<TestProcedureAdap
 
     @Override
     public int getItemCount() {
-        return 0;
+        return tests.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -74,9 +74,9 @@ public class TestProcedureAdapter extends RecyclerView.Adapter<TestProcedureAdap
         }
 
         public void bindData(Test procedure) {
-            tvProcedureName.setText(procedure.getProcCode());
+            tvProcedureName.setText(procedure.getProcedureName());
 //            tvProcedureType.setText(procedure.getServiceClassCode());
-            tvProcedureType.setText(procedure.getDiagDesc());
+            tvProcedureType.setText(procedure.getCostCenter());
 
         }
     }

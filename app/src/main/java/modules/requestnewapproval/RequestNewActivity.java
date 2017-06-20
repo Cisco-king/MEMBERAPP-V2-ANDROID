@@ -18,6 +18,11 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.medicard.member.R;
+import com.medicard.member.core.session.ConsultSession;
+import com.medicard.member.core.session.DoctorSession;
+import com.medicard.member.core.session.HospitalSession;
+import com.medicard.member.module.doctor.DoctorActivity;
+import com.medicard.member.module.hospital.HospitalActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +55,12 @@ public class RequestNewActivity extends TestTrackableActivity
         implements RequestNewMvp.View, AttachmentAdapter.OnAttachmentClickListener {
     public static final String ATTACHMENT = "attachment";
     public static final int SELECT_ATTACHMENT = 1200;
+
+    public static final String FROM_DOCTOR = "fromDoctor";
+    public static final int FROM_DOCTOR_REQUEST = 100;
+
+    public static final String FROM_HOSPITAL = "fromHospital";
+    public static final int FROM_HOSPITAL_REQUEST = 200;
 
     @BindView(R.id.etReasonForConsult) EditText etReasonForConsult;
 
@@ -84,6 +95,7 @@ public class RequestNewActivity extends TestTrackableActivity
     private List<DiagnosisDetails> diagnosisDetails;
 
     private HospitalsToDoctor doctor;
+    private HospitalList hospital;
 
     @Override
     protected int getLayoutResource() {
@@ -106,16 +118,20 @@ public class RequestNewActivity extends TestTrackableActivity
 
         diagnosisDetails = new ArrayList<>();
 
-        String doctorJson = SharedPref.getPreferenceByKey(context, SharedPref.KEY_DOCTOR);
-        doctor = gson.fromJson(doctorJson, HospitalsToDoctor.class);
+//        String doctorJson = SharedPref.getPreferenceByKey(context, SharedPref.KEY_DOCTOR);
+//        doctor = gson.fromJson(doctorJson, HospitalsToDoctor.class);
+        doctor = DoctorSession.getDoctor();
 
-        String hospitalJson = SharedPref.getPreferenceByKey(context, SharedPref.KEY_HOSPITAL);
-        HospitalList hospital = gson.fromJson(hospitalJson, HospitalList.class);
+//        String hospitalJson = SharedPref.getPreferenceByKey(context, SharedPref.KEY_HOSPITAL);
+//        HospitalList hospital = gson.fromJson(hospitalJson, HospitalList.class);
+        hospital = HospitalSession.getHospital();
 
-        String diagnosisProcedureJson = SharedPref.getPreferenceByKey(context, SharedPref.KEY_PROCEDURE_DIAGNOSIS);
-        diagnosisProcedures = gson.fromJson(diagnosisProcedureJson, founderListType);
+//        String diagnosisProcedureJson = SharedPref.getPreferenceByKey(context, SharedPref.KEY_PROCEDURE_DIAGNOSIS);
+//        diagnosisProcedures = gson.fromJson(diagnosisProcedureJson, founderListType);
 
-        reasonForConsult = SharedPref.getPreferenceByKey(context, SharedPref.KEY_REASON_FOR_CONSULT);
+//        reasonForConsult = SharedPref.getPreferenceByKey(context, SharedPref.KEY_REASON_FOR_CONSULT);
+        reasonForConsult = ConsultSession.getReasonForConsult();
+
         attachments = getIntent().getParcelableArrayListExtra(ATTACHMENT);
 
         presenter = new RequestNewPresenter(this);
@@ -132,7 +148,7 @@ public class RequestNewActivity extends TestTrackableActivity
         rvDiagnosisDetails.setLayoutManager(new LinearLayoutManager(this));
 
         Timber.d("the diagnosisProcedures ### %s", diagnosisProcedures.size());
-        presenter.loadDiagnosisTest(diagnosisProcedures);
+//        presenter.loadDiagnosisTest(diagnosisProcedures);
 
         /*if (attachments != null && attachments.size() > 0) {*/
             attachmentAdapter = new AttachmentAdapter(attachments, this);
@@ -199,6 +215,18 @@ public class RequestNewActivity extends TestTrackableActivity
                 }
             }
         }
+
+        if (resultCode == RESULT_OK && requestCode == FROM_DOCTOR_REQUEST) {
+            doctor = DoctorSession.getDoctor();
+            tvDoctorDetails.setText("");
+            tvDoctorDetails.setText(doctor.getFullName());
+            tvDoctorDetails.append(getDoctorDetails(doctor));
+        }
+
+        if (resultCode == RESULT_OK && requestCode == FROM_HOSPITAL_REQUEST) {
+            hospital = HospitalSession.getHospital();
+            tvHospitalAvailment.setText(hospital.getHospitalName());
+        }
     }
 
     @Override
@@ -234,6 +262,21 @@ public class RequestNewActivity extends TestTrackableActivity
         diagnosisDetailsAdapter = new DiagnosisDetailsAdapter(diagnosisDetails);
         rvDiagnosisDetails.setAdapter(diagnosisDetailsAdapter);
     }
+
+    @OnClick(R.id.cvRequestDoctor)
+    public void onReselectDoctor() {
+        Intent intent = new Intent(this, DoctorActivity.class);
+        intent.putExtra(FROM_DOCTOR, true);
+        startActivityForResult(intent, FROM_DOCTOR_REQUEST);
+    }
+
+    @OnClick(R.id.cvHospitalClinicForAvailment)
+    public void onHospitalReselected() {
+        Intent intent = new Intent(this, HospitalActivity.class);
+        intent.putExtra(FROM_HOSPITAL, true);
+        startActivityForResult(intent, FROM_HOSPITAL_REQUEST);
+    }
+
 
     public String getDoctorDetails(HospitalsToDoctor doctor) {
         return new StringBuilder(doctor.getFullName())

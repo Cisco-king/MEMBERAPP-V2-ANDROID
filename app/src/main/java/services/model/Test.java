@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import database.table.Table;
+import timber.log.Timber;
 
 /**
  * Created by casjohnpaul on 6/19/2017.
@@ -57,6 +58,7 @@ public class Test implements Table.Test {
     private boolean isSelected;
 
     public Test(Cursor cursor) {
+        Timber.d("converting cursor");
         this.diagCode = cursor.getString(cursor.getColumnIndex(DIAGNOSIS_CODE));
         this.diagDesc = cursor.getString(cursor.getColumnIndex(DIAGNOSIS_DESCRIPTION));
         this.icd10Code = cursor.getString(cursor.getColumnIndex(ICD_CODE));
@@ -68,6 +70,7 @@ public class Test implements Table.Test {
         this.costCenter = cursor.getString(cursor.getColumnIndex(COST_CENTER));
         this.procedureGroupId = cursor.getString(cursor.getColumnIndex(PROCEDURE_GROUP_ID));
         this.active = cursor.getString(cursor.getColumnIndex(ACTIVE));
+        setSelected(cursor.getInt(cursor.getColumnIndex(IS_SELECTED)) > 0);
     }
 
 
@@ -196,7 +199,7 @@ public class Test implements Table.Test {
                 AMOUNT + " INTEGER, " +
                 COST_CENTER + " TEXT, " +
                 PROCEDURE_GROUP_ID + " TEXT, " +
-                ACTIVE + " TEXT )" +
+                ACTIVE + " TEXT, " +
                 IS_SELECTED + " INTEGER DEFAULT 0 )";
     }
 

@@ -2,6 +2,7 @@ package com.medicard.member.module.diagnosistest;
 
 import android.content.Context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import database.dao.TestDao;
@@ -10,7 +11,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import services.ServiceGenerator;
 import services.client.ProcedureClient;
+import services.model.Test;
 import services.response.ProcedureByDiagnosisCodeResponse;
+import timber.log.Timber;
 
 /**
  * Created by casjohnpaul on 6/19/2017.
@@ -59,16 +62,43 @@ public class TestByDiagnosisPresenter implements TestByDiagnosisMvp.Presenter {
                 .enqueue(new Callback<ProcedureByDiagnosisCodeResponse>() {
                     @Override
                     public void onResponse(Call<ProcedureByDiagnosisCodeResponse> call, Response<ProcedureByDiagnosisCodeResponse> response) {
+
+                        List<Test> tests = new ArrayList<>();
+
                         if (response.isSuccessful()) {
-                            List<String> procedureCode = response.body().getProcedures();
+                            List<String> procedureCodes = response.body().getProcedures();
+                            for (String code : procedureCodes) {
+                                Test test = testDao.find(code);
+                                if (test != null) {
+                                    tests.add(test);
+                                    Timber.d("tests %s", test.getProcedureName());
+                                }
+                            }
+                            Timber.d("total test %s", tests.size());
+                            if (tests != null && tests.size() > 0) {
+                                Timber.d("tests %s", tests.get(0).getProcCode());
+                            }
+
+                            testView.onSuccess(tests);
+                        } else {
+                            testView.onError("response error");
+                            Timber.d("response got error");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ProcedureByDiagnosisCodeResponse> call, Throwable t) {
-
+                        Timber.d("error#%s", t.toString());
+                        testView.onError(t.toString());
                     }
                 });
+    }
+
+    @Override
+    public void loadAllTests() {
+        List<Test> all = testDao.findAll();
+        Timber.d("all tests %s", all.size());
+        testView.onSuccess(all);
     }
 
 }

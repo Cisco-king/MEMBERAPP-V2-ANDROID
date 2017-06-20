@@ -29,6 +29,7 @@ import modules.hospital.adapter.HospitalDoctorAdapter;
 public class HospitalFragment extends BaseFragment
         implements HospitalMvp.View, RecyclerViewOnClickListener {
 
+    public static final String FROM_NEW_REQUEST = "fromNewRequest";
 
     @BindView(R.id.edSearchHospitalClinic) EditText edSearchHospitalClinic;
     @BindView(R.id.rvHospitalClinic) RecyclerView rvHospitalClinic;
@@ -39,10 +40,12 @@ public class HospitalFragment extends BaseFragment
     private HospitalDoctorAdapter hospitalAdapter;
     private List<HospitalList> hospitals;
 
+    private boolean fromNewRequest = false;
 
-    public static HospitalFragment newInstance() {
+    public static HospitalFragment newInstance(boolean fromHospital) {
 
         Bundle args = new Bundle();
+        args.putBoolean(FROM_NEW_REQUEST, fromHospital);
 
         HospitalFragment fragment = new HospitalFragment();
         fragment.setArguments(args);
@@ -68,6 +71,8 @@ public class HospitalFragment extends BaseFragment
     @Override
     protected void initComponents(View view, Bundle savedInstanceState) {
         super.initComponents(view, savedInstanceState);
+        fromNewRequest = getArguments().getBoolean(FROM_NEW_REQUEST, false);
+
         presenter = new HospitalPresenter(context);
         presenter.attachView(this);
 
@@ -95,7 +100,11 @@ public class HospitalFragment extends BaseFragment
     public void onItemClick(int position) {
         HospitalList hospital = hospitals.get(position);
         HospitalSession.setHospital(hospital);
-        navigator.onHospitalSelected();
+        if (fromNewRequest) {
+            navigator.onHospitalReselected();
+        } else {
+            navigator.onHospitalSelected();
+        }
     }
 
     public class Search implements TextWatcher {

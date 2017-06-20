@@ -11,4 +11,6 @@ public interface DoctorNavigator {
      */
     void onDoctorSelected();
 
+    void fromNewRequestReselected();
+
 }

@@ -1,30 +1,44 @@
 package com.medicard.member.module.diagnosistest;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.medicard.member.R;
+import com.medicard.member.core.model.DiagnosisTests;
 import com.medicard.member.core.session.DiagnosisSession;
+import com.medicard.member.core.session.DiagnosisTestSession;
 import com.medicard.member.module.base.BaseActivity;
+import com.medicard.member.module.diagnosistest.adapter.TestProcedureAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.newtest.DiagnosisProcedure;
 import modules.procedure.adapter.ProcedureAdapter;
+import modules.tests.Tests;
 import services.model.Diagnosis;
 import services.model.Test;
+import timber.log.Timber;
+import utilities.DialogUtils;
 import utilities.Loader;
+import utilities.ViewUtilities;
 
 /**
  * Created by casjohnpaul on 6/19/2017.
  */
 
 public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagnosisMvp.View {
+
+
+    public static final String KEY_DONE = "keyDone";
+    public static final String KEY_DISPLAY_ALL = "displayAll";
 
     @BindView(R.id.rvProcedures)
     RecyclerView rvProcedures;
@@ -33,7 +47,8 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
 
     @BindView(R.id.fbDone)
     FancyButton fbDone;
-    @BindView(R.id.fbAddMoreDiagnosis) FancyButton fbAddMoreDiagnosis;
+    @BindView(R.id.fbAddMoreDiagnosis)
+    FancyButton fbAddMoreDiagnosis;
 
     @BindView(R.id.tvNoProcedures)
     TextView tvNoProcedures;
@@ -46,8 +61,11 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
     private List<DiagnosisProcedure> diagnosisProcedures;
 
     private ProcedureAdapter procedureAdapter;
+    private TestProcedureAdapter testAdapter;
 
     private Loader loader;
+
+    private boolean displayAll;
 
     @Override
     protected String activityTitle() {
@@ -65,17 +83,115 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
         presenter = new TestByDiagnosisPresenter(context);
         presenter.attachView(this);
 
+        displayAll = getIntent().getBooleanExtra(KEY_DISPLAY_ALL, false);
+
+        tests = new ArrayList<>();
+
         loader = new Loader(context);
         loader.startLad();
         loader.setMessage("Loading resource");
 
         diagnosis = DiagnosisSession.getDiagnosis();
 
-        tests = new ArrayList<>();
+        rvProcedures.setLayoutManager(new LinearLayoutManager(context));
 
-        presenter.loadTestProcedureByDiagnosisCode(diagnosis.getDiagCode());
+        Timber.d("this is the diagnosis %s", diagnosis.getDiagCode());
+
+        if (displayAll) {
+            ViewUtilities.hideView(fbAddMoreDiagnosis);
+            presenter.loadAllTests();
+        } else {
+            ViewUtilities.showView(fbAddMoreDiagnosis);
+            presenter.loadTestProcedureByDiagnosisCode(diagnosis.getDiagCode());
+        }
     }
 
+    @OnClick(R.id.fbDone)
+    public void onDoneClick() {
+        Intent intent = new Intent();
+        intent.putExtra(KEY_DONE, true);
+        intent.putExtra(KEY_DISPLAY_ALL, displayAll);
+        setResult(RESULT_OK, intent);
+        if (displayAll) {
+            DiagnosisTests diagnosisTest = new DiagnosisTests();
+            diagnosisTest.setTests(getSelectedTests());
 
+            DiagnosisTestSession.setDiagnosisTests(diagnosisTest);
+            DiagnosisTestSession.setDisplayAll(displayAll);
+        }
+        finish();
+    }
+
+    @OnClick(R.id.fbAddMoreDiagnosis)
+    public void onAddMoreDiagnosis() {
+
+        DiagnosisTests diagnosisTests =
+            new DiagnosisTests(diagnosis, getSelectedTests());
+        DiagnosisTestSession.setDiagnosisTests(diagnosisTests);
+
+        Intent intent = new Intent();
+        intent.putExtra(KEY_DISPLAY_ALL, displayAll);
+        intent.putExtra(KEY_DONE, false);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void onSuccess(List<Test> tests) {
+        loader.stopLoad();
+        if (tests != null && tests.size() > 0) {
+            this.tests = tests;
+
+            ViewUtilities.showView(rvProcedures);
+            ViewUtilities.hideView(tvNoProcedures);
+
+            testAdapter = new TestProcedureAdapter(this.tests);
+            rvProcedures.setAdapter(testAdapter);
+        } else {
+            ViewUtilities.hideView(rvProcedures);
+            ViewUtilities.showView(tvNoProcedures);
+
+            tvNoProcedures.setText("No Test(s) find on ");
+            tvNoProcedures.append(diagnosis.getDiagDesc());
+            tvNoProcedures.append(" Diagnosis");
+        }
+    }
+
+    @Override
+    public void onError(String message) {
+        loader.stopLoad();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (displayAll) {
+            DialogUtils.showDialog(this, R.string.alert, R.string.alert_cancel_procedure,
+                    new DialogUtils.OnDiaglogClickListener() {
+
+                @Override
+                public void onOk() {
+                    DiagnosisTestSession.releaseContent();
+                    finish();
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
+        }
+    }
+
+    public List<Test> getSelectedTests() {
+        List<Test> selected = new ArrayList<>();
+        for (Test test : tests) {
+            if (test.isSelected()) {
+                selected.add(test);
+            }
+        }
+
+        Timber.d("number of selected test %s", selected.size());
+        return selected;
+    }
 
 }

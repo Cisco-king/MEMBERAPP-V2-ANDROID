@@ -60,20 +60,20 @@ public class RequestButtonsActivity extends AppCompatActivity {
 
     Context context;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_buttons);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        unbinder = ButterKnife.bind(this);
+
+        context = this;
+
         setSupportActionBar(toolbar);
 
         boolean hasMaternity = SharedPref.getBooleanValue(this, SharedPref.KEY_HAS_MATERNITY);
         String gender = getIntent().getExtras().getString(Constant.GENDER);
 
-        unbinder = ButterKnife.bind(this);
-
-        context = this;
         databaseHandler = new DatabaseHandler(context);
 
         ResetDatabase.resetDB(context, databaseHandler);

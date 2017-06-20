@@ -12,6 +12,7 @@ import com.medicard.member.module.diagnosis.DiagnosisActivity;
 import com.medicard.member.module.hospital.fragment.HospitalFragment;
 
 import model.HospitalList;
+import modules.requestnewapproval.RequestNewActivity;
 import timber.log.Timber;
 
 /**
@@ -33,8 +34,11 @@ public class HospitalActivity extends BaseActivity implements HospitalNavigator 
     @Override
     protected void initComponents(Bundle savedInstanceState) {
         super.initComponents(savedInstanceState);
+
+        boolean fromHospital = getIntent().getBooleanExtra(RequestNewActivity.FROM_HOSPITAL, false);
+
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.flContainer, HospitalFragment.newInstance())
+                .replace(R.id.flContainer, HospitalFragment.newInstance(fromHospital))
                 .commit();
     }
 
@@ -44,5 +48,11 @@ public class HospitalActivity extends BaseActivity implements HospitalNavigator 
         Timber.d("reason for consult %s", ConsultSession.getReasonForConsult());
         Timber.d("reason for hospital selected %s", HospitalSession.getHospital().getHospitalName());
         startActivity(new Intent(this, DiagnosisActivity.class));
+    }
+
+    @Override
+    public void onHospitalReselected() {
+        setResult(RESULT_OK);
+        finish();
     }
 }
