@@ -27,7 +27,8 @@ public class DiagnosisTestSession {
     }
 
     public static void releaseContent() {
-        diagnosisTest = null;
+        diagnosisTest.clear();
+        diagnosisTest = new ArrayList<>();
     }
 
     public static void setDisplayAll(boolean displayAll) {

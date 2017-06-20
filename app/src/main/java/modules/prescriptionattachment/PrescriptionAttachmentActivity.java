@@ -68,6 +68,8 @@ public class PrescriptionAttachmentActivity extends BaseActivity
         presenter.attachView(this);
         presenter.attachCallback();
 
+        setupWindowAnimations();
+
         imageAttachments = new ArrayList<>();
 
         attachments = new ArrayList<>();
@@ -99,8 +101,9 @@ public class PrescriptionAttachmentActivity extends BaseActivity
         intent.putExtra(ATTACHMENT, new ArrayList<>(attachments));
         startActivity(intent);*/
         Intent intent = new Intent(this, RequestNewActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(RequestNewActivity.ATTACHMENT, new ArrayList<>(attachments));
-        startActivity(intent);
+        transitionTo(intent);
     }
 
     @Override

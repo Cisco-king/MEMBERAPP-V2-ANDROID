@@ -37,6 +37,8 @@ public class HospitalActivity extends BaseActivity implements HospitalNavigator 
 
         boolean fromHospital = getIntent().getBooleanExtra(RequestNewActivity.FROM_HOSPITAL, false);
 
+        setupWindowAnimations();
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.flContainer, HospitalFragment.newInstance(fromHospital))
                 .commit();
@@ -47,7 +49,7 @@ public class HospitalActivity extends BaseActivity implements HospitalNavigator 
         Timber.d("doctor %s and hospital %s", DoctorSession.getDoctor().getFullName(), DoctorSession.getDoctor().getHospitalName());
         Timber.d("reason for consult %s", ConsultSession.getReasonForConsult());
         Timber.d("reason for hospital selected %s", HospitalSession.getHospital().getHospitalName());
-        startActivity(new Intent(this, DiagnosisActivity.class));
+        transitionTo(new Intent(this, DiagnosisActivity.class));
     }
 
     @Override

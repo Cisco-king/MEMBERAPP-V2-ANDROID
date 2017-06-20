@@ -13,6 +13,7 @@ import com.medicard.member.core.session.DiagnosisSession;
 import com.medicard.member.core.session.DiagnosisTestSession;
 import com.medicard.member.module.base.BaseActivity;
 import com.medicard.member.module.diagnosistest.adapter.TestProcedureAdapter;
+import com.tapadoo.alerter.Alerter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.newtest.DiagnosisProcedure;
 import modules.procedure.adapter.ProcedureAdapter;
+import modules.requestnewapproval.RequestNewActivity;
 import modules.tests.Tests;
 import services.model.Diagnosis;
 import services.model.Test;
@@ -66,6 +68,7 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
     private Loader loader;
 
     private boolean displayAll;
+    private boolean fromTest = false;
 
     @Override
     protected String activityTitle() {
@@ -83,7 +86,15 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
         presenter = new TestByDiagnosisPresenter(context);
         presenter.attachView(this);
 
-        displayAll = getIntent().getBooleanExtra(KEY_DISPLAY_ALL, false);
+        fromTest = getIntent().getBooleanExtra(RequestNewActivity.FROM_TEST, false);
+
+        if (fromTest) {
+            Timber.d("from new request ");
+            displayAll = DiagnosisTestSession.isDisplayAll();
+        } else {
+            Timber.d("from skip is click");
+            displayAll = getIntent().getBooleanExtra(KEY_DISPLAY_ALL, false);
+        }
 
         tests = new ArrayList<>();
 
@@ -99,7 +110,7 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
 
         if (displayAll) {
             ViewUtilities.hideView(fbAddMoreDiagnosis);
-            presenter.loadAllTests();
+            presenter.loadAllTests(fromTest);
         } else {
             ViewUtilities.showView(fbAddMoreDiagnosis);
             presenter.loadTestProcedureByDiagnosisCode(diagnosis.getDiagCode());
@@ -108,18 +119,32 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
 
     @OnClick(R.id.fbDone)
     public void onDoneClick() {
-        Intent intent = new Intent();
-        intent.putExtra(KEY_DONE, true);
-        intent.putExtra(KEY_DISPLAY_ALL, displayAll);
-        setResult(RESULT_OK, intent);
-        if (displayAll) {
-            DiagnosisTests diagnosisTest = new DiagnosisTests();
-            diagnosisTest.setTests(getSelectedTests());
+        // make sure that the content is release to get only zero index cause
+        // as of now only skip and all test was display
+        DiagnosisTestSession.releaseContent();
+        if (getSelectedTests() != null && getSelectedTests().size() > 0) {
+            Intent intent = new Intent();
+            intent.putExtra(KEY_DONE, true);
+            intent.putExtra(KEY_DISPLAY_ALL, displayAll);
+            setResult(RESULT_OK, intent);
 
-            DiagnosisTestSession.setDiagnosisTests(diagnosisTest);
-            DiagnosisTestSession.setDisplayAll(displayAll);
+            // todo sprint6 currently working if test is from SKIP (this is need of required scenario)
+            if (displayAll) {
+                Timber.d("from display all request");
+
+                DiagnosisTests diagnosisTest = new DiagnosisTests();
+                diagnosisTest.setTests(getSelectedTests());
+
+                DiagnosisTestSession.setDiagnosisTests(diagnosisTest);
+                DiagnosisTestSession.setDisplayAll(displayAll);
+            }
+            finish();
+        } else {
+            Alerter.create(this)
+                    .setText("Please select Test(s) to proceed.")
+                    .setBackgroundColor(R.color.orange_a200)
+                    .show();
         }
-        finish();
     }
 
     @OnClick(R.id.fbAddMoreDiagnosis)

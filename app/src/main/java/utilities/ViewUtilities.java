@@ -24,6 +24,12 @@ public class ViewUtilities {
         }
     }
 
+    public static final void hideToInvisibleView(View view) {
+        if (view.getVisibility() == View.VISIBLE) {
+            view.setVisibility(View.INVISIBLE);
+        }
+    }
+
     public static void showView(View view) {
         if (view.getVisibility() == View.INVISIBLE || view.getVisibility() == View.GONE) {
             view.setVisibility(View.VISIBLE);

@@ -2,6 +2,10 @@ package com.medicard.member.module.doctor;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.Visibility;
+import android.view.Gravity;
 
 import com.medicard.member.R;
 import com.medicard.member.core.session.ConsultSession;
@@ -36,6 +40,8 @@ public class DoctorActivity extends BaseActivity
 
         boolean isFromDoctor = getIntent().getBooleanExtra(RequestNewActivity.FROM_DOCTOR, false);
 
+        setupWindowAnimations();
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.flContainer, DoctorFragment.newInstance(isFromDoctor))
                 .commit();
@@ -45,8 +51,10 @@ public class DoctorActivity extends BaseActivity
     public void onDoctorSelected() {
         Timber.d("doctor %s and hospital %s", DoctorSession.getDoctor().getFullName(), DoctorSession.getDoctor().getHospitalName());
         Timber.d("reason for consult %s", ConsultSession.getReasonForConsult());
-        startActivity(new Intent(this, HospitalActivity.class));
+        transitionTo(new Intent(this, HospitalActivity.class));
     }
+
+
 
     @Override
     public void fromNewRequestReselected() {

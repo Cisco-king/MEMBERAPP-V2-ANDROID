@@ -125,7 +125,8 @@ public class DoctorFragment extends BaseFragment
 
     @Override
     public void onItemClick(int position) {
-        HospitalsToDoctor doctor = doctors.get(position);
+        HospitalsToDoctor doctor = doctorAdapter.getDoctor(position);
+//        HospitalsToDoctor doctor = doctors.get(position);
         Timber.d("doctor %s", doctor.getFullName());
         DoctorSession.setDoctor(doctor);
 

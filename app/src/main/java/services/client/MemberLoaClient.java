@@ -1,5 +1,6 @@
 package services.client;
 
+import model.newtest.NewTestRequest;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,6 +20,9 @@ public interface MemberLoaClient {
 
     @GET("memberloa/requestLOAForSelectedTests/")
     Call<MaceRequestResponse> submitLoaForSelectedTest(@Body String sample);
+
+    @POST("coordinator/v2/requestBasicOrOtherTest/")
+    Call<MaceRequestResponse> requestBasicOrOtherTest(@Body NewTestRequest requestTest);
 
     @GET("memberloa/requestLOAForSelectedTests/")
     Observable<MaceRequestResponse> submitLoaForSelectedTestRx(@Body String sample);

@@ -38,11 +38,12 @@
                 fancy:fb_text="" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tvConforme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/btn_back_width"
                 android:layout_weight="1"
+                android:transitionName="@string/tv_conforme"
                 android:text="@string/title_activity_terms"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"

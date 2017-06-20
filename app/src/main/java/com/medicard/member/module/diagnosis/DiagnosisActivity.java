@@ -48,6 +48,8 @@ public class DiagnosisActivity extends BaseActivity
 
         ViewUtilities.showView(toolbarSkip);
 
+        setupWindowAnimations();
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.flContainer, DiagnosisFragment.newInstance())
                 .commit();
@@ -66,7 +68,8 @@ public class DiagnosisActivity extends BaseActivity
     public void onClickSkip() {
         Intent intent = new Intent(this, TestByDiagnosisActivity.class);
         intent.putExtra(TestByDiagnosisActivity.KEY_DISPLAY_ALL, true);
-        startActivityForResult(intent, TEST_PROCEDURE);
+//        startActivityForResult(intent, TEST_PROCEDURE);
+        transitionToResult(intent, TEST_PROCEDURE);
     }
 
     @Override
@@ -78,7 +81,7 @@ public class DiagnosisActivity extends BaseActivity
             boolean isDoneClick =
                     data.getBooleanExtra(TestByDiagnosisActivity.KEY_DONE, false);
             if (isDoneClick) {
-                startActivity(new Intent(this, PrescriptionAttachmentActivity.class));
+                transitionTo(new Intent(this, PrescriptionAttachmentActivity.class));
             }
         }
     }

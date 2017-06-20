@@ -7,13 +7,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.medicard.member.R;
+import com.medicard.member.core.model.DiagnosisTests;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import model.newtest.DiagnosisDetails;
 import services.model.Procedure;
+import services.model.Test;
 
 /**
  * Created by casjohnpaul on 6/5/2017.
@@ -22,9 +23,9 @@ import services.model.Procedure;
 public class DiagnosisDetailsAdapter extends RecyclerView.Adapter<DiagnosisDetailsAdapter.ViewHolder> {
 
 
-    private List<DiagnosisDetails> diagnosisDetails;
+    private List<DiagnosisTests> diagnosisDetails;
 
-    public DiagnosisDetailsAdapter(List<DiagnosisDetails> diagnosisDetails) {
+    public DiagnosisDetailsAdapter(List<DiagnosisTests> diagnosisDetails) {
         this.diagnosisDetails = diagnosisDetails;
     }
 
@@ -37,9 +38,9 @@ public class DiagnosisDetailsAdapter extends RecyclerView.Adapter<DiagnosisDetai
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        DiagnosisDetails diagnosisDetails = this.diagnosisDetails.get(position);
+        DiagnosisTests diagnosisDetails = this.diagnosisDetails.get(position);
         holder.bind(diagnosisDetails.getDiagnosis().getDiagDesc(),
-                getDiagnosisProceduresDetails(diagnosisDetails.getProcedures()));
+                getDiagnosisTestsDetails(diagnosisDetails.getTests()));
     }
 
     @Override
@@ -47,14 +48,14 @@ public class DiagnosisDetailsAdapter extends RecyclerView.Adapter<DiagnosisDetai
         return diagnosisDetails.size();
     }
 
-    public String getDiagnosisProceduresDetails(List<Procedure> procedures) {
+    public String getDiagnosisTestsDetails(List<Test> tests) {
         StringBuilder procedureDetails = new StringBuilder();
-        if (procedures.size() == 1) {
-            procedureDetails.append(procedures.get(0).getProcedureDesc())
+        if (tests.size() == 1) {
+            procedureDetails.append(tests.get(0).getProcedureName())
                     .append("\n");
         } else {
-            for (Procedure procedure : procedures) {
-                procedureDetails.append(procedure.getProcedureDesc())
+            for (Test test : tests) {
+                procedureDetails.append(test.getProcedureName())
                         .append("\n");
             }
         }

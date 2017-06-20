@@ -23,7 +23,7 @@ public interface TestByDiagnosisMvp {
 
         void loadTestProcedureByDiagnosisCode(String diagnosisCode);
 
-        void loadAllTests();
+        void loadAllTests(boolean fromTest);
 
     }
 

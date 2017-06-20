@@ -168,6 +168,10 @@
             android:label="@string/title_activity_test_by_diagnosiscode"
             android:theme="@style/AppTheme"></activity>
 
+        <activity
+            android:name=".module.termsandcondition.TermsAndCondition"
+            android:theme="@style/AppTheme"></activity>
+
     </application>
 
 </manifest>

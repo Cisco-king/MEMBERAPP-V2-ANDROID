@@ -2,6 +2,9 @@ package com.medicard.member.module.diagnosistest;
 
 import android.content.Context;
 
+import com.medicard.member.core.model.DiagnosisTests;
+import com.medicard.member.core.session.DiagnosisTestSession;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,8 +98,21 @@ public class TestByDiagnosisPresenter implements TestByDiagnosisMvp.Presenter {
     }
 
     @Override
-    public void loadAllTests() {
+    public void loadAllTests(boolean fromTest) {
         List<Test> all = testDao.findAll();
+        if (fromTest) {
+            List<DiagnosisTests> allDiagnosisTests = DiagnosisTestSession.getAllDiagnosisTests();
+            List<Test> tests = allDiagnosisTests.get(0).getTests();
+
+            // todo sprint6 currently this algorithm is working only to display all test
+            for (int index = 0; index < all.size(); index++) {
+                for (Test test : tests) {
+                    if (all.get(index).getProcCode().equals(test.getProcCode())) {
+                        all.get(index).setSelected(true);
+                    }
+                }
+            }
+        }
         Timber.d("all tests %s", all.size());
         testView.onSuccess(all);
     }

@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,16 +15,25 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.medicard.member.NavigationActivity;
 import com.medicard.member.R;
+import com.medicard.member.TermsActivity;
+import com.medicard.member.core.model.DiagnosisTests;
 import com.medicard.member.core.session.ConsultSession;
+import com.medicard.member.core.session.DiagnosisTestSession;
 import com.medicard.member.core.session.DoctorSession;
 import com.medicard.member.core.session.HospitalSession;
+import com.medicard.member.core.utilities.TransitionHelper;
+import com.medicard.member.module.diagnosistest.TestByDiagnosisActivity;
 import com.medicard.member.module.doctor.DoctorActivity;
 import com.medicard.member.module.hospital.HospitalActivity;
+import com.medicard.member.module.termsandcondition.TermsAndCondition;
+import com.tapadoo.alerter.Alerter;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,9 +53,13 @@ import modules.base.activities.TestTrackableActivity;
 import modules.prescriptionattachment.adapter.AttachmentAdapter;
 import modules.requestnewapproval.adapter.DiagnosisDetailsAdapter;
 import services.model.HospitalsToDoctor;
+import services.model.Test;
 import timber.log.Timber;
+import utilities.AlertDialogCustom;
 import utilities.DeviceUtils;
+import utilities.ErrorMessage;
 import utilities.FileUtils;
+import utilities.Loader;
 import utilities.SharedPref;
 import utilities.ViewUtilities;
 
@@ -62,16 +77,23 @@ public class RequestNewActivity extends TestTrackableActivity
     public static final String FROM_HOSPITAL = "fromHospital";
     public static final int FROM_HOSPITAL_REQUEST = 200;
 
+    public static final String FROM_TEST = "fromTest";
+    public static final int FROM_TEST_REQUEST = 300;
+
     @BindView(R.id.etReasonForConsult) EditText etReasonForConsult;
 
+    // clickable view
     @BindView(R.id.cvRequestDoctor) CardView cvRequestDoctor;
-    @BindView(R.id.tvDoctorDetails) TextView tvDoctorDetails;
-
     @BindView(R.id.cvHospitalClinicForAvailment) CardView cvHospitalClinicForAvailment;
+    @BindView(R.id.cvDiagnosis) CardView cvDiagnosis;
+    @BindView(R.id.ibDiagnosis) ImageButton ibDiagnosis;
+
+    @BindView(R.id.tvConforme) TextView tvConforme;
+
+    @BindView(R.id.tvDoctorDetails) TextView tvDoctorDetails;
     @BindView(R.id.tvHospitalAvailment) TextView tvHospitalAvailment;
 
     @BindView(R.id.rvAttachments) RecyclerView rvAttachments;
-
     @BindView(R.id.cbTermsAndCondition) CheckBox cbTermsAndCondition;
 
     @BindView(R.id.btnAddAttachment) Button btnAddAttachment;
@@ -87,15 +109,20 @@ public class RequestNewActivity extends TestTrackableActivity
     private Gson gson;
     private RequestNewMvp.Presenter presenter;
 
-
     private String reasonForConsult;
     private ArrayList<Attachment> attachments;
 
     private List<DiagnosisProcedure> diagnosisProcedures;
     private List<DiagnosisDetails> diagnosisDetails;
 
+    private List<DiagnosisTests> diagnosisTests;
+
     private HospitalsToDoctor doctor;
     private HospitalList hospital;
+
+    private AlertDialogCustom alertDialog;
+
+    Loader loader;
 
     @Override
     protected int getLayoutResource() {
@@ -105,17 +132,21 @@ public class RequestNewActivity extends TestTrackableActivity
     @Override
     protected void initViews() {
         super.initViews();
-
         Timber.d("device id %s", DeviceUtils.getDeviceId(this));
         Timber.d("android id %s", DeviceUtils.getAndroidId(this));
 
+        loader = new Loader(context);
+
         gson = new Gson();
+
+        setupWindowAnimations();
+        ViewUtilities.hideToInvisibleView(getBackView());
 
         Type founderListType = new TypeToken<ArrayList<DiagnosisProcedure>>(){}.getType();
 
         attachments = new ArrayList<>();
         diagnosisProcedures = new ArrayList<>();
-
+        diagnosisTests = new ArrayList<>();
         diagnosisDetails = new ArrayList<>();
 
 //        String doctorJson = SharedPref.getPreferenceByKey(context, SharedPref.KEY_DOCTOR);
@@ -132,24 +163,24 @@ public class RequestNewActivity extends TestTrackableActivity
 //        reasonForConsult = SharedPref.getPreferenceByKey(context, SharedPref.KEY_REASON_FOR_CONSULT);
         reasonForConsult = ConsultSession.getReasonForConsult();
 
+        alertDialog = new AlertDialogCustom();
+
         attachments = getIntent().getParcelableArrayListExtra(ATTACHMENT);
 
         presenter = new RequestNewPresenter(this);
         presenter.attachView(this);
 
         etReasonForConsult.setText(reasonForConsult);
-
+        tvHospitalAvailment.setText(hospital.getHospitalName());
         tvDoctorDetails.setText(doctor.getFullName());
         tvDoctorDetails.append(getDoctorDetails(doctor));
-
-        tvHospitalAvailment.setText(hospital.getHospitalName());
 
         rvAttachments.setLayoutManager(new LinearLayoutManager(this));
         rvDiagnosisDetails.setLayoutManager(new LinearLayoutManager(this));
 
         Timber.d("the diagnosisProcedures ### %s", diagnosisProcedures.size());
 //        presenter.loadDiagnosisTest(diagnosisProcedures);
-
+        presenter.loadDiagnosisTests();
         /*if (attachments != null && attachments.size() > 0) {*/
             attachmentAdapter = new AttachmentAdapter(attachments, this);
             rvAttachments.setAdapter(attachmentAdapter);
@@ -170,20 +201,37 @@ public class RequestNewActivity extends TestTrackableActivity
             String memberCode = SharedPref.getPreferenceByKey(RequestNewActivity.this, SharedPref.MEMBERCODE);
 //            String username = SharedPref.getPreferenceByKey(RequestNewActivity.this, SharedPref.masterUSERNAME);
 
-            NewTestRequest newTestRequest = new NewTestRequest();
-            newTestRequest.setRequestDevice(DeviceUtils.getAndroidId(RequestNewActivity.this));
-            newTestRequest.setDiagnosisProcedures(diagnosisProcedures);
-            newTestRequest.setDoctorCode(doctor.getDoctorCode());
-            newTestRequest.setHospitalCode(doctor.getHospitalCode());
-            newTestRequest.setMemberCode(memberCode);
-            newTestRequest.setPrimaryComplaint(reasonForConsult);
-            newTestRequest.setPrimaryDiagnosisCode(diagnosisProcedures.get(0).getDiagnosisCode());
-            newTestRequest.setRequestOrigin(MedicardConfig.APP_NAME);
+            reasonForConsult = etReasonForConsult.getText().toString();
 
-            Gson gson = new Gson();
-            Timber.d("submit result %s", gson.toJson(newTestRequest));
+            if (reasonForConsult == null && reasonForConsult.length() <= 0) {
+                etReasonForConsult.setFocusable(true);
+                etReasonForConsult.setError("This field is required.");
+            } else {
+
+
+                loader.startLad();
+                loader.setMessage("Sending request...");
+
+                NewTestRequest newTestRequest = new NewTestRequest();
+                newTestRequest.setRequestDevice(DeviceUtils.getAndroidId(RequestNewActivity.this));
+                newTestRequest.setDiagnosisProcedures(convertObjectToDiagnosisProcedure(diagnosisTests));
+                newTestRequest.setDoctorCode(doctor.getDoctorCode());
+                newTestRequest.setHospitalCode(doctor.getHospitalCode());
+                newTestRequest.setMemberCode(memberCode);
+                newTestRequest.setPrimaryComplaint(reasonForConsult);
+                newTestRequest.setPrimaryDiagnosisCode(diagnosisTests.get(0).getDiagnosis().getDiagCode());
+                newTestRequest.setRequestOrigin(MedicardConfig.APP_NAME);
+
+                Gson gson = new Gson();
+                Timber.d("submit result %s", gson.toJson(newTestRequest));
+                presenter.submitNewRequest(newTestRequest);
+            }
         } else {
-            Timber.d("terms and condition didn't accept yet");
+            Alerter.create(this)
+                    .setTitle(R.string.opps)
+                    .setText(R.string.accept_terms_and_conditions)
+                    .setBackgroundColor(R.color.orange_a200)
+                    .show();
         }
     }
 
@@ -227,6 +275,11 @@ public class RequestNewActivity extends TestTrackableActivity
             hospital = HospitalSession.getHospital();
             tvHospitalAvailment.setText(hospital.getHospitalName());
         }
+
+        if (resultCode == RESULT_OK && requestCode == FROM_TEST_REQUEST) {
+            Timber.d("from test requet was called");
+            presenter.loadDiagnosisTests();
+        }
     }
 
     @Override
@@ -236,12 +289,77 @@ public class RequestNewActivity extends TestTrackableActivity
         presenter.detachCallback();
     }
 
+    @OnClick(R.id.btnCancelNewRequest)
+    public void onCancelRequest() {
+        AlertDialogCustom.alertNotification(this, "Alert", R.string.alert_cancel_new_request, new AlertDialogCustom.OnDialogClickListener() {
+            @Override
+            public void onOkClick() {
+                cancelNewRequest();
+            }
+
+            @Override
+            public void onCancelClick() {
+
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        onCancelRequest();
+    }
+
+    private void cancelNewRequest() {
+        Intent intent = new Intent(this, NavigationActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        transitionTo(intent);
+    }
+
     @OnClick(R.id.btnAddAttachment)
     public void onAddAttachment() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_ATTACHMENT);
+    }
+
+    @OnClick({R.id.cvDiagnosis, R.id.ibDiagnosis})
+    public void onRequestTest(View which) {
+        boolean displayAll = DiagnosisTestSession.isDisplayAll();
+        if (displayAll) {
+            Intent intent = new Intent(this, TestByDiagnosisActivity.class);
+            intent.putExtra(FROM_TEST, true);
+            transitionToResult(intent, FROM_TEST_REQUEST);
+        }
+    }
+
+    @OnClick(R.id.cvRequestDoctor)
+    public void onReselectDoctor() {
+        Intent intent = new Intent(this, DoctorActivity.class);
+        intent.putExtra(FROM_DOCTOR, true);
+        transitionToResult(intent, FROM_DOCTOR_REQUEST);
+    }
+
+    @OnClick(R.id.cvHospitalClinicForAvailment)
+    public void onHospitalReselected() {
+        Intent intent = new Intent(this, HospitalActivity.class);
+        intent.putExtra(FROM_HOSPITAL, true);
+        transitionToResult(intent, FROM_HOSPITAL_REQUEST);
+    }
+
+    @OnClick(R.id.tvConforme)
+    public void onClickTermsAndCondition() {
+        final Pair<View, String>[] pairs = TransitionHelper.createSafeTransitionParticipants(this, false,
+                new Pair<>(tvConforme, getString(R.string.tv_conforme)));
+        startActivityWithTransition(TermsAndCondition.class, pairs);
+//        startActivity(new Intent(this, TermsActivity.class));
+    }
+
+    private void startActivityWithTransition(Class target, Pair<View, String>[] pairs) {
+        Intent i = new Intent(this, target);
+        i.putExtra(TermsAndCondition.TITLE, "Terms and Condition");
+        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pairs);
+        startActivity(i, transitionActivityOptions.toBundle());
     }
 
     @Override
@@ -257,26 +375,51 @@ public class RequestNewActivity extends TestTrackableActivity
 
     @Override
     public void displayDiagnosisDetails(List<DiagnosisDetails> diagnosisDetails) {
-        this.diagnosisDetails = diagnosisDetails;
+        // method is not use anymore
+       /* this.diagnosisDetails = diagnosisDetails;
 
         diagnosisDetailsAdapter = new DiagnosisDetailsAdapter(diagnosisDetails);
+        rvDiagnosisDetails.setAdapter(diagnosisDetailsAdapter);*/
+    }
+
+    @Override
+    public void displayDiagnosisTests(List<DiagnosisTests> diagnosisTests) {
+        this.diagnosisTests = diagnosisTests;
+        diagnosisDetailsAdapter = new DiagnosisDetailsAdapter(diagnosisTests);
         rvDiagnosisDetails.setAdapter(diagnosisDetailsAdapter);
     }
 
-    @OnClick(R.id.cvRequestDoctor)
-    public void onReselectDoctor() {
-        Intent intent = new Intent(this, DoctorActivity.class);
-        intent.putExtra(FROM_DOCTOR, true);
-        startActivityForResult(intent, FROM_DOCTOR_REQUEST);
+    @Override
+    public void onRequestError(String message) {
+        loader.stopLoad();
+        alertDialog.showMe(
+                context, alertDialog.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
-    @OnClick(R.id.cvHospitalClinicForAvailment)
-    public void onHospitalReselected() {
-        Intent intent = new Intent(this, HospitalActivity.class);
-        intent.putExtra(FROM_HOSPITAL, true);
-        startActivityForResult(intent, FROM_HOSPITAL_REQUEST);
+    @Override
+    public void onRequestSuccess() {
+        loader.stopLoad();
+        Timber.d("new request successfully submitted");
+        cancelNewRequest();
     }
 
+    private List<DiagnosisProcedure> convertObjectToDiagnosisProcedure(List<DiagnosisTests> diagnosisTests) {
+        List<DiagnosisProcedure> diagnosisProcedures = new ArrayList<>();
+        if (diagnosisTests.size() > 0) { // make sure that dianosis test is not zero
+            for (DiagnosisTests diagnosisTest : diagnosisTests) { // loop all diagnosis
+                for (Test test : diagnosisTest.getTests()) { // loop all the test
+                    diagnosisProcedures.add(
+                            new DiagnosisProcedure(
+                                    test.getAmount(), // test amount
+                                    diagnosisTest.getDiagnosis().getDiagCode(), // the diagnosis code
+                                    test.getProcCode(), // the procedure code
+                                    2)); // serve as OP-Test
+                }
+            }
+        }
+
+        return diagnosisProcedures;
+    }
 
     public String getDoctorDetails(HospitalsToDoctor doctor) {
         return new StringBuilder(doctor.getFullName())

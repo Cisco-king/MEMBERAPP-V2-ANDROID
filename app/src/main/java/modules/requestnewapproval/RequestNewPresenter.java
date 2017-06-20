@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.gson.Gson;
+import com.medicard.member.core.model.DiagnosisTests;
+import com.medicard.member.core.session.DiagnosisTestSession;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -15,16 +17,21 @@ import database.dao.HospitalDao;
 import database.dao.ProcedureDao;
 import model.newtest.DiagnosisDetails;
 import model.newtest.DiagnosisProcedure;
+import model.newtest.NewTestRequest;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import services.AppInterface;
 import services.AppService;
+import services.ServiceGenerator;
 import services.client.DiagnosisClient;
+import services.client.MemberLoaClient;
 import services.model.Diagnosis;
 import services.model.HospitalsToDoctor;
 import services.model.Procedure;
+import services.model.Test;
 import services.response.DiagnosisResponse;
+import services.response.MaceRequestResponse;
 import timber.log.Timber;
 import utilities.DiagnosisUtils;
 import utilities.SharedPref;
@@ -37,11 +44,13 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
 
     private DiagnosisClient diagnosisClient;
 
-
     private Context context;
 
     private HospitalDao hospitalDao;
     private ProcedureDao procedureDao;
+
+    MemberLoaClient memberLoaClient;
+
     private RequestNewMvp.View requestNewView;
 
 
@@ -51,6 +60,8 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
         hospitalDao = new HospitalDao(context);
         procedureDao = new ProcedureDao(context);
         diagnosisClient = AppService.createApiService(DiagnosisClient.class, AppInterface.ENDPOINT);
+
+        memberLoaClient = ServiceGenerator.createApiService(MemberLoaClient.class);
     }
 
     @Override
@@ -64,14 +75,10 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
     }
 
     @Override
-    public void attachCallback() {
-
-    }
+    public void attachCallback() { }
 
     @Override
-    public void detachCallback() {
-
-    }
+    public void detachCallback() { }
 
     @Override
     public void loadDoctorDetails(HospitalsToDoctor doctor) {
@@ -80,6 +87,33 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
                 .append("\n")
                 .append("")
                 .append(doctor.getSpecDesc());
+    }
+
+    @Override
+    public void loadDiagnosisTests() {
+        Timber.d("load all diagnosis was called...");
+        Timber.d("diagnosis session %s", DiagnosisTestSession.getAllDiagnosisTests().size());
+        List<DiagnosisTests> diagnosisTestsList = new ArrayList<>();
+
+        DiagnosisTests diagnosisTest = new DiagnosisTests();
+        Diagnosis diagnosis = new Diagnosis();
+
+        boolean isDisplayAll = DiagnosisTestSession.isDisplayAll();
+        diagnosisTestsList.addAll(DiagnosisTestSession.getAllDiagnosisTests());
+        if (isDisplayAll && diagnosisTestsList.size() == 1) {
+            diagnosis.setDiagCode("998");
+            diagnosis.setDiagDesc("Laboratory");
+            diagnosisTestsList.get(0).setDiagnosis(diagnosis);
+
+            // display the diagnosis with test
+            diagnosisTest = diagnosisTestsList.get(0);
+            Timber.d("diagnosis code %s and name %s", diagnosisTest.getDiagnosis().getDiagCode(), diagnosisTest.getDiagnosis().getDiagDesc());
+            for (Test test : diagnosisTest.getTests()) {
+                Timber.d("test : %s", test.getProcedureName());
+            }
+            requestNewView.displayDiagnosisTests(diagnosisTestsList);
+
+        }
     }
 
     @Override
@@ -160,6 +194,27 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
 
     }
 
+    @Override
+    public void submitNewRequest(NewTestRequest newTestRequest) {
+        memberLoaClient.requestBasicOrOtherTest(newTestRequest)
+                .enqueue(new Callback<MaceRequestResponse>() {
+                    @Override
+                    public void onResponse(Call<MaceRequestResponse> call, Response<MaceRequestResponse> response) {
+                        if (response.isSuccessful()) {
+                            Timber.d("successfully submitted");
+                            requestNewView.onRequestSuccess();
+                        } else {
+                            Timber.d("error#%s", response.errorBody().toString());
+                            requestNewView.onRequestError(response.errorBody().toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MaceRequestResponse> call, Throwable t) {
+                        requestNewView.onRequestError(t.toString());
+                    }
+                });
+    }
 
 
 }

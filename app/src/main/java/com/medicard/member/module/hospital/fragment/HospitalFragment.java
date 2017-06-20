@@ -81,6 +81,8 @@ public class HospitalFragment extends BaseFragment
         rvHospitalClinic.setLayoutManager(new LinearLayoutManager(context));
 
         presenter.loadHospitalClinic();
+
+        edSearchHospitalClinic.addTextChangedListener(new Search());
     }
 
 
@@ -98,7 +100,8 @@ public class HospitalFragment extends BaseFragment
 
     @Override
     public void onItemClick(int position) {
-        HospitalList hospital = hospitals.get(position);
+        HospitalList hospital = hospitalAdapter.getHospital(position);
+//        HospitalList hospital = hospitals.get(position);
         HospitalSession.setHospital(hospital);
         if (fromNewRequest) {
             navigator.onHospitalReselected();

@@ -58,6 +58,10 @@ public class HospitalDoctorAdapter extends
         notifyDataSetChanged();
     }
 
+    public HospitalList getHospital(int position) {
+        return hospitals.get(position);
+    }
+
     @Override
     public int getItemCount() {
         return hospitals.size();

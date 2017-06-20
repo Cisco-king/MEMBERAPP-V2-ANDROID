@@ -1,9 +1,12 @@
 package modules.requestnewapproval;
 
+import com.medicard.member.core.model.DiagnosisTests;
+
 import java.util.List;
 
 import model.newtest.DiagnosisDetails;
 import model.newtest.DiagnosisProcedure;
+import model.newtest.NewTestRequest;
 import modules.base.Mvp;
 import services.model.HospitalsToDoctor;
 
@@ -19,13 +22,23 @@ public interface RequestNewMvp {
 
         void displayDiagnosisDetails(List<DiagnosisDetails> diagnosisDetails);
 
+        void displayDiagnosisTests(List<DiagnosisTests> diagnosisTests);
+
+        void onRequestError(String message);
+
+        void onRequestSuccess();
+
     }
 
     interface Presenter extends Mvp.Presenter<RequestNewMvp.View> {
 
         void loadDoctorDetails(HospitalsToDoctor doctor);
 
+        void loadDiagnosisTests();
+
         void loadDiagnosisTest(List<DiagnosisProcedure> diagnosisProcedures);
+
+        void submitNewRequest(NewTestRequest newTestRequest);
 
     }
 
