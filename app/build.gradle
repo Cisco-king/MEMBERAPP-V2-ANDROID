@@ -36,14 +36,16 @@ final TIMBER_LIBRARY = '4.5.1'
 
 final ITEXTG_LIBRARY = '5.5.10'
 
-final HTTP_LOGGING_LIBRARY = '3.2.0';
+final HTTP_LOGGING_LIBRARY = '3.6.0';
+
+final NOTIFICATION_ALERTER_LIBRARY = '1.0.8'
 
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.1'
     defaultConfig {
         applicationId "com.medicard.member"
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 4
         versionName "2.0"
@@ -118,8 +120,16 @@ dependencies {
 
     compile "com.itextpdf:itextg:$ITEXTG_LIBRARY"
 
+    compile 'com.afollestad.material-dialogs:core:0.9.4.5'
+
+    compile "com.tapadoo.android:alerter:$NOTIFICATION_ALERTER_LIBRARY"
+
+    compile('com.mikepenz:fastadapter:2.5.2@aar') {
+        transitive = true
+    }
 
     compile project(':fancybuttons_library')
+    compile 'com.mikepenz:fastadapter-commons:2.5.2@aar'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v4:25.3.1'

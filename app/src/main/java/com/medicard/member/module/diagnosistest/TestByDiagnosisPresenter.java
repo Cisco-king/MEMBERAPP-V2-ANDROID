@@ -78,11 +78,14 @@ public class TestByDiagnosisPresenter implements TestByDiagnosisMvp.Presenter {
                                 }
                             }
                             Timber.d("total test %s", tests.size());
-                            if (tests != null && tests.size() > 0) {
-                                Timber.d("tests %s", tests.get(0).getProcCode());
+
+                            if (tests != null && tests.size() == 0) {
+                                List<Test> all = testDao.findAll();
+                                testView.onSuccess(all);
+                            } else {
+                                testView.onSuccess(tests);
                             }
 
-                            testView.onSuccess(tests);
                         } else {
                             testView.onError("response error");
                             Timber.d("response got error");

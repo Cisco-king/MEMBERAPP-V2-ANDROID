@@ -329,6 +329,10 @@
     <string name="view_loa">View LOA</string>
 
     <string name="mc_06">All tests that will be selected should be done in this clinic/hospital. Are you sure you want to select this clinic/hospital?</string>
+    <string name="mc_07">This approval serves as your request form. There is no need to go to Medicard Coordinator. You may go directly to the consulting doctor and present this approval.
+        Please take note of the reference No. This information is required during consultation.</string>
+
+
     <string name="warning">Warning</string>
     <string name="title_activity_test">Test</string>
     <string name="title_activity_new_test_procedure">NewTestProcedureActivity</string>
@@ -349,6 +353,7 @@
     <string name="tv_conforme">tv_terms_and_condition</string>
 
     <string name="alert_cancel_new_request">Are you sure you want to cancel this request?</string>
+    <string name="alert_mace_success">MaceTest successully submitted.</string>
 
     <!-- all module text here -->
 </resources>

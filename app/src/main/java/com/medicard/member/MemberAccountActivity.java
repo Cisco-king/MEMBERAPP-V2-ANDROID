@@ -638,6 +638,7 @@ public class MemberAccountActivity extends AppCompatActivity
 
     }
 
+    // todo uploading image
     private void uploadImage(final File file, String memberCode) {
 
         pd.show();

@@ -1,9 +1,11 @@
 package modules.prescriptionattachment;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
@@ -27,6 +29,7 @@ import modules.prescriptionattachment.adapter.AttachmentAdapter;
 import modules.requestnewapproval.RequestNewActivity;
 import timber.log.Timber;
 import utilities.FileUtils;
+import utilities.PermissionUtililities;
 
 public class PrescriptionAttachmentActivity extends BaseActivity
         implements PrescriptionAttachmentMvp.View, AttachmentAdapter.OnAttachmentClickListener {
@@ -88,10 +91,10 @@ public class PrescriptionAttachmentActivity extends BaseActivity
 
     @OnClick(R.id.btnUpload)
     public void onUpload() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+        if (PermissionUtililities.hasPermissionToReadAndWriteStorage(this)) {
+            uploadAttachment();
+        }
+
     }
 
     @OnClick(R.id.fbDone)
@@ -100,10 +103,12 @@ public class PrescriptionAttachmentActivity extends BaseActivity
         /*Intent intent = new Intent(this, DummyActivity.class);
         intent.putExtra(ATTACHMENT, new ArrayList<>(attachments));
         startActivity(intent);*/
-        Intent intent = new Intent(this, RequestNewActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra(RequestNewActivity.ATTACHMENT, new ArrayList<>(attachments));
-        transitionTo(intent);
+        if (PermissionUtililities.hasPermissionToReadAndWriteStorage(this)) {
+            Intent intent = new Intent(this, RequestNewActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.putExtra(RequestNewActivity.ATTACHMENT, new ArrayList<>(attachments));
+            transitionTo(intent);
+        }
     }
 
     @Override
@@ -141,6 +146,35 @@ public class PrescriptionAttachmentActivity extends BaseActivity
                 }
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PermissionUtililities.REQUESTCODE_STORAGE_PERMISSION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+                    uploadAttachment();
+
+                } else {
+                    Timber.d("permission denied");
+                }
+            }
+
+            return;
+        }
+    }
+
+
+    public void uploadAttachment() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
     }
 
     @Override

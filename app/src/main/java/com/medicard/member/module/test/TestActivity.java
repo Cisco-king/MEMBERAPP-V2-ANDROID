@@ -50,7 +50,7 @@ public class TestActivity extends BaseActivity implements TestMvp.View {
 
     @OnClick(R.id.fabRequestNewApproval)
     public void onRequestNewApproval() {
-        startActivity(new Intent(this, NewTestProcedureActivity.class));
+        transitionTo(new Intent(this, NewTestProcedureActivity.class));
     }
 
 }

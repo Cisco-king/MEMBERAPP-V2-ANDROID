@@ -1,10 +1,12 @@
 package modules.requestnewapproval;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.CardView;
@@ -46,20 +48,25 @@ import butterknife.OnClick;
 import constants.MedicardConfig;
 import model.Attachment;
 import model.HospitalList;
+import model.RequestResult;
 import model.newtest.DiagnosisDetails;
 import model.newtest.DiagnosisProcedure;
 import model.newtest.NewTestRequest;
 import modules.base.activities.TestTrackableActivity;
 import modules.prescriptionattachment.adapter.AttachmentAdapter;
 import modules.requestnewapproval.adapter.DiagnosisDetailsAdapter;
+import services.model.DiagnosisTest;
+import services.model.DiagnosisTestRequest;
 import services.model.HospitalsToDoctor;
 import services.model.Test;
 import timber.log.Timber;
 import utilities.AlertDialogCustom;
+import utilities.DateUtils;
 import utilities.DeviceUtils;
 import utilities.ErrorMessage;
 import utilities.FileUtils;
 import utilities.Loader;
+import utilities.PermissionUtililities;
 import utilities.SharedPref;
 import utilities.ViewUtilities;
 
@@ -199,7 +206,7 @@ public class RequestNewActivity extends TestTrackableActivity
     public void onSubmitNewRequst() {
         if (cbTermsAndCondition.isChecked()) {
             String memberCode = SharedPref.getPreferenceByKey(RequestNewActivity.this, SharedPref.MEMBERCODE);
-//            String username = SharedPref.getPreferenceByKey(RequestNewActivity.this, SharedPref.masterUSERNAME);
+            String username = SharedPref.getPreferenceByKey(RequestNewActivity.this, SharedPref.masterUSERNAME);
 
             reasonForConsult = etReasonForConsult.getText().toString();
 
@@ -208,30 +215,53 @@ public class RequestNewActivity extends TestTrackableActivity
                 etReasonForConsult.setError("This field is required.");
             } else {
 
+                /*loader.startLad();
+                loader.setMessage("Sending request...");*/
 
-                loader.startLad();
-                loader.setMessage("Sending request...");
-
-                NewTestRequest newTestRequest = new NewTestRequest();
+                /*NewTestRequest newTestRequest = new NewTestRequest();
                 newTestRequest.setRequestDevice(DeviceUtils.getAndroidId(RequestNewActivity.this));
                 newTestRequest.setDiagnosisProcedures(convertObjectToDiagnosisProcedure(diagnosisTests));
                 newTestRequest.setDoctorCode(doctor.getDoctorCode());
                 newTestRequest.setHospitalCode(doctor.getHospitalCode());
                 newTestRequest.setMemberCode(memberCode);
+                newTestRequest.setServiceSubtype(0);
                 newTestRequest.setPrimaryComplaint(reasonForConsult);
                 newTestRequest.setPrimaryDiagnosisCode(diagnosisTests.get(0).getDiagnosis().getDiagCode());
-                newTestRequest.setRequestOrigin(MedicardConfig.APP_NAME);
+                newTestRequest.setRequestOrigin(MedicardConfig.APP_NAME);*/
 
-                Gson gson = new Gson();
-                Timber.d("submit result %s", gson.toJson(newTestRequest));
-                presenter.submitNewRequest(newTestRequest);
+
+                if (PermissionUtililities.hasPermissionMangeDocumentStorage(this)) {
+                    submitNewTest();
+                }
+//                presenter.submitTestRequest(testRequest);
+//                presenter.submitNewRequest(newTestRequest);
             }
         } else {
+            Timber.d("need to accept terms and conditions");
             Alerter.create(this)
                     .setTitle(R.string.opps)
                     .setText(R.string.accept_terms_and_conditions)
                     .setBackgroundColor(R.color.orange_a200)
                     .show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PermissionUtililities.REQUESTCODE_MANAGE_DOCUMENT_PERMISSION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    submitNewTest();
+
+                } else {
+                    PermissionUtililities.ashForManageDocumentPermission(this);
+                    Timber.d("permission denied");
+                }
+            }
+
+            return;
         }
     }
 
@@ -320,6 +350,8 @@ public class RequestNewActivity extends TestTrackableActivity
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_ATTACHMENT);
     }
 
@@ -399,8 +431,21 @@ public class RequestNewActivity extends TestTrackableActivity
     @Override
     public void onRequestSuccess() {
         loader.stopLoad();
+
+
         Timber.d("new request successfully submitted");
-        cancelNewRequest();
+        alertDialog.successDialog(this, "MaceTest", getString(R.string.mc_07), 0, new AlertDialogCustom.OnDialogClickListener() {
+            @Override
+            public void onOkClick() {
+                cancelNewRequest();
+            }
+
+            @Override
+            public void onCancelClick() {
+
+            }
+        });
+//        cancelNewRequest();
     }
 
     private List<DiagnosisProcedure> convertObjectToDiagnosisProcedure(List<DiagnosisTests> diagnosisTests) {
@@ -421,6 +466,21 @@ public class RequestNewActivity extends TestTrackableActivity
         return diagnosisProcedures;
     }
 
+    private List<DiagnosisTest> convertObjectToDiagnosisTest(List<DiagnosisTests> diagnosisTests) {
+        List<DiagnosisTest> container = new ArrayList<>();
+        if (diagnosisTests.size() > 0) {
+            for (DiagnosisTests diagnosisTest : diagnosisTests) { // loop all diagnosis
+                for (Test test : diagnosisTest.getTests()) { // loop all the test
+                    container.add(
+                            new DiagnosisTest(
+                                    diagnosisTest.getDiagnosis().getDiagCode(), test.getProcCode())); // serve as OP-Test
+                }
+            }
+        }
+
+        return container;
+    }
+
     public String getDoctorDetails(HospitalsToDoctor doctor) {
         return new StringBuilder(doctor.getFullName())
                 .append("\n")
@@ -428,6 +488,33 @@ public class RequestNewActivity extends TestTrackableActivity
                 .append("\n")
                 .append(doctor.getSpecDesc())
                 .toString();
+    }
+
+    private void submitNewTest() {
+        String memberCode = SharedPref.getPreferenceByKey(RequestNewActivity.this, SharedPref.MEMBERCODE);
+        String username = SharedPref.getPreferenceByKey(RequestNewActivity.this, SharedPref.masterUSERNAME);
+
+        reasonForConsult = etReasonForConsult.getText().toString();
+
+        DiagnosisTestRequest testRequest = new DiagnosisTestRequest.Builder()
+                .consultationReason(reasonForConsult)
+                .consultationDate(DateUtils.getCurrentDate())
+                .requestDeviceId(DeviceUtils.getAndroidId(this))
+                .diagnosisTests(convertObjectToDiagnosisTest(diagnosisTests))
+                .doctorCode(doctor.getDoctorCode())
+                .hospitalCode(hospital.getHospitalCode())
+                .memberCode(memberCode)
+                .requestBy(username)
+                .primaryDiagnosisCode(diagnosisTests.get(0).getDiagnosis().getDiagCode())
+                .requestOrigin(MedicardConfig.APP_NAME)
+                .build();
+
+        Gson gson = new Gson();
+        Timber.d("submit result %s", gson.toJson(testRequest));
+        loader.startLad();
+        loader.setMessage("Submitting request...");
+
+        presenter.submitTestRequest(testRequest, attachments);
     }
 
 }

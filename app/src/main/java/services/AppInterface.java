@@ -57,7 +57,6 @@ public interface AppInterface {
 
 
 
-
 //    String ENDPOINT = "http://10.10.24.195:8080/";
 //    String PHOTOLINK = "http://10.10.24.195:8080/downloadpicture/";
 

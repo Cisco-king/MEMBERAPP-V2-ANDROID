@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 /**
  * Created by mpx-pawpaw on 10/28/16.
@@ -184,6 +185,71 @@ public class ImageConverters {
             protected void onPostExecute(Object o) {
 
                 circleImageView.setImageBitmap(newBitmap[0]);
+            }
+        };
+
+
+        asyncTask.execute();
+
+
+    }
+
+    public void saveToInternalStorage2(final Bitmap bitmapImage, Context context, final boolean isCamera) {
+
+
+        final Bitmap[] newBitmap = new Bitmap[1];
+        AsyncTask asyncTask = new AsyncTask() {
+
+            @Override
+            protected void onPreExecute() {
+                if (bitmapImage.getHeight() < 150 || bitmapImage.getWidth() < 150) {
+                } else {
+                    //   if (bitmapImage.getHeight() >4000 || bitmapImage.getWidth() > 4000){
+                    newBitmap[0] = getResizedBitmap(bitmapImage, 150, 150);
+                    // }else
+                    //   newBitmap[0] = getResizedBitmap(bitmapImage, bitmapImage.getWidth() /2, bitmapImage.getHeight() /2);
+
+                }
+            }
+
+            @Override
+            protected Object doInBackground(Object[] params) {
+
+                File mypath;
+
+                File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                if (isCamera) {
+                    mypath = new File(directory + File.separator + "CameraMEDICARD.jpeg");
+                } else {
+                    mypath = new File(directory + File.separator + "GalleryMEDICARD.jpeg");
+
+                }
+
+                Log.d("FILE_PATH_async", mypath.getAbsolutePath());
+                FileOutputStream fos = null;
+                try {
+
+                    fos = new FileOutputStream(mypath);
+                    newBitmap[0].compress(Bitmap.CompressFormat.JPEG, 100, fos);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                return null;
+            }
+
+
+            @Override
+            protected void onPostExecute(Object o) {
+                Timber.d("success...");
             }
         };
 

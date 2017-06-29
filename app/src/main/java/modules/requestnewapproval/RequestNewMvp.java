@@ -4,10 +4,12 @@ import com.medicard.member.core.model.DiagnosisTests;
 
 import java.util.List;
 
+import model.Attachment;
 import model.newtest.DiagnosisDetails;
 import model.newtest.DiagnosisProcedure;
 import model.newtest.NewTestRequest;
 import modules.base.Mvp;
+import services.model.DiagnosisTestRequest;
 import services.model.HospitalsToDoctor;
 
 /**
@@ -39,6 +41,8 @@ public interface RequestNewMvp {
         void loadDiagnosisTest(List<DiagnosisProcedure> diagnosisProcedures);
 
         void submitNewRequest(NewTestRequest newTestRequest);
+
+        void submitTestRequest(DiagnosisTestRequest request, List<Attachment> attachments);
 
     }
 

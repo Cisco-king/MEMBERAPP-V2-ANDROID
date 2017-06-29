@@ -137,6 +137,14 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
 
                 DiagnosisTestSession.setDiagnosisTests(diagnosisTest);
                 DiagnosisTestSession.setDisplayAll(displayAll);
+            } else {
+                Timber.d("this is not from display all");
+                DiagnosisTests diagnosisTests = new DiagnosisTests();
+                diagnosisTests.setDiagnosis(diagnosis);
+                diagnosisTests.setTests(getSelectedTests());
+
+                DiagnosisTestSession.setDiagnosisTests(diagnosisTests);
+                DiagnosisTestSession.setDisplayAll(displayAll);
             }
             finish();
         } else {
