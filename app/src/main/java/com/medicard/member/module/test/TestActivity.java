@@ -2,12 +2,9 @@ package com.medicard.member.module.test;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.medicard.member.R;
 import com.medicard.member.module.base.BaseActivity;
@@ -20,8 +17,9 @@ import butterknife.OnClick;
 public class TestActivity extends BaseActivity implements TestMvp.View {
 
 
-    @BindView(R.id.fabRequestNewApproval) FloatingActionButton fabRequestNewApproval;
+    @BindView(R.id.btn_request_approval) Button btnRequestNewApproval;
     @BindView(R.id.rvAvailedConsultations) RecyclerView rvAvailedConsultations;
+    @BindView(R.id.empty_text) TextView tv_emptyText;
 
     private TestMvp.Presenter presenter;
 
@@ -48,7 +46,7 @@ public class TestActivity extends BaseActivity implements TestMvp.View {
         presenter.detachView();
     }
 
-    @OnClick(R.id.fabRequestNewApproval)
+    @OnClick(R.id.btn_request_approval)
     public void onRequestNewApproval() {
         transitionTo(new Intent(this, NewTestProcedureActivity.class));
     }
