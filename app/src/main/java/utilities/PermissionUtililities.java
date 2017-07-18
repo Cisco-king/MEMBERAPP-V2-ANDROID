@@ -51,8 +51,8 @@ public class PermissionUtililities {
         int documentStorage =
                 ActivityCompat.checkSelfPermission(activity, Manifest.permission.MANAGE_DOCUMENTS);
 
-        if (isGranted(documentStorage)) return true;
 
+        if (isGranted(documentStorage)) return true;
         ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.MANAGE_DOCUMENTS }, REQUESTCODE_MANAGE_DOCUMENT_PERMISSION);
 
         return false;

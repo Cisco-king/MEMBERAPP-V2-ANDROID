@@ -117,7 +117,7 @@ public class DoctorFragment extends Fragment
 
         loader.startLad();
         loader.setMessage("Loading resource...");
-        presenter.loadAllDoctors();
+        //presenter.loadAllDoctors();
 
         etSearchDoctor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -127,7 +127,10 @@ public class DoctorFragment extends Fragment
 
             @Override
             public void onTextChanged(CharSequence query, int start, int before, int count) {
+                System.out.println("Query " + query);
                 if (query.length() > 0) {
+                    //
+//                    presenter.filterDoctors(doctors, query.toString());
                     presenter.filterDoctors(doctors, query.toString());
                 } else {
                     doctorAdapter.update(doctors);

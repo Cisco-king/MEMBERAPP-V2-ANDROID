@@ -43,7 +43,7 @@ public class ConsultPresenter implements ConsultMvp.Presenter {
 
     @Override
     public void validateReason(String reason) {
-        if (StringUtilities.isNotEmpty(reason)) {
+        if (StringUtilities.isNotEmptyIncludingSpaces(reason)) {
             consultView.proceedSuccess();
         } else {
             consultView.proceedError(context.getString(R.string.field_required));

@@ -11,15 +11,22 @@ import services.model.MaceRequestData;
 
 public class MaceRequestResponse {
 
-    @SerializedName("responseDesc")
-    @Expose
+
     private String responseDesc;
-    @SerializedName("data")
-    @Expose
+
     private MaceRequestData data;
-    @SerializedName("responseCode")
-    @Expose
+
     private Integer responseCode;
+
+    private String batchCode;
+
+    public String getBatchCode() {
+        return batchCode;
+    }
+
+    public void setBatchCode(String batchCode) {
+        this.batchCode = batchCode;
+    }
 
     public String getResponseDesc() {
         return responseDesc;

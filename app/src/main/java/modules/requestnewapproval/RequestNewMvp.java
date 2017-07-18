@@ -11,6 +11,7 @@ import model.newtest.NewTestRequest;
 import modules.base.Mvp;
 import services.model.DiagnosisTestRequest;
 import services.model.HospitalsToDoctor;
+import utilities.Loader;
 
 /**
  * Created by casjohnpaul on 5/30/2017.

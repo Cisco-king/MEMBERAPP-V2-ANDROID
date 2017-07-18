@@ -26,6 +26,8 @@ public interface DoctorMvp {
 
         void loadAllDoctors();
 
+        void loadDoctorsByName(String partialDoctorName);
+
         void filterDoctors(List<HospitalsToDoctor> doctors, String query);
 
     }

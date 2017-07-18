@@ -38,7 +38,7 @@ public class Test implements Table.Test {
     private String approvalType;
     @SerializedName("amount")
     @Expose
-    private Integer amount;
+    private Double amount;
     @SerializedName("costCenterID")
     @Expose
     private String costCenterID;
@@ -66,7 +66,7 @@ public class Test implements Table.Test {
         this.procedureName = cursor.getString(cursor.getColumnIndex(PROCEDURE_NAME));
         this.approvalId = cursor.getString(cursor.getColumnIndex(APPROVAL_ID));
         this.approvalType = cursor.getString(cursor.getColumnIndex(APPROVAL_TYPE));
-        this.amount = cursor.getInt(cursor.getColumnIndex(AMOUNT));
+        this.amount = cursor.getDouble(cursor.getColumnIndex(AMOUNT));
         this.costCenter = cursor.getString(cursor.getColumnIndex(COST_CENTER));
         this.procedureGroupId = cursor.getString(cursor.getColumnIndex(PROCEDURE_GROUP_ID));
         this.active = cursor.getString(cursor.getColumnIndex(ACTIVE));
@@ -130,11 +130,11 @@ public class Test implements Table.Test {
         this.approvalType = approvalType;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -196,7 +196,7 @@ public class Test implements Table.Test {
                 PROCEDURE_NAME + " TEXT, " +
                 APPROVAL_ID + " TEXT, " +
                 APPROVAL_TYPE + " TEXT, " +
-                AMOUNT + " INTEGER, " +
+                AMOUNT + " DOUBLE, " +
                 COST_CENTER + " TEXT, " +
                 PROCEDURE_GROUP_ID + " TEXT, " +
                 ACTIVE + " TEXT, " +
@@ -245,7 +245,7 @@ public class Test implements Table.Test {
             return this;
         }
 
-        public Builder amount(Integer val) {
+        public Builder amount(Double val) {
             values.put(Test.AMOUNT, val);
             return this;
         }

@@ -73,6 +73,7 @@ public class RequestForConsultFragment extends Fragment implements RequestForRes
 
     @OnClick(R.id.btnReasonForConsultOk)
     public void startRequestingDoctor() {
+        System.out.println("InsideProceed");
         presenter.proceedToRequestDoctorActivity(
                 ViewUtilities.getEditValue(etReasonForConsult));
     }

@@ -29,7 +29,7 @@ public class DiagnosisProcedure {
     private String diagnosisCode;
     @SerializedName("amount")
     @Expose
-    private Integer amount;
+    private Double amount;
     @SerializedName("status")
     @Expose
     private Integer status;
@@ -85,11 +85,11 @@ public class DiagnosisProcedure {
         this.diagnosisCode = diagnosisCode;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

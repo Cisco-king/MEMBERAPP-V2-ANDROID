@@ -11,7 +11,7 @@ public class DiagnosisProcedure {
 
     @SerializedName("amount")
     @Expose
-    private Integer amount;
+    private Double amount;
     @SerializedName("diagnosisCode")
     @Expose
     private String diagnosisCode;
@@ -29,18 +29,18 @@ public class DiagnosisProcedure {
      * @param procedureCode
      * @param serviceType
      */
-    public DiagnosisProcedure(Integer amount, String diagnosisCode, String procedureCode, Integer serviceType) {
+    public DiagnosisProcedure(double amount, String diagnosisCode, String procedureCode, Integer serviceType) {
         this.amount = amount;
         this.diagnosisCode = diagnosisCode;
         this.procedureCode = procedureCode;
         this.serviceType = serviceType;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

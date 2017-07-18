@@ -2,6 +2,7 @@ package services;
 
 import model.AddDepenceResponse;
 import model.AddDependence;
+import model.BasicTestOrOtherTest;
 import model.ChangePassword;
 import model.City;
 import model.Confirm;
@@ -29,6 +30,7 @@ import model.SpecializationList;
 import model.TheDoctor;
 import model.UpdatePin;
 import model.VerifyMemberData;
+import model.newtest.NewTestRequest;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -42,6 +44,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 import services.response.LoaListResponse;
+import services.response.MaceRequestResponse;
 import utilities.SharedPref;
 
 /**
@@ -56,13 +59,16 @@ public interface AppInterface {
 //    String PHOTOLINK = "http://mace-public01.medicardphils.com:8080/downloadpicture/";
 
 
+    String ENDPOINT = "http://10.10.26.63:8080/";
+    String PHOTOLINK = "http://10.10.26.63:8080/downloadpicture/";
+
 
 //    String ENDPOINT = "http://10.10.24.195:8080/";
 //    String PHOTOLINK = "http://10.10.24.195:8080/downloadpicture/";
 
 
-    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
-    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
+//    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
+//    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
 
 //    String ENDPOINT = "http://macestaging.medicardphils.com:8080/";
 //    String PHOTOLINK = "http://macestaging.medicardphils.com:8080/downloadpicture/";
@@ -166,4 +172,7 @@ public interface AppInterface {
 
     @GET("/coordinator/v2/getHasDisclaimerByMemberCode/?")
     Observable<Disclaimer> getDisclaimer(@Query("memberCode") String memberCode);
+
+    @POST("/coordinator/v2/requestBasicOrOtherTest")
+    Call<MaceRequestResponse> getBasicTestResult(@Body NewTestRequest newTestRequest);
 }

@@ -33,4 +33,9 @@ public interface DoctorClient {
     @GET("listing/getDoctorHospitalByCode/")
     Observable<HospitalsByDoctorCodeResponse> getHospitalsByDoctorCodeRx(@Query("doctorCode") String doctorCode);
 
+
+    @GET("listing/getAllDoctorsToHospitalByName/")
+    Call<HospitalsToDoctorResponse> getAllDoctorsToHospitalByName(@Query("partialDoctorName") String partialDoctorName, @Query("max") Integer max);
+
+
 }

@@ -66,6 +66,7 @@ public class ConsultFragment extends BaseFragment
 
     @OnClick(R.id.btnProceed)
     public void onProceedClick() {
+        System.out.println("Proceed");
         presenter.validateReason(ViewUtilities.getEditValue(etReasonForConsult));
     }
 

@@ -85,23 +85,54 @@ public class DoctorPresenter implements DoctorMvp.Presenter {
 
     }
 
+    @Override
+    public void loadDoctorsByName(String partialDoctorName) {
+
+        doctorHttpClient.getAllDoctorsToHospitalByName(partialDoctorName, 1000)
+                .enqueue(new Callback<HospitalsToDoctorResponse>() {
+                    @Override
+                    public void onResponse(Call<HospitalsToDoctorResponse> call, Response<HospitalsToDoctorResponse> response) {
+                        Timber.d("response : %s", response.raw().toString());
+                        if (response.isSuccessful()) {
+                            doctorView.displayDoctorsByHospital(
+                                    response.body().getDoctorsToHospital()
+                            );
+                        } else {
+                            doctorView.onErrorRequest("Error Occured");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<HospitalsToDoctorResponse> call, Throwable t) {
+
+                    }
+                });
+
+    }
+
 
     @Override
     public void filterDoctors(List<HospitalsToDoctor> doctors, String query) {
         try {
-            query = query.toLowerCase();
-            List<HospitalsToDoctor> doctorList = new ArrayList<>();
-            for (HospitalsToDoctor doctor : doctors) {
-                String fullName =
-                        doctor.getFullName() != null ? doctor.getFullName().toLowerCase() : "";
-                String specialization =
-                        doctor.getSpecDesc() != null ? doctor.getSpecDesc().toLowerCase() : "";
+            List<HospitalsToDoctor> doctorList= new ArrayList<>();
+            if(null == query || query.isEmpty()){
 
-                if (fullName.contains(query) || specialization.contains(query)) {
-                    doctorList.add(doctor);
+            }else{
+                query = query.toLowerCase();
+
+                for (HospitalsToDoctor doctor : doctors) {
+                    String fullName =
+                            doctor.getFullName() != null ? doctor.getFullName().toLowerCase() : "";
+                    String specialization =
+                            doctor.getSpecDesc() != null ? doctor.getSpecDesc().toLowerCase() : "";
+
+                    if (fullName.contains(query) || specialization.contains(query)) {
+                        doctorList.add(doctor);
+                    }
                 }
-            }
 
+
+            }
             doctorView.displayFilteredDoctors(doctorList);
         } catch (Exception e) {
             Timber.d("error message %s", e.toString());

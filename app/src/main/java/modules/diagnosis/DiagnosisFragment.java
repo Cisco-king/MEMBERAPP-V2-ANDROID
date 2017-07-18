@@ -154,6 +154,7 @@ public class DiagnosisFragment extends Fragment
 
     @Override
     public void onDisplayDiagnosis(List<Diagnosis> diagnosisList) {
+        System.out.println("onDisplayDiagnosis 1 ");
         loader.stopLoad();
 
         Timber.d("diagnosisByCodeId %s", diagnosisList.get(0).getDiagCode());

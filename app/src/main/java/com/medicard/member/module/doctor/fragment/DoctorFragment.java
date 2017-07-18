@@ -34,8 +34,10 @@ public class DoctorFragment extends BaseFragment
 
     public static final String FROM_NEW_REQUEST = "newRequest";
 
-    @BindView(R.id.etSearchDoctor) EditText etSearchDoctor;
-    @BindView(R.id.rvDoctors) RecyclerView rvDoctors;
+    @BindView(R.id.etSearchDoctor)
+    EditText etSearchDoctor;
+    @BindView(R.id.rvDoctors)
+    RecyclerView rvDoctors;
 
     private DoctorMvp.Presenter presenter;
     private DoctorNavigator doctorNavigator;
@@ -50,15 +52,15 @@ public class DoctorFragment extends BaseFragment
     private boolean isFromNewRequest = false;
 
     public static DoctorFragment newInstance(boolean isFromDoctor) {
-        
+
         Bundle args = new Bundle();
         args.putBoolean(FROM_NEW_REQUEST, isFromDoctor);
-        
+
         DoctorFragment fragment = new DoctorFragment();
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     public DoctorFragment() {
     }
 
@@ -92,8 +94,9 @@ public class DoctorFragment extends BaseFragment
         loader.startLad();
         loader.setMessage("Loading ...");
 
-        presenter.loadAllDoctors();
+//        presenter.loadAllDoctors();
 
+        loader.stopLoad();
         etSearchDoctor.addTextChangedListener(new DoctorFilter());
     }
 
@@ -147,9 +150,11 @@ public class DoctorFragment extends BaseFragment
         @Override
         public void onTextChanged(CharSequence search, int start, int before, int count) {
             if (search.length() > 0) {
-                presenter.filterDoctors(doctors, search.toString());
+                    presenter.loadDoctorsByName(search.toString());
+//                presenter.filterDoctors(doctors, search.toString());
             } else {
-                doctorAdapter.update(doctors);
+
+                //doctorAdapter.update(doctors);
             }
         }
 

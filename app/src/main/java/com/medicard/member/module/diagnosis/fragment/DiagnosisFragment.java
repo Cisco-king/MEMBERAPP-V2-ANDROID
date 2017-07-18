@@ -107,6 +107,7 @@ public class DiagnosisFragment extends BaseFragment
 
     @Override
     public void onDisplayDiagnosis(List<Diagnosis> diagnosisList) {
+        System.out.println("onDisplayDiagnosis 2");
         loader.stopLoad();
 
         this.diagnosisList = diagnosisList;

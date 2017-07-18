@@ -18,23 +18,20 @@ public class AppService {
     public static <T> T createApiService(Class<T> mClass, String endPoint) {
 
 
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(endPoint)
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(getClient())
                 .build();
         return retrofit.create(mClass);
-    }
-
-
-    private static OkHttpClient getClient() {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(20, TimeUnit.MINUTES)
-                .readTimeout(20, TimeUnit.MINUTES)
-                .build();
-        return client;
     }
 
 }

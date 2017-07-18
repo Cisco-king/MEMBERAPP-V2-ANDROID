@@ -215,26 +215,26 @@ public class RequestNewActivity extends TestTrackableActivity
                 etReasonForConsult.setError("This field is required.");
             } else {
 
-                /*loader.startLad();
-                loader.setMessage("Sending request...");*/
+                loader.startLad();
+                loader.setMessage("Sending request...");
 
-                /*NewTestRequest newTestRequest = new NewTestRequest();
+                NewTestRequest newTestRequest = new NewTestRequest();
                 newTestRequest.setRequestDevice(DeviceUtils.getAndroidId(RequestNewActivity.this));
                 newTestRequest.setDiagnosisProcedures(convertObjectToDiagnosisProcedure(diagnosisTests));
                 newTestRequest.setDoctorCode(doctor.getDoctorCode());
                 newTestRequest.setHospitalCode(doctor.getHospitalCode());
                 newTestRequest.setMemberCode(memberCode);
-                newTestRequest.setServiceSubtype(0);
+                newTestRequest.setServiceSubtype(2);
                 newTestRequest.setPrimaryComplaint(reasonForConsult);
                 newTestRequest.setPrimaryDiagnosisCode(diagnosisTests.get(0).getDiagnosis().getDiagCode());
-                newTestRequest.setRequestOrigin(MedicardConfig.APP_NAME);*/
+                newTestRequest.setRequestOrigin(MedicardConfig.APP_NAME);
 
 
-                if (PermissionUtililities.hasPermissionMangeDocumentStorage(this)) {
-                    submitNewTest();
-                }
-//                presenter.submitTestRequest(testRequest);
-//                presenter.submitNewRequest(newTestRequest);
+                Gson gson = new Gson();
+                gson.toJson(newTestRequest);
+
+//               presenter.submitTestRequest(testRequest);
+                presenter.submitNewRequest(newTestRequest);
             }
         } else {
             Timber.d("need to accept terms and conditions");
@@ -244,6 +244,7 @@ public class RequestNewActivity extends TestTrackableActivity
                     .setBackgroundColor(R.color.orange_a200)
                     .show();
         }
+        loader.stopLoad();
     }
 
     @Override

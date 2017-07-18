@@ -38,7 +38,8 @@ public class RequestForResultPresenter implements RequestForResultMvp.Presenter 
 
     @Override
     public void proceedToRequestDoctorActivity(String reasonForConsult) {
-        if (StringUtilities.isNotEmpty(reasonForConsult)) {
+        System.out.println("Reason For Consult" + reasonForConsult);
+        if (StringUtilities.isNotEmptyIncludingSpaces(reasonForConsult)) {
             requestForResultView.onProceedSuccess();
         } else {
             requestForResultView.onProceedError("This field is required");

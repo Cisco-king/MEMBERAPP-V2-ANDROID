@@ -51,6 +51,7 @@ import services.response.MaceRequestResponse2;
 import timber.log.Timber;
 import utilities.DiagnosisUtils;
 import utilities.ImageConverters;
+import utilities.Loader;
 import utilities.SharedPref;
 
 /**
@@ -217,16 +218,14 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
 
     @Override
     public void submitNewRequest(NewTestRequest newTestRequest) {
-        memberLoaClient.requestBasicOrOtherTest(newTestRequest)
+        AppInterface appInterface;
+        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+        appInterface.getBasicTestResult(newTestRequest)
                 .enqueue(new Callback<MaceRequestResponse>() {
                     @Override
                     public void onResponse(Call<MaceRequestResponse> call, Response<MaceRequestResponse> response) {
-                        if (response.isSuccessful()) {
-                            Timber.d("successfully submitted");
-                            requestNewView.onRequestSuccess();
-                        } else {
-                            Timber.d("error#%s", response.errorBody().toString());
-                            requestNewView.onRequestError(response.errorBody().toString());
+                        if (response.body() != null) {
+                        requestNewView.onRequestSuccess();
                         }
                     }
 
