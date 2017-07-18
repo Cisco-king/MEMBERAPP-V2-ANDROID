@@ -354,6 +354,8 @@
 
     <string name="alert_cancel_new_request">Are you sure you want to cancel this request?</string>
     <string name="alert_mace_success">MaceTest successully submitted.</string>
+    <string name="request_new_approval">Request New Approval</string>
+    <string name="prescribed_test_empty">No List of Consultation with Prescribed Test</string>
 
     <!-- all module text here -->
 </resources>

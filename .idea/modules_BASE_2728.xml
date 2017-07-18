@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-<<<<<<< HEAD
-=======
       <module fileurl="file://$PROJECT_DIR$/MedicardMemberApp.iml" filepath="$PROJECT_DIR$/MedicardMemberApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MemberV2End.iml" filepath="$PROJECT_DIR$/MemberV2End.iml" />
->>>>>>> 8ccf35ce21054153a963c165d5c5ef0f779f7920
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/fancybuttons_library/fancybuttons_library.iml" filepath="$PROJECT_DIR$/fancybuttons_library/fancybuttons_library.iml" />
-      <module fileurl="file://$PROJECT_DIR$/medicard-android-v2.iml" filepath="$PROJECT_DIR$/medicard-android-v2.iml" />
       <module fileurl="file://$PROJECT_DIR$/samples/samples.iml" filepath="$PROJECT_DIR$/samples/samples.iml" />
     </modules>
   </component>
