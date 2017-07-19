@@ -120,4 +120,22 @@ public class TestByDiagnosisPresenter implements TestByDiagnosisMvp.Presenter {
         testView.onSuccess(all);
     }
 
+    @Override
+    public void filterTest(List<Test> testList, String query) {
+        try{
+            query = query.toLowerCase();
+            List<Test> newTestList = new ArrayList<>();
+            for(Test test: testList){
+                String testDescription =
+                        test.getProcedureName() != null ? test.getProcedureName().toLowerCase(): "";
+
+                if(testDescription.contains(query)){
+                    newTestList.add(test);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }

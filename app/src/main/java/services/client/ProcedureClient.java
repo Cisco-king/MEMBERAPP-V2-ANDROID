@@ -19,6 +19,9 @@ public interface ProcedureClient {
     @GET("listing/getProceduresList/")
     Observable<ProcedureResponse> getAllProceduresRx();
 
+    @GET("/listing/getTestsByDiagnosisCode/")
+    Call<String> getTestsByDiagnosisCode(@Query("diagCode") String diagCode);
+
     @GET("listing/getProceduresByDiagnosisCode/?")
     Call<ProcedureByDiagnosisCodeResponse> getProceduresByDiagnosisCode(@Query("diagCode") String diagnosisCode);
 

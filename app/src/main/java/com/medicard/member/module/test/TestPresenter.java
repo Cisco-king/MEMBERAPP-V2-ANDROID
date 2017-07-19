@@ -2,6 +2,11 @@ package com.medicard.member.module.test;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import services.model.Test;
+
 /**
  * Created by casjohnpaul on 6/17/2017.
  */
@@ -35,5 +40,9 @@ public class TestPresenter implements TestMvp.Presenter {
     public void detachCallback() {
 
     }
+
+
+
+
 
 }

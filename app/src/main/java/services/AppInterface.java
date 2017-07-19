@@ -30,6 +30,7 @@ import model.VerifyMemberData;
 import model.newtest.NewTestRequest;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -40,11 +41,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 import services.response.LoaListResponse;
-<<<<<<< HEAD
 import services.response.MaceRequestResponse;
 import utilities.SharedPref;
-=======
->>>>>>> 8ccf35ce21054153a963c165d5c5ef0f779f7920
 
 /**
  * Created by window on 10/5/2016.
@@ -57,10 +55,10 @@ public interface AppInterface {
 //    String ENDPOINT = "http://mace-public01.medicardphils.com:8080/";
 //    String PHOTOLINK = "http://mace-public01.medicardphils.com:8080/downloadpicture/";
 
-<<<<<<< HEAD
 
-    String ENDPOINT = "http://10.10.26.63:8080/";
-    String PHOTOLINK = "http://10.10.26.63:8080/downloadpicture/";
+
+    String ENDPOINT = "http://10.10.26.78:8080/";
+    String PHOTOLINK = "http://10.10.26.78:8080/downloadpicture/";
 
 
 //    String ENDPOINT = "http://10.10.24.195:8080/";
@@ -69,13 +67,15 @@ public interface AppInterface {
 
 //    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
 //    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
-=======
+
 //    String ENDPOINT = "http://10.10.24.195:8080/";
 //    String PHOTOLINK = "http://10.10.24.195:8080/downloadpicture/";
 
-    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
+
+/*
     String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
->>>>>>> 8ccf35ce21054153a963c165d5c5ef0f779f7920
+    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
+*/
 
 //    String ENDPOINT = "http://macestaging.medicardphils.com:8080/";
 //    String PHOTOLINK = "http://macestaging.medicardphils.com:8080/downloadpicture/";
@@ -182,4 +182,6 @@ public interface AppInterface {
 
     @POST("/coordinator/v2/requestBasicOrOtherTest")
     Call<MaceRequestResponse> getBasicTestResult(@Body NewTestRequest newTestRequest);
+
+
 }

@@ -62,13 +62,13 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_centerHorizontal="true"
         android:gravity="center"
         android:padding="@dimen/sub_margin"
         android:text="@string/select_hospital"
         android:textColor="@color/BLACK"
-        android:textSize="@dimen/text_main" />
+        android:textSize="@dimen/text_main"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_alignParentStart="true" />
 
     <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/btn_sort"

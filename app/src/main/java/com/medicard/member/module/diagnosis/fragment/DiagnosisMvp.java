@@ -4,6 +4,7 @@ import java.util.List;
 
 import modules.base.Mvp;
 import services.model.Diagnosis;
+import services.model.Test;
 
 /**
  * Created by casjohnpaul on 5/8/2017.
@@ -19,11 +20,15 @@ public interface DiagnosisMvp {
 
         void displayFilteredDiagnosis(List<Diagnosis> diagnosisList);
 
+
+
     }
 
     interface Presenter extends Mvp.Presenter<View> {
 
         void loadAllDiagnosis();
+
+
 
         void filterDianosis(List<Diagnosis> diagnosisList, String query);
 

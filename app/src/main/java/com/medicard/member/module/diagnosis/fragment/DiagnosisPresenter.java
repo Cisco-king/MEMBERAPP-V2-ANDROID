@@ -1,5 +1,6 @@
 package com.medicard.member.module.diagnosis.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.medicard.member.module.diagnosis.fragment.DiagnosisMvp;
@@ -88,6 +89,8 @@ public class DiagnosisPresenter implements DiagnosisMvp.Presenter {
     }
 
 
+
+
     public void loadAllTest(final DiagnosisResponse diagnosisResponse) {
         testClient.getAllTest()
                 .enqueue(new Callback<TestResponse>() {
@@ -134,5 +137,7 @@ public class DiagnosisPresenter implements DiagnosisMvp.Presenter {
             Timber.d("error message %s", e.toString());
         }
     }
+
+
 
 }

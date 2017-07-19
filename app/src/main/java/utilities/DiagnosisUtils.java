@@ -14,6 +14,10 @@ import services.model.Diagnosis;
 
 public class DiagnosisUtils {
 
+    public static final String DIAGNOSIS = "DIAGNOSIS";
+
+    public static final String TEST_PROCEDURES = "TEST_PROCEDURES";
+
     public static final List<String> getAllOriginalDiagnosisCode(List<DiagnosisProcedure> diagnosisProcedures) {
         Set<String> diagnosisCodes = new LinkedHashSet<>();
         for (DiagnosisProcedure diagnosisProcedure : diagnosisProcedures) {

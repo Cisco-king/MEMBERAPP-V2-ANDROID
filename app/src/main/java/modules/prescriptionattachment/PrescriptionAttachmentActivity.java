@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 
 import com.medicard.member.R;
+import com.tapadoo.alerter.Alerter;
 
 import java.io.File;
 import java.io.IOException;
@@ -103,13 +104,22 @@ public class PrescriptionAttachmentActivity extends BaseActivity
         /*Intent intent = new Intent(this, DummyActivity.class);
         intent.putExtra(ATTACHMENT, new ArrayList<>(attachments));
         startActivity(intent);*/
-        if (PermissionUtililities.hasPermissionToReadAndWriteStorage(this)) {
-            Intent intent = new Intent(this, RequestNewActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra(RequestNewActivity.ATTACHMENT, new ArrayList<>(attachments));
-            transitionTo(intent);
+        if (attachments != null) {
+            if (PermissionUtililities.hasPermissionToReadAndWriteStorage(this)) {
+                Intent intent = new Intent(this, RequestNewActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra(RequestNewActivity.ATTACHMENT, new ArrayList<>(attachments));
+                transitionTo(intent);
+            }
+        } else {
+            Alerter.create(this)
+                    .setText("Please upload Attachment(s) to proceed.")
+                    .setBackgroundColor(R.color.orange_a200)
+                    .show();
         }
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

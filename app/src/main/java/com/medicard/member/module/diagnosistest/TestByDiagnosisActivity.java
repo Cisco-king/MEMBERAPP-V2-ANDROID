@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import com.medicard.member.core.model.DiagnosisTests;
 import com.medicard.member.core.session.DiagnosisSession;
 import com.medicard.member.core.session.DiagnosisTestSession;
 import com.medicard.member.module.base.BaseActivity;
+import com.medicard.member.module.diagnosis.fragment.DiagnosisFragment;
 import com.medicard.member.module.diagnosistest.adapter.TestProcedureAdapter;
 import com.tapadoo.alerter.Alerter;
 
@@ -87,6 +90,7 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
         presenter.attachView(this);
 
         fromTest = getIntent().getBooleanExtra(RequestNewActivity.FROM_TEST, false);
+        edSearchProcedures.addTextChangedListener(new Search());
 
         if (fromTest) {
             Timber.d("from new request ");
@@ -227,4 +231,25 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
         return selected;
     }
 
+    public class Search implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence search, int start, int before, int count) {
+            if (search.length() > 0) {
+                presenter.filterTest(tests, search.toString());
+            } else {
+
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    }
 }

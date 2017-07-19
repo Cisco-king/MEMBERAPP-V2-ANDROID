@@ -3,6 +3,7 @@ package com.medicard.member.module.diagnosistest;
 import java.util.List;
 
 import modules.base.Mvp;
+import services.model.Diagnosis;
 import services.model.Test;
 
 /**
@@ -17,6 +18,8 @@ public interface TestByDiagnosisMvp {
 
         void onError(String message);
 
+
+
     }
 
     interface Presenter extends Mvp.Presenter<TestByDiagnosisMvp.View> {
@@ -24,6 +27,14 @@ public interface TestByDiagnosisMvp {
         void loadTestProcedureByDiagnosisCode(String diagnosisCode);
 
         void loadAllTests(boolean fromTest);
+
+
+
+
+
+        //Function call for filtering Test
+        //@Params List<Test>, String query
+        void filterTest(List<Test> testList, String query);
 
     }
 

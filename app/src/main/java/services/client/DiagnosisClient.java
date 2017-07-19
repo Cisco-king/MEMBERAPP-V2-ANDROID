@@ -2,6 +2,7 @@ package services.client;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 import services.response.DiagnosisResponse;
 
@@ -19,6 +20,7 @@ public interface DiagnosisClient {
 
     @GET("listing/getDiagnosisList/")
     Call<DiagnosisResponse> getDiagnosisList();
+
 
     @GET("listing/getDiagnosisList/")
     Observable<DiagnosisResponse> getDiagnosisListRx();

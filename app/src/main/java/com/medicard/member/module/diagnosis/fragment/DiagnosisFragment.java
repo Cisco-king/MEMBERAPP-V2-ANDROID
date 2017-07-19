@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
+import java.util.Collections;
 
 import com.medicard.member.R;
 import com.medicard.member.core.session.DiagnosisSession;
@@ -21,6 +22,7 @@ import butterknife.BindView;
 import core.callback.RecyclerViewOnClickListener;
 import modules.diagnosis.adapter.DiagnosisAdapter;
 import services.model.Diagnosis;
+import services.model.Test;
 import utilities.AlertDialogCustom;
 import utilities.ErrorMessage;
 import utilities.Loader;
@@ -47,6 +49,7 @@ public class DiagnosisFragment extends BaseFragment
     private List<Diagnosis> diagnosisList;
 
     private Loader loader;
+
 
     public DiagnosisFragment() {
     }
@@ -111,6 +114,9 @@ public class DiagnosisFragment extends BaseFragment
         loader.stopLoad();
 
         this.diagnosisList = diagnosisList;
+        //Sorting DiagnosisList Alphabetically
+        Collections.reverse(diagnosisList);
+
         diagnosisAdapter = new DiagnosisAdapter(context, diagnosisList, this);
         rvHospitalDiagnosis.setAdapter(diagnosisAdapter);
     }
