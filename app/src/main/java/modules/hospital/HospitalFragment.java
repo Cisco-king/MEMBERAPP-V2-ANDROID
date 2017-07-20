@@ -135,6 +135,7 @@ public class HospitalFragment extends Fragment
 
     @Override
     public void displayHospitalClinic(List<HospitalList> hospitals) {
+        System.out.println("Next Day!!!!");
         this.hospitals = hospitals;
         hospitalAdapter = new HospitalDoctorAdapter(getContext(), hospitals, this);
 

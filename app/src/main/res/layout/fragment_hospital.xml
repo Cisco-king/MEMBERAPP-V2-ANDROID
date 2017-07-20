@@ -7,6 +7,12 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="modules.hospital.HospitalFragment">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvHospitalClinic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/llSearchHospitalOrclinic" />
+
     <LinearLayout
         android:id="@+id/llSearchHospitalOrClinic"
         android:layout_width="match_parent"
@@ -40,11 +46,5 @@
 
 
     </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvHospitalClinic"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/llSearchHospitalOrclinic" />
 
 </LinearLayout>

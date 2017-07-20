@@ -20,13 +20,14 @@
             android:gravity="center_vertical"
             android:text="Loading File ..." />
 
-        <ImageButton
+        <Button
             android:id="@+id/btnRemove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:padding="10dp"
-            android:src="@drawable/ic_remove" />
+            android:text="Delete"
+            android:textColor="@color/colorPrimary"/>
 
     </LinearLayout>
 

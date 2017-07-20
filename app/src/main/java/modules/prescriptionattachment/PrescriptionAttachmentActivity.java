@@ -104,7 +104,7 @@ public class PrescriptionAttachmentActivity extends BaseActivity
         /*Intent intent = new Intent(this, DummyActivity.class);
         intent.putExtra(ATTACHMENT, new ArrayList<>(attachments));
         startActivity(intent);*/
-        if (attachments != null) {
+        if (attachments.size() != 0) {
             if (PermissionUtililities.hasPermissionToReadAndWriteStorage(this)) {
                 Intent intent = new Intent(this, RequestNewActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
