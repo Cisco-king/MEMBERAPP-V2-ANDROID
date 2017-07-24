@@ -12,7 +12,7 @@ import services.model.Procedure;
  * Created by casjohnpaul on 6/3/2017.
  */
 
-public class DiagnosisDetails implements Parcelable {
+public class DiagnosisDetails  {
 
     private Diagnosis diagnosis;
     private List<Procedure> procedures;
@@ -22,33 +22,6 @@ public class DiagnosisDetails implements Parcelable {
         this.procedures = procedures;
     }
 
-    protected DiagnosisDetails(Parcel in) {
-        diagnosis = in.readParcelable(Diagnosis.class.getClassLoader());
-        procedures = in.createTypedArrayList(Procedure.CREATOR);
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(diagnosis, flags);
-        dest.writeTypedList(procedures);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<DiagnosisDetails> CREATOR = new Creator<DiagnosisDetails>() {
-        @Override
-        public DiagnosisDetails createFromParcel(Parcel in) {
-            return new DiagnosisDetails(in);
-        }
-
-        @Override
-        public DiagnosisDetails[] newArray(int size) {
-            return new DiagnosisDetails[size];
-        }
-    };
 
     @Override
     public boolean equals(Object o) {

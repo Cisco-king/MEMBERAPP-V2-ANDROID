@@ -21,8 +21,12 @@ public class DoctorList {
     @SerializedName("docMname")
     @Expose
     private String docMname;
+    @SerializedName("hospitalName")
+    @Expose
+    private String hospitalName;
     @SerializedName("specDesc")
     @Expose
+
     private String specDesc;
     @SerializedName("specCode")
     @Expose
@@ -195,6 +199,17 @@ public class DoctorList {
 
     public void setSchedule(String schedule) {
         this.schedule = schedule;
+    }
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
+    }
+
+    public String getFullName() {
+        return lastName + ", " + docFname;
     }
 
 }

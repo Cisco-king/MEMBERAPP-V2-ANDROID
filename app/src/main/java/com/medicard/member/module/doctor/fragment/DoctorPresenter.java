@@ -17,6 +17,7 @@ import services.AppService;
 import services.ServiceGenerator;
 import services.client.DoctorClient;
 import services.model.HospitalsToDoctor;
+import services.response.DoctorListResponse;
 import services.response.HospitalsToDoctorResponse;
 import timber.log.Timber;
 
@@ -69,9 +70,9 @@ public class DoctorPresenter implements DoctorMvp.Presenter {
                     public void onResponse(Call<HospitalsToDoctorResponse> call, Response<HospitalsToDoctorResponse> response) {
                         Timber.d("response : %s", response.raw().toString());
                         if (response.isSuccessful()) {
-                            doctorView.displayDoctorsByHospital(
-                                    response.body().getDoctorsToHospital()
-                            );
+                            doctorView.displayAllDoctors(
+                                    response.body().getDoctorsToHospital());
+
                         } else {
                             doctorView.onErrorRequest("Error Occured");
                         }

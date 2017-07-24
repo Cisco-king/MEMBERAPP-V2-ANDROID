@@ -16,6 +16,7 @@ import com.medicard.member.module.hospital.HospitalActivity;
 
 import modules.requestnewapproval.RequestNewActivity;
 import timber.log.Timber;
+import utilities.Constant;
 
 /**
  * Created by casjohnpaul on 6/18/2017.
@@ -39,6 +40,7 @@ public class DoctorActivity extends BaseActivity
         super.initComponents(savedInstanceState);
 
         boolean isFromDoctor = getIntent().getBooleanExtra(RequestNewActivity.FROM_DOCTOR, false);
+
 
         setupWindowAnimations();
 

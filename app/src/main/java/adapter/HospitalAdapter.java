@@ -48,9 +48,7 @@ public class HospitalAdapter extends RecyclerView.Adapter<HospitalAdapter.ViewHo
                 getStringName(array.get(position).getCity()) + ", " +
                 getStringName(array.get(position).getProvince()) + ", " +
                 getStringName(array.get(position).getRegion()));
-        holder.contact.setText("Tel. No: " + SetUnfilledField.setData(array.get(position).getPhoneNo()));
-        holder.person.setText("Contact Person: " + SetUnfilledField.setData(array.get(position).getContactPerson()));
-        holder.time.setText("Clinic Hours: " + SetUnfilledField.setData(""));
+        holder.contact.setText("Tel. No: " + array.get(position).getPhoneNo());
     }
 
     private String getStringName(String getData) {

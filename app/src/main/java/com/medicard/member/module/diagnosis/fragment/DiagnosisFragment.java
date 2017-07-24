@@ -11,7 +11,9 @@ import android.widget.TextView;
 import java.util.Collections;
 
 import com.medicard.member.R;
+import com.medicard.member.core.model.DiagnosisTests;
 import com.medicard.member.core.session.DiagnosisSession;
+import com.medicard.member.core.session.DiagnosisTestSession;
 import com.medicard.member.module.base.BaseFragment;
 import com.medicard.member.module.diagnosis.DiagnosisNavigator;
 
@@ -45,6 +47,7 @@ public class DiagnosisFragment extends BaseFragment
 
     private DiagnosisAdapter diagnosisAdapter;
     private AlertDialogCustom alertDialog;
+    List<DiagnosisTests> diagnosisTestsList = new ArrayList<>();
 
     private List<Diagnosis> diagnosisList;
 
@@ -86,6 +89,7 @@ public class DiagnosisFragment extends BaseFragment
 
         diagnosisList = new ArrayList<>();
 
+
         rvHospitalDiagnosis.setLayoutManager(new LinearLayoutManager(context));
 
         alertDialog = new AlertDialogCustom();
@@ -111,6 +115,9 @@ public class DiagnosisFragment extends BaseFragment
     @Override
     public void onDisplayDiagnosis(List<Diagnosis> diagnosisList) {
         System.out.println("onDisplayDiagnosis 2");
+        diagnosisTestsList = DiagnosisTestSession.getAllDiagnosisTests();
+        System.out.println("BLAH BLAH BLAH " + diagnosisTestsList.size());
+
         loader.stopLoad();
 
         this.diagnosisList = diagnosisList;

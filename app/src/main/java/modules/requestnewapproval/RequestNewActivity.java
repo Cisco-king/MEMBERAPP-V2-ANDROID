@@ -106,7 +106,8 @@ public class RequestNewActivity extends TestTrackableActivity
     @BindView(R.id.btnAddAttachment) Button btnAddAttachment;
 
     @BindView(R.id.btnSubmitNewRequest) Button btnSubmitNewRequest;
-    @BindView(R.id.btnCancelNewRequest) Button btnCancelNewRequest;
+
+
 
     @BindView(R.id.rvDiagnosisDetails) RecyclerView rvDiagnosisDetails;
 

@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -28,6 +29,7 @@ import model.ProvincesAdapter;
 import model.SimpleData;
 import model.Specializations;
 import model.SpecsAdapter;
+import services.model.HospitalsToDoctor;
 import services.model.Procedure;
 import services.model.Test;
 import timber.log.Timber;
@@ -905,6 +907,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
+
+
     private ArrayList<GetDoctorsToHospital> getDoctoList(Cursor cursor) {
 
         ArrayList<GetDoctorsToHospital> docs = new ArrayList<>();
@@ -929,6 +933,49 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 setDocs.setRemarks(cursor.getString(cursor.getColumnIndex(remarks)));
                 setDocs.setCity(cursor.getString(cursor.getColumnIndex(city)));
                 setDocs.setGracePeriod(cursor.getString(cursor.getColumnIndex(gracePeriod)));
+                setDocs.setPhoneNo(cursor.getString(cursor.getColumnIndex(phoneNo)));
+                setDocs.setSpecCode(cursor.getString(cursor.getColumnIndex(specCode)));
+                setDocs.setSchedule(cursor.getString(cursor.getColumnIndex(schedule)));
+                setDocs.setFaxno(cursor.getString(cursor.getColumnIndex(faxno)));
+                setDocs.setProvince(cursor.getString(cursor.getColumnIndex(province)));
+                setDocs.setHospitalCode(cursor.getString(cursor.getColumnIndex(hospitalCode)));
+                setDocs.setContactPerson(cursor.getString(cursor.getColumnIndex(contactPerson)));
+                setDocs.setRoomBoard(cursor.getString(cursor.getColumnIndex(roomBoard)));
+                setDocs.setRemarks2(cursor.getString(cursor.getColumnIndex(remarks2)));
+                setDocs.setRoom(cursor.getString(cursor.getColumnIndex(room)));
+
+                docs.add(setDocs);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return docs;
+    }
+
+    private List<HospitalsToDoctor> getDoctoLists(Cursor cursor) {
+
+        List<HospitalsToDoctor>  docs = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+
+            do {
+                HospitalsToDoctor setDocs = new HospitalsToDoctor();
+                setDocs.setRegion(cursor.getString(cursor.getColumnIndex(region)));
+                setDocs.setStreetAddress(cursor.getString(cursor.getColumnIndex(streetAddress)));
+                setDocs.setSpecialRem(cursor.getString(cursor.getColumnIndex(specialRem)));
+                setDocs.setDocFname(cursor.getString(cursor.getColumnIndex(docFname)));
+                setDocs.setSpecDesc(cursor.getString(cursor.getColumnIndex(specDesc)));
+                setDocs.setHospRemarks(cursor.getString(cursor.getColumnIndex(hospRemarks)));
+                setDocs.setDoctorCode(cursor.getString(cursor.getColumnIndex(doctorCode)));
+                setDocs.setDocMname(cursor.getString(cursor.getColumnIndex(docMname)));
+                setDocs.setVat(cursor.getString(cursor.getColumnIndex(vat)));
+                setDocs.setDocLname(cursor.getString(cursor.getColumnIndex(docLname)));
+
+
+                setDocs.setWtax(cursor.getString(cursor.getColumnIndex(wtax)));
+                setDocs.setRemarks(cursor.getString(cursor.getColumnIndex(remarks)));
+                setDocs.setCity(cursor.getString(cursor.getColumnIndex(city)));
+                //setDocs.setGracePeriod(cursor.getString(cursor.getColumnIndex(gracePeriod)));
                 setDocs.setPhoneNo(cursor.getString(cursor.getColumnIndex(phoneNo)));
                 setDocs.setSpecCode(cursor.getString(cursor.getColumnIndex(specCode)));
                 setDocs.setSchedule(cursor.getString(cursor.getColumnIndex(schedule)));
@@ -1099,6 +1146,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
       // if (!getSortByProvinceCityOrHospName(data_sort)) {
             arrayList.addAll(getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
      //   }
+        arrayList.addAll(getHospitalList(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
+
+
+        return arrayList;
+    }
+
+    public List<HospitalList> retrieveHospitalforTest(String isMedicardOnly, ArrayList<ProvincesAdapter> selectedProvince,
+                                                      String data_sort, ArrayList<CitiesAdapter> selectedCity, String data) {
+
+        List<HospitalList> arrayList = new ArrayList<>();
+        String s = data.toUpperCase().replace("'", "`");
+        //TEST IF QUERY IS ONLY FOR MEDICARD CLINICS
+
+
+        // if (!getSortByProvinceCityOrHospName(data_sort)) {
+        arrayList.addAll(getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
+        //   }
         arrayList.addAll(getHospitalList(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
 
 

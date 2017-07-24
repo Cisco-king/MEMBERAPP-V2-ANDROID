@@ -25,6 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import modules.doctor.adapter.DoctorsAdapter;
 import modules.newtest.NewTestMvp;
+import services.model.DoctorList;
 import services.model.HospitalsToDoctor;
 import timber.log.Timber;
 import utilities.AlertDialogCustom;
@@ -164,6 +165,11 @@ public class DoctorFragment extends Fragment
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+    }
+
+    @Override
+    public void displayAllDoctors(List<HospitalsToDoctor> doctorLists) {
+
     }
 
     @Override

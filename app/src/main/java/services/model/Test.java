@@ -6,6 +6,8 @@ import android.database.Cursor;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import database.table.Table;
 import timber.log.Timber;
 
@@ -13,7 +15,7 @@ import timber.log.Timber;
  * Created by casjohnpaul on 6/19/2017.
  */
 
-public class Test implements Table.Test {
+public class Test implements Table.Test,Serializable {
 
     @SerializedName("diagCode")
     @Expose

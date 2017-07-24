@@ -1,0 +1,103 @@
+package com.medicard.member.module.DiagnosisTallyActivity.adapter;
+
+import android.content.Context;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.medicard.member.R;
+import com.medicard.member.core.model.DiagnosisTests;
+
+import org.w3c.dom.Text;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import modules.base.activities.TestTrackableActivity;
+import modules.hospital.adapter.HospitalDoctorAdapter;
+import services.model.Diagnosis;
+import services.model.Test;
+
+/**
+ * Created by Aquino Francisco on 7/21/17.
+ */
+
+public class DiagnosisTallyAdapter extends RecyclerView.Adapter<DiagnosisTallyAdapter.ViewHolder> {
+
+
+    private LayoutInflater inflater;
+    private Context context1;
+
+
+    List<DiagnosisTests> diagnosisList;
+
+
+    public DiagnosisTallyAdapter(Context context, List<DiagnosisTests> diagnosisList){
+        System.out.println("======================= LIST OF DIAGNOSIS " + diagnosisList);
+        this.context1 = context;
+        this.diagnosisList = diagnosisList;
+
+        inflater  = LayoutInflater.from(context);
+
+    }
+    @Override
+    public int getItemCount() {
+        return diagnosisList.size();
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position){
+        DiagnosisTests diagTest  = diagnosisList.get(position);
+        System.out.println("=================== Description " + diagTest.getDiagnosis().getDiagDesc());
+        System.out.println("=================== SIZE " + diagnosisList.size());
+        holder.bind(diagTest.getDiagnosis().getDiagDesc(),
+                getDiagnosisTestsDetails(diagTest.getTests()));
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = inflater.inflate(R.layout.row_diagnosistally, parent,false);
+        return new ViewHolder(view);
+    }
+
+    public String getDiagnosisTestsDetails(List<Test> tests) {
+        System.out.println("=================== TESTS " + tests.get(0).getProcedureName());
+        StringBuilder procedureDetails = new StringBuilder();
+        if (tests.size() == 1) {
+            procedureDetails.append(tests.get(0).getProcedureName())
+                    .append("\n");
+        } else {
+            for (Test test : tests) {
+                procedureDetails.append(test.getProcedureName())
+                        .append("\n");
+            }
+        }
+
+        System.out.println("=================== PROCEDURE DETAILS" + procedureDetails.toString());
+        return procedureDetails.toString();
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.tv_diagnosisName) TextView diagnosisName;
+        @BindView(R.id.tv_testName) TextView testName;
+
+
+
+        public ViewHolder(View itemView){
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+        public void bind(String primaryDiagnosisName, String diagnosisDetails){
+            diagnosisName.setText(primaryDiagnosisName);
+            testName.setText(diagnosisDetails);
+
+        }
+
+    }
+}

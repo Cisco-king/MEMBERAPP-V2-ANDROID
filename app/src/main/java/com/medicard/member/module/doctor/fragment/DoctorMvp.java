@@ -4,6 +4,7 @@ import java.util.List;
 
 import database.entity.Doctor;
 import modules.base.Mvp;
+import services.model.DoctorList;
 import services.model.HospitalsToDoctor;
 
 /**
@@ -15,6 +16,8 @@ public interface DoctorMvp {
     interface View extends Mvp.View {
 
         void displayDoctorsByHospital(List<HospitalsToDoctor> doctors);
+
+        void displayAllDoctors(List<HospitalsToDoctor> doctorLists);
 
         void displayFilteredDoctors(List<HospitalsToDoctor> doctors);
 

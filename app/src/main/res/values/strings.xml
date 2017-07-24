@@ -340,6 +340,7 @@
     <string name="title_activity_hospital">Hospital</string>
     <string name="title_activity_diagnosis">Diagnosis</string>
     <string name="title_activity_test_by_diagnosiscode">Test By Diagnosis Code</string>
+    <string name="title_activity_diagnosis_tally">Diagnosis tally</string>
 
     <string name="alert">Alert</string>
     <string name="alert_cancel_procedure">Are you sure you want to cancel? this procedure will be disregard.</string>

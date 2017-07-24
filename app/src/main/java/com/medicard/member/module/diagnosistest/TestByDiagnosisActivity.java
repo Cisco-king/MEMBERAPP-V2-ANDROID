@@ -2,6 +2,7 @@ package com.medicard.member.module.diagnosistest;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -9,17 +10,22 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.medicard.member.R;
 import com.medicard.member.core.model.DiagnosisTests;
 import com.medicard.member.core.session.DiagnosisSession;
 import com.medicard.member.core.session.DiagnosisTestSession;
+import com.medicard.member.module.DiagnosisTallyActivity.DiagnosisTallyActivity;
 import com.medicard.member.module.base.BaseActivity;
+import com.medicard.member.module.diagnosis.DiagnosisActivity;
 import com.medicard.member.module.diagnosis.fragment.DiagnosisFragment;
 import com.medicard.member.module.diagnosistest.adapter.TestProcedureAdapter;
 import com.tapadoo.alerter.Alerter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import com.medicard.member.*;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,11 +35,14 @@ import modules.procedure.adapter.ProcedureAdapter;
 import modules.requestnewapproval.RequestNewActivity;
 import modules.tests.Tests;
 import services.model.Diagnosis;
+import services.model.DiagnosisTest;
 import services.model.Test;
 import timber.log.Timber;
 import utilities.DialogUtils;
 import utilities.Loader;
 import utilities.ViewUtilities;
+
+import static com.medicard.member.module.diagnosis.DiagnosisActivity.diagnosisBundle;
 
 /**
  * Created by casjohnpaul on 6/19/2017.
@@ -44,6 +53,9 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
 
     public static final String KEY_DONE = "keyDone";
     public static final String KEY_DISPLAY_ALL = "displayAll";
+    public static final String TESTSFORACTIVITY = "testsforActivity";
+    public static final String DIAGNOSISFORACTIVITY = "DiagnosisForActivity";
+    public static final String BUNDLEFORACTIVITY = "bundle";
 
     @BindView(R.id.rvProcedures)
     RecyclerView rvProcedures;
@@ -52,9 +64,10 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
 
     @BindView(R.id.fbDone)
     FancyButton fbDone;
-    @BindView(R.id.fbAddMoreDiagnosis)
-    FancyButton fbAddMoreDiagnosis;
-
+    DiagnosisTests diagtests;
+    /* @BindView(R.id.fbAddMoreDiagnosis)
+     FancyButton fbAddMoreDiagnosis;
+ */
     @BindView(R.id.tvNoProcedures)
     TextView tvNoProcedures;
 
@@ -63,6 +76,7 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
     private Diagnosis diagnosis;
 
     private List<Test> tests;
+    Diagnosis diag;
     private List<DiagnosisProcedure> diagnosisProcedures;
 
     private ProcedureAdapter procedureAdapter;
@@ -92,6 +106,12 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
         fromTest = getIntent().getBooleanExtra(RequestNewActivity.FROM_TEST, false);
         edSearchProcedures.addTextChangedListener(new Search());
 
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra(diagnosisBundle);
+        diag = (Diagnosis) args.getSerializable(DiagnosisActivity.DiagnosisActivity);
+
+
+
         if (fromTest) {
             Timber.d("from new request ");
             displayAll = DiagnosisTestSession.isDisplayAll();
@@ -113,10 +133,10 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
         Timber.d("this is the diagnosis %s", diagnosis.getDiagCode());
 
         if (displayAll) {
-            ViewUtilities.hideView(fbAddMoreDiagnosis);
+            //ViewUtilities.hideView(fbAddMoreDiagnosis);
             presenter.loadAllTests(fromTest);
         } else {
-            ViewUtilities.showView(fbAddMoreDiagnosis);
+          //  ViewUtilities.showView(fbAddMoreDiagnosis);
             presenter.loadTestProcedureByDiagnosisCode(diagnosis.getDiagCode());
         }
     }
@@ -127,30 +147,19 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
         // as of now only skip and all test was display
         DiagnosisTestSession.releaseContent();
         if (getSelectedTests() != null && getSelectedTests().size() > 0) {
-            Intent intent = new Intent();
-            intent.putExtra(KEY_DONE, true);
-            intent.putExtra(KEY_DISPLAY_ALL, displayAll);
-            setResult(RESULT_OK, intent);
+            List<Test> testToPass = getSelectedTests();
+            diagtests= new DiagnosisTests();
+            diagtests.setTests(testToPass);
+            diagtests.setDiagnosis(diag);
+            List<DiagnosisTests> diagALL = DiagnosisTestSession.getAllDiagnosisTests();
+            if(diagALL.size() == 0){
+                DiagnosisTestSession.setDiagnosisTests(diagtests);
+            }else
+                DiagnosisTestSession.setDiagnosisTests(diagtests);
 
-            // todo sprint6 currently working if test is from SKIP (this is need of required scenario)
-            if (displayAll) {
-                Timber.d("from display all request");
+            Intent intent = new Intent(this, DiagnosisTallyActivity.class);
+            startActivity(intent);
 
-                DiagnosisTests diagnosisTest = new DiagnosisTests();
-                diagnosisTest.setTests(getSelectedTests());
-
-                DiagnosisTestSession.setDiagnosisTests(diagnosisTest);
-                DiagnosisTestSession.setDisplayAll(displayAll);
-            } else {
-                Timber.d("this is not from display all");
-                DiagnosisTests diagnosisTests = new DiagnosisTests();
-                diagnosisTests.setDiagnosis(diagnosis);
-                diagnosisTests.setTests(getSelectedTests());
-
-                DiagnosisTestSession.setDiagnosisTests(diagnosisTests);
-                DiagnosisTestSession.setDisplayAll(displayAll);
-            }
-            finish();
         } else {
             Alerter.create(this)
                     .setText("Please select Test(s) to proceed.")
@@ -159,19 +168,8 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
         }
     }
 
-    @OnClick(R.id.fbAddMoreDiagnosis)
-    public void onAddMoreDiagnosis() {
 
-        DiagnosisTests diagnosisTests =
-            new DiagnosisTests(diagnosis, getSelectedTests());
-        DiagnosisTestSession.setDiagnosisTests(diagnosisTests);
 
-        Intent intent = new Intent();
-        intent.putExtra(KEY_DISPLAY_ALL, displayAll);
-        intent.putExtra(KEY_DONE, false);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
 
     @Override
     public void onSuccess(List<Test> tests) {
@@ -205,17 +203,17 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
             DialogUtils.showDialog(this, R.string.alert, R.string.alert_cancel_procedure,
                     new DialogUtils.OnDiaglogClickListener() {
 
-                @Override
-                public void onOk() {
-                    DiagnosisTestSession.releaseContent();
-                    finish();
-                }
+                        @Override
+                        public void onOk() {
+                            DiagnosisTestSession.releaseContent();
+                            finish();
+                        }
 
-                @Override
-                public void onCancel() {
+                        @Override
+                        public void onCancel() {
 
-                }
-            });
+                        }
+                    });
         }
     }
 

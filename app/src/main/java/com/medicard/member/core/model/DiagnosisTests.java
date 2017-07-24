@@ -1,5 +1,6 @@
 package com.medicard.member.core.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import services.model.Test;
  * Created by casjohnpaul on 6/19/2017.
  */
 
-public class DiagnosisTests {
+public class DiagnosisTests  implements Serializable{
 
     private Diagnosis diagnosis;
     private List<Test> tests;

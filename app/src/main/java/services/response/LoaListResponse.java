@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 import services.model.LoaList;
+import services.model.MaceRequest;
 
 /**
  * Created by casjohnpaul on 5/5/2017.

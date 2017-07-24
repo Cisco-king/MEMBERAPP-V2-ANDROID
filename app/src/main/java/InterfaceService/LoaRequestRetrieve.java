@@ -29,6 +29,9 @@ import model.Loa;
 import model.LoaFetch;
 import model.SimpleData;
 import model.TheDoctor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -72,23 +75,18 @@ public class LoaRequestRetrieve {
 //        AppInterface appInterface;
         AppInterface appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
         appInterface.getLoaList(memberCode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<LoaListResponse>() {
+                .enqueue(new Callback<LoaListResponse>() {
                     @Override
-                    public void onCompleted() {
-
+                    public void onResponse(Call<LoaListResponse> call, Response<LoaListResponse> response) {
+                        if(response.isSuccessful()){
+                            LoaListResponse loaListResponse = response.body();
+                            callback.onSuccessLoaListener(loaListResponse);
+                        }
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        callback.onErrorLoaListener(e.getMessage());
-                    }
+                    public void onFailure(Call<LoaListResponse> call, Throwable t) {
 
-                    @Override
-                    public void onNext(LoaListResponse loaListResponse) {
-                        callback.onSuccessLoaListener(loaListResponse);
                     }
                 });
 //                .subscribe(new Subscriber<LoaListResponse>() {
@@ -122,7 +120,7 @@ public class LoaRequestRetrieve {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
                 for (int x = 0; x < loa.getLoaList().size(); x++) {
-                    fetchDoctor(loa.getLoaList().get(x).getDoctorCode() ,loa.getLoaList().get(x).getId(), loa.getLoaList().get(x).getDoctor(), databaseHandler);
+                    //fetchDoctor(loa.getLoaList().get(x). ,loa.getLoaList().get(x).getId(), loa.getLoaList().get(x).getDoctor(), databaseHandler);
                 }
                 subscriber.onNext(Boolean.TRUE);
             }

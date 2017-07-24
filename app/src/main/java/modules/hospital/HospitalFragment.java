@@ -138,7 +138,6 @@ public class HospitalFragment extends Fragment
         System.out.println("Next Day!!!!");
         this.hospitals = hospitals;
         hospitalAdapter = new HospitalDoctorAdapter(getContext(), hospitals, this);
-
         rvHospitalClinic.setAdapter(hospitalAdapter);
     }
 

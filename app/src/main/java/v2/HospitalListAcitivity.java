@@ -137,6 +137,13 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
     }
 
     private void retrieveHosp(String s) {
+        System.out.println("isMedicardOnly " + isMedicardOnly);
+        System.out.println("selectedProvince " + selectedProvince);
+        System.out.println("sortBy " + sortBy);
+        System.out.println("selectedCity " + selectedCity);
+        System.out.println("hospitalAdapter " + hospitalAdapter);
+        System.out.println("s " + s);
+
         implement.updateList(isMedicardOnly,selectedProvince, sortBy, selectedCity, hospitalAdapter, array, s);
         implement.updateListUI(array, rv_hospital, tv_hosp_not_found);
     }

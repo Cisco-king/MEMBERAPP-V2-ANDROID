@@ -4,13 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.medicard.member.R;
+import com.medicard.member.core.model.DiagnosisTests;
 import com.medicard.member.core.session.ConsultSession;
 import com.medicard.member.core.session.DiagnosisSession;
+import com.medicard.member.core.session.DiagnosisTestSession;
 import com.medicard.member.core.session.DoctorSession;
 import com.medicard.member.core.session.HospitalSession;
+import com.medicard.member.module.DiagnosisTallyActivity.DiagnosisTallyActivity;
 import com.medicard.member.module.base.BaseActivity;
 import com.medicard.member.module.diagnosis.fragment.DiagnosisFragment;
 import com.medicard.member.module.diagnosistest.TestByDiagnosisActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -30,7 +36,11 @@ public class DiagnosisActivity extends BaseActivity
 
     @BindView(R.id.toolbarSkip) FancyButton toolbarSkip;
 
+
+
     public static final int TEST_PROCEDURE = 101;
+    public static final String DiagnosisActivity = "DIAGNOSIS";
+    public static final String diagnosisBundle = "diagnosisBundle";
 
     @Override
     protected String activityTitle() {
@@ -48,6 +58,8 @@ public class DiagnosisActivity extends BaseActivity
 
         ViewUtilities.showView(toolbarSkip);
 
+
+
         setupWindowAnimations();
 
         getSupportFragmentManager().beginTransaction()
@@ -61,13 +73,21 @@ public class DiagnosisActivity extends BaseActivity
         Timber.d("reason for consult %s", ConsultSession.getReasonForConsult());
         Timber.d("reason for hospital selected %s", HospitalSession.getHospital().getHospitalName());
         Timber.d("diagnosis %s = %s", DiagnosisSession.getDiagnosis().getDiagCode(), diagnosis.getDiagCode());
-        startActivityForResult(new Intent(this, TestByDiagnosisActivity.class), TEST_PROCEDURE);
+        //startActivityForResult(new Intent(this, TestByDiagnosisActivity.class), TEST_PROCEDURE);
+        Intent goToTestDiagnosisActivity = new Intent(this, TestByDiagnosisActivity.class);
+        System.out.println("=======================Diagnosis to PASS" + diagnosis.getDiagDesc());
+        DiagnosisTests diagtestsFromHere = new DiagnosisTests();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DiagnosisActivity, diagnosis);
+        goToTestDiagnosisActivity.putExtra(diagnosisBundle, bundle);
+        startActivity(goToTestDiagnosisActivity);
     }
 
     @OnClick(R.id.toolbarSkip)
     public void onClickSkip() {
         Intent intent = new Intent(this, TestByDiagnosisActivity.class);
         intent.putExtra(TestByDiagnosisActivity.KEY_DISPLAY_ALL, true);
+
 //        startActivityForResult(intent, TEST_PROCEDURE);
         transitionToResult(intent, TEST_PROCEDURE);
     }
@@ -81,7 +101,7 @@ public class DiagnosisActivity extends BaseActivity
             boolean isDoneClick =
                     data.getBooleanExtra(TestByDiagnosisActivity.KEY_DONE, false);
             if (isDoneClick) {
-                transitionTo(new Intent(this, PrescriptionAttachmentActivity.class));
+                transitionTo(new Intent(this, DiagnosisTallyActivity.class));
             }
         }
     }

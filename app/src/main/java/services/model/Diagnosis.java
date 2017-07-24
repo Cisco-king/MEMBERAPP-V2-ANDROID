@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Created by casjohnpaul on 5/8/2017.
  */
 
-public class Diagnosis implements Parcelable {
+public class Diagnosis implements  Serializable {
 
     @SerializedName("diagCode")
     @Expose
@@ -56,51 +56,7 @@ public class Diagnosis implements Parcelable {
         this.diagDesc = diagDesc;
     }
 
-    protected Diagnosis(Parcel in) {
-        diagCode = in.readString();
-        diagDesc = in.readString();
-        diagRemarks = in.readString();
-        groupDesc = in.readString();
-        type = in.readString();
-        typeOld = in.readString();
-        typeDesc = in.readString();
-        icd10Code = in.readString();
-        icd10Desc = in.readString();
-        icd104c = in.readString();
-        status = in.readString();
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(diagCode);
-        dest.writeString(diagDesc);
-        dest.writeString(diagRemarks);
-        dest.writeString(groupDesc);
-        dest.writeString(type);
-        dest.writeString(typeOld);
-        dest.writeString(typeDesc);
-        dest.writeString(icd10Code);
-        dest.writeString(icd10Desc);
-        dest.writeString(icd104c);
-        dest.writeString(status);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Diagnosis> CREATOR = new Creator<Diagnosis>() {
-        @Override
-        public Diagnosis createFromParcel(Parcel in) {
-            return new Diagnosis(in);
-        }
-
-        @Override
-        public Diagnosis[] newArray(int size) {
-            return new Diagnosis[size];
-        }
-    };
 
     public void init(Diagnosis diagnosis) {
         this.diagCode = diagnosis.getDiagCode();

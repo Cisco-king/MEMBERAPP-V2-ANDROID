@@ -5,12 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="modules.procedure.ProcedureActivity">
+    tools:context="com.medicard.member.module.DiagnosisTallyActivity.DiagnosisTallyActivity">
 
-    <include layout="@layout/content_procedures_activity" />
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
+        android:id="@+id/appBar"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp"
@@ -78,4 +80,43 @@
 
 
 
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/fbAddMoreDiagnosis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:gravity="center"
+            android:visibility="visible"
+            fancy:fb_defaultColor="@color/colorPrimary"
+            fancy:fb_focusColor="@color/colorPrimaryBlueDark"
+            fancy:fb_text="Add More Diagnosis"
+            android:layout_below="@id/appBar"/>
+
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvDiagnosisTally"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/fbAddMoreDiagnosis"
+            android:scrollbars="vertical"
+            android:visibility="visible" />
+
+
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_alignTop="@+id/rvDiagnosisTally"
+        android:layout_alignParentStart="true" />
+
+
+
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

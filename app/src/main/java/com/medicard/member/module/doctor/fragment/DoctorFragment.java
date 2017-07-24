@@ -1,7 +1,6 @@
 package com.medicard.member.module.doctor.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,10 +14,20 @@ import com.medicard.member.core.session.DoctorSession;
 import com.medicard.member.module.base.BaseFragment;
 import com.medicard.member.module.doctor.DoctorNavigator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import InterfaceService.DoctorRetrieve;
+import Sqlite.DatabaseHandler;
 import butterknife.BindView;
+import model.SpecsAdapter;
+import modules.doctor.adapter.AllDoctorsAdapter;
 import modules.doctor.adapter.DoctorsAdapter;
+import services.model.Doctor;
+import services.model.DoctorList;
 import services.model.HospitalsToDoctor;
 import timber.log.Timber;
 import utilities.AlertDialogCustom;
@@ -30,7 +39,7 @@ import utilities.Loader;
  */
 
 public class DoctorFragment extends BaseFragment
-        implements DoctorMvp.View, DoctorsAdapter.OnItemClickListener {
+        implements DoctorMvp.View, DoctorsAdapter.OnItemClickListener, AllDoctorsAdapter.OnItemClickListener {
 
     public static final String FROM_NEW_REQUEST = "newRequest";
 
@@ -39,13 +48,21 @@ public class DoctorFragment extends BaseFragment
     @BindView(R.id.rvDoctors)
     RecyclerView rvDoctors;
 
+
     private DoctorMvp.Presenter presenter;
     private DoctorNavigator doctorNavigator;
 
     private AlertDialogCustom notificationDialog;
 
     private DoctorsAdapter doctorAdapter;
+
+    private AllDoctorsAdapter allDoctorsAdapter;
+
+
+
     private List<HospitalsToDoctor> doctors;
+
+    private List<HospitalsToDoctor> doctorLists;
 
     private Loader loader;
 
@@ -94,6 +111,8 @@ public class DoctorFragment extends BaseFragment
         loader.startLad();
         loader.setMessage("Loading ...");
 
+        presenter.loadAllDoctors();
+
 //        presenter.loadAllDoctors();
 
         loader.stopLoad();
@@ -106,8 +125,19 @@ public class DoctorFragment extends BaseFragment
 
         this.doctors = doctors;
 
-        doctorAdapter = new DoctorsAdapter(context, doctors, this);
+        doctorAdapter = new DoctorsAdapter(context, doctors,this);
         rvDoctors.setAdapter(doctorAdapter);
+    }
+
+    @Override
+    public void displayAllDoctors(List<HospitalsToDoctor> doctorLists) {
+        loader.stopLoad();
+
+        this.doctorLists = doctorLists;
+        allDoctorsAdapter = new AllDoctorsAdapter(context,doctorLists,this);
+        rvDoctors.setAdapter(allDoctorsAdapter);
+
+
     }
 
     @Override
@@ -128,10 +158,21 @@ public class DoctorFragment extends BaseFragment
 
     @Override
     public void onItemClick(int position) {
-        HospitalsToDoctor doctor = doctorAdapter.getDoctor(position);
-//        HospitalsToDoctor doctor = doctors.get(position);
-        Timber.d("doctor %s", doctor.getFullName());
-        DoctorSession.setDoctor(doctor);
+        try{
+            HospitalsToDoctor doctor = allDoctorsAdapter.getDoctor(position);
+            Timber.d("doctor %s", doctor.getFullName());
+            DoctorSession.setDoctor(doctor);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try{
+            HospitalsToDoctor doctor = doctorAdapter.getDoctor(position);
+            Timber.d("doctor %s", doctor.getFullName());
+            DoctorSession.setDoctor(doctor);
+        }catch (Exception e){
+
+        }
 
         if (isFromNewRequest) {
             doctorNavigator.fromNewRequestReselected();
@@ -139,6 +180,8 @@ public class DoctorFragment extends BaseFragment
             doctorNavigator.onDoctorSelected();
         }
     }
+
+
 
     public class DoctorFilter implements TextWatcher {
 
@@ -160,7 +203,6 @@ public class DoctorFragment extends BaseFragment
 
         @Override
         public void afterTextChanged(Editable s) {
-
         }
     }
 }

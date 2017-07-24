@@ -57,8 +57,8 @@ public interface AppInterface {
 
 
 
-    String ENDPOINT = "http://10.10.26.78:8080/";
-    String PHOTOLINK = "http://10.10.26.78:8080/downloadpicture/";
+    String ENDPOINT = "http://10.10.26.63:8080";
+    String PHOTOLINK = "http://10.10.26.63:8080/downloadpicture/";
 
 
 //    String ENDPOINT = "http://10.10.24.195:8080/";
@@ -155,8 +155,8 @@ public interface AppInterface {
     @POST("/v2/updatePin/")
     Observable<Pinned> updatePin(@Body UpdatePin updatePin);
 
-    @GET("/v2/getLoaByMemberCode2/?")
-    Observable<LoaListResponse> getLoaList(@Query("memberCode") String memberCode);
+    @GET("/v2/getLoaByMemberCode/?")
+    Call<LoaListResponse> getLoaList(@Query("memberCode") String memberCode);
 
 // @GET("/v2/getLoaByMemberCode/?")
 //    Observable<LoaListResponse> getLoaList(@Query("memberCode") String memberCode);

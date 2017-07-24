@@ -33,43 +33,22 @@
             android:textSize="@dimen/text_small" />
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout3"
-        android:gravity="center"
-        android:padding="10dp">
 
-        <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/fbAddMoreDiagnosis"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:gravity="center"
-            android:visibility="visible"
-            fancy:fb_defaultColor="@color/colorPrimary"
-            fancy:fb_focusColor="@color/colorPrimaryBlueDark"
-            fancy:fb_text="Add More Diagnosis" />
-
-    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvProcedures"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 
     <TextView
-        android:layout_gravity="center"
-        android:gravity="center"
         android:id="@+id/tvNoProcedures"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:padding="10dp" />
 
 
