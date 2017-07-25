@@ -44,7 +44,7 @@ public class MaceRequest {
     private String memStat;
     @SerializedName("memBdate")
     @Expose
-    private Integer memBdate;
+    private String memBdate;
     @SerializedName("memGender")
     @Expose
     private String memGender;
@@ -59,10 +59,10 @@ public class MaceRequest {
     private String idremarks;
     @SerializedName("acctValidity")
     @Expose
-    private Integer acctValidity;
+    private String acctValidity;
     @SerializedName("acctEffectivity")
     @Expose
-    private Integer acctEffectivity;
+    private String acctEffectivity;
     @SerializedName("requestOrigin")
     @Expose
     private String requestOrigin;
@@ -80,13 +80,13 @@ public class MaceRequest {
     private String requestDevice;
     @SerializedName("requestDatetime")
     @Expose
-    private Integer requestDatetime;
+    private String requestDatetime;
     @SerializedName("disclaimerTicked")
     @Expose
     private Object disclaimerTicked;
     @SerializedName("lastupdateOn")
     @Expose
-    private Integer lastupdateOn;
+    private String lastupdateOn;
     @SerializedName("lastupdateBy")
     @Expose
     private Object lastupdateBy;
@@ -197,11 +197,12 @@ public class MaceRequest {
         this.memStat = memStat;
     }
 
-    public Integer getMemBdate() {
+
+    public String getMemBdate() {
         return memBdate;
     }
 
-    public void setMemBdate(Integer memBdate) {
+    public void setMemBdate(String memBdate) {
         this.memBdate = memBdate;
     }
 
@@ -237,21 +238,7 @@ public class MaceRequest {
         this.idremarks = idremarks;
     }
 
-    public Integer getAcctValidity() {
-        return acctValidity;
-    }
 
-    public void setAcctValidity(Integer acctValidity) {
-        this.acctValidity = acctValidity;
-    }
-
-    public Integer getAcctEffectivity() {
-        return acctEffectivity;
-    }
-
-    public void setAcctEffectivity(Integer acctEffectivity) {
-        this.acctEffectivity = acctEffectivity;
-    }
 
     public String getRequestOrigin() {
         return requestOrigin;
@@ -293,13 +280,6 @@ public class MaceRequest {
         this.requestDevice = requestDevice;
     }
 
-    public Integer getRequestDatetime() {
-        return requestDatetime;
-    }
-
-    public void setRequestDatetime(Integer requestDatetime) {
-        this.requestDatetime = requestDatetime;
-    }
 
     public Object getDisclaimerTicked() {
         return disclaimerTicked;
@@ -309,11 +289,35 @@ public class MaceRequest {
         this.disclaimerTicked = disclaimerTicked;
     }
 
-    public Integer getLastupdateOn() {
+    public String getAcctValidity() {
+        return acctValidity;
+    }
+
+    public void setAcctValidity(String acctValidity) {
+        this.acctValidity = acctValidity;
+    }
+
+    public String getAcctEffectivity() {
+        return acctEffectivity;
+    }
+
+    public void setAcctEffectivity(String acctEffectivity) {
+        this.acctEffectivity = acctEffectivity;
+    }
+
+    public String getRequestDatetime() {
+        return requestDatetime;
+    }
+
+    public void setRequestDatetime(String requestDatetime) {
+        this.requestDatetime = requestDatetime;
+    }
+
+    public String getLastupdateOn() {
         return lastupdateOn;
     }
 
-    public void setLastupdateOn(Integer lastupdateOn) {
+    public void setLastupdateOn(String lastupdateOn) {
         this.lastupdateOn = lastupdateOn;
     }
 

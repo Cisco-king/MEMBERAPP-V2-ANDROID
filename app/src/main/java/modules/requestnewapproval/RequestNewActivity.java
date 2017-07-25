@@ -59,16 +59,22 @@ import services.model.DiagnosisTest;
 import services.model.DiagnosisTestRequest;
 import services.model.HospitalsToDoctor;
 import services.model.Test;
+import services.response.MaceRequestResponse;
 import timber.log.Timber;
 import utilities.AlertDialogCustom;
+import utilities.Constant;
 import utilities.DateUtils;
 import utilities.DeviceUtils;
 import utilities.ErrorMessage;
 import utilities.FileUtils;
+import utilities.GenderPicker;
 import utilities.Loader;
 import utilities.PermissionUtililities;
 import utilities.SharedPref;
 import utilities.ViewUtilities;
+import v2.DetailsActivity;
+import v2.RequestButtonsActivity;
+import v2.ResultActivity;
 
 /**
  * // todo request new approval
@@ -87,29 +93,41 @@ public class RequestNewActivity extends TestTrackableActivity
     public static final String FROM_TEST = "fromTest";
     public static final int FROM_TEST_REQUEST = 300;
 
-    @BindView(R.id.etReasonForConsult) EditText etReasonForConsult;
+    @BindView(R.id.etReasonForConsult)
+    EditText etReasonForConsult;
 
     // clickable view
-    @BindView(R.id.cvRequestDoctor) CardView cvRequestDoctor;
-    @BindView(R.id.cvHospitalClinicForAvailment) CardView cvHospitalClinicForAvailment;
-    @BindView(R.id.cvDiagnosis) CardView cvDiagnosis;
-    @BindView(R.id.ibDiagnosis) ImageButton ibDiagnosis;
+    @BindView(R.id.cvRequestDoctor)
+    CardView cvRequestDoctor;
+    @BindView(R.id.cvHospitalClinicForAvailment)
+    CardView cvHospitalClinicForAvailment;
+    @BindView(R.id.cvDiagnosis)
+    CardView cvDiagnosis;
+    @BindView(R.id.ibDiagnosis)
+    ImageButton ibDiagnosis;
 
-    @BindView(R.id.tvConforme) TextView tvConforme;
+    @BindView(R.id.tvConforme)
+    TextView tvConforme;
 
-    @BindView(R.id.tvDoctorDetails) TextView tvDoctorDetails;
-    @BindView(R.id.tvHospitalAvailment) TextView tvHospitalAvailment;
+    @BindView(R.id.tvDoctorDetails)
+    TextView tvDoctorDetails;
+    @BindView(R.id.tvHospitalAvailment)
+    TextView tvHospitalAvailment;
 
-    @BindView(R.id.rvAttachments) RecyclerView rvAttachments;
-    @BindView(R.id.cbTermsAndCondition) CheckBox cbTermsAndCondition;
+    @BindView(R.id.rvAttachments)
+    RecyclerView rvAttachments;
+    @BindView(R.id.cbTermsAndCondition)
+    CheckBox cbTermsAndCondition;
 
-    @BindView(R.id.btnAddAttachment) Button btnAddAttachment;
+    @BindView(R.id.btnAddAttachment)
+    Button btnAddAttachment;
 
-    @BindView(R.id.btnSubmitNewRequest) Button btnSubmitNewRequest;
+    @BindView(R.id.btnSubmitNewRequest)
+    Button btnSubmitNewRequest;
 
 
-
-    @BindView(R.id.rvDiagnosisDetails) RecyclerView rvDiagnosisDetails;
+    @BindView(R.id.rvDiagnosisDetails)
+    RecyclerView rvDiagnosisDetails;
 
     private AttachmentAdapter attachmentAdapter;
     private DiagnosisDetailsAdapter diagnosisDetailsAdapter;
@@ -150,7 +168,8 @@ public class RequestNewActivity extends TestTrackableActivity
         setupWindowAnimations();
         ViewUtilities.hideToInvisibleView(getBackView());
 
-        Type founderListType = new TypeToken<ArrayList<DiagnosisProcedure>>(){}.getType();
+        Type founderListType = new TypeToken<ArrayList<DiagnosisProcedure>>() {
+        }.getType();
 
         attachments = new ArrayList<>();
         diagnosisProcedures = new ArrayList<>();
@@ -190,8 +209,8 @@ public class RequestNewActivity extends TestTrackableActivity
 //        presenter.loadDiagnosisTest(diagnosisProcedures);
         presenter.loadDiagnosisTests();
         /*if (attachments != null && attachments.size() > 0) {*/
-            attachmentAdapter = new AttachmentAdapter(attachments, this);
-            rvAttachments.setAdapter(attachmentAdapter);
+        attachmentAdapter = new AttachmentAdapter(attachments, this);
+        rvAttachments.setAdapter(attachmentAdapter);
         /*}*/
 
         cbTermsAndCondition.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -216,8 +235,6 @@ public class RequestNewActivity extends TestTrackableActivity
                 etReasonForConsult.setError("This field is required.");
             } else {
 
-                loader.startLad();
-                loader.setMessage("Sending request...");
 
                 NewTestRequest newTestRequest = new NewTestRequest();
                 newTestRequest.setRequestDevice(DeviceUtils.getAndroidId(RequestNewActivity.this));
@@ -229,10 +246,13 @@ public class RequestNewActivity extends TestTrackableActivity
                 newTestRequest.setPrimaryComplaint(reasonForConsult);
                 newTestRequest.setPrimaryDiagnosisCode(diagnosisTests.get(0).getDiagnosis().getDiagCode());
                 newTestRequest.setRequestOrigin(MedicardConfig.APP_NAME);
-
-
                 Gson gson = new Gson();
                 gson.toJson(newTestRequest);
+
+                //Start of sending of new Request
+                loader.startLad();
+                loader.setMessage("Sending request...");
+                System.out.println("=================== SENDING NEW REQUEST" + newTestRequest.toString());
 
 //               presenter.submitTestRequest(testRequest);
                 presenter.submitNewRequest(newTestRequest);
@@ -432,8 +452,6 @@ public class RequestNewActivity extends TestTrackableActivity
 
     @Override
     public void onRequestSuccess() {
-        loader.stopLoad();
-
 
         Timber.d("new request successfully submitted");
         alertDialog.successDialog(this, "MaceTest", getString(R.string.mc_07), 0, new AlertDialogCustom.OnDialogClickListener() {
@@ -447,10 +465,39 @@ public class RequestNewActivity extends TestTrackableActivity
 
             }
         });
-//        cancelNewRequest();
     }
 
+    /*
+        private void gotoResult(MaceRequestResponse data) {
+
+            Timber.d("batchCode %s", data.getBatchCode());
+            Intent gotoResult = new Intent(this, ResultActivity.class);
+            gotoResult.putExtra(Constant.REFERENCECODE, data.getData().getMaceRequest().get);
+            gotoResult.putExtra(Constant.REQUEST, "Approved");
+            gotoResult.putExtra(Constant.DOCTOR_WITH_PROVIDER, implement.setNull(data.getWithProvider()));
+            gotoResult.putExtra(RequestButtonsActivity.ORIGIN, origin);
+            gotoResult.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
+            gotoResult.putExtra(Constant.GENDER, GenderPicker.setGender(Integer.parseInt(getIntent().getExtras().getString(Constant.GENDER))));
+            gotoResult.putExtra(Constant.NAME, getIntent().getExtras().getString(Constant.NAME));
+            gotoResult.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
+            gotoResult.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
+            gotoResult.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
+            gotoResult.putExtra(Constant.CONDITION, et_input_diagnosis.getText().toString());
+
+            gotoResult.putExtra(Constant.DOCTOR_U, tv_sched_doctor.getText().toString());
+            gotoResult.putExtra(Constant.DOCTOR_ROOM, tv_spec.getText().toString());
+            gotoResult.putExtra(Constant.HOSP_CONTACT, tv_contact.getText().toString());
+            gotoResult.putExtra(Constant.HOSP_CONTACT_PER, tv_contact_person.getText().toString());
+            gotoResult.putExtra(Constant.HOSP_U, tv_sched.getText().toString());
+            gotoResult.putExtra(Constant.BATCH_CODE, data.getBatchCode());
+
+            startActivity(gotoResult);
+            finish();
+        }
+
+       */
     private List<DiagnosisProcedure> convertObjectToDiagnosisProcedure(List<DiagnosisTests> diagnosisTests) {
+
         List<DiagnosisProcedure> diagnosisProcedures = new ArrayList<>();
         if (diagnosisTests.size() > 0) { // make sure that dianosis test is not zero
             for (DiagnosisTests diagnosisTest : diagnosisTests) { // loop all diagnosis
