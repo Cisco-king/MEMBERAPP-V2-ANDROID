@@ -51,6 +51,8 @@ public class RequestForConsultActivity extends TestTrackableActivity
     @OnClick(R.id.btnReasonForConsultOk)
     public void startRequestingDoctor() {
         System.out.println("startRequestingDoctor");
+        System.out.println("============================ DITO PUMASOK ");
+
         requestForResultPresenter.proceedToRequestDoctorActivity(ViewUtilities.getEditValue(etReasonForConsult));
     }
 

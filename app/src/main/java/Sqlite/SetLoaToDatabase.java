@@ -44,6 +44,7 @@ public class SetLoaToDatabase {
     private static void setToDB(LoaListResponse loa, DatabaseHandler databaseHandler) {
 
 
+
         for (int x = 0; x < loa.getLoaList().size(); x++) {
             Timber.d("loa list to db %s", loa.getLoaList().get(x).getStatus());
             databaseHandler.insertLoa(loa.getLoaList().get(x));

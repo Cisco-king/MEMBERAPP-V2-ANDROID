@@ -177,6 +177,9 @@
         <activity
             android:name=".module.termsandcondition.TermsAndCondition"
             android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".module.DentistBenefitsActivity.DentalBenefitsActivity"
+            android:theme="@style/AppTheme"></activity>
 
     </application>
 

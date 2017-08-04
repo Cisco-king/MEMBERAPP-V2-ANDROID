@@ -76,7 +76,6 @@ public class DiagnosisActivity extends BaseActivity
         //startActivityForResult(new Intent(this, TestByDiagnosisActivity.class), TEST_PROCEDURE);
         Intent goToTestDiagnosisActivity = new Intent(this, TestByDiagnosisActivity.class);
         System.out.println("=======================Diagnosis to PASS" + diagnosis.getDiagDesc());
-        DiagnosisTests diagtestsFromHere = new DiagnosisTests();
         Bundle bundle = new Bundle();
         bundle.putSerializable(DiagnosisActivity, diagnosis);
         goToTestDiagnosisActivity.putExtra(diagnosisBundle, bundle);
@@ -85,11 +84,14 @@ public class DiagnosisActivity extends BaseActivity
 
     @OnClick(R.id.toolbarSkip)
     public void onClickSkip() {
-        Intent intent = new Intent(this, TestByDiagnosisActivity.class);
-        intent.putExtra(TestByDiagnosisActivity.KEY_DISPLAY_ALL, true);
-
-//        startActivityForResult(intent, TEST_PROCEDURE);
-        transitionToResult(intent, TEST_PROCEDURE);
+        try {
+            Intent intent = new Intent(this, TestByDiagnosisActivity.class);
+            intent.putExtra(TestByDiagnosisActivity.KEY_DISPLAY_ALL, true);
+            startActivity(intent);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+//        startActivityForResult(intent, TEST_PROCEDURE);;
     }
 
     @Override

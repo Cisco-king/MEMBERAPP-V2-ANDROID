@@ -22,6 +22,7 @@ import com.medicard.member.module.base.BaseActivity;
 import com.medicard.member.module.diagnosis.DiagnosisActivity;
 import com.medicard.member.module.diagnosis.fragment.DiagnosisMvp;
 import com.medicard.member.module.diagnosistest.TestByDiagnosisActivity;
+import com.tapadoo.alerter.Alerter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ import services.model.Test;
  * Created by macbookpro on 7/21/17.
  */
 
-public class DiagnosisTallyActivity extends BaseActivity  {
+public class  DiagnosisTallyActivity extends BaseActivity  {
 
 
     public static final String diagnosisTestsTally = "Diagnosistally";
@@ -77,9 +78,6 @@ public class DiagnosisTallyActivity extends BaseActivity  {
 
     List<DiagnosisTests> diagnosisTests = new ArrayList<>();
     List<Test> tests = new ArrayList<>();
-    DiagnosisTallyAdapter diagnosisDetailsAdapter;
-    Diagnosis diag;
-
 
 
 
@@ -90,10 +88,12 @@ public class DiagnosisTallyActivity extends BaseActivity  {
         setupWindowAnimations();
 
 
-        diagnosisTests = DiagnosisTestSession.getAllDiagnosisTests();
-
-        System.out.println("=============================   Diagnosis " + diag);
-        System.out.println("=============================   DiagTests " + tests);
+        try {
+            diagnosisTests = DiagnosisTestSession.getAllDiagnosisTests();
+            System.out.println("==================== SIZE IN TALLY FOR REAL " + diagnosisTests.size());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         //This will go to DiagnosisTallyFragment for the display of Diagnosis
         getSupportFragmentManager().beginTransaction()
@@ -110,12 +110,22 @@ public class DiagnosisTallyActivity extends BaseActivity  {
     @OnClick(R.id.fbDone)
     public void onDoneClick() {
 
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(diagnosisTestsTally,(Serializable) diagnosisTests);
-        Intent intent = new Intent(this,PrescriptionAttachmentActivity.class);
-        intent.putExtra(diagnosisTestsBundle, bundle);
-        startActivity(intent);
-
+        try {
+            if (diagnosisTests.isEmpty() && diagnosisTests.size() == 0) {
+                Alerter.create(this)
+                        .setText("Please Add a Diagnosis To Proceed")
+                        .setBackgroundColor(R.color.orange_a200)
+                        .show();
+            } else {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(diagnosisTestsTally, (Serializable) diagnosisTests);
+                Intent intent = new Intent(this, PrescriptionAttachmentActivity.class);
+                intent.putExtra(diagnosisTestsBundle, bundle);
+                startActivity(intent);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

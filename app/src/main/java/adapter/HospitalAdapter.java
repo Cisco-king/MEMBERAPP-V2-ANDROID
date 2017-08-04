@@ -28,7 +28,14 @@ public class HospitalAdapter extends RecyclerView.Adapter<HospitalAdapter.ViewHo
     private ArrayList<HospitalList> array = new ArrayList<>();
     private OnClicklistener clicklistener;
 
+    @Override
+    public void setHasStableIds(boolean hasStableIds) {
+        super.setHasStableIds(hasStableIds);
+
+    }
+
     public HospitalAdapter(Context context, ArrayList<HospitalList> array) {
+        this.setHasStableIds(false);
         this.context = context;
         this.array = array;
 
@@ -48,7 +55,17 @@ public class HospitalAdapter extends RecyclerView.Adapter<HospitalAdapter.ViewHo
                 getStringName(array.get(position).getCity()) + ", " +
                 getStringName(array.get(position).getProvince()) + ", " +
                 getStringName(array.get(position).getRegion()));
-        holder.contact.setText("Tel. No: " + array.get(position).getPhoneNo());
+        if(array.get(position).getPhoneNo().isEmpty() && array.get(position).getPhoneNo().length() ==0){
+            holder.contact.setVisibility(View.GONE);
+        }else{
+            holder.contact.setText("Tel. No: " + array.get(position).getPhoneNo());
+        }
+        if(null == array.get(position).getContactPerson() || (array.get(position).getContactPerson().isEmpty() && array.get(position).getContactPerson().length() ==0)){
+            holder.person.setVisibility(View.GONE);
+        }else{
+            holder.person.setText("Contact Person: " + array.get(position).getContactPerson());
+        }
+
     }
 
     private String getStringName(String getData) {

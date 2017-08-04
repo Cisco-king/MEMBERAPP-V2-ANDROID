@@ -30,7 +30,7 @@ public interface RequestNewMvp {
 
         void onRequestError(String message);
 
-        void onRequestSuccess();
+        void onRequestSuccess(MaceRequestResponse maceRequestResponse);
 
     }
 

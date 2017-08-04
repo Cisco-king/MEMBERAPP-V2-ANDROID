@@ -3,26 +3,27 @@ package services.response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 import services.model.LoaList;
 import services.model.MaceRequest;
 
 /**
- * Created by casjohnpaul on 5/5/2017.
+ * Created by Francisco F. Aquino III =)
  */
 
-public class LoaListResponse {
+public class LoaListResponse implements Serializable {
 
     @SerializedName("loaList")
     @Expose
-    private List<LoaList> loaList = null;
+    private List<MaceRequest> loaList = null;
 
-    public List<LoaList> getLoaList() {
+    public List<MaceRequest> getLoaList() {
         return loaList;
     }
 
-    public void setLoaList(List<LoaList> loaList) {
+    public void setLoaList(List<MaceRequest> loaList) {
         this.loaList = loaList;
     }
 

@@ -1,9 +1,11 @@
 package InterfaceService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import model.Loa;
 import model.LoaFetch;
+import services.model.MaceRequest;
 import services.response.LoaListResponse;
 
 /**
@@ -15,11 +17,11 @@ public interface LOARequestCallback {
 
     void onErrorLoaListener(String message);
 
-    void onSuccessLoaListener(LoaListResponse loa);
+    void onSuccessLoaListener(List<MaceRequest> maceRequestList);
 
     void onDbLoaSuccessListener(LoaListResponse loa);
 
-    void gotoLoaPage(ArrayList<LoaFetch> arrayList, int adapterPosition);
+    void gotoLoaPage(List<MaceRequest> arrayList, int adapterPosition);
 
     void onErrorFetchingDoctorCreds(String message);
 

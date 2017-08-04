@@ -6,6 +6,7 @@
     <string name="permission_Phone_message">The app requires your phone ID (IMEI) for registration. Denying the request will prevent the app to acquire information resulting to registration failure.</string>
 
     <string name="request_for_loa">Request for LOA</string>
+    <string name="dental_benefits">View Dental Benefits</string>
     <string name="hosp_not_found">Hospital not found</string>
     <string name="app_name">MACE Member</string>
     <string name="cancel">Cancel</string>
@@ -144,6 +145,7 @@
     <string name="title_activity_hospital_list_acitivity">HospitalListAcitivity</string>
     <string name="title_activity_details">DetailsActivity</string>
     <string name="title_activity_result">ResultActivity</string>
+    <string name="title_activity_dental_benefits">DentalActivity</string>
 
     <string name="member_name_">Member Name:</string>
     <string name="member_name">Member Name</string>
@@ -156,8 +158,9 @@
     <string name="no_doctor_set">Please select Doctor after selecting Hospital/Clinic</string>
     <string name="hint_condition">Enter Reason for Consult</string>
     <string name="hospital_clinic">Hospital/Clinic</string>
+    <string name="attachments">Attachments</string>
     <string name="hospital_clinic_">Hospital/Clinic: <font fgcolor="red"><b> * </b></font> </string>
-    <string name="doctor">Doctor</string>
+    <string name="doctor">Requesting Doctor</string>
     <string name="doctor_">Doctor: <font fgcolor="red"><b> * </b></font> </string>
     <string name="prob_cond">Problem/Condition:</string>
     <string name="prob_cond_">Reason for Consult: <font fgcolor="red"><b> * </b></font> </string>
@@ -257,7 +260,7 @@
 
     <string name="reason_for_consult_message">
         Please make sure that all information entered and selected in the following
-        screens should be the same as the simple for consult, diagnosis, tests/procedures
+        screens should be the same as the reason for consult, diagnosis, tests/procedures
         in the actual prescription
     </string>
 
@@ -355,7 +358,7 @@
 
     <string name="alert_cancel_new_request">Are you sure you want to cancel this request?</string>
     <string name="alert_mace_success">MaceTest successully submitted.</string>
-    <string name="request_new_approval">Request New Approval</string>
+    <string name="request_new_approval">Request LOA of Prescribed Test</string>
     <string name="prescribed_test_empty">No List of Consultation with Prescribed Test</string>
 
     <!-- all module text here -->

@@ -72,7 +72,11 @@ public class RequestButtonsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         boolean hasMaternity = SharedPref.getBooleanValue(this, SharedPref.KEY_HAS_MATERNITY);
+
+
         String gender = getIntent().getExtras().getString(Constant.GENDER);
+
+
 
         databaseHandler = new DatabaseHandler(context);
 
@@ -167,6 +171,7 @@ public class RequestButtonsActivity extends AppCompatActivity {
     public void startTest(int content) {
         if (content == NEW_LAYOUT) {
             Intent intent = new Intent(this, TestActivity.class);
+            SharedPref.setStringValue(SharedPref.USER,SharedPref.DESTINATION,TEST,context);
             startActivity(intent);
         } else {
             Intent intent = new Intent(this, TestsActivity.class);

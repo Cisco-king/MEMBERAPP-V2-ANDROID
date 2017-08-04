@@ -17,7 +17,6 @@ import services.model.Diagnosis;
 
 public class DiagnosisPresenteForTally implements DiagnosisMVP.Presenter {
 
-    public static final String TANGINA = "TANGINA";
 
     private DiagnosisMVP.View diagnosisView;
 

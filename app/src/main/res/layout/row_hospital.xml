@@ -62,7 +62,9 @@
                 android:layout_marginBottom="@dimen/sub_margin"
                 android:text="Sample"
                 android:textColor="@color/BLACK"
-                android:textSize="@dimen/text_mini" />
+                android:textSize="@dimen/text_mini"
+
+                />
 
             <TextView
                 android:visibility="gone"

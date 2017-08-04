@@ -4,6 +4,7 @@ package com.medicard.member.module.reasonforconsult;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,18 +63,27 @@ public class ConsultFragment extends BaseFragment
         super.initComponents(view, savedInstanceState);
         presenter = new ConsultPresenter(context);
         presenter.attachView(this);
+
+        etReasonForConsult.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                return (event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER);
+            }
+        });
+
     }
 
     @OnClick(R.id.btnProceed)
     public void onProceedClick() {
         System.out.println("Proceed");
-        presenter.validateReason(ViewUtilities.getEditValue(etReasonForConsult));
+        presenter.validateReason(etReasonForConsult.getText().toString());
     }
 
     @Override
     public void proceedSuccess() {
         String reasonForConsult = ViewUtilities.getEditValue(etReasonForConsult);
-//        NewTest.addReasonForConsult(reasonForConsult);
+        NewTest.addReasonForConsult(reasonForConsult);
         ConsultSession.setReasonForConsult(reasonForConsult);
         navigator.proceedDoctorActivity();
     }

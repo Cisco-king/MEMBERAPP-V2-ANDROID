@@ -25,7 +25,7 @@ public class TestActivity extends BaseActivity implements TestMvp.View {
 
     @Override
     protected String activityTitle() {
-        return getString(R.string.basic_test);
+        return getString(R.string.test);
     }
 
     @Override

@@ -18,6 +18,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 
+import com.medicard.member.module.viewLoa.ViewLoaListFragment;
+
 import fragments.fragment_changePassword;
 import fragments.fragment_memberInfo;
 
@@ -175,12 +177,9 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
             case R.id.tv_loa_req:
 
                 tv_header.setText(getString(R.string.my_loa_req));
-                fragment = null;
-                fragment = new fragment_loaRequest();
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.container_body, fragment);
+                fragmentTransaction.replace(R.id.container_body, ViewLoaListFragment.newInstance());
                 fragmentTransaction.commit();
-
                 closeDrawer();
                 break;
         }

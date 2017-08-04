@@ -47,9 +47,9 @@ public class NewTestRequest {
     @SerializedName("requestOrigin")
     @Expose
     private String requestOrigin;
-    @SerializedName("serviceSubtype")
+    @SerializedName("serviceType")
     @Expose
-    private Integer serviceSubtype;
+    private Integer serviceType;
 
     public List<DiagnosisProcedure> getDiagnosisProcedures() {
         return diagnosisProcedures;
@@ -147,11 +147,11 @@ public class NewTestRequest {
         this.requestOrigin = requestOrigin;
     }
 
-    public Integer getServiceSubtype() {
-        return serviceSubtype;
+    public Integer getServiceType() {
+        return serviceType;
     }
 
-    public void setServiceSubtype(Integer serviceSubtype) {
-        this.serviceSubtype = serviceSubtype;
+    public void setServiceType(Integer serviceType) {
+        this.serviceType = serviceType;
     }
 }

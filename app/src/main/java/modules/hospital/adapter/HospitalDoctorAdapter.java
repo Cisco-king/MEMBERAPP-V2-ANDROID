@@ -58,7 +58,17 @@ public class HospitalDoctorAdapter extends
                 getStringName(hospital.getCity()) + ", " +
                 getStringName(hospital.getProvince()) + ", " +
                 getStringName(hospital.getRegion()));
-        holder.contact.setText("Tel. No: " + hospital.getPhoneNo());
+        if(hospital.getPhoneNo().isEmpty() && hospital.getPhoneNo().length() ==0){
+            holder.contact.setVisibility(View.GONE);
+        }else
+            holder.contact.setText("Tel. No: " + hospital.getPhoneNo());
+        if(null == hospital.getContactPerson() || (hospital.getContactPerson().isEmpty() && hospital.getContactPerson().length() ==0)){
+            holder.person.setVisibility(View.GONE);
+        }else{
+            holder.person.setText("Contact Person: " + hospital.getContactPerson());
+        }
+
+
     }
 
     private String getStringName(String getData) {

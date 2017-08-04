@@ -116,6 +116,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     private String loaTable = "LOAREQUEST";
+    private String MaceRequestTable = "MaceRequestTable";
     private String primaryComplaint = "primaryComplaint";
     private String procedureCode = "procedureCode";
     private String batchCode = "batchCode";
@@ -349,64 +350,84 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public void insertLoa(services.model.LoaList loa) {
+//    public void insertLoa(services.model.LoaList loa) {
+//        boolean createSuccessful = false;
+//
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//
+//
+//        values.put(id, loa.getId());
+//        values.put(primaryComplaint, loa.getPrimaryComplaint());
+//        values.put(approvalNo, loa.getApprovalNo());
+//        values.put(batchCode, loa.getBatchCode());
+//        values.put(callerId, loa.getCallerId());
+//        values.put(callTypeId, loa.getCallerId());
+//        values.put(memberCode, loa.getMemberCode());
+//        values.put(hospitalCode, loa.getHospitalCode());
+//        values.put(companyCode, loa.getCompanyCode());
+//        values.put(doctorCode, loa.getDoctorCode());
+//        values.put(diagnosisCode, loa.getDiagnosisCode());
+//        values.put(procedureCode, loa.getProcedureCode());
+//        values.put(type, loa.getType());
+//        values.put(room, loa.getRoom());
+//        values.put(dateAdmitted, loa.getDateAdmitted());
+//        values.put(diagnosis, loa.getDiagnosis());
+//        values.put(procedureDesc, loa.getProcedureDesc());
+//        values.put(procedureAmount, loa.getProcedureAmount());
+//        values.put(actionTaken, loa.getActionTaken());
+//        values.put(updatedBy, loa.getUpdatedBy());
+//        values.put(updatedDate, loa.getUpdatedDate());
+//        values.put(remarks, loa.getRemarks());
+//        values.put(runningBill, loa.getRunningBill());
+//        values.put(notes, loa.getNotes());
+//        values.put(reason, loa.getReason());
+//        values.put(category, loa.getCategory());
+//        values.put(memLname, loa.getMemLname());
+//        values.put(memFname, loa.getMemFname());
+//        values.put(memMi, loa.getMemMi());
+//        values.put(memCompany, loa.getMemCompany());
+//        values.put(terminalNo, loa.getTerminalNo());
+//        values.put(callDate, loa.getCallDate());
+//        values.put(status, testStatusExpiration(loa.getRemarks(), loa.getStatus(), loa.getApprovalDate()));
+//        values.put(approvalDate, loa.getApprovalDate());
+//
+//
+//        values.put(docName, "");
+//        values.put(docSpec, "");
+//        values.put(docSpecCode, "");
+//        values.put(hospitalName, "");
+//        values.put(schedule, "");
+//
+//        values.put(withProvider, (loa.getWithProvider() ? 1 : 0) );
+//
+//        Timber.d("loa actual value : %s", loa.getWithProvider());
+//        Timber.d("with provider is inserted %s", (loa.getWithProvider() ? 1 : 0));
+//
+//        createSuccessful = db.insert(loaTable, null, values) > 0;
+//
+//
+//        if (createSuccessful) {
+//            Log.e("LOAD_LOA", loa.getId() + " created.");
+//        }
+//    }
+    public void insertLoa(services.model.MaceRequest loa) {
         boolean createSuccessful = false;
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(id, loa.getId());
-        values.put(primaryComplaint, loa.getPrimaryComplaint());
-        values.put(approvalNo, loa.getApprovalNo());
-        values.put(batchCode, loa.getBatchCode());
-        values.put(callerId, loa.getCallerId());
-        values.put(callTypeId, loa.getCallerId());
-        values.put(memberCode, loa.getMemberCode());
-        values.put(hospitalCode, loa.getHospitalCode());
-        values.put(companyCode, loa.getCompanyCode());
-        values.put(doctorCode, loa.getDoctorCode());
-        values.put(diagnosisCode, loa.getDiagnosisCode());
-        values.put(procedureCode, loa.getProcedureCode());
-        values.put(type, loa.getType());
-        values.put(room, loa.getRoom());
-        values.put(dateAdmitted, loa.getDateAdmitted());
-        values.put(diagnosis, loa.getDiagnosis());
-        values.put(procedureDesc, loa.getProcedureDesc());
-        values.put(procedureAmount, loa.getProcedureAmount());
-        values.put(actionTaken, loa.getActionTaken());
-        values.put(updatedBy, loa.getUpdatedBy());
-        values.put(updatedDate, loa.getUpdatedDate());
-        values.put(remarks, loa.getRemarks());
-        values.put(runningBill, loa.getRunningBill());
-        values.put(notes, loa.getNotes());
-        values.put(reason, loa.getReason());
-        values.put(category, loa.getCategory());
-        values.put(memLname, loa.getMemLname());
-        values.put(memFname, loa.getMemFname());
-        values.put(memMi, loa.getMemMi());
-        values.put(memCompany, loa.getMemCompany());
-        values.put(terminalNo, loa.getTerminalNo());
-        values.put(callDate, loa.getCallDate());
-        values.put(status, testStatusExpiration(loa.getRemarks(), loa.getStatus(), loa.getApprovalDate()));
-        values.put(approvalDate, loa.getApprovalDate());
 
 
-        values.put(docName, "");
-        values.put(docSpec, "");
-        values.put(docSpecCode, "");
-        values.put(hospitalName, "");
-        values.put(schedule, "");
 
-        values.put(withProvider, (loa.getWithProvider() ? 1 : 0) );
-
-        Timber.d("loa actual value : %s", loa.getWithProvider());
-        Timber.d("with provider is inserted %s", (loa.getWithProvider() ? 1 : 0));
+//        Timber.d("loa actual value : %s", loa.getWithProvider());
+//        Timber.d("with provider is inserted %s", (loa.getWithProvider() ? 1 : 0));
 
         createSuccessful = db.insert(loaTable, null, values) > 0;
 
 
         if (createSuccessful) {
-            Log.e("LOAD_LOA", loa.getId() + " created.");
+           // Log.e("LOAD_LOA", loa.getId() + " created.");
         }
     }
 
@@ -1190,6 +1211,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      //   if (!getSortByProvinceCityOrHospName(data_sort)) {
             sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp + "%' ";
             sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp2 + "%' ";
+            sql2 += " AND " + hospitalName + " IS NOT NULL ";
+            sql2 += " AND " + hospitalName + " != ''";
       //  }
         sql2 += " AND ( " + excluded + " = 'false' ) ";
 

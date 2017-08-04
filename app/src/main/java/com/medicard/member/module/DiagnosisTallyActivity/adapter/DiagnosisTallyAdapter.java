@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.medicard.member.R;
@@ -34,12 +35,14 @@ public class DiagnosisTallyAdapter extends RecyclerView.Adapter<DiagnosisTallyAd
 
 
     List<DiagnosisTests> diagnosisList;
+    private OnDiagnosisClickListener onDiagnosisClickListener;
 
 
-    public DiagnosisTallyAdapter(Context context, List<DiagnosisTests> diagnosisList){
+    public DiagnosisTallyAdapter(Context context, List<DiagnosisTests> diagnosisList, OnDiagnosisClickListener onDiagnosisClickListener){
         System.out.println("======================= LIST OF DIAGNOSIS " + diagnosisList);
         this.context1 = context;
         this.diagnosisList = diagnosisList;
+        this.onDiagnosisClickListener = onDiagnosisClickListener;
 
         inflater  = LayoutInflater.from(context);
 
@@ -81,17 +84,25 @@ public class DiagnosisTallyAdapter extends RecyclerView.Adapter<DiagnosisTallyAd
         return procedureDetails.toString();
     }
 
+    public void update(List<DiagnosisTests> diagnosistestsList) {
+        this.diagnosisList = diagnosistestsList;
+        notifyDataSetChanged();
+    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.tv_diagnosisName) TextView diagnosisName;
         @BindView(R.id.tv_testName) TextView testName;
+        @BindView(R.id.btn_deleteDiagnosis)
+        Button btn_deleteDiagnosis;
 
 
 
         public ViewHolder(View itemView){
             super(itemView);
             ButterKnife.bind(this, itemView);
+            btn_deleteDiagnosis.setOnClickListener(this);
         }
         public void bind(String primaryDiagnosisName, String diagnosisDetails){
             diagnosisName.setText(primaryDiagnosisName);
@@ -99,5 +110,14 @@ public class DiagnosisTallyAdapter extends RecyclerView.Adapter<DiagnosisTallyAd
 
         }
 
+        @Override
+        public void onClick(View v) {
+            if(v.getId() == R.id.btn_deleteDiagnosis){
+                onDiagnosisClickListener.onRemoveDiagnosis(getAdapterPosition());
+            }
+        }
+    }
+    public interface OnDiagnosisClickListener{
+        void onRemoveDiagnosis(int position);
     }
 }

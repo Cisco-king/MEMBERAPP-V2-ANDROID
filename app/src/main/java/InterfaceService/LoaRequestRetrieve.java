@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.medicard.member.R;
+import com.medicard.member.module.viewLoa.session.ViewLoaListSession;
 
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Sqlite.DatabaseHandler;
 import Sqlite.SetLoaToDatabase;
@@ -40,6 +42,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
+import services.model.MaceRequest;
 import services.response.LoaListResponse;
 import timber.log.Timber;
 
@@ -79,8 +82,11 @@ public class LoaRequestRetrieve {
                     @Override
                     public void onResponse(Call<LoaListResponse> call, Response<LoaListResponse> response) {
                         if(response.isSuccessful()){
-                            LoaListResponse loaListResponse = response.body();
-                            callback.onSuccessLoaListener(loaListResponse);
+                            List<MaceRequest> maceRequestList = response.body().getLoaList();
+                            for(int i=0;i<maceRequestList.size();i++){
+                                ViewLoaListSession.setMaceRequests(maceRequestList.get(i));
+                            }
+                            callback.onSuccessLoaListener(maceRequestList);
                         }
                     }
 
@@ -310,7 +316,7 @@ public class LoaRequestRetrieve {
 
     }
 
-    public void updateList(ArrayList<LoaFetch> arrayList,
+    public void updateList(List<LoaFetch> arrayList,
                            DatabaseHandler databaseHandler, String sort_by, String status_sort,
                            String service_type_sort, String date_start_sort, String date_end_sort,
                            ArrayList<SimpleData> doctor_sort, ArrayList<SimpleData> hospital_sort, String seachedData) {

@@ -113,29 +113,8 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
     public void loadDiagnosisTests() {
         Timber.d("load all diagnosis was called...");
         Timber.d("diagnosis session %s", DiagnosisTestSession.getAllDiagnosisTests().size());
-        List<DiagnosisTests> diagnosisTestsList = new ArrayList<>();
-
-        DiagnosisTests diagnosisTest = new DiagnosisTests();
-        Diagnosis diagnosis = new Diagnosis();
-
-        boolean isDisplayAll = DiagnosisTestSession.isDisplayAll();
-        diagnosisTestsList.addAll(DiagnosisTestSession.getAllDiagnosisTests());
-        if (isDisplayAll && diagnosisTestsList.size() == 1) {
-            diagnosis.setDiagCode("998");
-            diagnosis.setDiagDesc("Laboratory");
-            diagnosisTestsList.get(0).setDiagnosis(diagnosis);
-
-            // display the diagnosis with test
-            diagnosisTest = diagnosisTestsList.get(0);
-            Timber.d("diagnosis code %s and name %s", diagnosisTest.getDiagnosis().getDiagCode(), diagnosisTest.getDiagnosis().getDiagDesc());
-            for (Test test : diagnosisTest.getTests()) {
-                Timber.d("test : %s", test.getProcedureName());
-            }
-            requestNewView.displayDiagnosisTests(diagnosisTestsList);
-
-        } else {
-            requestNewView.displayDiagnosisTests(diagnosisTestsList);
-        }
+        List<DiagnosisTests> diagnosisTestsList = DiagnosisTestSession.getAllDiagnosisTests();
+        requestNewView.displayDiagnosisTests(diagnosisTestsList);
     }
 
     @Override
@@ -225,7 +204,7 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
                     @Override
                     public void onResponse(Call<MaceRequestResponse> call, Response<MaceRequestResponse> response) {
                         if (response.body() != null) {
-                        requestNewView.onRequestSuccess();
+                        requestNewView.onRequestSuccess(response.body());
                         }
                     }
 
@@ -303,7 +282,8 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
                             public void onResponse(Call<FileResponse> call, Response<FileResponse> response) {
                                 if (response.isSuccessful()) {
                                     Timber.d("responseCode : %s, status : %s", response.body().getResponseCode());
-                                    requestNewView.onRequestSuccess();
+                                    MaceRequestResponse response1 = null;
+                                    requestNewView.onRequestSuccess(response1);
                                 } else {
                                     Timber.d("error response %s", response.errorBody().toString());
                                     requestNewView.onRequestError(response.errorBody().toString());

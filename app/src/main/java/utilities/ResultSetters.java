@@ -11,6 +11,7 @@ import android.widget.TextView;
 public class ResultSetters {
 
     public static final String Approved = "Approved";
+    public static final String Pending = "PENDING";
     public static final String REQUEST_APPROVED = "REQUEST SUBMITTED";
     public static final String REQUEST_DISAPPROVED = "REQUEST DISAPPROVED";
     public static final String REQUEST_APPROVAL = "PENDING APPROVAL";
@@ -50,7 +51,6 @@ public class ResultSetters {
     }
 
 
-
     public static String schedSetter(String desc) {
 
         if (desc.equals(Constant.NOT_FOUND) || desc.equals(Constant.NOT_SET)) {
@@ -61,7 +61,6 @@ public class ResultSetters {
 
 
     }
-
 
 
     public static boolean isDoctorAvailable(String doctor) {
@@ -76,9 +75,11 @@ public class ResultSetters {
 
     public static String titleSetter(String request) {
 
-        if (request.equals(Approved))
+        if (request.equals(Approved)) {
             return REQUEST_APPROVED;
-        else
+        } else if (request.equalsIgnoreCase(Pending)) {
+            return REQUEST_APPROVAL;
+        } else
             return REQUEST_DISAPPROVED;
 
 
@@ -86,10 +87,12 @@ public class ResultSetters {
 
     public static void setDoctorWithProvider(String withProvider, TextView textView) {
 
+/*
         if (withProvider.equals(WITHPROVIDER))
             textView.setVisibility(View.GONE);
         else
             textView.setVisibility(View.VISIBLE);
+*/
 
     }
 

@@ -17,6 +17,10 @@ public class FileGenerator {
 
     public static final String BASIC_TEST = "BASIC TEST";
 
+    public static final String  TEST = "TEST";
+
+
+
 
     // file name
     public static final String FILE_NAME_CONSULTATION = "CONSULT_";
@@ -26,6 +30,8 @@ public class FileGenerator {
     public static final String FILE_NAME_OTHER_TEST = "OTHERTEST_";
 
     public static final String FILE_NAME_BASIC_TEST = "BASICTEST_";
+
+    public static final String FILE_NAME_TESTS = "TESTS_";
 
     public static final String genFileName(String serviceType, String approvalCode) {
 
@@ -40,7 +46,18 @@ public class FileGenerator {
             fileName.append(FILE_NAME_OTHER_TEST);
         } else if (serviceType.contains(BASIC_TEST)) {
             fileName.append(FILE_NAME_BASIC_TEST);
+        } else if( serviceType.contains(TEST)){
+            fileName.append(FILE_NAME_TESTS);
         }
+
+        fileName.append(approvalCode);
+
+        return fileName.toString();
+    }
+
+    public static final String genFileNameNoServiceType(String approvalCode) {
+
+        StringBuilder fileName = new StringBuilder();
 
         fileName.append(approvalCode);
 

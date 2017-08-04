@@ -21,6 +21,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:textSize="18dp"
                 android:id="@+id/tvErrorConfirmation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,6 +51,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
                 android:isScrollContainer="false"
+                android:maxLines="3"
                 android:maxLength="250"
                 android:minHeight="100dp"
                 android:padding="10dp"

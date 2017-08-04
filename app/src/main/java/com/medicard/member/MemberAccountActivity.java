@@ -23,14 +23,11 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.frosquivel.magicalcamera.MagicalCamera;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -40,17 +37,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
 
 import InterfaceService.MemberAccountCallback;
 import InterfaceService.MemberberAccountRetrieve;
-import constants.MemberStatus;
 import de.hdodenhof.circleimageview.CircleImageView;
 import mehdi.sakout.fancybuttons.FancyButton;
 import okhttp3.MediaType;
@@ -59,10 +51,8 @@ import okhttp3.ResponseBody;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import services.App;
 import services.AppInterface;
 import services.AppService;
-import services.AppServicewithBasicAuth;
 import timber.log.Timber;
 import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
@@ -75,6 +65,7 @@ import utilities.SetBlockedUser;
 import utilities.SharedPref;
 import utilities.ShowImagePicker;
 import utilities.StatusSetter;
+import com.medicard.member.module.DentistBenefitsActivity.DentalBenefitsActivity;
 import v2.RequestButtonsActivity;
 
 
@@ -82,7 +73,7 @@ public class MemberAccountActivity extends AppCompatActivity
         implements View.OnClickListener, Animation.AnimationListener, MemberAccountCallback {
 
     LinearLayout blackBG;
-    FloatingActionButton fab, fab1;
+    FloatingActionButton fab, fab1, fab2;
     private Animation animation1;
     private Animation animation2;
 
@@ -100,7 +91,7 @@ public class MemberAccountActivity extends AppCompatActivity
     Button btn_displayQR;
     Context context;
     ProgressBar progressBar;
-    TextView tv_view;
+    TextView tv_view, tv_dentist_benefits;
     ScrollView sv_scroll;
     TextView tv_name, tv_memberID, tv_birth, tv_age, tv_civil_status, tv_gender, tv_company;
     TextView tv_plan, tv_account_status, tv_member_code, tv_member_type, tv_effective_date, tv_validity_date;
@@ -149,8 +140,10 @@ public class MemberAccountActivity extends AppCompatActivity
 
         blackBG = (LinearLayout) findViewById(R.id.blackBG);
         tv_view = (TextView) findViewById(R.id.tv_view);
+        tv_dentist_benefits = (TextView) findViewById(R.id.tv_dentist_benefits);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton) findViewById(R.id.fab2);
 
 
         fab_open = AnimationUtils.loadAnimation(context, R.anim.fab_open);
@@ -166,6 +159,7 @@ public class MemberAccountActivity extends AppCompatActivity
 
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
+        fab2.setOnClickListener(this);
 
 
         pd = new ProgressDialog(MemberAccountActivity.this, R.style.MyTheme);
@@ -274,7 +268,7 @@ public class MemberAccountActivity extends AppCompatActivity
 
         getPhoto();
         animateFAB();
-      //  setFlag(getIntent().getExtras().getString("STATUS"));
+        //  setFlag(getIntent().getExtras().getString("STATUS"));
     }
 
     private void setFlag(String status) {
@@ -335,14 +329,17 @@ public class MemberAccountActivity extends AppCompatActivity
         if (isFabOpen) {
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close);
+            fab2.startAnimation(fab_close);
 
 
             tv_view.setAnimation(fab_close);
+            tv_dentist_benefits.setAnimation(fab_close);
 
             blackBG.startAnimation(fade_out);
             blackBG.setVisibility(View.GONE);
 
             fab1.setClickable(false);
+            fab2.setClickable(false);
 
             isFabOpen = false;
 
@@ -350,13 +347,16 @@ public class MemberAccountActivity extends AppCompatActivity
 
             fab.startAnimation(rotate_forward);
             fab1.startAnimation(fab_open);
+            fab2.startAnimation(fab_open);
 
             tv_view.setAnimation(fab_open);
+            tv_dentist_benefits.setAnimation(fab_open);
 
             blackBG.startAnimation(fade_in);
             blackBG.setVisibility(View.VISIBLE);
 
             fab1.setClickable(true);
+            fab2.setClickable(true);
 
             isFabOpen = true;
         }
@@ -447,8 +447,31 @@ public class MemberAccountActivity extends AppCompatActivity
                             1);
                 }
                 break;
+            case R.id.fab2:
+                if (memberStatus.equalsIgnoreCase("ACTIVE")) {
+                    if (implement.testPinAvailable()) {
+                        animateFAB();
+                        gotoDentalBenefits();
+                    } else {
+                        alertDialogCustom.showMe(
+                                context,
+                                alertDialogCustom.HOLD_ON_title,
+                                alertDialogCustom.A_VALID_PIN,
+                                1);
+                    }
+                } else {
+                    Timber.d("Member Status : %s", memberStatus);
+                    animateFAB();
+                    alertDialogCustom.showMe(
+                            context,
+                            alertDialogCustom.HOLD_ON_title,
+                            StatusSetter.setRemarks(memberStatus),
+                            1);
+                }
+
         }
     }
+
 
     /**
      * TODO goto button
@@ -463,6 +486,12 @@ public class MemberAccountActivity extends AppCompatActivity
         intent.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
         startActivity(intent);
 
+    }
+
+    private void gotoDentalBenefits() {
+        Intent intent = new Intent(context, DentalBenefitsActivity.class);
+        intent.putExtra(Constant.MEMBER_ID, MEMBER_ID);
+        startActivity(intent);
     }
 
 

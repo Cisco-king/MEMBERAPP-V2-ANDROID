@@ -49,7 +49,7 @@ import utilities.ViewUtilities;
  * Created by macbookpro on 7/21/17.
  */
 
-public class DiagnosisTallyFragment extends BaseFragment implements DiagnosisMVP.View {
+public class DiagnosisTallyFragment extends BaseFragment implements DiagnosisMVP.View,DiagnosisTallyAdapter.OnDiagnosisClickListener {
 
     public static final String DIAGNOSISTESTSLIST = "diagnosistestslist";
 
@@ -61,20 +61,13 @@ public class DiagnosisTallyFragment extends BaseFragment implements DiagnosisMVP
     RecyclerView rvDiagnosisTally;
 
 
-    @Override
-    public void displayDiagnosisTests(List<DiagnosisTests> diagnosisTestsList) {
-
-        adapter = new DiagnosisTallyAdapter(context,diagnosisTestsList);
-        rvDiagnosisTally.setAdapter(adapter);
-
-    }
 
 
 
 
 
     private DiagnosisMVP.Presenter presenter;
-    private DiagnosisTallyAdapter diagnosisTallyAdapter;
+
 
 
 
@@ -94,6 +87,8 @@ public class DiagnosisTallyFragment extends BaseFragment implements DiagnosisMVP
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     public static Fragment newInstance(List<DiagnosisTests> diagnosisTestsList) {
@@ -124,6 +119,23 @@ public class DiagnosisTallyFragment extends BaseFragment implements DiagnosisMVP
         rvDiagnosisTally.setLayoutManager(new LinearLayoutManager(context));
 
         presenter.loadDiagnosisTest(diagnosisTests);
+
+
+
+    }
+
+    @Override
+    public void displayDiagnosisTests(List<DiagnosisTests> diagnosisTestsList) {
+        adapter = new DiagnosisTallyAdapter(context,diagnosisTestsList,this);
+        rvDiagnosisTally.setAdapter(adapter);
+
+    }
+
+
+    @Override
+    public void onRemoveDiagnosis(int position) {
+        this.diagnosisTests.remove(position);
+        adapter.update(this.diagnosisTests);
 
     }
 }

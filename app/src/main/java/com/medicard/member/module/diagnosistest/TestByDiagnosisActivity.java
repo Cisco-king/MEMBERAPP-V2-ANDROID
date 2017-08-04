@@ -3,6 +3,7 @@ package com.medicard.member.module.diagnosistest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -20,6 +21,7 @@ import com.medicard.member.module.base.BaseActivity;
 import com.medicard.member.module.diagnosis.DiagnosisActivity;
 import com.medicard.member.module.diagnosis.fragment.DiagnosisFragment;
 import com.medicard.member.module.diagnosistest.adapter.TestProcedureAdapter;
+import com.tapadoo.alerter.Alert;
 import com.tapadoo.alerter.Alerter;
 
 import java.io.Serializable;
@@ -108,7 +110,12 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra(diagnosisBundle);
-        diag = (Diagnosis) args.getSerializable(DiagnosisActivity.DiagnosisActivity);
+        try{
+            diag = (Diagnosis) args.getSerializable(DiagnosisActivity.DiagnosisActivity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
 
 
@@ -132,39 +139,38 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
 
         Timber.d("this is the diagnosis %s", diagnosis.getDiagCode());
 
-        if (displayAll) {
-            //ViewUtilities.hideView(fbAddMoreDiagnosis);
-            presenter.loadAllTests(fromTest);
-        } else {
-          //  ViewUtilities.showView(fbAddMoreDiagnosis);
-            presenter.loadTestProcedureByDiagnosisCode(diagnosis.getDiagCode());
-        }
+        presenter.loadTestProcedureByDiagnosisCode(diagnosis.getDiagCode());
     }
 
     @OnClick(R.id.fbDone)
     public void onDoneClick() {
         // make sure that the content is release to get only zero index cause
         // as of now only skip and all test was display
-        DiagnosisTestSession.releaseContent();
-        if (getSelectedTests() != null && getSelectedTests().size() > 0) {
-            List<Test> testToPass = getSelectedTests();
-            diagtests= new DiagnosisTests();
-            diagtests.setTests(testToPass);
-            diagtests.setDiagnosis(diag);
-            List<DiagnosisTests> diagALL = DiagnosisTestSession.getAllDiagnosisTests();
-            if(diagALL.size() == 0){
-                DiagnosisTestSession.setDiagnosisTests(diagtests);
-            }else
-                DiagnosisTestSession.setDiagnosisTests(diagtests);
+        //DiagnosisTestSession.releaseContent();
+        try {
+            if (getSelectedTests() != null && getSelectedTests().size() > 0) {
+                List<Test> testToPass = getSelectedTests();
+                diagtests = new DiagnosisTests();
+                diagtests.setTests(testToPass);
 
-            Intent intent = new Intent(this, DiagnosisTallyActivity.class);
-            startActivity(intent);
+                diagtests.setDiagnosis(diag);
+                List<DiagnosisTests> diagALL = DiagnosisTestSession.getAllDiagnosisTests();
+                if (diagALL.size() == 0) {
+                    DiagnosisTestSession.setDiagnosisTests(diagtests);
+                } else
+                    DiagnosisTestSession.setDiagnosisTests(diagtests);
 
-        } else {
-            Alerter.create(this)
-                    .setText("Please select Test(s) to proceed.")
-                    .setBackgroundColor(R.color.orange_a200)
-                    .show();
+                Intent intent = new Intent(this, DiagnosisTallyActivity.class);
+                startActivity(intent);
+
+            } else {
+                Alerter.create(this)
+                        .setText("Please select Test(s) to proceed.")
+                        .setBackgroundColor(R.color.orange_a200)
+                        .show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

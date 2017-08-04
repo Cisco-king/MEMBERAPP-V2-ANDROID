@@ -3,6 +3,7 @@ package adapter;
 import android.content.Context;
 
 import com.medicard.member.R;
+import com.medicard.member.module.viewLoa.ViewLoaRetrieve;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import InterfaceService.LOARequestCallback;
 import Sqlite.DatabaseHandler;
@@ -31,6 +33,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
+import services.model.MaceRequest;
 import timber.log.Timber;
 import utilities.DateConverter;
 
@@ -43,16 +46,16 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
 
     DatabaseHandler databaseHandler;
     private Context context;
-    private ArrayList<LoaFetch> arrayList;
-    LOARequestCallback callback;
+    private List<MaceRequest> arrayList;
+    ViewLoaRetrieve.ViewLoaRetrieveCallback callback;
+
 
     private LayoutInflater inflater;
 
 
-    public LoaRequestAdapter(Context context, ArrayList<LoaFetch> arrayList, DatabaseHandler databaseHandler, LOARequestCallback callback) {
+    public LoaRequestAdapter(Context context, List<MaceRequest> arrayList, ViewLoaRetrieve.ViewLoaRetrieveCallback callback) {
         this.arrayList = arrayList;
         this.context = context;
-        this.databaseHandler = databaseHandler;
         this.callback = callback;
 
         inflater = LayoutInflater.from(context);
@@ -68,8 +71,7 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
 
     }
 
-    public void update(ArrayList<LoaFetch> loaFetches) {
-        arrayList = new ArrayList<>();
+    public void update(List<MaceRequest> loaFetches) {
         arrayList = loaFetches;
         notifyDataSetChanged();
     }
@@ -77,23 +79,25 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
     @Override
     public void onBindViewHolder(LoaRequestAdapter.Holder holder, int position) {
 
-        LoaFetch loaFetch = arrayList.get(position);
-        Timber.d("%s", loaFetch.toString());
+        MaceRequest maceRequest = arrayList.get(position);
+        //Timber.d("%s", loaFetch.toString());
+        System.out.println("approval no." + maceRequest.getStatus());
 // TODO REPLACE DUMMY DATA
-        holder.tv_remark.setText(loaFetch.getRemarks());
-        holder.tv_req_date.setText("Request Date: " + DateConverter.convertDateToMMddyyyy(DateConverter.convertDatetoMMMddyyy(loaFetch.getApprovalDate())));
-        holder.tv_status.setText(loaFetch.getStatus());
-        holder.tv_doctor.setText(loaFetch.getDoctorName());
-        holder.tv_spec.setText(loaFetch.getDoctorSpec());
-         holder.tv_hospname.setText(loaFetch.getHospitalName());
+        holder.tv_requestType.setText(maceRequest.getRequestType());
+        holder.tv_req_date.setText("Request Date: " + DateConverter.convertDateToMMddyyyy(DateConverter.convertDatetoMMMddyyy(maceRequest.getRequestDatetime())));
+        holder.tv_status.setText(maceRequest.getStatus());
+        holder.tv_hospname.setText(maceRequest.getHospitalName());
+        holder.tv_doctor.setText(maceRequest.getDoctorName());
+        holder.tv_spec.setText(maceRequest.getDoctorSpec());
+//        holder.tv_hospname.setText(maceRequest.getHospitalName());
 //        holder.tv_hospname.setText(loaFetch.getId());
 
 
 //        holder.tv_sched.setText(arrayList.get(position).getSchedule());
 //        holder.tv_room.setText(arrayList.get(position).getRoom());
 
-        holder.tv_sched.setVisibility(View.GONE);
-        holder.tv_room.setVisibility(View.GONE);
+//        holder.tv_sched.setVisibility(View.GONE);
+//        holder.tv_room.setVisibility(View.GONE);
     }
 
 
@@ -110,8 +114,8 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
         @BindView(R.id.tv_status)
         TextView tv_status;
 
-        @BindView(R.id.tv_remark)
-        TextView tv_remark;
+        @BindView(R.id.tv_requestType)
+        TextView tv_requestType;
 
         @BindView(R.id.tv_hospname)
         TextView tv_hospname;

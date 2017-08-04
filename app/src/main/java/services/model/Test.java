@@ -59,6 +59,10 @@ public class Test implements Table.Test,Serializable {
 
     private boolean isSelected;
 
+    public void test(){
+
+    }
+
     public Test(Cursor cursor) {
         Timber.d("converting cursor");
         this.diagCode = cursor.getString(cursor.getColumnIndex(DIAGNOSIS_CODE));

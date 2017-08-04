@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import InterfaceService.LoaPageInterface;
 import InterfaceService.LoaPageRetieve;
@@ -39,6 +40,7 @@ import model.GetUSER;
 import model.HospitalList;
 import model.LoaFetch;
 import model.MemberInfo;
+import services.model.MaceRequest;
 import timber.log.Timber;
 import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
@@ -151,10 +153,10 @@ public class LoaPageActivity extends AppCompatActivity
 
     private int RESULT_GETTER;
     int position;
-    ArrayList<LoaFetch> loaList = new ArrayList<>();
+    List<MaceRequest> loaList = new ArrayList<>();
     Context context;
     ScreenshotCallback screenshotCallback;
-    LoaFetch loa;
+    MaceRequest loa;
     AlertDialogCustom alertDialogCustom;
     LoaPageInterface callback;
     LoaPageRetieve implement;
@@ -191,8 +193,9 @@ public class LoaPageActivity extends AppCompatActivity
         alertDialogCustom = new AlertDialogCustom();
 
         position = Integer.parseInt(getIntent().getStringExtra(Constant.POSITION));
-        ArrayList<LoaFetch> temp;
-        temp = getIntent().getParcelableArrayListExtra(Constant.DATA_SEARCHED);
+        List<MaceRequest> temp;
+        Bundle args = getIntent().getBundleExtra(Constant.BundleForMaceRequest);
+        temp = (List<MaceRequest>) args.getSerializable(Constant.DATA_SEARCHED);
         loaList.addAll(temp);
         temp.clear();
 
@@ -219,22 +222,21 @@ public class LoaPageActivity extends AppCompatActivity
 
     }
 
-    private void init(ArrayList<LoaFetch> loaList, int position) {
+    private void init(List<MaceRequest> loaList, int position) {
 
         loa = loaList.get(position);
 
-        serviceType = "( " + loa.getRemarks() + " )";
+       // serviceType = "( " + loa.getRemarks() + " )";
 
         /*loader.startLad();
         loader.setMessage("Loading...");*/
 //        presenter.requestDoctorByCode(loa.getDoctorCode());
-        String changeFormat = DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate());
+        String changeFormat = DateConverter.convertDatetoMMMddyyy(loa.getRequestDatetime());
         // todo init lao form data
 
-        HospitalList hospital =
-                dbHandler.getHospitalContact(loa.getHospitalCode());
 
-        Timber.d("serviceType : %s approval code : %s batchCode %s", loa.getRemarks(), loa.getApprovalNo(), loa.getBatchCode());
+
+        //Timber.d("serviceType : %s approval code : %s batchCode %s", loa.getRemarks(), loa.getApprovalNo(), loa.getBatchCode());
 
 
         loaFormBuilder = new OutPatientConsultationForm.Builder()
@@ -243,33 +245,38 @@ public class LoaPageActivity extends AppCompatActivity
                 .dateOfConsult(changeFormat)
                 .referenceNumber(loa.getApprovalNo())
                 .doctor(loa.getDoctorName())
-                .hospital(hospital.getHospitalName())
+                .hospital(loa.getHospitalName())
                 .memberName(loa.getMemFname() + " " + loa.getMemLname())
                 .age(AgeCorrector.age(SharedPref.getStringValue(SharedPref.USER, SharedPref.AGE, this)))
                 .gender(GenderPicker.setGender(Integer.parseInt(SharedPref.getStringValue(SharedPref.USER, SharedPref.GENDER, this))))
-                .memberId(loa.getMemberCode())
+                .memberId(loa.getMemCode())
                 .company(loa.getMemCompany())
-                .remarks(loa.getRemarks())
-                .chiefComplaint(loa.getPrimaryComplaint())
-                .serviceType(loa.getRemarks())
-                .bactchCode(loa.getBatchCode());
+       //         .remarks(loa.getRemarks())
+                .chiefComplaint(loa.getReasonForConsult())
+                .serviceType(loa.getServiceType());
+           //     .bactchCode(loa.getco);
 
 
-        ivQrApprovalNumber.setImageBitmap(QrCodeCreator.getBitmapFromString2(loa.getApprovalNo()));
+        try{
+            ivQrApprovalNumber.setImageBitmap(QrCodeCreator.getBitmapFromString2(loa.getApprovalNo()));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         tvReferenceNumber.setText(REFERENCE_NUMBER.concat(loa.getApprovalNo()));
 
         implement.setExpiredStatus(btn_download, btn_cancel_req, loa.getStatus());
-        tv_header.setText(loa.getRemarks());
+       // tv_header.setText(loa.getRemarks());
         tv_status.setText(implement.getStatus(loa.getStatus()));
         tv_approval_code.setText(loa.getApprovalNo());
-        tv_member_code.setText(loa.getMemberCode());
+        tv_member_code.setText(loa.getMemCode());
         tv_member_name.setText(loa.getMemFname() + " " + loa.getMemLname());
         tv_age.setText(AgeCorrector.age(SharedPref.getStringValue(SharedPref.USER, SharedPref.AGE, this)));
         tv_gender.setText(GenderPicker.setGender(Integer.parseInt(
                 SharedPref.getStringValue(SharedPref.USER, SharedPref.GENDER, this))));
         tv_company.setText(loa.getMemCompany());
 
-        tv_date_approved.setText(DateConverter.convertDatetoMMMddyyy(loa.getApprovalDate())); // view is invisible
+        tv_date_approved.setText(DateConverter.convertDatetoMMMddyyy(loa.getRequestDatetime())); // view is invisible
 
         /*tvValidityDate.setText(changeFormat);
         tvEffectiveDate.setText(DateConverter.validityDatePLusDay(changeFormat, 3));
@@ -278,7 +285,7 @@ public class LoaPageActivity extends AppCompatActivity
         tvDateApproved.setText(changeFormat);
 
         tv_doc_name.setText(loa.getDoctorName());
-        tv_problem.setText(loa.getPrimaryComplaint());
+        tv_problem.setText(loa.getReasonForConsult());
 
         tvServiceType.setText(serviceType);
 
@@ -287,34 +294,38 @@ public class LoaPageActivity extends AppCompatActivity
                 getString(R.string.this_req_is_valid_from).concat("\n" +
                         DateConverter.convertDateToMMddyyyy(changeFormat) + " to " +
                         DateConverter.validityDatePLusDay(changeFormat, 3)));
+        try{
+            tv_spec.setText(testData(loa.getDoctorSpec()));
+        }catch (Exception e){
+            e.printStackTrace();
+            tv_spec.setVisibility(View.GONE );
+        }
 
-        tv_spec.setText(testData(loa.getDoctorSpec()));
-
-        if (hospital.getHospitalName() != null && !hospital.getHospitalName().isEmpty()) {
+        if (loa.getHospitalName()!= null && !loa.getHospitalName().isEmpty()) {
             cvHospitalClinic.setVisibility(View.VISIBLE);
-            tvHospitalClinicName.setText(hospital.getHospitalName());
-            tvHopitalClinicLocation.setText(hospital.getFullAddress());
-            tvHopitalClinicContacts.setText(hospital.getPhoneNo());
-            tvHopitalClinicDoctorName.setText(hospital.getContactPerson());
+            tvHospitalClinicName.setText(loa.getHospitalName());
+            tvHopitalClinicLocation.setVisibility(View.GONE);
+            tvHopitalClinicContacts.setVisibility(View.GONE);
+            tvHopitalClinicDoctorName.setVisibility(View.GONE);
         } else {
             cvHospitalClinic.setVisibility(View.GONE);
         }
 
         tvDoctorName.setText(loa.getDoctorName());
 
-        String doctorInfo = new StringBuilder()
-                .append(loa.getDoctorSpec())
-                .append(!(loa.getRoom() == null || loa.getRoom().equals("null")) ? "\n\n" + loa.getRoom() : "")
-                .append(!(loa.getSchedule() == null || loa.getSchedule().equals("null")) ? "\n\n" + loa.getSchedule() : "")
-                .toString();
+//        String doctorInfo = new StringBuilder()
+//                .append(loa.getDoctorSpec())
+//                .append(!(loa.get() == null || loa.getRoom().equals("null")) ? "\n\n" + loa.getRoom() : "")
+//                .append(!(loa.getSchedule() == null || loa.getSchedule().equals("null")) ? "\n\n" + loa.getSchedule() : "")
+//                .toString();
 
-        Timber.d("doctorSpec %s, loaRoom %s, loaSchedule %s", loa.getDoctorSpec(), loa.getRoom(), loa.getSchedule());
+      //  Timber.d("doctorSpec %s, loaRoom %s, loaSchedule %s", loa.getDoctorSpec(), loa.getRoom(), loa.getSchedule());
 
-        if (!doctorInfo.trim().isEmpty()) {
-            tvDoctorInfo.setText(doctorInfo);
-        } else {
-            tvDoctorInfo.setVisibility(View.GONE);
-        }
+//        if (!doctorInfo.trim().isEmpty()) {
+//            tvDoctorInfo.setText(doctorInfo);
+//        } else {
+//            tvDoctorInfo.setVisibility(View.GONE);
+//        }
 
         OutPatientConsultationForm build = loaFormBuilder.build();
         if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
@@ -338,7 +349,7 @@ public class LoaPageActivity extends AppCompatActivity
         }*/
 
         //cas
-        Timber.d("WithProvider ......... %s", loa.getWithProvider());
+        //Timber.d("WithProvider ......... %s", loa.getWithProvider());
 
     }
 
@@ -479,7 +490,7 @@ public class LoaPageActivity extends AppCompatActivity
     public void onCancelRequestListener() {
         loader.startLad();
         loader.setMessage("Cancelling Request");
-        implement.cancelRequest(loa.getBatchCode());
+       // implement.cancelRequest(loa.getBatchCode());
     }
 
     @Override

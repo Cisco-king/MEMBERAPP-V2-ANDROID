@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,12 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.medicard.member.NavigationActivity;
 import com.medicard.member.R;
+import com.medicard.member.module.DiagnosisTallyActivity.DiagnosisTallyActivity;
 
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import InterfaceService.LOARequestCallback;
 import InterfaceService.LoaRequestRetrieve;
@@ -29,6 +34,7 @@ import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.LoaFetch;
 import model.SimpleData;
+import services.model.MaceRequest;
 import services.response.LoaListResponse;
 import timber.log.Timber;
 import utilities.AlertDialogCustom;
@@ -48,6 +54,8 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
      * ADD LOADING
      */
 
+    NavigationActivity listener;
+
     @BindView(R.id.rv_loa_request)
     RecyclerView rv_loa_request;
 
@@ -60,9 +68,9 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     @BindView(R.id.tv_list)
     TextView tv_list;
 
-    LinearLayoutManager llm;
+
     LoaRequestAdapter adapter;
-    ArrayList<LoaFetch> loaFetches = new ArrayList<>();
+    List<MaceRequest> loaFetches = new ArrayList<>();
     ArrayList<LoaFetch> arrayMASTERList = new ArrayList<>();
 
     LoaRequestRetrieve implement;
@@ -97,7 +105,6 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         callback = this;
         sort_by = getString(R.string.request_date);
         context = getActivity();
-        databaseHandler = new DatabaseHandler(context);
         implement = new LoaRequestRetrieve(context, callback);
     }
 
@@ -107,7 +114,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         View view = inflater.inflate(R.layout.fragment_loarequest, container, false);
         ButterKnife.bind(this, view);
 
-//        init();
+        init();
 
         return view;
     }
@@ -125,14 +132,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 //        databaseHandler = new DatabaseHandler(context);
 //        implement = new LoaRequestRetrieve(context, callback);
         alertDialogCustom = new AlertDialogCustom();
-        llm = new LinearLayoutManager(getActivity());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
 
-        rv_loa_request.setLayoutManager(llm);
-        adapter = new LoaRequestAdapter(context, loaFetches, databaseHandler, callback);
-        rv_loa_request.setAdapter(adapter);
-
-        databaseHandler.dropLoa();
 
         if (NetworkTest.isOnline(context)) {
             if (implement != null)
@@ -182,13 +182,13 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
                 implement.replactDataArray(doctor_sort, temp);
                 seachedData = data.getStringExtra(Constant.SEARCHED_DATA);
 
-                implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
-                        service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort),
-                        DateConverter.converttoyyyymmddEnd(date_end_sort), doctor_sort, hospital_sort, seachedData);
-//                adapter.notifyDataSetChanged();
-                adapter.update(loaFetches);
-
-                implement.updateUIList(rv_loa_request, tv_list, loaFetches);
+//                implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
+//                        service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort),
+//                        DateConverter.converttoyyyymmddEnd(date_end_sort), doctor_sort, hospital_sort, seachedData);
+////                adapter.notifyDataSetChanged();
+//                adapter.update(loaFetches);
+//
+//                implement.updateUIList(rv_loa_request, tv_list, loaFetches);
             }
             //used if user cancelled a request to update current list
         } else if (requestCode == CALL_LOA_VIEW && resultCode == RESULT_OK) {
@@ -208,11 +208,12 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     }
 
     @Override
-    public void gotoLoaPage(ArrayList<LoaFetch> arrayList, int adapterPosition) {
+    public void gotoLoaPage(List<MaceRequest> arrayList, int adapterPosition) {
         Intent gotoLoa = new Intent(context, LoaPageActivity.class);
-        gotoLoa.putParcelableArrayListExtra(Constant.DATA_SEARCHED, arrayList);
+        Bundle args = new Bundle();
+        args.putSerializable(Constant.DATA_SEARCHED, (Serializable) arrayList);
+        gotoLoa.putExtra(Constant.BundleForMaceRequest, args);
         gotoLoa.putExtra(Constant.POSITION, adapterPosition + "");
-
         startActivityForResult(gotoLoa, CALL_LOA_VIEW);
     }
 
@@ -220,6 +221,9 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if(context instanceof AppCompatActivity){
+            this.listener = (NavigationActivity) context;
+        }
 
     }
 
@@ -236,17 +240,18 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     }
 
     @Override
-    public void onSuccessLoaListener(LoaListResponse loa) {
-        Log.d("LOA_SUCCESS", loa.toString());
-        if (implement != null)
-            implement.getData(loa, databaseHandler);
+    public void onSuccessLoaListener(List<MaceRequest> maceRequestList) {
+        //adapter = new LoaRequestAdapter(context,maceRequestList,callback);
+        rv_loa_request.setLayoutManager(new LinearLayoutManager(getContext()));
+        rv_loa_request.setAdapter(adapter);
+        pb.setVisibility(View.GONE);
     }
 
     @Override
     public void onDbLoaSuccessListener(LoaListResponse loa) {
         if (implement != null) {
-            implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
-                    service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
+//            implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
+//                    service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
 
             implement.getDoctorCreds(loa, databaseHandler);
         }
@@ -263,9 +268,9 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
     public void doneFetchingDoctorData() {
         if (implement != null) {
             Timber.d("fetching doctor....");
-            implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
-                    service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
-            implement.updateHospitals(loaFetches, databaseHandler);
+//            implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
+//                    service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
+//            implement.updateHospitals(loaFetches, databaseHandler);
         }
     }
 
@@ -274,12 +279,12 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         if (implement != null) {
             Timber.d("done doctor update...");
             implement.UIUpdateShowLoad(false, pb, rv_loa_request, btn_sort);
-            implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
-                    service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
-
-            arrayMASTERList.addAll(loaFetches);
-            adapter.update(loaFetches);
-            implement.updateUIList(rv_loa_request, tv_list, loaFetches);
+//            implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
+//                    service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
+//
+//            arrayMASTERList.addAll(loaFetches);
+//            adapter.update(loaFetches);
+//            implement.updateUIList(rv_loa_request, tv_list, loaFetches);
         }
     }
 

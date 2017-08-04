@@ -88,7 +88,6 @@ public class HospitalFragment extends BaseFragment
 
     @Override
     public void displayHospitalClinic(List<HospitalList> hospitals) {
-        System.out.println("Today!!!!");
         this.hospitals = hospitals;
         hospitalAdapter = new HospitalDoctorAdapter(context, hospitals, this);
         rvHospitalClinic.setAdapter(hospitalAdapter);

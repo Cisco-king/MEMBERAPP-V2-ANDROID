@@ -16,6 +16,7 @@ import services.ServiceGenerator;
 import services.client.ProcedureClient;
 import services.model.Test;
 import services.response.ProcedureByDiagnosisCodeResponse;
+import services.response.TestResponseEntity;
 import timber.log.Timber;
 
 /**
@@ -61,15 +62,16 @@ public class TestByDiagnosisPresenter implements TestByDiagnosisMvp.Presenter {
 
     @Override
     public void loadTestProcedureByDiagnosisCode(String diagnosisCode) {
-        procedureClient.getProceduresByDiagnosisCode(diagnosisCode)
-                .enqueue(new Callback<ProcedureByDiagnosisCodeResponse>() {
+        procedureClient.getTestsByDiagnosisCode(diagnosisCode)
+                .enqueue(new Callback<TestResponseEntity>() {
                     @Override
-                    public void onResponse(Call<ProcedureByDiagnosisCodeResponse> call, Response<ProcedureByDiagnosisCodeResponse> response) {
+                    public void onResponse(Call<TestResponseEntity> call, Response<TestResponseEntity> response) {
 
                         List<Test> tests = new ArrayList<>();
 
                         if (response.isSuccessful()) {
-                            List<String> procedureCodes = response.body().getProcedures();
+                           List<String> procedureCodes = response.body().getTestCodes();
+
                             for (String code : procedureCodes) {
                                 Test test = testDao.find(code);
                                 if (test != null) {
@@ -77,26 +79,25 @@ public class TestByDiagnosisPresenter implements TestByDiagnosisMvp.Presenter {
                                     Timber.d("tests %s", test.getProcedureName());
                                 }
                             }
+                            }
                             Timber.d("total test %s", tests.size());
 
-                            if (tests != null && tests.size() == 0) {
+                            if (tests.isEmpty() || tests.size() == 0) {
                                 List<Test> all = testDao.findAll();
                                 testView.onSuccess(all);
                             } else {
                                 testView.onSuccess(tests);
                             }
 
-                        } else {
-                            testView.onError("response error");
-                            Timber.d("response got error");
                         }
-                    }
 
                     @Override
-                    public void onFailure(Call<ProcedureByDiagnosisCodeResponse> call, Throwable t) {
+                    public void onFailure(Call<TestResponseEntity> call, Throwable t) {
                         Timber.d("error#%s", t.toString());
                         testView.onError(t.toString());
                     }
+
+
                 });
     }
 
@@ -132,6 +133,7 @@ public class TestByDiagnosisPresenter implements TestByDiagnosisMvp.Presenter {
                 if(testDescription.contains(query)){
                     newTestList.add(test);
                 }
+                testView.onSuccess(newTestList);
             }
         }catch (Exception e){
             e.printStackTrace();

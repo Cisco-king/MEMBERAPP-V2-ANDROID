@@ -18,12 +18,18 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/rv_loa_request"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_above="@+id/linearLayout4" />
+        android:layout_above="@+id/linearLayout4"
+        android:visibility="visible"
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical"
+        android:alpha="70"
+        android:scrollbarThumbVertical="@color/colorAccent"
+        android:scrollbarSize="12dp"
+        android:scrollbarStyle="outsideInset"/>
 
 
     <LinearLayout

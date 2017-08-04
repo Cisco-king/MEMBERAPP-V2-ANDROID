@@ -4,6 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
+    android:scrollbars="vertical"
+    android:alpha="70"
+    android:scrollbarThumbVertical="@color/colorAccent"
+    android:scrollbarSize="12dp"
+    android:scrollbarStyle="outsideInset"
     tools:context="fragments.fragment_memberInfo">
 
     <LinearLayout

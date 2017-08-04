@@ -17,6 +17,8 @@ public class HeaderNameSetter {
             set = "Consultation";
         } else if (origin.equals(maternity)) {
             set = "Maternity Consultation";
+        }else{
+            set = "TEST";
         }
 
         return set;

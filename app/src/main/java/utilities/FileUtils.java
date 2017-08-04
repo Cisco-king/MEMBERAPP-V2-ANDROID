@@ -47,5 +47,14 @@ public class FileUtils {
         File file = new File(loaFileName);
         return file.exists();
     }
+    public static boolean fileExistance(String approvalNumber) {
+        String loaFileName =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) +
+                        File.separator + "MediCard" + File.separator +
+                        FileGenerator.genFileNameNoServiceType(approvalNumber) + ".pdf";
+
+        File file = new File(loaFileName);
+        return file.exists();
+    }
 
 }

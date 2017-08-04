@@ -435,7 +435,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
                     if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
                         onShowNotifyExistingPdfDialog(build.getServiceType(), build.getReferenceNumber());
                     } else {
-                        generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form));
+                        generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.test_request_form));
                     }
 
                 }
@@ -455,7 +455,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 
-                    generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form));
+                    generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.test_request_form));
 
                 } else {
                     Timber.d("permission denied");

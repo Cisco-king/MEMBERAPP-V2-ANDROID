@@ -40,6 +40,7 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
+import services.response.DentalBenefitsResponse;
 import services.response.LoaListResponse;
 import services.response.MaceRequestResponse;
 import utilities.SharedPref;
@@ -50,23 +51,21 @@ import utilities.SharedPref;
 
 public interface AppInterface {
 
-    /// TODO PLEASE HAHAHAHAHA DO NOT USE
-    // KINABAHAN AKO MGA BES!
 //    String ENDPOINT = "http://mace-public01.medicardphils.com:8080/";
 //    String PHOTOLINK = "http://mace-public01.medicardphils.com:8080/downloadpicture/";
 
 
 
-    String ENDPOINT = "http://10.10.26.63:8080";
-    String PHOTOLINK = "http://10.10.26.63:8080/downloadpicture/";
+//    String ENDPOINT = "http://192.168.1.5:8080";
+//    String PHOTOLINK = "http://192.168.1.5:8080/downloadpicture/";
 
 
 //    String ENDPOINT = "http://10.10.24.195:8080/";
 //    String PHOTOLINK = "http://10.10.24.195:8080/downloadpicture/";
 
 
-//    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
-//    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
+    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
+    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
 
 //    String ENDPOINT = "http://10.10.24.195:8080/";
 //    String PHOTOLINK = "http://10.10.24.195:8080/downloadpicture/";
@@ -183,5 +182,7 @@ public interface AppInterface {
     @POST("/coordinator/v2/requestBasicOrOtherTest")
     Call<MaceRequestResponse> getBasicTestResult(@Body NewTestRequest newTestRequest);
 
+    @GET("/membership/getDentalBenefitByMemberCode/")
+    Call<DentalBenefitsResponse> getDentalBenefitByMemberCode(@Query("memberCode") String memberCode);
 
 }

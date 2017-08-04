@@ -40,6 +40,7 @@ public class AttachmentAdapter extends
         this.onItemClickListener = onItemClickListener;
     }
 
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View row = LayoutInflater.from(parent.getContext())

@@ -3,111 +3,304 @@ package services.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
+import utilities.DateConverter;
+
 /**
  * Created by casjohnpaul on 6/9/2017.
  */
 
-public class MaceRequest {
+public class MaceRequest implements Serializable {
+
+
+    @SerializedName("requestType")
+    @Expose
+    private String requestType;
+
+
+    @SerializedName("requestTypeDetail01")
+    @Expose
+    private String requestTypeDetail01;
+
+
+    @SerializedName("requestTypeDetail02")
+    @Expose
+    private String requestTypeDetail02;
+
+
+    @SerializedName("requestTypeDetail03")
+    @Expose
+    private String requestTypeDetail03;
+
+
+    @SerializedName("doctorName")
+    @Expose
+    private String doctorName;
+
+
+    @SerializedName("doctorSpec")
+    @Expose
+    private String doctorSpec;
+
+
+    @SerializedName("primaryDiag")
+    @Expose
+    private String primaryDiag;
+
+
+    @SerializedName("reasonForConsult")
+    @Expose
+    private String reasonForConsult;
+
+
+    @SerializedName("approvalNo")
+    @Expose
+    private String approvalNo;
+
 
     @SerializedName("requestId")
     @Expose
     private Integer requestId;
+
+
     @SerializedName("statusAssignee")
     @Expose
     private Object statusAssignee;
+
+
     @SerializedName("statusRemarks")
     @Expose
     private Object statusRemarks;
+
+
     @SerializedName("serviceTypeId")
     @Expose
     private Integer serviceTypeId;
+
+
     @SerializedName("memCode")
     @Expose
     private String memCode;
+
+    @Expose
+    @SerializedName("hospitalName")
+    private String hospitalName;
+
+
     @SerializedName("memLname")
     @Expose
     private String memLname;
+
+
     @SerializedName("memFname")
     @Expose
     private String memFname;
+
+
     @SerializedName("memMi")
     @Expose
     private String memMi;
+
+
     @SerializedName("memCompany")
     @Expose
     private String memCompany;
+
+
     @SerializedName("memAcct")
     @Expose
     private String memAcct;
+
     @SerializedName("memStat")
     @Expose
     private String memStat;
+
     @SerializedName("memBdate")
     @Expose
     private String memBdate;
+
     @SerializedName("memGender")
     @Expose
     private String memGender;
+
     @SerializedName("memAge")
     @Expose
-    private Integer memAge;
+    private String memAge;
+
     @SerializedName("memType")
     @Expose
     private String memType;
+
     @SerializedName("idremarks")
     @Expose
     private String idremarks;
+
     @SerializedName("acctValidity")
     @Expose
     private String acctValidity;
+
     @SerializedName("acctEffectivity")
     @Expose
     private String acctEffectivity;
+
     @SerializedName("requestOrigin")
     @Expose
     private String requestOrigin;
+
     @SerializedName("requestFromhosp")
     @Expose
     private Object requestFromhosp;
+
     @SerializedName("requestFrommem")
     @Expose
     private Object requestFrommem;
+
     @SerializedName("requestBy")
     @Expose
     private Object requestBy;
+
     @SerializedName("requestDevice")
     @Expose
     private String requestDevice;
+
     @SerializedName("requestDatetime")
     @Expose
     private String requestDatetime;
+
     @SerializedName("disclaimerTicked")
     @Expose
     private Object disclaimerTicked;
+
     @SerializedName("lastupdateOn")
     @Expose
     private String lastupdateOn;
+
     @SerializedName("lastupdateBy")
     @Expose
     private Object lastupdateBy;
+
     @SerializedName("status")
     @Expose
     private String status;
+
     @SerializedName("override")
     @Expose
     private Boolean override;
+
     @SerializedName("parRequestId")
     @Expose
     private Integer parRequestId;
+
     @SerializedName("mbasCode")
     @Expose
     private Object mbasCode;
+
     @SerializedName("mbasApprover")
     @Expose
     private Object mbasApprover;
+
     @SerializedName("mbasupdateOn")
     @Expose
     private Object mbasupdateOn;
+
+    @SerializedName("requestCode")
+    @Expose
+    private String requestCode;
+
+
+    @SerializedName("serviceType")
+    @Expose
+    private String serviceType;
+
+
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
+    }
+
+    public String getRequestTypeDetail01() {
+        return requestTypeDetail01;
+    }
+
+    public void setRequestTypeDetail01(String requestTypeDetail01) {
+        this.requestTypeDetail01 = requestTypeDetail01;
+    }
+
+    public String getRequestTypeDetail02() {
+        return requestTypeDetail02;
+    }
+
+    public void setRequestTypeDetail02(String requestTypeDetail02) {
+        this.requestTypeDetail02 = requestTypeDetail02;
+    }
+
+    public String getRequestTypeDetail03() {
+        return requestTypeDetail03;
+    }
+
+    public void setRequestTypeDetail03(String requestTypeDetail03) {
+        this.requestTypeDetail03 = requestTypeDetail03;
+    }
+
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
+
+    public String getDoctorSpec() {
+        return doctorSpec;
+    }
+
+    public void setDoctorSpec(String doctorSpec) {
+        this.doctorSpec = doctorSpec;
+    }
+
+    public String getPrimaryDiag() {
+        return primaryDiag;
+    }
+
+    public void setPrimaryDiag(String primaryDiag) {
+        this.primaryDiag = primaryDiag;
+    }
+
+    public String getReasonForConsult() {
+        return reasonForConsult;
+    }
+
+    public void setReasonForConsult(String reasonForConsult) {
+        this.reasonForConsult = reasonForConsult;
+    }
+
+    public String getApprovalNo() {
+        return approvalNo;
+    }
+
+    public void setApprovalNo(String approvalNo) {
+        this.approvalNo = approvalNo;
+    }
+
+    public String getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    public String getRequestCode() {
+        return requestCode;
+    }
+
+    public void setRequestCode(String requestCode) {
+        this.requestCode = requestCode;
+    }
 
     public Integer getRequestId() {
         return requestId;
@@ -151,6 +344,14 @@ public class MaceRequest {
 
     public String getMemLname() {
         return memLname;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
     }
 
     public void setMemLname(String memLname) {
@@ -214,16 +415,20 @@ public class MaceRequest {
         this.memGender = memGender;
     }
 
-    public Integer getMemAge() {
+    public String getMemAge() {
         return memAge;
     }
 
-    public void setMemAge(Integer memAge) {
+    public void setMemAge(String memAge) {
         this.memAge = memAge;
     }
 
     public String getMemType() {
         return memType;
+    }
+
+    public String getFullName() {
+        return memLname + " " + memFname;
     }
 
     public void setMemType(String memType) {
@@ -237,7 +442,6 @@ public class MaceRequest {
     public void setIdremarks(String idremarks) {
         this.idremarks = idremarks;
     }
-
 
 
     public String getRequestOrigin() {

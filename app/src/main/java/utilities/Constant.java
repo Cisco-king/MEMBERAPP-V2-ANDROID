@@ -7,6 +7,7 @@ package utilities;
 public class Constant {
 
     public static String MEMCODE = "MEMCODE";
+    public static String TESTORIGIN = "TESTORIGIN";
     public static String FNAME = "FNAME";
     public static String BIRTHDAY = "BIRTHDAY";
     public static String AGE = "AGE";
@@ -83,4 +84,39 @@ public class Constant {
 
     public static String SERVICE_TYPE = "SERVICE_TYPE";
 
+    /*
+     * This is the data for inputing the value for primary diagnosis
+     * this will be use in RequestNewActivity
+     * Method goToResult()
+     */
+    public static String PRIMARY_DIAGNOSIS = "PRIMARY_DIAGNOSIS";
+
+    /*
+     *This variable will be use in pending request in Tests
+     * this will replace the value of R.id.tv_subTitle
+     */
+    public static String SUBTITLEPENDING = "This request is subject for approval. \n Please wait for further advice.";
+
+    /*
+     *These variable is used in RecyclerView attachments in Test
+     * You need to set up a adapter to display the list of attachments
+     * put this String to a bundle in RequestNewActivity
+     */
+    public static String RVATTACHMENTS = "RVATTACHMENTS";
+    public static String BUNDLEFORATTACHEMENTS = "BUNDLEFORATTACHEMENTS";
+
+    /*
+     *This variable is for puting a bundle in LoaList
+     * @Params List<MaceRequest>
+     */
+    public static String BundleForMaceRequest = "BundleForMaceRequest";
+
+
+    /*
+     *This variable is used to access the reason for consult
+     * @Param String
+     * return String
+     */
+    public static String REASONFORCONSULT = "REASONFORCONSULT";
+    public static String TESTSRESULTS = "TESTSRESULTS";
 }

@@ -41,6 +41,7 @@ public class DiagnosisDetailsAdapter extends RecyclerView.Adapter<DiagnosisDetai
         DiagnosisTests diagnosisDetails = this.diagnosisDetails.get(position);
         holder.bind(diagnosisDetails.getDiagnosis().getDiagDesc(),
                 getDiagnosisTestsDetails(diagnosisDetails.getTests()));
+
     }
 
     @Override
