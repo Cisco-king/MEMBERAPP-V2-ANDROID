@@ -1,11 +1,14 @@
 package utilities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+
+import com.medicard.member.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -19,7 +22,7 @@ import constants.FileGenerator;
 public class FileUtils {
 
 
-    public static String getPathFromURI(Context context, Uri contentUri) {
+    public static String  getPathFromURI(Context context, Uri contentUri) {
         String res = null;
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = context.getContentResolver().query(contentUri, null, null, null, null);
@@ -33,10 +36,14 @@ public class FileUtils {
 
     public static Uri getImageUri(Context context, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.PNG, 100, bytes);
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+
+
+
+
 
     public static boolean fileExistance(String serviceType, String approvalNumber) {
         String loaFileName =

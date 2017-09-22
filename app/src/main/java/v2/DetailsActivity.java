@@ -2,13 +2,17 @@ package v2;
 
 import android.content.Context;
 import android.content.Intent;
+
 import com.medicard.member.R;
 import com.medicard.member.TermsActivity;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -102,6 +106,8 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
     DetailsActCallback callback;
 
+
+    private String MEMBERSTATUS = "";
     AlertDialogCustom.onClickDialogListener callbackDialog;
     Context context;
     String origin;
@@ -109,12 +115,19 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
     String doctor_name, doctor_desc, doctor_code;
     public static String END = "END";
 
+    //User for disabling special characters
+    String specialChars = "@/*!##$%^&*()\"{}_[]|\\?/<>,.:-'';§£¥...";
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         callbackDialog = this;
         context = this;
@@ -126,6 +139,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
 
         cb_confirm.setChecked(false);
         cb_confirm.setOnCheckedChangeListener(this);
+        MEMBERSTATUS = getIntent().getExtras().getString(Constant.MEM_STATUS);
 
         et_input_diagnosis.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -137,6 +151,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
                 return false;
             }
         });
+        et_input_diagnosis.setFilters(new InputFilter[]{filter});
 
         et_doctor.setImeOptions(EditorInfo.IME_ACTION_DONE);
         et_doctor.addTextChangedListener(new TextWatcher() {
@@ -202,6 +217,24 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
         gotoDoctor.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
         startActivity(gotoDoctor);
     }
+    /*
+     **Mehtod used for validating input if has special character and emojis**
+     */
+    private InputFilter filter = new InputFilter() {
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            for (int index = start; index < end; index++) {
+
+                int type = Character.getType(source.charAt(index));
+
+                if (type == Character.SURROGATE || type == Character.OTHER_SYMBOL || type == Character.MATH_SYMBOL || specialChars.contains("" + source)) {
+                    return "";
+                }
+            }
+            return null;
+        }
+    };
 
 
     private void gotoHospital() {
@@ -251,7 +284,8 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
             img_arrow.setVisibility(View.VISIBLE);
         }
 
-        tv_contact_person.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, context));
+        tv_contact_person.setText("");
+
         tv_sched.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_U, context));
         tv_contact.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, context));
 
@@ -262,7 +296,9 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
 
         tv_hospName.setText(hospital_name);
         tv_hospAddress.setText(hospital_address);
-        tv_date.setText(DateAddThreeDays.currentDate() + " to " + DateAddThreeDays.validityDate());
+
+
+//        tv_date.setText(DateAddThreeDays.currentDate() + " to " + DateAddThreeDays.validityDate()); commented September 4 2017 not needed anymore
         implement.setSubmitButtonDisabled(cb_confirm, btn_submit);
     }
 
@@ -275,35 +311,45 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
 
     @Override
     public void onSuccess(RequestResult data) {
-       // Log.d("SUCCESS", data.getRemarks());
-        gotoResult(data);
+        try {
+            // Log.d("SUCCESS", data.getRemarks());
+            gotoResult(data);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void gotoResult(RequestResult data) {
 
-        Timber.d("batchCode %s", data.getBatchCode());
-        Intent gotoResult = new Intent(DetailsActivity.this, ResultActivity.class);
-        gotoResult.putExtra(Constant.REFERENCECODE, data.getApprovalNo());
-        gotoResult.putExtra(Constant.REQUEST, "Approved");
-        gotoResult.putExtra(Constant.DOCTOR_WITH_PROVIDER, implement.setNull(data.getWithProvider()));
-        gotoResult.putExtra(RequestButtonsActivity.ORIGIN, origin);
-        gotoResult.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
-        gotoResult.putExtra(Constant.GENDER, GenderPicker.setGender(Integer.parseInt(getIntent().getExtras().getString(Constant.GENDER))));
-        gotoResult.putExtra(Constant.NAME, getIntent().getExtras().getString(Constant.NAME));
-        gotoResult.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
-        gotoResult.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
-        gotoResult.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
-        gotoResult.putExtra(Constant.CONDITION, et_input_diagnosis.getText().toString());
+        try {
+            Timber.d("batchCode %s", data.getBatchCode());
+            Intent gotoResult = new Intent(DetailsActivity.this, ResultActivity.class);
+            gotoResult.putExtra(Constant.REFERENCECODE, data.getApprovalNo());
+            gotoResult.putExtra(Constant.REQUEST, "APPROVED");
+            gotoResult.putExtra(Constant.DOCTOR_WITH_PROVIDER, implement.setNull(data.getWithProvider()));
+            gotoResult.putExtra(RequestButtonsActivity.ORIGIN, origin);
+            gotoResult.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
+            gotoResult.putExtra(Constant.GENDER, GenderPicker.setGender(Integer.parseInt(getIntent().getExtras().getString(Constant.GENDER))));
+            gotoResult.putExtra(Constant.NAME, getIntent().getExtras().getString(Constant.NAME));
+            gotoResult.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
+            gotoResult.putExtra(Constant.MEM_STATUS, getIntent().getExtras().getString(Constant.MEM_STATUS));
+            gotoResult.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
+            gotoResult.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
+            gotoResult.putExtra(Constant.CONDITION, et_input_diagnosis.getText().toString());
 
-        gotoResult.putExtra(Constant.DOCTOR_U, tv_sched_doctor.getText().toString());
-        gotoResult.putExtra(Constant.DOCTOR_ROOM, tv_spec.getText().toString());
-        gotoResult.putExtra(Constant.HOSP_CONTACT, tv_contact.getText().toString());
-        gotoResult.putExtra(Constant.HOSP_CONTACT_PER, tv_contact_person.getText().toString());
-        gotoResult.putExtra(Constant.HOSP_U, tv_sched.getText().toString());
-        gotoResult.putExtra(Constant.BATCH_CODE, data.getBatchCode());
+            gotoResult.putExtra(Constant.DOCTOR_U, tv_sched_doctor.getText().toString());
+            gotoResult.putExtra(Constant.DOCTOR_ROOM, tv_spec.getText().toString());
+            gotoResult.putExtra(Constant.HOSP_CONTACT, tv_contact.getText().toString());
+            gotoResult.putExtra(Constant.HOSP_CONTACT_PER, tv_contact_person.getText().toString());
+            gotoResult.putExtra(Constant.HOSP_U, tv_sched.getText().toString());
+            gotoResult.putExtra(Constant.BATCH_CODE, data.getBatchCode());
 
-        startActivity(gotoResult);
-        finish();
+
+            startActivity(gotoResult);
+            finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -321,7 +367,7 @@ public class DetailsActivity extends AppCompatActivity implements CompoundButton
 
     @Override
     public void onDuplicateRequest(RequestResult requestResult) {
-        alertDialogCustom.showMeValidateReq(requestResult, callbackDialog ,context);
+        alertDialogCustom.showMeValidateReq(requestResult, callbackDialog, context);
     }
 
     @Override

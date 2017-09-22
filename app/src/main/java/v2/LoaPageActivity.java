@@ -5,18 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
+import com.medicard.member.NavigationActivity;
 import com.medicard.member.R;
+import com.medicard.member.module.viewLoa.ViewLoaListFragment;
 
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +57,7 @@ import utilities.Loader;
 import utilities.NetworkTest;
 import utilities.PermissionUtililities;
 import utilities.QrCodeCreator;
+import utilities.ResultSetters;
 import utilities.SharedPref;
 import utilities.ViewUtilities;
 import v2.module.loapage.LoaPage;
@@ -66,6 +71,8 @@ public class LoaPageActivity extends AppCompatActivity
 
     @BindView(R.id.content_loa_page)
     ScrollView content_loa_page;
+    @BindView(R.id.ll_problem)
+    LinearLayout ll_problem;
 
     @BindView(R.id.tv_status)
     TextView tv_status;
@@ -106,6 +113,12 @@ public class LoaPageActivity extends AppCompatActivity
     @BindView(R.id.tv_header)
     TextView tv_header;
 
+    @BindView(R.id.tv_sub_title)
+    TextView tv_sub_title;
+
+    @BindView(R.id.cvDoctorDetails)
+    CardView cvDoctorDetails;
+
 
     @BindView(R.id.btn_download)
     FancyButton btn_download;
@@ -145,11 +158,14 @@ public class LoaPageActivity extends AppCompatActivity
     @BindView(R.id.tvServiceType)
     TextView tvServiceType;
 
-    @BindView(R.id.cvHospitalClinic) CardView cvHospitalClinic;
+    @BindView(R.id.cvHospitalClinic)
+    CardView cvHospitalClinic;
 
-    @BindView(R.id.tvDisclaimerInfo) TextView tvDisclaimerInfo;
+    @BindView(R.id.tvDisclaimerInfo)
+    TextView tvDisclaimerInfo;
 
-    @BindView(R.id.tvDisclaimerInfo2) TextView tvDisclaimerInfo2;
+    @BindView(R.id.tvDisclaimerInfo2)
+    TextView tvDisclaimerInfo2;
 
     private int RESULT_GETTER;
     int position;
@@ -161,6 +177,7 @@ public class LoaPageActivity extends AppCompatActivity
     LoaPageInterface callback;
     LoaPageRetieve implement;
     Loader loader;
+    FragmentTransaction fragmentTransaction;
 
     private OutPatientConsultationForm outPatientForm;
     OutPatientConsultationForm.Builder loaFormBuilder;
@@ -197,7 +214,7 @@ public class LoaPageActivity extends AppCompatActivity
         Bundle args = getIntent().getBundleExtra(Constant.BundleForMaceRequest);
         temp = (List<MaceRequest>) args.getSerializable(Constant.DATA_SEARCHED);
         loaList.addAll(temp);
-        temp.clear();
+
 
         presenter = new LoaPagePresenter();
         presenter.attachView(this);
@@ -226,14 +243,13 @@ public class LoaPageActivity extends AppCompatActivity
 
         loa = loaList.get(position);
 
-       // serviceType = "( " + loa.getRemarks() + " )";
+        // serviceType = "( " + loa.getRemarks() + " )";
 
         /*loader.startLad();
         loader.setMessage("Loading...");*/
 //        presenter.requestDoctorByCode(loa.getDoctorCode());
         String changeFormat = DateConverter.convertDatetoMMMddyyy(loa.getRequestDatetime());
         // todo init lao form data
-
 
 
         //Timber.d("serviceType : %s approval code : %s batchCode %s", loa.getRemarks(), loa.getApprovalNo(), loa.getBatchCode());
@@ -247,31 +263,45 @@ public class LoaPageActivity extends AppCompatActivity
                 .doctor(loa.getDoctorName())
                 .hospital(loa.getHospitalName())
                 .memberName(loa.getMemFname() + " " + loa.getMemLname())
-                .age(AgeCorrector.age(SharedPref.getStringValue(SharedPref.USER, SharedPref.AGE, this)))
+                .age(AgeCorrector.age(SharedPref.getStringValue(SharedPref.USER, SharedPref.AGE, context)))
                 .gender(GenderPicker.setGender(Integer.parseInt(SharedPref.getStringValue(SharedPref.USER, SharedPref.GENDER, this))))
                 .memberId(loa.getMemCode())
                 .company(loa.getMemCompany())
-       //         .remarks(loa.getRemarks())
+                //         .remarks(loa.getRemarks())
                 .chiefComplaint(loa.getReasonForConsult())
                 .serviceType(loa.getServiceType());
-           //     .bactchCode(loa.getco);
+        //     .bactchCode(loa.getco);
 
 
-        try{
+        try {
+            ivQrApprovalNumber.setVisibility(View.VISIBLE);
             ivQrApprovalNumber.setImageBitmap(QrCodeCreator.getBitmapFromString2(loa.getApprovalNo()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            ivQrApprovalNumber.setVisibility(View.GONE);
+        }
+
+        try {
+            tvReferenceNumber.setVisibility(View.VISIBLE);
+            tvReferenceNumber.setText(REFERENCE_NUMBER.concat(loa.getApprovalNo()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            tvReferenceNumber.setVisibility(View.GONE);
+        }
+
+
+        try {
+            implement.setExpiredStatus(btn_download, btn_cancel_req, loa.getStatus());
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        tvReferenceNumber.setText(REFERENCE_NUMBER.concat(loa.getApprovalNo()));
-
-        implement.setExpiredStatus(btn_download, btn_cancel_req, loa.getStatus());
-       // tv_header.setText(loa.getRemarks());
-        tv_status.setText(implement.getStatus(loa.getStatus()));
+        // tv_header.setText(loa.getRemarks());
+        tv_status.setText(ResultSetters.titleSetter(loa.getStatus()));
         tv_approval_code.setText(loa.getApprovalNo());
         tv_member_code.setText(loa.getMemCode());
         tv_member_name.setText(loa.getMemFname() + " " + loa.getMemLname());
-        tv_age.setText(AgeCorrector.age(SharedPref.getStringValue(SharedPref.USER, SharedPref.AGE, this)));
+        tv_age.setText(AgeCorrector.age(SharedPref.getStringValue(SharedPref.USER, SharedPref.AGE, context)));
         tv_gender.setText(GenderPicker.setGender(Integer.parseInt(
                 SharedPref.getStringValue(SharedPref.USER, SharedPref.GENDER, this))));
         tv_company.setText(loa.getMemCompany());
@@ -285,7 +315,13 @@ public class LoaPageActivity extends AppCompatActivity
         tvDateApproved.setText(changeFormat);
 
         tv_doc_name.setText(loa.getDoctorName());
-        tv_problem.setText(loa.getReasonForConsult());
+        if (null == loa.getReasonForConsult()) {
+            ll_problem.setVisibility(View.GONE);
+        } else {
+            ll_problem.setVisibility(View.VISIBLE);
+            tv_problem.setText(loa.getReasonForConsult());
+        }
+
 
         tvServiceType.setText(serviceType);
 
@@ -294,24 +330,33 @@ public class LoaPageActivity extends AppCompatActivity
                 getString(R.string.this_req_is_valid_from).concat("\n" +
                         DateConverter.convertDateToMMddyyyy(changeFormat) + " to " +
                         DateConverter.validityDatePLusDay(changeFormat, 3)));
-        try{
+        try {
             tv_spec.setText(testData(loa.getDoctorSpec()));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            tv_spec.setVisibility(View.GONE );
+            tv_spec.setVisibility(View.GONE);
         }
 
-        if (loa.getHospitalName()!= null && !loa.getHospitalName().isEmpty()) {
+        if (loa.getHospitalName() != null && !loa.getHospitalName().isEmpty()) {
             cvHospitalClinic.setVisibility(View.VISIBLE);
             tvHospitalClinicName.setText(loa.getHospitalName());
-            tvHopitalClinicLocation.setVisibility(View.GONE);
-            tvHopitalClinicContacts.setVisibility(View.GONE);
+            tvHopitalClinicLocation.setText(loa.getHospitalAddress());
+            tvHopitalClinicContacts.setText(loa.getHospitalContact());
             tvHopitalClinicDoctorName.setVisibility(View.GONE);
         } else {
             cvHospitalClinic.setVisibility(View.GONE);
         }
 
         tvDoctorName.setText(loa.getDoctorName());
+        tv_sub_title.setText(Constant.SUBTITLEPENDING);
+
+
+        if (tv_status.getText().toString().trim().equals(ResultSetters.REQUEST_APPROVAL)) {
+            setPending();
+        } else if(tv_status.getText().toString().trim().equals(ResultSetters.REQUEST_CONFIRMED)){
+            setApproved();
+        }
+
 
 //        String doctorInfo = new StringBuilder()
 //                .append(loa.getDoctorSpec())
@@ -319,7 +364,7 @@ public class LoaPageActivity extends AppCompatActivity
 //                .append(!(loa.getSchedule() == null || loa.getSchedule().equals("null")) ? "\n\n" + loa.getSchedule() : "")
 //                .toString();
 
-      //  Timber.d("doctorSpec %s, loaRoom %s, loaSchedule %s", loa.getDoctorSpec(), loa.getRoom(), loa.getSchedule());
+        //  Timber.d("doctorSpec %s, loaRoom %s, loaSchedule %s", loa.getDoctorSpec(), loa.getRoom(), loa.getSchedule());
 
 //        if (!doctorInfo.trim().isEmpty()) {
 //            tvDoctorInfo.setText(doctorInfo);
@@ -353,6 +398,32 @@ public class LoaPageActivity extends AppCompatActivity
 
     }
 
+    public void setApproved(){
+        tvDisclaimerInfo.setVisibility(View.VISIBLE);
+        tv_sub_title.setVisibility(View.GONE);
+        btn_download.setVisibility(View.VISIBLE);
+        tvReferenceNumber.setVisibility(View.VISIBLE);
+        tvValidityDate.setVisibility(View.VISIBLE);
+        tv_validity_date.setVisibility(View.VISIBLE);
+    }
+
+    public void setPending() {
+        tvDisclaimerInfo.setVisibility(View.GONE);
+        tv_sub_title.setVisibility(View.VISIBLE);
+        btn_download.setVisibility(View.GONE);
+        tvReferenceNumber.setVisibility(View.GONE);
+        tvValidityDate.setVisibility(View.GONE);
+        tv_validity_date.setVisibility(View.GONE);
+        ivQrApprovalNumber.setVisibility(View.GONE);
+        if(loa.getRequestType().equals("TEST")){
+            cvDoctorDetails.setVisibility(View.GONE);
+            ll_problem.setVisibility(View.GONE);
+        }else{
+            cvDoctorDetails.setVisibility(View.VISIBLE);
+            ll_problem.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -373,13 +444,14 @@ public class LoaPageActivity extends AppCompatActivity
                 break;
 
             case R.id.btn_cancel:
-                Intent intent = new Intent();
-                setResult(RESULT_GETTER, intent);
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, ViewLoaListFragment.newInstance());
+                fragmentTransaction.commit();
                 finish();
                 break;
 
             case R.id.btn_cancel_req:
-                implement.showCancelConfirmation();
+                implement.showCancelConfirmation(loa.getRequestCode());
                 break;
         }
 
@@ -475,11 +547,14 @@ public class LoaPageActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSuccess() {
+    public void  onSuccess() {
         tv_status.setText("REQUEST CANCELLED");
         btn_download.setVisibility(View.GONE);
         btn_cancel_req.setVisibility(View.GONE);
         tvDisclaimerInfo.setVisibility(View.GONE);
+        tvReferenceNumber.setVisibility(View.GONE);
+        tv_validity_date.setVisibility(View.GONE);
+
 
         loader.stopLoad();
         alertDialogCustom.showMe(context, alertDialogCustom.success, alertDialogCustom.data_cancelled, 2);
@@ -490,7 +565,9 @@ public class LoaPageActivity extends AppCompatActivity
     public void onCancelRequestListener() {
         loader.startLad();
         loader.setMessage("Cancelling Request");
-       // implement.cancelRequest(loa.getBatchCode());
+
+        implement.cancelRequest(loa.getRequestCode());
+        // implement.cancelRequest(loa.getBatchCode());
     }
 
     @Override
@@ -507,6 +584,7 @@ public class LoaPageActivity extends AppCompatActivity
         MemberInfo memberInfo = getUSER.getMemberInfo();
 
         tvValidityDate.setText(memberInfo.getVAL_DATE());
+
         tvEffectiveDate.setText(memberInfo.getEFF_DATE());
 
         loaFormBuilder.validityDate(memberInfo.getVAL_DATE())

@@ -13,11 +13,11 @@ public class HeaderNameSetter {
 
     public static String setHeader(String origin) {
         String set = "";
-        if (origin.equals(consult)) {
+        if (origin.equalsIgnoreCase(consult)) {
             set = "Consultation";
-        } else if (origin.equals(maternity)) {
+        } else if (origin.equalsIgnoreCase(maternity)) {
             set = "Maternity Consultation";
-        }else{
+        } else {
             set = "TEST";
         }
 

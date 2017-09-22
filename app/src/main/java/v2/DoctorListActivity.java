@@ -90,6 +90,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     private String search_string = "";
     private String sort_by = "";
     private String room_number = "";
+    private String MEMBERSTATUS = "";
 
     private String DERMATOLOGY = "DERMATOLOGY";
 
@@ -106,6 +107,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
         loader = new Loader(context);
         implement = new DoctorRetrieve(context, callback, databaseHandler);
         origin = getIntent().getExtras().getString(RequestButtonsActivity.ORIGIN);
+        MEMBERSTATUS = getIntent().getExtras().getString(Constant.MEM_STATUS);
 
         llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -138,6 +140,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
                 gotoMaternity.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
                 gotoMaternity.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
                 gotoMaternity.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
+                gotoMaternity.putExtra(Constant.MEM_STATUS, getIntent().getExtras().getString(Constant.MEM_STATUS));
                 startActivity(gotoMaternity);
 
                 finish();
@@ -166,7 +169,6 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
     @OnClick({R.id.btn_sort})
     public void onClick(View view) {
-
         switch (view.getId()) {
             case R.id.btn_sort:
                 Intent intent = new Intent(this, SortDoctorActivity.class);
@@ -209,8 +211,6 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         if (requestCode == DOCTOR_CALL && resultCode == RESULT_OK) {
             selectedSpec = data.getParcelableArrayListExtra(Constant.SELECTED_SPECIALIZATION);
             search_string = data.getStringExtra(Constant.SEARCH_STRING);
@@ -222,8 +222,6 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     }
 
     private void gotoNextActivity(int position) {
-
-
         if (position <= -1) {
             SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, Constant.NOT_FOUND, context);
             SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, Constant.NOT_FOUND, context);
@@ -235,12 +233,11 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
             SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, array.get(position).getSpecDesc(), context);
             SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_U, array.get(position).getSchedule(), context);
             SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, array.get(position).getRoom(), context);
-
         }
 
         // todo add indicator for activity to go to diagnosis list
         // origin is indicator from {$RequestButtonsActivity#origin}
-        if (origin.equals(RequestButtonsActivity.TO_DETAILS_ACT)) {
+        if (origin.equalsIgnoreCase(RequestButtonsActivity.TO_DETAILS_ACT)) {
             Intent gotoDetails = new Intent(context, DetailsActivity.class);
             gotoDetails.putExtra(RequestButtonsActivity.ORIGIN, origin);
             gotoDetails.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
@@ -249,9 +246,9 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
             gotoDetails.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
             gotoDetails.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
             gotoDetails.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
+            gotoDetails.putExtra(Constant.MEM_STATUS, getIntent().getExtras().getString(Constant.MEM_STATUS));
             startActivity(gotoDetails);
             finish();
-
         } else {
             finish();
         }

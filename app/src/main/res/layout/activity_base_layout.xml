@@ -5,6 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,51 +25,44 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <mehdi.sakout.fancybuttons.FancyButton
-                android:id="@+id/toolbarBack"
-                android:layout_width="@dimen/btn_back_width"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                app:fb_defaultColor="@color/transparent"
-                app:fb_focusColor="@color/colorPrimaryBlueDark"
-                app:fb_iconResource="@drawable/ic_action_arrow_left"
-                app:fb_text="" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/toolbarBack"
+                    android:layout_width="@dimen/btn_back_width"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    app:fb_defaultColor="@color/transparent"
+                    app:fb_focusColor="@color/colorPrimaryBlueDark"
+                    app:fb_iconResource="@drawable/ic_action_arrow_left"
+                    app:fb_text="" />
 
 
-            <TextView
-                android:id="@+id/toolbarTitle"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_main" />
+                <TextView
+                    android:id="@+id/toolbarTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_main" />
 
-            <mehdi.sakout.fancybuttons.FancyButton
-                android:id="@+id/toolbarSkip"
-                android:visibility="invisible"
-                android:layout_width="@dimen/btn_back_width"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                app:fb_defaultColor="@color/transparent"
-                app:fb_focusColor="@color/colorPrimaryBlueDark"
-                app:fb_text="Skip" />
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/toolbarSkip"
+                    android:layout_width="@dimen/btn_back_width"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:visibility="invisible"
+                    app:fb_defaultColor="@color/transparent"
+                    app:fb_focusColor="@color/colorPrimaryBlueDark"
+                    app:fb_text="Skip" />
 
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
-
-
-    <FrameLayout
-        android:id="@+id/flContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </android.support.design.widget.CoordinatorLayout>

@@ -58,14 +58,19 @@ public class HospitalDoctorAdapter extends
                 getStringName(hospital.getCity()) + ", " +
                 getStringName(hospital.getProvince()) + ", " +
                 getStringName(hospital.getRegion()));
-        if(hospital.getPhoneNo().isEmpty() && hospital.getPhoneNo().length() ==0){
-            holder.contact.setVisibility(View.GONE);
-        }else
-            holder.contact.setText("Tel. No: " + hospital.getPhoneNo());
-        if(null == hospital.getContactPerson() || (hospital.getContactPerson().isEmpty() && hospital.getContactPerson().length() ==0)){
-            holder.person.setVisibility(View.GONE);
-        }else{
-            holder.person.setText("Contact Person: " + hospital.getContactPerson());
+
+        try {
+            if (hospital.getPhoneNo().isEmpty())
+                holder.contact.setText("NO CONTACT NUMBER");
+            else
+                holder.contact.setText("Tel. No: " + hospital.getPhoneNo());
+            if (null == hospital.getContactPerson() || (hospital.getContactPerson().isEmpty() && hospital.getContactPerson().length() == 0)) {
+                holder.person.setVisibility(View.GONE);
+            } else {
+                holder.person.setText("Contact Person: " + hospital.getContactPerson());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
@@ -113,7 +118,6 @@ public class HospitalDoctorAdapter extends
 
         TextView name, tv_address, time, person, contact;
         CardView cv_item;
-
 
 
         public ViewHolder(View itemView) {

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/sub_margin"
-            android:text="Select Requesting Doctor"
+            android:text="Select Requesting Physician"
             android:textColor="@color/white"
             android:textSize="@dimen/text_main" />
 

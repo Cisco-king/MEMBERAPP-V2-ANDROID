@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,10 +21,13 @@ import android.widget.TextView;
 
 
 import com.medicard.member.module.viewLoa.ViewLoaListFragment;
+import com.tapadoo.alerter.Alert;
 
 import fragments.fragment_changePassword;
 import fragments.fragment_memberInfo;
 
+import utilities.AlertDialogCustom;
+import utilities.Constant;
 import utilities.SharedPref;
 import v2.fragment_loaRequest;
 
@@ -42,11 +47,17 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
     Context context;
     TextView tv_header;
 
+    ConnectivityManager connectivityManager;
+    NetworkInfo wifiInfo, mobileInfo;
+    boolean connected = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+
+
         init();
     }
 
@@ -87,6 +98,9 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
         fragmentTransaction.commit();
 
     }
+
+
+
 
     @Override
     public void onBackPressed() {

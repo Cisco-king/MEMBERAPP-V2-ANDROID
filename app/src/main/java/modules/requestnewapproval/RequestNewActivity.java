@@ -1,6 +1,8 @@
 package modules.requestnewapproval;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,7 +16,10 @@ import android.support.v4.util.Pair;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -53,6 +58,8 @@ import constants.MedicardConfig;
 import model.Attachment;
 import model.HospitalList;
 import model.RequestResult;
+import model.TestsModel;
+import model.newtest.AttachmentSession;
 import model.newtest.DiagnosisDetails;
 import model.newtest.DiagnosisProcedure;
 import model.newtest.NewTestRequest;
@@ -73,6 +80,8 @@ import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.DateUtils;
 import utilities.DeviceUtils;
+import utilities.DiagnosisUtils;
+import utilities.DialogUtils;
 import utilities.ErrorMessage;
 import utilities.FileUtils;
 import utilities.GenderPicker;
@@ -103,8 +112,27 @@ public class RequestNewActivity extends TestTrackableActivity
     public static final String FROM_TEST = "fromTest";
     public static final int FROM_TEST_REQUEST = 300;
 
+    AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
+
+
+    private int tempCounter =  1; // Use for counting the Attachments
+
+    DialogUtils.OnDiaglogClickListener listener;
+    DialogUtils dialogutils;
+
+    AttachmentSession attachmentSession;
+
     @BindView(R.id.etReasonForConsult)
     EditText etReasonForConsult;
+
+    @BindView(R.id.ll_reasonForConsult)
+    LinearLayout ll_reasonForConsult;
+    @BindView(R.id.ll_otherDiagnosis)
+    LinearLayout ll_otherDiagnosis;
+    @BindView(R.id.ll_primaryDiagnosisResult)
+    LinearLayout ll_primaryDiagnosisResult;
+    @BindView(R.id.ll_doctorResult)
+    LinearLayout ll_doctorResult;
 
     // clickable view
     @BindView(R.id.cvRequestDoctor)
@@ -175,28 +203,29 @@ public class RequestNewActivity extends TestTrackableActivity
     @Override
     protected void initViews() {
         super.initViews();
-        Timber.d("device id %s", DeviceUtils.getDeviceId(this));
-        Timber.d("android id %s", DeviceUtils.getAndroidId(this));
-
-        pd = new ProgressDialog(context);
-
-
-        gson = new Gson();
-
-        setupWindowAnimations();
-        ViewUtilities.hideToInvisibleView(getBackView());
-
-        Type founderListType = new TypeToken<ArrayList<DiagnosisProcedure>>() {
-        }.getType();
+//        Timber.d("device id %s", DeviceUtils.getDeviceId(this));
+//        Timber.d("android id %s", DeviceUtils.getAndroidId(this));
+//
+        pd = new ProgressDialog(context,R.style.MyTheme);
+        pd.setCancelable(false);
+//
+//
+//        gson = new Gson();
+//
+//        setupWindowAnimations();
+//        ViewUtilities.hideToInvisibleView(getBackView());
+//
+//        Type founderListType = new TypeToken<ArrayList<DiagnosisProcedure>>() {
+//        }.getType();
 
         attachments = new ArrayList<>();
-        diagnosisProcedures = new ArrayList<>();
-        diagnosisTestsLists = new ArrayList<>();
-        diagnosisDetails = new ArrayList<>();
+//        diagnosisProcedures = new ArrayList<>();
+//        diagnosisTestsLists = new ArrayList<>();
+//        diagnosisDetails = new ArrayList<>();
 
 //        String doctorJson = SharedPref.getPreferenceByKey(context, SharedPref.KEY_DOCTOR);
 //        doctor = gson.fromJson(doctorJson, HospitalsToDoctor.class);
-        doctor = DoctorSession.getDoctor();
+//        doctor = DoctorSession.getDoctor();
 
 //        String hospitalJson = SharedPref.getPreferenceByKey(context, SharedPref.KEY_HOSPITAL);
 //        HospitalList hospital = gson.fromJson(hospitalJson, HospitalList.class);
@@ -206,7 +235,7 @@ public class RequestNewActivity extends TestTrackableActivity
 //        diagnosisProcedures = gson.fromJson(diagnosisProcedureJson, founderListType);
 
 //        reasonForConsult = SharedPref.getPreferenceByKey(context, SharedPref.KEY_REASON_FOR_CONSULT);
-        reasonForConsult = ConsultSession.getReasonForConsult();
+//        reasonForConsult = ConsultSession.getReasonForConsult();
 
         alertDialog = new AlertDialogCustom();
 
@@ -216,18 +245,19 @@ public class RequestNewActivity extends TestTrackableActivity
         presenter.attachView(this);
 
 
-        etReasonForConsult.setText(reasonForConsult);
+//        etReasonForConsult.setText(reasonForConsult);
+//        ll_reasonForConsult.setVisibility(View.VISIBLE);
         tvHospitalAvailment.setText(hospital.getHospitalName());
-        tvDoctorDetails.setText(doctor.getFullName());
-        tvDoctorDetails.append(getDoctorDetails(doctor));
+//        tvDoctorDetails.setText(doctor.getFullName());
+//        tvDoctorDetails.append(getDoctorDetails(doctor));
 
         rvAttachments.setLayoutManager(new LinearLayoutManager(this));
-        rvDiagnosisDetails.setLayoutManager(new LinearLayoutManager(this));
-        rvOtherDiagnosis.setLayoutManager(new LinearLayoutManager(this));
+//        rvDiagnosisDetails.setLayoutManager(new LinearLayoutManager(this));
+//        rvOtherDiagnosis.setLayoutManager(new LinearLayoutManager(this));
 
-        Timber.d("the diagnosisProcedures ### %s", diagnosisProcedures.size());
+//        Timber.d("the diagnosisProcedures ### %s", diagnosisProcedures.size());
 //        presenter.loadDiagnosisTest(diagnosisProcedures);
-        presenter.loadDiagnosisTests();
+//        presenter.loadDiagnosisTests();
         /*if (attachments != null && attachments.size() > 0) {*/
         attachmentAdapter = new AttachmentAdapter(attachments, this);
         rvAttachments.setAdapter(attachmentAdapter);
@@ -240,6 +270,14 @@ public class RequestNewActivity extends TestTrackableActivity
             }
         });
 
+        attachmentSession = new AttachmentSession();
+
+        //Hiding the cardviews in the app
+        ll_doctorResult.setVisibility(View.GONE);
+        ll_otherDiagnosis.setVisibility(View.GONE);
+        ll_primaryDiagnosisResult.setVisibility(View.GONE);
+        ll_reasonForConsult.setVisibility(View.GONE);
+
     }
 
     @OnClick(R.id.btnSubmitNewRequest)
@@ -250,14 +288,7 @@ public class RequestNewActivity extends TestTrackableActivity
             String username = SharedPref.getPreferenceByKey(RequestNewActivity.this, SharedPref.masterUSERNAME);
 
 
-
-
-            if (etReasonForConsult.getText().length() == 0) {
-                etReasonForConsult.setFocusable(true);
-                etReasonForConsult.setError("This field is required.");
-                cbTermsAndCondition.setChecked(false);
-            }
-            if(attachments.isEmpty() && attachments.size() == 0){
+            if (attachments.isEmpty() && attachments.size() == 0) {
                 rvAttachments.setFocusable(true);
                 Alerter.create(this)
                         .setText("Please upload Attachment(s) to proceed.")
@@ -267,37 +298,64 @@ public class RequestNewActivity extends TestTrackableActivity
             }
 
 
-                NewTestRequest newTestRequest = new NewTestRequest();
-                newTestRequest.setRequestDevice(DeviceUtils.getAndroidId(RequestNewActivity.this));
-                newTestRequest.setDiagnosisProcedures(convertObjectToDiagnosisProcedure(diagnosisTestsLists));
-                newTestRequest.setDoctorCode(doctor.getDoctorCode());
-                newTestRequest.setHospitalCode(doctor.getHospitalCode());
+            final TestsModel newTestRequest = new TestsModel();
+            try {
+                newTestRequest.setHospitalCode(hospital.getHospitalCode());
                 newTestRequest.setMemberCode(memberCode);
-                newTestRequest.setServiceType(2);
-                newTestRequest.setPrimaryComplaint(reasonForConsult);
-                newTestRequest.setPrimaryDiagnosisCode(diagnosisTestsLists.get(0).getDiagnosis().getDiagCode());
-                newTestRequest.setRequestOrigin(MedicardConfig.APP_NAME);
-                Gson gson = new Gson();
-                gson.toJson(newTestRequest);
 
-                if(!cbTermsAndCondition.isChecked()){
-                    if(reasonForConsult.isEmpty() && reasonForConsult.length() ==0){
-                        Alerter.create(this)
-                                .setTitle(R.string.opps)
-                                .setText(R.string.accept_terms_and_conditions)
-                                .setBackgroundColor(R.color.orange_a200)
-                                .show();
-                    }else if(attachments.isEmpty() && attachments.size() ==0){
-                        Alerter.create(this)
-                                .setText("Please upload Attachment(s) to proceed.")
-                                .setBackgroundColor(R.color.orange_a200)
-                                .show();
-                    }
-                }else{
-                    pd.setMessage("Sending Request");
-                    pd.show();
-                    presenter.submitNewRequest(newTestRequest);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Gson gson = new Gson();
+            gson.toJson(newTestRequest);
+
+            if (!cbTermsAndCondition.isChecked()) {
+
+                if (attachments.isEmpty() && attachments.size() == 0) {
+                    Alerter.create(this)
+                            .setText("Please upload Attachment(s) to proceed.")
+                            .setBackgroundColor(R.color.orange_a200)
+                            .show();
                 }
+            } else {
+                final Dialog dialog = new Dialog(this.context);
+                final Button btn_proceed, btn_cancel;
+
+                TextView tv_title;
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_confirmloa);
+                btn_proceed = (Button) dialog.findViewById(R.id.btn_proceed);
+                btn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+
+
+                btn_proceed.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        pd.setMessage("Submitting Request");
+                        pd.setCancelable(false);
+                        pd.show();
+                        presenter.checkOnline(newTestRequest);
+
+                    }
+                });
+
+                btn_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        dialog.dismiss();
+                    }
+                });
+
+
+                dialog.show();
+
+                DisplayMetrics metrics = this.context.getResources().getDisplayMetrics();
+                int width = metrics.widthPixels;
+                int height = metrics.heightPixels;
+                dialog.getWindow().setLayout(width, Toolbar.LayoutParams.WRAP_CONTENT);
+            }
         } else {
             Timber.d("need to accept terms and conditions");
             Alerter.create(this)
@@ -328,6 +386,18 @@ public class RequestNewActivity extends TestTrackableActivity
     }
 
     @Override
+    public void internetConnected(TestsModel testsModelToPass) {
+
+        presenter.requestForTests(testsModelToPass);
+    }
+
+    @Override
+    public void noInternetConnection() {
+        pd.dismiss();
+        alertDialogCustom.showMe(context, alertDialogCustom.NO_Internet_title, alertDialogCustom.NO_Internet, 1);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == SELECT_ATTACHMENT) {
@@ -355,24 +425,31 @@ public class RequestNewActivity extends TestTrackableActivity
                 }
             }
         }
-
-        if (resultCode == RESULT_OK && requestCode == FROM_DOCTOR_REQUEST) {
-            doctor = DoctorSession.getDoctor();
-            tvDoctorDetails.setText("");
-            tvDoctorDetails.setText(doctor.getFullName());
-            tvDoctorDetails.append(getDoctorDetails(doctor));
+        try {
+            if (resultCode == RESULT_OK && requestCode == FROM_DOCTOR_REQUEST) {
+                doctor = DoctorSession.getDoctor();
+                tvDoctorDetails.setText("");
+                tvDoctorDetails.setText(doctor.getFullName());
+                tvDoctorDetails.append(getDoctorDetails(doctor));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         if (resultCode == RESULT_OK && requestCode == FROM_HOSPITAL_REQUEST) {
             hospital = HospitalSession.getHospital();
             tvHospitalAvailment.setText(hospital.getHospitalName());
         }
-
-        if (resultCode == RESULT_OK && requestCode == FROM_TEST_REQUEST) {
-            Timber.d("from test requet was called");
-            presenter.loadDiagnosisTests();
+        try {
+            if (resultCode == RESULT_OK && requestCode == FROM_TEST_REQUEST) {
+                Timber.d("from test requet was called");
+                presenter.loadDiagnosisTests();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
 
     @Override
     protected void onDestroy() {
@@ -494,8 +571,12 @@ public class RequestNewActivity extends TestTrackableActivity
     }
 
     public void displayOtherDiagnosis(List<DiagnosisTests> diagnosisTestsList) {
-        otherDiagnosisAdapter = new OtherDiagnosisAdapter(diagnosisTestsList);
-        rvOtherDiagnosis.setAdapter(otherDiagnosisAdapter);
+        if (diagnosisTestsList.isEmpty() && diagnosisTestsList.size() == 0) {
+            ll_otherDiagnosis.setVisibility(View.GONE);
+        } else {
+            otherDiagnosisAdapter = new OtherDiagnosisAdapter(diagnosisTestsList);
+            rvOtherDiagnosis.setAdapter(otherDiagnosisAdapter);
+        }
 
     }
 
@@ -504,47 +585,52 @@ public class RequestNewActivity extends TestTrackableActivity
         pd.dismiss();
         alertDialog.showMe(
                 context, alertDialog.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
+        attachmentSession.releaseContent();
     }
 
     @Override
     public void onRequestSuccess(MaceRequestResponse maceRequestResponse) {
-        pd.dismiss();
-        gotoResult(maceRequestResponse);
+        try {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    private void gotoResult(MaceRequestResponse data) {
+    private void gotoResult() {
 
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(Constant.RVATTACHMENTS, attachments);
-        bundle.putSerializable(Constant.TESTSRESULTS, (Serializable) diagnosisTestsLists);
-        Timber.d("batchCode %s", data.getBatchCode());
-        Intent gotoResult = new Intent(this, ResultActivity.class);
-        gotoResult.putExtra(Constant.REFERENCECODE, data.getData().getMaceRequest().getRequestCode());
-        gotoResult.putExtra(Constant.BUNDLEFORATTACHEMENTS, bundle);
-        gotoResult.putExtra(Constant.REQUEST, data.getData().getMaceRequest().getStatus());
-        gotoResult.putExtra(Constant.BIRTHDAY, data.getData().getMaceRequest().getMemBdate());
-        // gotoResult.putExtra(Constant.DOCTOR_WITH_PROVIDER, implement.setNull(data.getWithProvider()));
-        gotoResult.putExtra(RequestButtonsActivity.ORIGIN, RequestButtonsActivity.TEST);
-        gotoResult.putExtra(Constant.MEMBER_ID, data.getData().getMaceRequest().getMemCode());
-        gotoResult.putExtra(Constant.GENDER, data.getData().getMaceRequest().getMemGender());
-        gotoResult.putExtra(Constant.NAME, data.getData().getMaceRequest().getFullName());
-        gotoResult.putExtra(Constant.COMPANY, data.getData().getMaceRequest().getMemCompany());
-        //gotoResult.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
-        gotoResult.putExtra(Constant.AGE, data.getData().getMaceRequest().getMemAge());
-        //    gotoResult.putExtra(Constant.CONDITION, tvPrimaryDiagnosisName.getText().toString());
-        gotoResult.putExtra(Constant.REASONFORCONSULT, reasonForConsult);
-        gotoResult.putExtra(Constant.PRIMARY_DIAGNOSIS, data.getData().getDiagnosisProcedures().get(0).getMaceRequestOpDiag().getDiagDesc());
-        gotoResult.putExtra(Constant.DOCTOR_U, doctor.getFullName());
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(Constant.RVATTACHMENTS, attachments);
+            Intent gotoResult = new Intent(this, ResultActivity.class);
+            gotoResult.putExtra(Constant.BUNDLEFORATTACHEMENTS, bundle);
+            gotoResult.putExtra(Constant.REQUEST, "PENDING");
+            gotoResult.putExtra(Constant.BIRTHDAY, getIntent().getExtras().getString(Constant.BIRTHDAY));
+            // gotoResult.putExtra(Constant.DOCTOR_WITH_PROVIDER, implement.setNull(data.getWithProvider()));
+            gotoResult.putExtra(RequestButtonsActivity.ORIGIN, RequestButtonsActivity.TEST);
+            gotoResult.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
+            gotoResult.putExtra(Constant.GENDER, getIntent().getExtras().getString(Constant.GENDER));
+            gotoResult.putExtra(Constant.NAME, getIntent().getExtras().getString(Constant.NAME));
+            gotoResult.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
+            //gotoResult.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
+            gotoResult.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
+            //    gotoResult.putExtra(Constant.CONDITION, tvPrimaryDiagnosisName.getText().toString());
+            //gotoResult.putExtra(Constant.REASONFORCONSULT, reasonForConsult);
+            // gotoResult.putExtra(Constant.PRIMARY_DIAGNOSIS, data.getData().getDiagnosisProcedures().get(0).getMaceRequestOpDiag().getDiagDesc());
+            //gotoResult.putExtra(Constant.DOCTOR_U, doctor.getFullName());
 
 //        gotoResult.putExtra(Constant.DOCTOR_ROOM, tv_spec.getText().toString());
 //        gotoResult.putExtra(Constant.HOSP_CONTACT, tv_contact.getText().toString());
 //        gotoResult.putExtra(Constant.HOSP_CONTACT_PER, tv_contact_person.getText().toString());
-        gotoResult.putExtra(Constant.HOSP_U, hospital.getHospitalName());
+            gotoResult.putExtra(Constant.HOSP_U, hospital.getHospitalName());
 
-        gotoResult.putExtra(Constant.BATCH_CODE, data.getBatchCode());
+          //  gotoResult.putExtra(Constant.BATCH_CODE, data.getBatchCode());
 
-        startActivity(gotoResult);
-        finish();
+            startActivity(gotoResult);
+            finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private List<DiagnosisProcedure> convertObjectToDiagnosisProcedure(List<DiagnosisTests> diagnosisTests) {
@@ -587,6 +673,47 @@ public class RequestNewActivity extends TestTrackableActivity
                 .append("\n")
                 .append(doctor.getSpecDesc())
                 .toString();
+    }
+
+    /*
+        API used for the method requestLoaForTests
+        expected return if successful (String requestCode)
+        if null show a alertDialog
+     */
+    @Override
+    public void onSuccessTestsResponse(String requestCode) {
+        if (null == requestCode) {
+            //TODO if null
+        } else {
+            int totalSize = attachmentSession.getAllAttachments().size() -1;
+            for (int i = 0; i < attachmentSession.getAllAttachments().size(); i++) {
+                if(i < attachmentSession.getAllAttachments().size() -1){
+                    pd.setMessage("Uploading File(s) " + tempCounter + "/" + totalSize);
+                    pd.setCancelable(false);
+                    presenter.submitAttachments(attachmentSession.getAllAttachments().get(i), requestCode);
+                    tempCounter++;
+                }else{
+                    presenter.submitFinalAttachment(attachmentSession.getAllAttachments().get(i),requestCode);
+                }
+
+            }
+        }
+    }
+
+     /*
+        API used for the method addAttachmentByRequestCode
+        expected return if successful (int attachmentId)
+        if null show a alertDialog
+     */
+
+    @Override
+    public void onSuccessAttachmentResponse() {
+        try {
+            pd.dismiss();
+            gotoResult();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void submitNewTest() {

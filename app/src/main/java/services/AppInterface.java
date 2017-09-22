@@ -1,5 +1,7 @@
 package services;
 
+import java.io.File;
+
 import model.AddDepenceResponse;
 import model.AddDependence;
 import model.BasicTestOrOtherTest;
@@ -24,10 +26,12 @@ import model.ReturnRequestPassword;
 import model.SendLoa;
 import model.SignInDetails;
 import model.SpecializationList;
+import model.TestsModel;
 import model.TheDoctor;
 import model.UpdatePin;
 import model.VerifyMemberData;
 import model.newtest.NewTestRequest;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -40,9 +44,11 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
+import services.response.AttachmentResponse;
 import services.response.DentalBenefitsResponse;
 import services.response.LoaListResponse;
 import services.response.MaceRequestResponse;
+import services.response.TestModelResponse;
 import utilities.SharedPref;
 
 /**
@@ -63,7 +69,6 @@ public interface AppInterface {
 //    String ENDPOINT = "http://10.10.24.195:8080/";
 //    String PHOTOLINK = "http://10.10.24.195:8080/downloadpicture/";
 
-
     String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
     String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
 
@@ -76,11 +81,18 @@ public interface AppInterface {
     String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
 */
 
-//    String ENDPOINT = "http://macestaging.medicardphils.com:8080/";
-//    String PHOTOLINK = "http://macestaging.medicardphils.com:8080/downloadpicture/";
+//    String ENDPOINT = "http://125.5.100.202:8080/";
+//    String PHOTOLINK = "http://125.5.100.202:8080/downloadpicture/";
 
 //    String ENDPOINT = "http://125.5.100.202:8080/";
 //    String PHOTOLINK = "http://125.5.100.202:8080/downloadpicture/";
+
+
+//    String ENDPOINT = "http://10.10.26.12:8080/";
+//    String PHOTOLINK = "http://10.10.26.12:8080/downloadpicture/";
+
+
+
 
 
     @POST("v2/registerAccount/")
@@ -167,7 +179,7 @@ public interface AppInterface {
     Observable<TheDoctor> getDoctorDataWithRoom(@Query("doctorCode") String doctorCode);
 
     @POST("/memberloa/cancelLOA/")
-    Observable<ResponseBody> setRequestCancel(@Query("batchCode") String batchCode);
+    Observable<ResponseBody> setRequestCancel(@Query("requestCode") String requestCode);
 
     @POST("/coordinator/v2/approveLOA")
     Observable<Confirm> confirmLoaConsult(@Query("batchCode") String batchCode);
@@ -181,6 +193,15 @@ public interface AppInterface {
 
     @POST("/coordinator/v2/requestBasicOrOtherTest")
     Call<MaceRequestResponse> getBasicTestResult(@Body NewTestRequest newTestRequest);
+
+    @POST("/memberloa/requestLoaForTests/")
+    Call<TestModelResponse> requestLoaForTests(@Query("memberCode") String memberCode,
+                                               @Query("hospitalCode") String hospitalCode);
+    @Multipart
+    @POST("/memberloa/addAttachmentByRequestCode/")
+    Call<AttachmentResponse> addAttachmentByRequestCode(@Part MultipartBody.Part filePart,
+                                                        @Query("requestCode") String requestCode);
+
 
     @GET("/membership/getDentalBenefitByMemberCode/")
     Call<DentalBenefitsResponse> getDentalBenefitByMemberCode(@Query("memberCode") String memberCode);

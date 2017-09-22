@@ -69,8 +69,6 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
 
 
 
-    NavigationActivity listener;
-
 
     //Initialize of TextViews
     @BindView(R.id.tv_list)
@@ -102,13 +100,7 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     List<MaceRequest> list;
 
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof AppCompatActivity) {
-            this.listener = (NavigationActivity) context;
-        }
-    }
+
 
     @Override
     public int getLayoutResource() {
@@ -142,7 +134,11 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
         }
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context), callback);
+    }
 
     @Override
     protected void initComponents(View view, Bundle savedInstanceState) {
@@ -189,7 +185,6 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
 
         this.list = maceRequests;
         pb.setVisibility(View.GONE);
-
         adapter = new LoaRequestAdapter(context, maceRequests, callback);
         rv_loa_request.setAdapter(adapter);
 

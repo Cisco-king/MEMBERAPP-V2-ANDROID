@@ -65,13 +65,18 @@ import utilities.SetBlockedUser;
 import utilities.SharedPref;
 import utilities.ShowImagePicker;
 import utilities.StatusSetter;
+
 import com.medicard.member.module.DentistBenefitsActivity.DentalBenefitsActivity;
+
 import v2.RequestButtonsActivity;
 
 
 public class MemberAccountActivity extends AppCompatActivity
         implements View.OnClickListener, Animation.AnimationListener, MemberAccountCallback {
 
+    /*
+        Declarations of all global variables in this Activity
+     */
     LinearLayout blackBG;
     FloatingActionButton fab, fab1, fab2;
     private Animation animation1;
@@ -114,6 +119,7 @@ public class MemberAccountActivity extends AppCompatActivity
     public String CAMERA = "Camera";
     public String CANCEL = "Cancel";
 
+
     AlertDialog.Builder builder;
     AlertDialog alert;
 
@@ -132,11 +138,11 @@ public class MemberAccountActivity extends AppCompatActivity
         context = this;
         implement = new MemberberAccountRetrieve(context, callback);
 
-        init();
+
+        init(); //Calling the method init
     }
 
     private void init() {
-
 
         blackBG = (LinearLayout) findViewById(R.id.blackBG);
         tv_view = (TextView) findViewById(R.id.tv_view);
@@ -169,27 +175,32 @@ public class MemberAccountActivity extends AppCompatActivity
 
 
         MEMBER_ID = getIntent().getExtras().getString("MEMCODE");
+
+
         BIRTHDAY = getIntent().getExtras().getString("BIRTHDAY");
         permission = new Permission();
 
-        memberStatus = getIntent().getExtras().getString("STATUS");
 
-        circleImageView2 = (CircleImageView) findViewById(R.id.circleImageView2);
 
+
+        /*
+          Initializations of TextViews in the Layout
+         */
         tv_birth = (TextView) findViewById(R.id.tv_birth);
         tv_age = (TextView) findViewById(R.id.tv_age);
         tv_civil_status = (TextView) findViewById(R.id.tv_civil_status);
         tv_gender = (TextView) findViewById(R.id.tv_gender);
         tv_company = (TextView) findViewById(R.id.tv_company);
-
         tv_account_status = (TextView) findViewById(R.id.tv_account_status);
         tv_member_code = (TextView) findViewById(R.id.tv_member_code);
         tv_member_type = (TextView) findViewById(R.id.tv_member_type);
         tv_effective_date = (TextView) findViewById(R.id.tv_effective_date);
         tv_validity_date = (TextView) findViewById(R.id.tv_validity_date);
         tv_plan = (TextView) findViewById(R.id.tv_plan);
+
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         sv_scroll = (ScrollView) findViewById(R.id.sv_scroll);
+        circleImageView2 = (CircleImageView) findViewById(R.id.circleImageView2);
 
         tv_remarks[0] = (TextView) findViewById(R.id.tv_remarks1);
         tv_remarks[1] = (TextView) findViewById(R.id.tv_remarks2);
@@ -218,12 +229,14 @@ public class MemberAccountActivity extends AppCompatActivity
         tv_birth.setText(getIntent().getExtras().getString("BIRTHDAY"));
         AgeCorrector ageCorrector = new AgeCorrector();
         tv_age.setText(ageCorrector.age(getIntent().getExtras().getString("AGE")));
+
         tv_civil_status.setText(getIntent().getExtras().getString("CIVIL"));
+
         tv_gender.setText(genderPicker.setGender((Integer.parseInt(getIntent().getExtras().getString("GENDER")))));
         tv_company.setText(getIntent().getExtras().getString("COMPANY"));
 
         StatusSetter statusSetter = new StatusSetter();
-        tv_account_status.setText(statusSetter.setStatus(getIntent().getExtras().getString("STATUS")));
+        tv_account_status.setText(statusSetter.setStatus(getIntent().getExtras().getString(Constant.MEM_STATUS)));
         tv_member_code.setText(MEMBER_ID);
         tv_member_type.setText(getIntent().getExtras().getString("MEMTYPE"));
         tv_effective_date.setText(getIntent().getExtras().getString("EFFECTIVE"));
@@ -254,7 +267,6 @@ public class MemberAccountActivity extends AppCompatActivity
             }
         });
 
-
         if (getIntent().getExtras().getString("USER").equals("DEPENDENT")) {
             userIsPrincipal = false;
         } else
@@ -265,11 +277,11 @@ public class MemberAccountActivity extends AppCompatActivity
             fab.setVisibility(View.GONE);
         }
 
-
         getPhoto();
         animateFAB();
         //  setFlag(getIntent().getExtras().getString("STATUS"));
     }
+
 
     private void setFlag(String status) {
 
@@ -426,7 +438,62 @@ public class MemberAccountActivity extends AppCompatActivity
             case R.id.fab1:
                 // todo change member serviceType
 //                if (true) {
-                if (memberStatus.equalsIgnoreCase("ACTIVE")) {
+                if (getIntent().getExtras().getString(Constant.MEM_STATUS).equalsIgnoreCase(Constant.ACTIVEMEMBER)) {
+                    if (implement.testPinAvailable()) {
+                        animateFAB();
+                        gotoRequestButton();
+                    } else {
+                        alertDialogCustom.showMe(
+                                context,
+                                alertDialogCustom.HOLD_ON_title,
+                                alertDialogCustom.A_VALID_PIN,
+                                1);
+                    }
+                } else if (getIntent().getExtras().getString(Constant.MEM_STATUS).equalsIgnoreCase(Constant.ONHOLDMEMBER)) {
+                    if (implement.testPinAvailable()) {
+                        animateFAB();
+                        gotoRequestButton();
+                    } else {
+                        alertDialogCustom.showMe(
+                                context,
+                                alertDialogCustom.HOLD_ON_title,
+                                alertDialogCustom.A_VALID_PIN,
+                                1);
+                    }
+                } else if (getIntent().getExtras().getString(Constant.MEM_STATUS).equalsIgnoreCase(Constant.FORREACTIVATION)) {
+                    if (implement.testPinAvailable()) {
+                        animateFAB();
+                        gotoRequestButton();
+                    } else {
+                        alertDialogCustom.showMe(
+                                context,
+                                alertDialogCustom.HOLD_ON_title,
+                                alertDialogCustom.A_VALID_PIN,
+                                1);
+                    }
+                } else if (getIntent().getExtras().getString(Constant.MEM_STATUS).equalsIgnoreCase(Constant.VERIFYPAYMENTWRMD)) {
+                    if (implement.testPinAvailable()) {
+                        animateFAB();
+                        gotoRequestButton();
+                    } else {
+                        alertDialogCustom.showMe(
+                                context,
+                                alertDialogCustom.HOLD_ON_title,
+                                alertDialogCustom.A_VALID_PIN,
+                                1);
+                    }
+                } else if (getIntent().getExtras().getString(Constant.MEM_STATUS).equalsIgnoreCase(Constant.VERIFYRENEWAL)) {
+                    if (implement.testPinAvailable()) {
+                        animateFAB();
+                        gotoRequestButton();
+                    } else {
+                        alertDialogCustom.showMe(
+                                context,
+                                alertDialogCustom.HOLD_ON_title,
+                                alertDialogCustom.A_VALID_PIN,
+                                1);
+                    }
+                } else if (getIntent().getExtras().getString(Constant.MEM_STATUS).equalsIgnoreCase(Constant.VERIFYMEMBERSHIP)) {
                     if (implement.testPinAvailable()) {
                         animateFAB();
                         gotoRequestButton();
@@ -438,17 +505,17 @@ public class MemberAccountActivity extends AppCompatActivity
                                 1);
                     }
                 } else {
-                    Timber.d("Member Status : %s", memberStatus);
+                    Timber.d("Member Status : %s", getIntent().getExtras().getString(Constant.MEM_STATUS));
                     animateFAB();
                     alertDialogCustom.showMe(
                             context,
                             alertDialogCustom.HOLD_ON_title,
-                            StatusSetter.setRemarks(memberStatus),
+                            StatusSetter.setRemarks(getIntent().getExtras().getString(Constant.MEM_STATUS)),
                             1);
                 }
                 break;
             case R.id.fab2:
-                if (memberStatus.equalsIgnoreCase("ACTIVE")) {
+                if (getIntent().getExtras().getString(Constant.MEM_STATUS).equalsIgnoreCase(Constant.ACTIVEMEMBER)) {
                     if (implement.testPinAvailable()) {
                         animateFAB();
                         gotoDentalBenefits();
@@ -460,12 +527,12 @@ public class MemberAccountActivity extends AppCompatActivity
                                 1);
                     }
                 } else {
-                    Timber.d("Member Status : %s", memberStatus);
+                    Timber.d("Member Status : %s", getIntent().getExtras().getString(Constant.MEM_STATUS));
                     animateFAB();
                     alertDialogCustom.showMe(
                             context,
                             alertDialogCustom.HOLD_ON_title,
-                            StatusSetter.setRemarks(memberStatus),
+                            StatusSetter.setRemarks(getIntent().getExtras().getString(Constant.MEM_STATUS)),
                             1);
                 }
 
@@ -480,10 +547,12 @@ public class MemberAccountActivity extends AppCompatActivity
         Intent intent = new Intent(context, RequestButtonsActivity.class);
         intent.putExtra(Constant.MEMBER_ID, MEMBER_ID);
         intent.putExtra(Constant.GENDER, getIntent().getExtras().getString(Constant.GENDER));
+        intent.putExtra(Constant.BIRTHDAY, getIntent().getExtras().getString(Constant.BIRTHDAY));
         intent.putExtra(Constant.NAME, getIntent().getExtras().getString(Constant.FNAME) + " " + getIntent().getExtras().getString(Constant.LNAME));
         intent.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
         intent.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
         intent.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
+        intent.putExtra(Constant.MEM_STATUS, getIntent().getExtras().getString(Constant.MEM_STATUS));
         startActivity(intent);
 
     }

@@ -1,5 +1,6 @@
 package modules.requestnewapproval;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -24,6 +25,8 @@ import java.util.Set;
 import database.dao.HospitalDao;
 import database.dao.ProcedureDao;
 import model.Attachment;
+import model.AttachmentModel;
+import model.TestsModel;
 import model.newtest.DiagnosisDetails;
 import model.newtest.DiagnosisProcedure;
 import model.newtest.NewTestRequest;
@@ -44,14 +47,18 @@ import services.model.DiagnosisTestRequest;
 import services.model.HospitalsToDoctor;
 import services.model.Procedure;
 import services.model.Test;
+import services.response.AttachmentResponse;
 import services.response.DiagnosisResponse;
 import services.response.FileResponse;
 import services.response.MaceRequestResponse;
 import services.response.MaceRequestResponse2;
+import services.response.TestModelResponse;
 import timber.log.Timber;
+import utilities.AlertDialogCustom;
 import utilities.DiagnosisUtils;
 import utilities.ImageConverters;
 import utilities.Loader;
+import utilities.NetworkTest;
 import utilities.SharedPref;
 
 /**
@@ -65,6 +72,10 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
     private Context context;
 
     private HospitalDao hospitalDao;
+
+    AlertDialogCustom alertDialogCustom;
+
+
     private ProcedureDao procedureDao;
 
     MemberLoaClient memberLoaClient;
@@ -95,10 +106,12 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
     }
 
     @Override
-    public void attachCallback() { }
+    public void attachCallback() {
+    }
 
     @Override
-    public void detachCallback() { }
+    public void detachCallback() {
+    }
 
     @Override
     public void loadDoctorDetails(HospitalsToDoctor doctor) {
@@ -204,13 +217,103 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
                     @Override
                     public void onResponse(Call<MaceRequestResponse> call, Response<MaceRequestResponse> response) {
                         if (response.body() != null) {
-                        requestNewView.onRequestSuccess(response.body());
+                            requestNewView.onRequestSuccess(response.body());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<MaceRequestResponse> call, Throwable t) {
                         requestNewView.onRequestError(t.toString());
+                    }
+                });
+    }
+
+    /*
+        This API call is used for requesting Tests
+        @params memberCode, hospitalCode
+     */
+    @Override
+    public void requestForTests(TestsModel testsModel) {
+        AppInterface appInterface;
+        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+        appInterface.requestLoaForTests(testsModel.getMemberCode(), testsModel.getHospitalCode())
+                .enqueue(new Callback<TestModelResponse>() {
+                    @Override
+                    public void onResponse(Call<TestModelResponse> call, Response<TestModelResponse> response) {
+                        if (response.isSuccessful()) {
+                            requestNewView.onSuccessTestsResponse(response.body().getRequestCode());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TestModelResponse> call, Throwable t) {
+
+                    }
+                });
+    }
+    /*
+        This API call is used to submit attachmentsByRequestCode
+        @params file,requestCode
+     */
+
+    @Override
+    public void submitAttachments(File file, final String requestCode) {
+        AppInterface appInterface;
+        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("image/jpeg"), file));
+        appInterface.addAttachmentByRequestCode(filePart, requestCode)
+                .enqueue(new Callback<AttachmentResponse>() {
+                    @Override
+                    public void onResponse(Call<AttachmentResponse> call, Response<AttachmentResponse> response) {
+                        if (response.isSuccessful()) {
+                            try {
+                                //requestNewView.onSuccessAttachmentResponse();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AttachmentResponse> call, Throwable t) {
+                        requestNewView.onRequestError("");
+                    }
+                });
+    }
+
+    @Override
+    public void checkOnline(TestsModel testsModel) {
+
+        if (NetworkTest.isOnline(context)) {
+            requestNewView.internetConnected(testsModel);
+        } else
+            requestNewView.noInternetConnection();
+
+    }
+
+    @Override
+    public void submitFinalAttachment(File file, String requestCode) {
+        AppInterface appInterface;
+        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("image/jpeg"), file));
+        appInterface.addAttachmentByRequestCode(filePart, requestCode)
+                .enqueue(new Callback<AttachmentResponse>() {
+                    @Override
+                    public void onResponse(Call<AttachmentResponse> call, Response<AttachmentResponse> response) {
+                        if (response.isSuccessful()) {
+                            try {
+                                        requestNewView.onSuccessAttachmentResponse();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AttachmentResponse> call, Throwable t) {
+                        requestNewView.onRequestError("");
                     }
                 });
     }
@@ -251,51 +354,51 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);*/
 
 //                String filePath = cursor.getString(columnIndex);
-                context.grantUriPermission(context.getPackageName(), imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                String filePath = imageConverter.getRealPathFromURI(imageUri, context);
-                Timber.d("filePath = %s", filePath);
+            context.grantUriPermission(context.getPackageName(), imageUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            String filePath = imageConverter.getRealPathFromURI(imageUri, context);
+            Timber.d("filePath = %s", filePath);
 
 //                cursor.close();
 
-                File file = new File(filePath);
-                Bitmap b = null;
-                try {
-                    b = BitmapFactory.decodeStream(new FileInputStream(file));
-                } catch (FileNotFoundException e) {
-                    Timber.d("file error %s", e.toString());
-                }
+            File file = new File(filePath);
+            Bitmap b = null;
+            try {
+                b = BitmapFactory.decodeStream(new FileInputStream(file));
+            } catch (FileNotFoundException e) {
+                Timber.d("file error %s", e.toString());
+            }
 
-                // save to directory
-                imageConverter.saveToInternalStorage2(b, context, false);
+            // save to directory
+            imageConverter.saveToInternalStorage2(b, context, false);
 
-                File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                File f = new File(dir, "GalleryMEDICARD.jpeg");
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            File f = new File(dir, "GalleryMEDICARD.jpeg");
 
-                RequestBody requesFile = RequestBody.create(MediaType.parse("image/*"), f);
+            RequestBody requesFile = RequestBody.create(MediaType.parse("image/*"), f);
 
-                MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), requesFile);
-                RequestBody approvalNo = RequestBody.create(MediaType.parse("text/plain"), maceRequestCode);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), requesFile);
+            RequestBody approvalNo = RequestBody.create(MediaType.parse("text/plain"), maceRequestCode);
 
-                maceTestClient.uploadImageFileByApprovalNumber(body, approvalNo)
-                        .enqueue(new Callback<FileResponse>() {
-                            @Override
-                            public void onResponse(Call<FileResponse> call, Response<FileResponse> response) {
-                                if (response.isSuccessful()) {
-                                    Timber.d("responseCode : %s, status : %s", response.body().getResponseCode());
-                                    MaceRequestResponse response1 = null;
-                                    requestNewView.onRequestSuccess(response1);
-                                } else {
-                                    Timber.d("error response %s", response.errorBody().toString());
-                                    requestNewView.onRequestError(response.errorBody().toString());
-                                }
+            maceTestClient.uploadImageFileByApprovalNumber(body, approvalNo)
+                    .enqueue(new Callback<FileResponse>() {
+                        @Override
+                        public void onResponse(Call<FileResponse> call, Response<FileResponse> response) {
+                            if (response.isSuccessful()) {
+                                Timber.d("responseCode : %s, status : %s", response.body().getResponseCode());
+                                MaceRequestResponse response1 = null;
+                                requestNewView.onRequestSuccess(response1);
+                            } else {
+                                Timber.d("error response %s", response.errorBody().toString());
+                                requestNewView.onRequestError(response.errorBody().toString());
                             }
+                        }
 
-                            @Override
-                            public void onFailure(Call<FileResponse> call, Throwable t) {
-                                Timber.d("exception occur %s", t.toString());
-                                requestNewView.onRequestError(t.toString());
-                            }
-                        });
+                        @Override
+                        public void onFailure(Call<FileResponse> call, Throwable t) {
+                            Timber.d("exception occur %s", t.toString());
+                            requestNewView.onRequestError(t.toString());
+                        }
+                    });
 //            }
         }
     }

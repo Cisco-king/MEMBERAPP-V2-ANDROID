@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 
+import com.itextpdf.text.ExceptionConverter;
 import com.medicard.member.R;
 
 import android.support.v4.content.ContextCompat;
@@ -64,7 +65,7 @@ public class DetailsRetieve {
         final ProgressDialog pd;
         pd = new ProgressDialog(context, R.style.MyTheme);
         pd.setCancelable(false);
-        pd.setMessage("Requesting LOA...");
+        pd.setMessage("Requesting Approval...");
         pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
 
 
@@ -80,10 +81,14 @@ public class DetailsRetieve {
             public void onClick(View v) {
                 dialog.dismiss();
                 pd.show();
-                if (destination.equals(CONSULTATION)) {
-                    sendConsultation(pd, condition);
-                } else if (destination.equals(MATERNITY)) {
-                    sendMaternity(pd, condition);
+                try {
+                    if (destination.equalsIgnoreCase(CONSULTATION)) {
+                        sendConsultation(pd, condition);
+                    } else if (destination.equalsIgnoreCase(MATERNITY)) {
+                        sendMaternity(pd, condition);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
             }
@@ -160,17 +165,21 @@ public class DetailsRetieve {
 
                     @Override
                     public void onNext(RequestResult requestResult) {
-                     //   Log.d("REQUEST", requestResult.toString());
+                        //   Log.d("REQUEST", requestResult.toString());
 
-                        if (requestResult.getResponseCode().equals("210")) {
-                            callback.onDuplicateRequest(requestResult);
-                        } else if (requestResult.getResponseCode().equals("220")) {
-                            callback.onBlockRequest(requestResult.getResponseDesc());
-                        } else {
-                            callback.onSuccess(requestResult);
+                        try {
+                            if (requestResult.getResponseCode().equals("210")) {
+                                callback.onDuplicateRequest(requestResult);
+                            } else if (requestResult.getResponseCode().equals("220")) {
+                                callback.onBlockRequest(requestResult.getResponseDesc());
+                            } else {
+                                callback.onSuccess(requestResult);
+                            }
+
+                            pd.dismiss();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-
-                        pd.dismiss();
                     }
                 });
 

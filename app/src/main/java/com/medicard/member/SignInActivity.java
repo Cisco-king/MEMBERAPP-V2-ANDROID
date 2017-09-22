@@ -11,10 +11,12 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -118,6 +120,7 @@ public class SignInActivity extends AppCompatActivity
         pd.setCancelable(false);
         pd.setMessage("Logging in...");
         pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+
 
         permission = new Permission();
     }
@@ -251,6 +254,13 @@ public class SignInActivity extends AppCompatActivity
 
         SharedPref.setBoolValue(this, SharedPref.KEY_HAS_MATERNITY, signInDetails.getHasMaternity());
         Timber.d("hasMaternity %s", signInDetails.getHasMaternity());
+
+        //this is a note that the download will take a while
+        Toast toast = Toast.makeText(context, "Download will take a while. Please wait.", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP| Gravity.CENTER_HORIZONTAL,0,0);
+        toast.show();
+
+
 
         pd.setMessage("Updating Hospitals...");
         getHospitalList(responseBody, username, password);

@@ -1,8 +1,16 @@
 package utilities;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -38,6 +46,7 @@ public class DialogUtils {
                 })
                 .show();
     }
+
 
     public interface OnDiaglogClickListener {
 

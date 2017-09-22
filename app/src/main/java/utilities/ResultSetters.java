@@ -10,12 +10,23 @@ import android.widget.TextView;
 
 public class ResultSetters {
 
-    public static final String Approved = "Approved";
+    public static final String Approved = "APPROVED";
     public static final String Pending = "PENDING";
+    public static final String Cancelled = "CANCELLED";
     public static final String REQUEST_APPROVED = "REQUEST SUBMITTED";
+    public static final String REQUEST_CONFIRMED = "REQUEST CONFIRMED";
+
+    public static final String REQUEST_TEST_APPROVED = "REQUEST APPROVED";
     public static final String REQUEST_DISAPPROVED = "REQUEST DISAPPROVED";
     public static final String REQUEST_APPROVAL = "PENDING APPROVAL";
+    public static final String REQUEST_CANCELLED = "REQUEST CANCELLED";
     public static final String WITHPROVIDER = "withProvider";
+    public static final String ACTIVESTATUS = "ACTIVE";
+    public static final String ONHOLD = "ON HOLD";
+    public static final String FORREACTIVATIONMEMBER = "FOR REACTIVATION";
+    public static final String VERIFYPAYMENTWRMDStatus = "VERIFY PAYMENT WITH RMD";
+    public static final String VERIFYRENEWALStatus = "VERIFY RENEWAL FROM MARKETING / SALES";
+    public static final String VERIFYMEMBERSHIPStatus = "VERIFY MEMBERSHIP";
 
     public static String nameSetter(String name, Context context) {
 
@@ -75,12 +86,29 @@ public class ResultSetters {
 
     public static String titleSetter(String request) {
 
-        if (request.equals(Approved)) {
+        String newString = request.trim();
+        if (newString.equalsIgnoreCase(ACTIVESTATUS)) {
             return REQUEST_APPROVED;
-        } else if (request.equalsIgnoreCase(Pending)) {
+        } else if (newString.equalsIgnoreCase(Pending)) {
             return REQUEST_APPROVAL;
-        } else
+        } else if (newString.equalsIgnoreCase(Approved)) {
+            return REQUEST_CONFIRMED;
+        } else if (newString.equalsIgnoreCase(ONHOLD)) {
+            return REQUEST_APPROVAL;
+        } else if (newString.equalsIgnoreCase(FORREACTIVATIONMEMBER)) {
+            return REQUEST_APPROVAL;
+        } else if (newString.equalsIgnoreCase(VERIFYPAYMENTWRMDStatus)) {
+            return REQUEST_APPROVAL;
+        } else if (newString.equalsIgnoreCase(VERIFYRENEWALStatus)) {
+            return REQUEST_APPROVAL;
+        } else if (newString.equalsIgnoreCase(VERIFYMEMBERSHIPStatus)) {
+            return REQUEST_APPROVAL;
+        } else if(newString.equalsIgnoreCase(Cancelled)){
+            return REQUEST_CANCELLED;
+        }else {
             return REQUEST_DISAPPROVED;
+        }
+
 
 
     }

@@ -333,7 +333,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/this_req_is_valid_from"
-                    android:textSize="@dimen/text_small" />
+                    android:textSize="@dimen/text_small"
+                    android:visibility="gone"/>
+
 
                 <TextView
                     android:id="@+id/tv_date"
@@ -343,7 +345,8 @@
                     android:layout_marginRight="@dimen/margin"
                     android:gravity="center"
                     android:text="@string/this_req_is_valid_from"
-                    android:textSize="@dimen/text_small" />
+                    android:textSize="@dimen/text_small"
+                    android:visibility="gone"/>
 
 
                 <LinearLayout

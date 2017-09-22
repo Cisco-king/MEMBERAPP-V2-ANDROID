@@ -11,6 +11,7 @@ import com.medicard.member.core.session.DiagnosisTestSession;
 import com.medicard.member.core.session.DoctorSession;
 import com.medicard.member.core.session.HospitalSession;
 import com.medicard.member.module.DiagnosisTallyActivity.DiagnosisTallyActivity;
+import com.medicard.member.module.DiagnosisTallyActivity.fragment.DiagnosisTallyFragment;
 import com.medicard.member.module.base.BaseActivity;
 import com.medicard.member.module.diagnosis.fragment.DiagnosisFragment;
 import com.medicard.member.module.diagnosistest.TestByDiagnosisActivity;
@@ -24,6 +25,7 @@ import mehdi.sakout.fancybuttons.FancyButton;
 import modules.prescriptionattachment.PrescriptionAttachmentActivity;
 import services.model.Diagnosis;
 import timber.log.Timber;
+import utilities.AlertDialogCustom;
 import utilities.ViewUtilities;
 
 /**
@@ -41,6 +43,8 @@ public class DiagnosisActivity extends BaseActivity
     public static final int TEST_PROCEDURE = 101;
     public static final String DiagnosisActivity = "DIAGNOSIS";
     public static final String diagnosisBundle = "diagnosisBundle";
+    public static final int requestCodeDiagnosis = 103;
+    AlertDialogCustom alertDialogCustom;
 
     @Override
     protected String activityTitle() {
@@ -56,6 +60,8 @@ public class DiagnosisActivity extends BaseActivity
     protected void initComponents(Bundle savedInstanceState) {
         super.initComponents(savedInstanceState);
 
+
+
         ViewUtilities.showView(toolbarSkip);
 
 
@@ -69,17 +75,21 @@ public class DiagnosisActivity extends BaseActivity
 
     @Override
     public void onDiagnosisSelected(Diagnosis diagnosis) {
-        Timber.d("doctor %s and hospital %s", DoctorSession.getDoctor().getFullName(), DoctorSession.getDoctor().getHospitalName());
-        Timber.d("reason for consult %s", ConsultSession.getReasonForConsult());
-        Timber.d("reason for hospital selected %s", HospitalSession.getHospital().getHospitalName());
-        Timber.d("diagnosis %s = %s", DiagnosisSession.getDiagnosis().getDiagCode(), diagnosis.getDiagCode());
-        //startActivityForResult(new Intent(this, TestByDiagnosisActivity.class), TEST_PROCEDURE);
-        Intent goToTestDiagnosisActivity = new Intent(this, TestByDiagnosisActivity.class);
-        System.out.println("=======================Diagnosis to PASS" + diagnosis.getDiagDesc());
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(DiagnosisActivity, diagnosis);
-        goToTestDiagnosisActivity.putExtra(diagnosisBundle, bundle);
-        startActivity(goToTestDiagnosisActivity);
+        try {
+            Timber.d("doctor %s and hospital %s", DoctorSession.getDoctor().getFullName(), DoctorSession.getDoctor().getHospitalName());
+            Timber.d("reason for consult %s", ConsultSession.getReasonForConsult());
+            Timber.d("reason for hospital selected %s", HospitalSession.getHospital().getHospitalName());
+            Timber.d("diagnosis %s = %s", DiagnosisSession.getDiagnosis().getDiagCode(), diagnosis.getDiagCode());
+            //startActivityForResult(new Intent(this, TestByDiagnosisActivity.class), TEST_PROCEDURE);
+            Intent goToTestDiagnosisActivity = new Intent(this, TestByDiagnosisActivity.class);
+            System.out.println("=======================Diagnosis to PASS" + diagnosis.getDiagDesc());
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(DiagnosisActivity, diagnosis);
+            goToTestDiagnosisActivity.putExtra(diagnosisBundle, bundle);
+            startActivity(goToTestDiagnosisActivity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @OnClick(R.id.toolbarSkip)
@@ -87,7 +97,7 @@ public class DiagnosisActivity extends BaseActivity
         try {
             Intent intent = new Intent(this, TestByDiagnosisActivity.class);
             intent.putExtra(TestByDiagnosisActivity.KEY_DISPLAY_ALL, true);
-            startActivity(intent);
+            startActivityForResult(intent, requestCodeDiagnosis);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -105,6 +115,9 @@ public class DiagnosisActivity extends BaseActivity
             if (isDoneClick) {
                 transitionTo(new Intent(this, DiagnosisTallyActivity.class));
             }
+        }else if(resultCode == RESULT_OK && requestCode == DiagnosisTallyFragment.DIAGNOSISTALLYCODE){
+
+
         }
     }
 }

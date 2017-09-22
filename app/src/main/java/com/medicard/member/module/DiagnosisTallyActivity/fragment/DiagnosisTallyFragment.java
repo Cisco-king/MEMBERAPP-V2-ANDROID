@@ -19,10 +19,12 @@ import android.widget.TextView;
 import com.medicard.member.R;
 import com.medicard.member.core.model.DiagnosisTests;
 import com.medicard.member.core.session.DiagnosisSession;
+import com.medicard.member.core.session.DiagnosisTestSession;
 import com.medicard.member.module.DiagnosisTallyActivity.DiagnosisTallyActivity;
 import com.medicard.member.module.DiagnosisTallyActivity.adapter.DiagnosisTallyAdapter;
 import com.medicard.member.module.base.BaseActivity;
 import com.medicard.member.module.base.BaseFragment;
+import com.medicard.member.module.diagnosis.DiagnosisActivity;
 import com.medicard.member.module.diagnosis.DiagnosisNavigator;
 import com.medicard.member.module.diagnosis.fragment.DiagnosisFragment;
 import com.medicard.member.module.diagnosis.fragment.DiagnosisMvp;
@@ -52,6 +54,9 @@ import utilities.ViewUtilities;
 public class DiagnosisTallyFragment extends BaseFragment implements DiagnosisMVP.View,DiagnosisTallyAdapter.OnDiagnosisClickListener {
 
     public static final String DIAGNOSISTESTSLIST = "diagnosistestslist";
+    public static final String FROMDIAGTALLY = "FROMDIAGTALLY";
+    public static final int DIAGNOSISTALLYCODE = 205;
+    public static final String BUNDLEDIAGNOSISTALLY = "BUNDLEDIAGNOSISTALLY";
 
     DiagnosisTallyActivity listener;
     DiagnosisTallyAdapter adapter;
@@ -131,6 +136,21 @@ public class DiagnosisTallyFragment extends BaseFragment implements DiagnosisMVP
 
     }
 
+
+    @Override
+    public void onEditDiagnosis(int position) {
+        try {
+            DiagnosisTests diagnosistests = DiagnosisTestSession.getDiagnosisTests(position);
+
+            Bundle args = new Bundle();
+            args.putSerializable(FROMDIAGTALLY, diagnosistests);
+            Intent goToDiagnosis = new Intent(context, DiagnosisActivity.class);
+            goToDiagnosis.putExtra(BUNDLEDIAGNOSISTALLY, args);
+            startActivityForResult(goToDiagnosis,DIAGNOSISTALLYCODE);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onRemoveDiagnosis(int position) {

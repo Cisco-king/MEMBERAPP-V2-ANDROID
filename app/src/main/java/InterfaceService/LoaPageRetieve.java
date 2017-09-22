@@ -12,6 +12,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 import okhttp3.ResponseBody;
@@ -43,11 +45,11 @@ public class LoaPageRetieve {
     }
 
 
-    public void cancelRequest(String approvalNo) {
+    public void cancelRequest(String requestCode) {
 
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-        appInterface.setRequestCancel(approvalNo)
+        appInterface.setRequestCancel(requestCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
@@ -90,7 +92,7 @@ public class LoaPageRetieve {
 //            btn_cancel_req.setVisibility(View.VISIBLE);
 //    }
 
-    public void showCancelConfirmation() {
+    public void showCancelConfirmation(final String requestCode) {
 
 
         FancyButton cancel;
@@ -145,10 +147,13 @@ public class LoaPageRetieve {
 
         if (status.contains("OUTSTANDING"))
             data = "REQUEST SUBMITTED";
-        else
-            data = "REQUEST " + status;
+        //TODO To be changed in time
+        else if(status.equalsIgnoreCase("APPROVED"))
+            data = "REQUEST PENDING";
 
 
         return data;
     }
+
+
 }

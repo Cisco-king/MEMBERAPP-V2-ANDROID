@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
@@ -35,14 +36,14 @@
                     android:id="@+id/tv_header"
                     android:textSize="@dimen/text_main"
                     android:textColor="@android:color/white"/>
-
-
                 <ImageButton
                     android:id="@+id/btn_nav"
                     android:background="@android:color/transparent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_menu" />
+
+
             </LinearLayout>
         </android.support.v7.widget.Toolbar>
 

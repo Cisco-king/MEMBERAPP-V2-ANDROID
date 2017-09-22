@@ -5,7 +5,9 @@
     <string name="permission_Storage_message">The app will access the Phone Storage to save the taken photo.</string>
     <string name="permission_Phone_message">The app requires your phone ID (IMEI) for registration. Denying the request will prevent the app to acquire information resulting to registration failure.</string>
 
-    <string name="request_for_loa">Request for LOA</string>
+    <!--<string name="request_for_loa">Request for Approval</string>-->
+    <string name="request_for_approval_request">Request for Approval</string>
+
     <string name="dental_benefits">View Dental Benefits</string>
     <string name="hosp_not_found">Hospital not found</string>
     <string name="app_name">MACE Member</string>
@@ -100,7 +102,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_myAccount">My Account</string>
-    <string name="nav_my_loa_request">My LOA Requests</string>
+    <string name="nav_my_loa_request">My Approval Requests</string>
     <string name="nav_dentist">Dentists</string>
     <string name="nav_hospital">Hospitals</string>
     <string name="nav_doctor">Doctors</string>
@@ -111,7 +113,7 @@
     <string name="title_activity_termNcon">Terms and Conditions</string>
 
     <string name="termsNcond_security_title">Security</string>
-    <string name="termsNcond_security_message">By agreeing to these terms and conditions, you accept and consent to your personal data being provided to the Service for the sole purpose of requesting for Letter of Authorization (LOA). The MediCard Online LOA respects the privacy of every individual who use this facility and MediCard website contains security measures in place to protect the loss, misuse and alteration of the information under MediCard’s control.</string>
+    <string name="termsNcond_security_message">By agreeing to these terms and conditions, you accept and consent to your personal data being provided to the Service for the sole purpose of requesting for Letter of Authorization (Approval). The MediCard Online Approval respects the privacy of every individual who use this facility and MediCard website contains security measures in place to protect the loss, misuse and alteration of the information under MediCard’s control.</string>
 
     <string name="termsNcond_facility_title">Facility</string>
     <string name="termsNcond_facility_message">Your requested schedule, specifically, date and time are subject to availability. Notwithstanding any request confirmation, the schedule for a doctor or laboratory/diagnostic services may be subject to change without prior notification.</string>
@@ -128,6 +130,8 @@
     <string name="verify">VERIFY ACCOUNT</string>
     <string name="accept_terms">Agree</string>
     <string name="decline_terms">Disagree</string>
+    <string name="skipdiagnosis">This step is optional. You may opt to skip this \n step by tapping Skip at the upper right part of the screen</string>
+    <string name="hospitalMessage">All tests that will be selected should be done in the selected Clinic/Hospital</string>
     <string name="title_activity_terms">Terms and Conditions</string>
     <string name="internal_storage">Internal storage</string>
     <string name="title_activity_member_account2">MemberAccountActivity2</string>
@@ -138,6 +142,7 @@
     <string name="password_type">*NOTE: Password must contain atleast 1 upper case letter and 1 number and minimum of 8 letters.</string>
     <string name="title_activity_change_password">ChangePasswordActivity</string>
     <string name="title_activity_request_buttons">RequestButtonsActivity</string>
+
 
 
     <string name="basci_text">Basic Test \n (CBC, Urinalysis, Fecalysis, Chest X-ray)</string>
@@ -155,20 +160,20 @@
     <string name="no_doctor">Doctor is not on the list.</string>
     <string name="proceed">Proceed</string>
     <string name="hint_doctor">Enter Doctor Name</string>
-    <string name="no_doctor_set">Please select Doctor after selecting Hospital/Clinic</string>
+    <string name="no_doctor_set">Please select Doctor after selecting Clinic/Hospital</string>
     <string name="hint_condition">Enter Reason for Consult</string>
-    <string name="hospital_clinic">Hospital/Clinic</string>
+    <string name="hospital_clinic">Clinic/Hospital</string>
     <string name="attachments">Attachments</string>
-    <string name="hospital_clinic_">Hospital/Clinic: <font fgcolor="red"><b> * </b></font> </string>
-    <string name="doctor">Requesting Doctor</string>
+    <string name="hospital_clinic_">Clinic/Hospital: <font fgcolor="red"><b> * </b></font> </string>
+    <string name="doctor">Requesting Physician</string>
     <string name="doctor_">Doctor: <font fgcolor="red"><b> * </b></font> </string>
     <string name="prob_cond">Problem/Condition:</string>
     <string name="prob_cond_">Reason for Consult: <font fgcolor="red"><b> * </b></font> </string>
     <string name="this_req_is_valid_from">This form is valid from</string>
     <string name="ok">Ok</string>
-    <string name="screenshot">Download LoA form</string>
-    <string name="request">Request LOA</string>
-    <string name="select_hospital">Select Hospital/Clinic</string>
+    <string name="screenshot">Download Approval form</string>
+    <string name="request">Request Approval</string>
+    <string name="select_hospital">Select Clinic/Hospital</string>
     <string name="select_doctor">Select Doctor</string>
     <string name="req_details">Request Details</string>
     <string name="submit"> Submit</string>
@@ -179,12 +184,13 @@
     <string name="this_approval_shall">This form shall be subject to existing benefits and actual available limits under the plan. Member may still be billed for the amount paid. \n \n This form serves as your request form. There is no need to go
         to MediCard Coordinator. You may go directly to the consulting doctor and present this form. Please take note of the <font fgcolor="black"><b>Reference No.</b></font> and <font fgcolor="black"><b>PIN</b></font>. This
      information is required during consultation.</string>
-    <string name="no_registered_pin">No registered PIN. \n PIN is required in Requesting LOA.</string>
+    <string name="no_registered_pin">No registered PIN. \n PIN is required in Requesting Approval.</string>
     <string name="retype_pin">Re-type PIN</string>
     <string name="new_pin">New PIN</string>
     <string name="sort">Sort</string>
+    <string name="next">Next</string>
     <string name="filter">Filter</string>
-    <string name="my_loa_req">My LOA Request</string>
+    <string name="my_loa_req">My Approval Request</string>
     <string name="title_activity_sort">SortActivity</string>
     <string name="sort_and_filter">Sort and Filter</string>
 
@@ -199,7 +205,7 @@
     <string name="reset_filter">Reset Filters</string>
     <string name="show_result">Show Result</string>
     <string name="medicard_first">MediCard Clinics First</string>
-    <string name="hospital_clinic_name">Hospital/Clinic Name</string>
+    <string name="hospital_clinic_name">Clinic/Hospital Name</string>
     <string name="title_activity_select_province">SelectProvinceActivity</string>
     <string name="title_activity_sort_doctor">SortDoctorActivity</string>
     <string name="doctor_family">Doctor\'s Family Name</string>
@@ -230,15 +236,15 @@
     <string name="other_test_proc">Other Test/Procedures</string>
     <string name="start_date">Start Date:</string>
     <string name="end_date">End Date:</string>
-    <string name="all_hospital_clinic">All Hospital/Clinic</string>
+    <string name="all_hospital_clinic">All Clinic/Hospital</string>
     <string name="all_doctors">All Doctors</string>
     <string name="all_test">All Test</string>
     <string name="all_diagnosis">All Diagnosis</string>
-    <string name="are_you_sure_you_want">Are you sure you want to cancel the LOA Request?</string>
+    <string name="are_you_sure_you_want">Are you sure you want to cancel the Approval Request?</string>
     <string name="there_is_an_existing_request_with_the_same_details_submitting_this_may_cause_duplicate_requests_and_may_affect_your_existing_utilization_limits_are_you_sure_you_want_to_submit_this_request">
         There is an existing entry from the same hospital. Submitting this may cause duplicate request and may affect your existing utilization limits.
         Are you sure you want to submit this?</string>
-    <string name="no_loa_request">No LOA Request</string>
+    <string name="no_loa_request">No Approval Request</string>
     <string name="show_waiver">Show waiver</string>
     <string name="dont_show_waiver">Dont Show waiver</string>
     <string name="disclaimer_btn">I disagree with the conditions</string>
@@ -248,10 +254,10 @@
     or her illness. MediCard and it\'s representatives are also free to disclose the said information including utilization data
     of the patient to it\'s concerned Company upon demand of the latter for such other legal purpose it may have
     including for the proper administration of the Company\'s health benefits program. MediCard and it\'s representatives,
-     it\'s Medical Service Units/Teams and its Accredited Hospital/Clinics are hereby released from liability by simple of such disclosure.</string>
+     it\'s Medical Service Units/Teams and its Accredited Clinic/Hospitals are hereby released from liability by simple of such disclosure.</string>
 
     <string name="consult_text_dummy">
-        Hospital/Clinic : Medicard Lifestyle Center\n
+        Clinic/Hospital : Medicard Lifestyle Center\n
         Doctor : Dr. Stephanie Paraguas\n
         Specialization : Internal Medicine\n
         Date of Consultation : April 2, 2016\n
@@ -264,22 +270,27 @@
         in the actual prescription
     </string>
 
+    <!--Edited Agusust 10, 2017 -->
+    <!--<string name="note_upload">-->
+        <!--Note: Please attach a clear copy of your documents, maximum file size of 5MB.-->
+        <!--Acceptable file types are jpg, jpeg, tiff, pdf, doc, docx, xls, xlsx-->
+    <!--</string>-->
+
     <string name="note_upload">
-        Note: Please attach a clear copy of your documents, maximum file size of 5MB.
-        Acceptable file types are jpg, jpeg, tiff, pdf, doc, docx, xls, xlsx
+    Note: Please attach a clear image of your prescription, maximum file size of 5MB.
     </string>
 
     <string name="maternity_consulation">(MATERNITY CONSULATION)</string>
-    <string name="select_hospital_clinic_for_availment">Select Hospital/Clinic for Availment</string>
+    <string name="select_hospital_clinic_for_availment">Examination to be done at (Clinic/Hospital)</string>
     <string name="select_test_s">Select Test/s</string>
     <string name="reason_for_consult">Reason For Consult</string>
-    <string name="download_loa">Download LOA</string>
+    <string name="download_loa">Download Approval</string>
 
 
     <string name="maternity_consultation_not_available">
         Maternity Consultation is not available for the member.
     </string>
-    <string name="tap_to_view">To view your information or to request a LOA, tap your display picture</string>
+    <string name="tap_to_view">To view your information or to request an Approval, tap your display picture</string>
 
     <string name="doctor_with_app">
         You may go directly to the consulting doctor and present the Reference QR code.
@@ -295,8 +306,8 @@
     </string>
 
     <string name="doctor_without_app2">
-        Doctor has no app. Please print 2 copies of the downloaded LOA form to present directly to your consulting doctor or
-            go to the coordinator for the issuance of LOA.
+        Doctor has no app. Please print 2 copies of the downloaded Approval form to present directly to your consulting doctor or
+            go to the coordinator for the issuance of Approval.
     </string>
 
     <string name="login">Login</string>
@@ -310,11 +321,11 @@
         Schedule of the doctor is subject to changes. Please call the clinic or coordinator for confirmation
     </string>
     <string name="no_data_found">No data found.</string>
-    <string name="prescription_other_attachment">Prescription / Other Attachment</string>
+    <string name="prescription_other_attachment">Prescription / Consultation Form</string>
 
     <string name="disclaimer_info">
-        Please print 2 copies of the dowloaded LOA form to present directly to your consulting doctor
-        or go to the Coordinator for the issuance of LOA.
+        Please print 2 copies of the dowloaded Approval form to present directly to your consulting doctor
+        or go to the Coordinator for the issuance of Approval.
         \n\n
         This shall be subject to existing benefits and actual available limits under the plan.
         Member may still be billed for the amount.
@@ -326,10 +337,10 @@
         or her illness. MediCard and it\'s representatives are also free to disclose the said information including utilization data
         of the patient to it\'s concerned Company upon demand of the latter for such other legal purpose it may have
         including for the proper administration of the Company\'s health benefits program. MediCard and it\'s representatives,
-        it\'s Medical Service Units/Teams and its Accredited Hospital/Clinics are hereby released from liability by simple of such disclosure.
+        it\'s Medical Service Units/Teams and its Accredited Clinic/Hospitals are hereby released from liability by simple of such disclosure.
     </string>
     <string name="waiver_title">Waiver</string>
-    <string name="view_loa">View LOA</string>
+    <string name="view_loa">View Approval</string>
 
     <string name="mc_06">All tests that will be selected should be done in this clinic/hospital. Are you sure you want to select this clinic/hospital?</string>
     <string name="mc_07">This approval serves as your request form. There is no need to go to Medicard Coordinator. You may go directly to the consulting doctor and present this approval.
@@ -344,9 +355,11 @@
     <string name="title_activity_diagnosis">Diagnosis</string>
     <string name="title_activity_test_by_diagnosiscode">Test By Diagnosis Code</string>
     <string name="title_activity_diagnosis_tally">Diagnosis tally</string>
+    <string name="NO_CONNECTION_TO_SERVER">Cannot connect to MACE server</string>
 
     <string name="alert">Alert</string>
     <string name="alert_cancel_procedure">Are you sure you want to cancel? this procedure will be disregard.</string>
+    <string name="alert_submit_test">Are you sure you want yo submit the request?</string>
 
     <string name="field_required">This field is required.</string>
 
@@ -358,8 +371,10 @@
 
     <string name="alert_cancel_new_request">Are you sure you want to cancel this request?</string>
     <string name="alert_mace_success">MaceTest successully submitted.</string>
-    <string name="request_new_approval">Request LOA of Prescribed Test</string>
+    <string name="request_new_approval">Request Approval for Prescribed Test</string>
     <string name="prescribed_test_empty">No List of Consultation with Prescribed Test</string>
+    <string name="with_provider_prescribed_test">Tap a consultation from the list if the prescribed test came from the Provider app</string>
+    <string name="with_exisitng_consulation_form">Tap the Request Approval for Prescribed Test button if you have a prescription from the doctor </string>
 
     <!-- all module text here -->
 </resources>

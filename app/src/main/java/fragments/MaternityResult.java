@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -41,6 +42,7 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
+import utilities.Constant;
 import utilities.FileUtils;
 import utilities.GenderPicker;
 import utilities.PdfGenerator;
@@ -68,8 +70,13 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
     @BindView(R.id.ll_approved_effective_date)
     LinearLayout ll_approved_effective_date;
 
-    @BindView(R.id.tvWithAppUser) TextView tvWithAppUser;
-    @BindView(R.id.tvWithAppUser2) TextView tvWithAppUser2;
+    @BindView(R.id.tvWithAppUser)
+    TextView tvWithAppUser;
+    @BindView(R.id.tvWithAppUser2)
+    TextView tvWithAppUser2;
+
+    @BindView(R.id.tv_sub_title)
+    TextView tv_sub_title;
 
 
     LinearLayout ll_disapproved1, ll_disapproved3, ll_disapproved2;
@@ -100,6 +107,7 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
     private static final String ARG_valDate = "valDate";
     private static final String ARG_withProvider = "wWithProvider";
     private static final String KEY_BATCH_CODE = "batchCode";
+    private static final String ARG_MEMSTAT = "memStat";
 
     String refCode;
     String memId;
@@ -113,8 +121,8 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
     String reqDate;
     String valDate;
     String withProvider;
-
     String batchCode;
+    String memStat;
 
     public MaternityResult() {
         // Required empty public constructor
@@ -127,7 +135,8 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
                                               String getRequest, String getReqDate,
                                               String getValDate, String getWithProvider,
                                               String doctor_u, String doc_room, String hosp_contact,
-                                              String hosp_contact_per, String hosp_u, String batchCode) {
+                                              String hosp_contact_per, String hosp_u, String batchCode,
+                                              String memStat) {
         MaternityResult fragment = new MaternityResult();
         Bundle args = new Bundle();
         args.putString(ARG_refCode, getRefCode);
@@ -143,8 +152,10 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         args.putString(ARG_reqDate, getReqDate);
         args.putString(ARG_withProvider, getWithProvider);
         args.putString(KEY_BATCH_CODE, batchCode);
+        args.putString(ARG_MEMSTAT, memStat);
         fragment.setArguments(args);
         return fragment;
+
     }
 
     @Override
@@ -152,21 +163,26 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             Timber.d("refCode %s", getArguments().getString(ARG_refCode));
-
-            refCode = getArguments().getString(ARG_refCode);
-            memId = getArguments().getString(ARG_memId);
-            age = getArguments().getString(ARG_age);
-            name = getArguments().getString(ARG_name);
-            gender = getArguments().getString(ARG_gender);
-            company = getArguments().getString(ARG_company);
-            remark = getArguments().getString(ARG_remark);
-            condition = getArguments().getString(ARG_condition);
-            request = getArguments().getString(ARG_request);
-            valDate = getArguments().getString(ARG_valDate);
-            reqDate = getArguments().getString(ARG_reqDate);
-            withProvider = getArguments().getString(ARG_withProvider);
-
-            batchCode = getArguments().getString(KEY_BATCH_CODE);
+            try {
+                refCode = getArguments().getString(ARG_refCode);
+                memId = getArguments().getString(ARG_memId);
+                age = getArguments().getString(ARG_age);
+                name = getArguments().getString(ARG_name);
+                gender = getArguments().getString(ARG_gender);
+                company = getArguments().getString(ARG_company);
+                remark = getArguments().getString(ARG_remark);
+                condition = getArguments().getString(ARG_condition);
+                request = getArguments().getString(ARG_request);
+                valDate = getArguments().getString(ARG_valDate);
+                reqDate = getArguments().getString(ARG_reqDate);
+                withProvider = getArguments().getString(ARG_withProvider);
+                batchCode = getArguments().getString(KEY_BATCH_CODE);
+                memStat = getArguments().getString(ARG_MEMSTAT);
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         alertDialogCustom = new AlertDialogCustom();
@@ -275,14 +291,31 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
     }
 
     private void setDetails() {
-        img_qrcode.setVisibility(View.VISIBLE);
-        img_qrcode.setImageBitmap(qrCodeCreator.getBitmapFromString(refCode));
 
-        tv_contact_person.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, context));
+
+        tv_contact_person.setVisibility(View.GONE); //This txtView is empty because the return is null
+
         tv_contact.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, context));
         tv_sched.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_U, context));
         tv_spec.setText(ResultSetters.specSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, context)));
         tv_sched_doctor.setText(ResultSetters.schedSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_U, context)));
+        /*
+           Testing (if the memberstatus is not active
+           the request is automatically pending)
+           there is no refCode
+         */
+        try {
+            img_qrcode.setVisibility(View.VISIBLE);
+            img_qrcode.setImageBitmap(qrCodeCreator.getBitmapFromString(refCode));
+        } catch (Exception e) {
+            img_qrcode.setVisibility(View.GONE);
+        }
+
+        tv_sub_title.setText(Constant.SUBTITLEPENDING);
+
+
+        tvWithAppUser.setText(R.string.disclaimer_info);
+
 
         tv_ref_code.setText("Reference No: " + refCode);
         tv_hospName.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, context));
@@ -303,25 +336,43 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         tv_remarks.setText(remark);
         tv_condition.setText(condition);
 
-        tv_title.setText(ResultSetters.titleSetter(request));
+        tv_title.setText(ResultSetters.titleSetter(memStat));
 
+        int position = valDate.indexOf("to");
+        Timber.d("sxz %s", valDate);
+        String validFrom = valDate.substring(0, position - 1);
+        String validUntil = valDate.substring(position + 2);
 
         tv_date_requested.setText(reqDate);
         tv_date.setText(valDate);
-        if (tv_title.getText().toString().trim().equals(ResultSetters.REQUEST_APPROVED)) {
+
+
+        if (tv_title.getText().toString().trim().equalsIgnoreCase(ResultSetters.REQUEST_APPROVED)) {
             ll_approved_effective_date.setVisibility(View.VISIBLE);
             ll_approved_validity_date.setVisibility(View.VISIBLE);
             ll_disapproved3.setVisibility(View.VISIBLE);
             ll_disapproved2.setVisibility(View.VISIBLE);
             ll_disapproved1.setVisibility(View.VISIBLE);
             tv_disapproved.setVisibility(View.GONE);
-        } else {
+
+        } else if (tv_title.getText().toString().trim().equalsIgnoreCase(ResultSetters.REQUEST_APPROVAL)) {
             ll_approved_effective_date.setVisibility(View.GONE);
             ll_approved_validity_date.setVisibility(View.GONE);
             ll_disapproved3.setVisibility(View.GONE);
             ll_disapproved2.setVisibility(View.GONE);
             ll_disapproved1.setVisibility(View.GONE);
-            tv_disapproved.setVisibility(View.VISIBLE);
+            tv_disapproved.setVisibility(View.GONE);
+            tv_disapproved.setVisibility(View.GONE);
+            tv_sub_title.setVisibility(View.VISIBLE);
+            btn_shot.setVisibility(View.GONE);
+        } else {
+            ll_approved_effective_date.setVisibility(View.GONE);
+            ll_approved_validity_date.setVisibility(View.GONE);
+            ll_disapproved3.setVisibility(View.GONE);
+            ll_disapproved2.setVisibility(View.VISIBLE);
+            ll_disapproved1.setVisibility(View.GONE);
+            tv_disapproved.setVisibility(View.GONE);
+            tv_disapproved.setVisibility(View.GONE);
         }
 
         ResultSetters.setDoctorWithProvider(withProvider, tv_doc_app);

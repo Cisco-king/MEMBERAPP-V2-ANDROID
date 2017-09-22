@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.medicard.member.R;
@@ -95,7 +96,9 @@ public class DiagnosisTallyAdapter extends RecyclerView.Adapter<DiagnosisTallyAd
         @BindView(R.id.tv_diagnosisName) TextView diagnosisName;
         @BindView(R.id.tv_testName) TextView testName;
         @BindView(R.id.btn_deleteDiagnosis)
-        Button btn_deleteDiagnosis;
+        ImageButton btn_deleteDiagnosis;
+        @BindView(R.id.ibDiagnosis)
+        ImageButton ibDiagnosis;
 
 
 
@@ -103,6 +106,7 @@ public class DiagnosisTallyAdapter extends RecyclerView.Adapter<DiagnosisTallyAd
             super(itemView);
             ButterKnife.bind(this, itemView);
             btn_deleteDiagnosis.setOnClickListener(this);
+            ibDiagnosis.setOnClickListener(this);
         }
         public void bind(String primaryDiagnosisName, String diagnosisDetails){
             diagnosisName.setText(primaryDiagnosisName);
@@ -114,10 +118,14 @@ public class DiagnosisTallyAdapter extends RecyclerView.Adapter<DiagnosisTallyAd
         public void onClick(View v) {
             if(v.getId() == R.id.btn_deleteDiagnosis){
                 onDiagnosisClickListener.onRemoveDiagnosis(getAdapterPosition());
+            }else if(v.getId() == R.id.ibDiagnosis){
+                onDiagnosisClickListener.onEditDiagnosis(getAdapterPosition());
             }
         }
     }
     public interface OnDiagnosisClickListener{
         void onRemoveDiagnosis(int position);
+
+        void onEditDiagnosis(int position);
     }
 }

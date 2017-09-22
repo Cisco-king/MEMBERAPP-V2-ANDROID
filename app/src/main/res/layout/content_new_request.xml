@@ -33,10 +33,12 @@
                 android:elevation="8dp">
 
                 <LinearLayout
+                    android:id="@+id/ll_reasonForConsult"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/_10dp">
+                    android:padding="@dimen/_10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -73,10 +75,12 @@
 
                 <!--Reason For Consultation content and layout-->
                 <LinearLayout
+                    android:id="@+id/ll_doctorResult"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="@dimen/_10dp">
+                    android:padding="@dimen/_10dp"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -88,7 +92,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Requesting Doctor:"
+                            android:text="Requesting Physician:"
                             android:textStyle="bold" />
 
                         <TextView
@@ -113,53 +117,7 @@
             </android.support.v7.widget.CardView>
 
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cvHospitalClinicForAvailment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/sub_margin"
-                android:elevation="8dp">
 
-                <!--Hospital/Clinic for Availment content and layout-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/_10dp">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/textView9"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Hospital/Clinic for Availment"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvHospitalAvailment"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="Loading Hospital" />
-
-                    </LinearLayout>
-
-                    <ImageButton
-                        android:id="@+id/ibHospitalClinic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:background="@color/transparent"
-                        android:src="@drawable/ic_arrow_next" />
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
 
 
             <android.support.v7.widget.CardView
@@ -173,10 +131,12 @@
 
                 <!--Primary content and layout-->
                 <LinearLayout
+                    android:id="@+id/ll_primaryDiagnosisResult"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="@dimen/_10dp">
+                    android:padding="@dimen/_10dp"
+                    android:visibility="gone">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvDiagnosisDetails"
@@ -206,10 +166,12 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_otherDiagnosis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="@dimen/_10dp">
+                    android:padding="@dimen/_10dp"
+                    android:visibility="gone">
 
 
                     <android.support.v7.widget.RecyclerView
@@ -284,6 +246,54 @@
                         android:id="@+id/rvAttachments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvHospitalClinicForAvailment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/sub_margin"
+                android:elevation="8dp">
+
+                <!--Hospital/Clinic for Availment content and layout-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_10dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/select_hospital_clinic_for_availment"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvHospitalAvailment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="Loading Hospital" />
+
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/ibHospitalClinic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/transparent"
+                        android:src="@drawable/ic_arrow_next" />
 
                 </LinearLayout>
 

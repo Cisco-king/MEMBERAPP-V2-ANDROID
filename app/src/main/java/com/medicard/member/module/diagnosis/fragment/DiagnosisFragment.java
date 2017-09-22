@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
+
 import java.util.Collections;
 
 import com.medicard.member.R;
@@ -38,12 +39,16 @@ public class DiagnosisFragment extends BaseFragment
         implements DiagnosisMvp.View, RecyclerViewOnClickListener {
 
 
-    @BindView(R.id.edSearchDiagnosis) TextView edSearchDiagnosis;
-    @BindView(R.id.rvHospitalDiagnosis) RecyclerView rvHospitalDiagnosis;
-    @BindView(R.id.tvMessage) TextView tvMessage;
+    @BindView(R.id.edSearchDiagnosis)
+    TextView edSearchDiagnosis;
+    @BindView(R.id.rvHospitalDiagnosis)
+    RecyclerView rvHospitalDiagnosis;
+    @BindView(R.id.tvMessage)
+    TextView tvMessage;
 
     private DiagnosisMvp.Presenter presenter;
     private DiagnosisNavigator navigator;
+
 
     private DiagnosisAdapter diagnosisAdapter;
     private AlertDialogCustom alertDialog;
@@ -119,7 +124,6 @@ public class DiagnosisFragment extends BaseFragment
         System.out.println("BLAH BLAH BLAH " + diagnosisTestsList.size());
 
         loader.stopLoad();
-
         this.diagnosisList = diagnosisList;
         //Sorting DiagnosisList Alphabetically
         Collections.reverse(diagnosisList);

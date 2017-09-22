@@ -191,7 +191,7 @@ public class fragment_memberInfo extends Fragment
                         Log.d(TAG, memberInfo.toString());
                         Log.d(TAG, memberInfo.getMemberInfo().getPRIN_CODE());
                                header.add(memberInfo.getMemberInfo());
-                        SharedPref.setStringValue(SharedPref.USER , SharedPref.AGE , header.get(0).getAGE() ,getActivity());
+                        SharedPref.setStringValue(SharedPref.USER , SharedPref.AGE , header.get(0).getAGE() ,getContext());
                         SharedPref.setStringValue(SharedPref.USER , SharedPref.GENDER , header.get(0).getMEM_SEX() ,getActivity());
 
                         arrayAccounts.addAll(memberInfo.getDependents());

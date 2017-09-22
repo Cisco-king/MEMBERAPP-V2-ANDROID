@@ -44,6 +44,12 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/btn_sort"
         android:layout_below="@+id/textView2"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        android:alpha="70"
+        android:scrollbarThumbVertical="@color/colorAccent"
+        android:scrollbarSize="12dp"
+        android:scrollbarStyle="outsideInset"
         android:visibility="gone" />
 
     <TextView

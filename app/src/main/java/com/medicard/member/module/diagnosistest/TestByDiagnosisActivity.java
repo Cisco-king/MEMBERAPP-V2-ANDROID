@@ -27,12 +27,14 @@ import com.tapadoo.alerter.Alerter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.medicard.member.*;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.newtest.DiagnosisProcedure;
+import modules.prescriptionattachment.PrescriptionAttachmentActivity;
 import modules.procedure.adapter.ProcedureAdapter;
 import modules.requestnewapproval.RequestNewActivity;
 import modules.tests.Tests;
@@ -58,6 +60,7 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
     public static final String TESTSFORACTIVITY = "testsforActivity";
     public static final String DIAGNOSISFORACTIVITY = "DiagnosisForActivity";
     public static final String BUNDLEFORACTIVITY = "bundle";
+    public static final int requestCodeTest = 104;
 
     @BindView(R.id.rvProcedures)
     RecyclerView rvProcedures;
@@ -107,16 +110,28 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
 
         fromTest = getIntent().getBooleanExtra(RequestNewActivity.FROM_TEST, false);
         edSearchProcedures.addTextChangedListener(new Search());
-
+        diagnosis = new Diagnosis("998", "LABORATORY");
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra(diagnosisBundle);
-        try{
+        try {
             diag = (Diagnosis) args.getSerializable(DiagnosisActivity.DiagnosisActivity);
-        }catch (Exception e){
+            if (null == diag) {
+                try {
+                    presenter.loadTestProcedureByDiagnosisCode(diagnosis.getDiagCode());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }else{
+                try {
+                    presenter.loadTestProcedureByDiagnosisCode(diag.getDiagCode());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
 
 
         if (fromTest) {
@@ -133,13 +148,11 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
         loader.startLad();
         loader.setMessage("Loading resource");
 
-        diagnosis = DiagnosisSession.getDiagnosis();
 
         rvProcedures.setLayoutManager(new LinearLayoutManager(context));
 
-        Timber.d("this is the diagnosis %s", diagnosis.getDiagCode());
 
-        presenter.loadTestProcedureByDiagnosisCode(diagnosis.getDiagCode());
+
     }
 
     @OnClick(R.id.fbDone)
@@ -153,7 +166,12 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
                 diagtests = new DiagnosisTests();
                 diagtests.setTests(testToPass);
 
-                diagtests.setDiagnosis(diag);
+                if (null == diag) {
+                    diagtests.setDiagnosis(diagnosis);
+                    onActivityResult(RESULT_OK, TestByDiagnosisActivity.requestCodeTest, getIntent());
+                } else {
+                    diagtests.setDiagnosis(diag);
+                }
                 List<DiagnosisTests> diagALL = DiagnosisTestSession.getAllDiagnosisTests();
                 if (diagALL.size() == 0) {
                     DiagnosisTestSession.setDiagnosisTests(diagtests);
@@ -169,12 +187,10 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
                         .setBackgroundColor(R.color.orange_a200)
                         .show();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 
 
     @Override
@@ -201,6 +217,31 @@ public class TestByDiagnosisActivity extends BaseActivity implements TestByDiagn
     @Override
     public void onError(String message) {
         loader.stopLoad();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (requestCode == DiagnosisActivity.requestCodeDiagnosis && resultCode == RESULT_OK) {
+                if (getSelectedTests() != null && getSelectedTests().size() > 0) {
+                    List<Test> testToPass = getSelectedTests();
+                    Bundle args = new Bundle();
+                    args.putSerializable(TESTSFORACTIVITY, (Serializable) testToPass);
+                    Intent goToPrescription = new Intent(this, PrescriptionAttachmentActivity.class);
+                    goToPrescription.putExtra(BUNDLEFORACTIVITY, args);
+                    startActivityForResult(goToPrescription, requestCodeTest);
+
+                } else
+                    Alerter.create(this)
+                            .setText("Please select Test(s) to proceed.")
+                            .setBackgroundColor(R.color.orange_a200)
+                            .show();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -26,7 +26,7 @@ import model.RequestResult;
 
 public class AlertDialogCustom {
 
-    public String A_VALID_PIN = "A valid PIN is required to Request for LOA. Please register PIN through Account Settings";
+    public String A_VALID_PIN = "A valid PIN is required to Request for Approval. Please register PIN through Account Settings";
     public String EMAIL_message = "Invalid email Address. Please try again.";
     public String success_pin_message = "You have successfully registered a PIN.";
     public String PASSWORD_CRED_message = "Password must have at least one (1) capitalized letter, one (1) number and a minimum of eight (8) characters.";
@@ -38,16 +38,16 @@ public class AlertDialogCustom {
     public String CONGRATULATIONS_title = "Success!";
     public String CONGRATULATIONS_message = "You have successfully created an account. Please login to begin.";
 
-    public String Saved_Screenshot = "LOA Request has been saved to MediCard folder in your photo gallery.";
+    public String Saved_Screenshot = "Approval Request has been saved to MediCard folder in your photo gallery.";
 
     public String ALREADY_message = "Account is already existing.";
     public String MemberAccountDidNotMatch = "Date of Birth does not match with MediCard ID number.";
     public String HOLD_ON_title = "Hold On";
 
-    public String close_loa = "Are you sure you to cancel LOA request?";
+    public String close_loa = "Are you sure you to cancel Approval request?";
     public String UsernameMinimumCharacter = "Username must contain a minimum of 3 characters.";
     public String InvalidUsername = "Username invalid. It must not contain blank spaces.";
-    public String spec_not_good = "Please proceed to Coordinator to request for LOA.";
+    public String spec_not_good = "Please proceed to Coordinator to request for Approval.";
 
     public String noSpecialCharacter = "Please use only letters (a-z), numbers, and periods.";
 
@@ -86,11 +86,13 @@ public class AlertDialogCustom {
     public String start_must_lesser = "Start Date should be lesser than End Date.";
     public String data_not_avilable = "List is not available";
     public String successfully_updated = "Setting is successfully updated.";
+    public String skipDiagnosis = "You can skip this screen";
+    public String skipDiagnosisAlert = "Alert";
 
     public static final String LOA_GENERATE_PDF_SUCCESS =
             "Saved to \"MediCard\" folder";
 
-    public static final String SAVE_LOA_REQUEST = "Saved to \"My LOA Request\"";
+    public static final String SAVE_LOA_REQUEST = "Saved to \"My Approval Request\"";
 
     TextView tv_message, tv_title;
     CircleImageView ci_error_image;
@@ -136,7 +138,6 @@ public class AlertDialogCustom {
     }
 
     /**
-     *
      * @param context
      * @param title
      * @param message
@@ -165,11 +166,11 @@ public class AlertDialogCustom {
 
         dialog.findViewById(R.id.btnViewLoa)
                 .setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onViewPdf();
-            }
-        });
+                    @Override
+                    public void onClick(View v) {
+                        listener.onViewPdf();
+                    }
+                });
 
         setDetails(context, message, title, errorImage, btn_accept);
 
@@ -416,7 +417,11 @@ public class AlertDialogCustom {
             }
         });
 
-        tv_message.setText(requestResult.getResponseDesc());
+        try {
+            tv_message.setText(requestResult.getResponseDesc());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -456,6 +461,7 @@ public class AlertDialogCustom {
 
     public interface OnCustomDialogClickListener {
         void onOkClick();
+
         void onViewPdf();
     }
 

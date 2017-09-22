@@ -32,26 +32,39 @@ import utilities.ViewUtilities;
 
 public class RequestButtonsActivity extends AppCompatActivity {
 
+
+    /*
+        Declaration
+     */
     public static final String TAG =
             RequestButtonsActivity.class.getSimpleName();
 
     public static final String MALE = "1";
 
+
+    //********************************************
     public static final String ORIGIN = "ORIGIN";
     public static final String CONSULT = "CONSULT";
     public static final String MATERNITY = "MATERNITY";
     public static final String TEST = "TEST";
     public static final String TO_DETAILS_ACT = "TO_DETAILS_ACT";
+    //********************************************
 
     public static final int OLD_LAYOUT = 0;
     public static final int NEW_LAYOUT = 1;
 
+    private String MEMBERSTATUS = "";
 
-    @BindView(R.id.cvConsultanty) CardView cvConsultanty;
-    @BindView(R.id.cvMaternityConsultation) CardView cvMaternityConsultation;
-    @BindView(R.id.cvTests) CardView cvTests;
 
-    @BindView(R.id.btn_back) FancyButton btn_back;
+    @BindView(R.id.cvConsultanty)
+    CardView cvConsultanty;
+    @BindView(R.id.cvMaternityConsultation)
+    CardView cvMaternityConsultation;
+    @BindView(R.id.cvTests)
+    CardView cvTests;
+
+    @BindView(R.id.btn_back)
+    FancyButton btn_back;
 
     Unbinder unbinder;
 
@@ -73,9 +86,9 @@ public class RequestButtonsActivity extends AppCompatActivity {
 
         boolean hasMaternity = SharedPref.getBooleanValue(this, SharedPref.KEY_HAS_MATERNITY);
 
+        MEMBERSTATUS = getIntent().getExtras().getString(Constant.MEM_STATUS);
 
         String gender = getIntent().getExtras().getString(Constant.GENDER);
-
 
 
         databaseHandler = new DatabaseHandler(context);
@@ -100,18 +113,27 @@ public class RequestButtonsActivity extends AppCompatActivity {
 
     @OnClick(R.id.cvConsultanty)
     public void onStartConsultanty() {
-        gotoRequest(CONSULT);
+        try{
+            gotoRequest(CONSULT);
+        }catch (Exception e){
+            e.printStackTrace();
+            onStartConsultanty(); //Retry again to do a Consultation Result
+        }
+
     }
 
+
+    /*
+        Onlick Move to Request Maternity
+     */
     @OnClick(R.id.cvMaternityConsultation)
     public void onStartMaternityConsultation() {
-        /*if (getIntent().getExtras().getString(Constant.GENDER).equals("1")) {
-            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.maternity_not_available, 1);
-        } else if (!SharedPref.getBooleanValue(this, SharedPref.KEY_HAS_MATERNITY)) {
-            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, getString(R.string.maternity_consultation_not_available), 1);
-        } else {*/
-            gotoRequest(MATERNITY);
-//        }
+        try {
+            gotoMaternity(MATERNITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+            onStartMaternityConsultation(); //Retry again to do a Maternity Consultation Result
+        }
     }
 
     @OnClick(R.id.cvTests)
@@ -156,22 +178,50 @@ public class RequestButtonsActivity extends AppCompatActivity {
 
         SharedPref.setStringValue(SharedPref.USER, SharedPref.DESTINATION, DESTINATION, context);
         AgeCorrector ageCorrector = new AgeCorrector();
-        Intent gotoMaternity = new Intent(context, HospitalListAcitivity.class);
-        gotoMaternity.putExtra(ORIGIN, TO_DETAILS_ACT);
-        gotoMaternity.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
-        gotoMaternity.putExtra(Constant.GENDER, getIntent().getExtras().getString(Constant.GENDER));
-        gotoMaternity.putExtra(Constant.NAME, getIntent().getExtras().getString(Constant.NAME));
-        gotoMaternity.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
-        gotoMaternity.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
-        gotoMaternity.putExtra(Constant.AGE, ageCorrector.age(getIntent().getExtras().getString(Constant.AGE)));
-        startActivity(gotoMaternity);
+        Intent gotoConsult = new Intent(context, HospitalListAcitivity.class);
+        gotoConsult.putExtra(ORIGIN, TO_DETAILS_ACT);
+        gotoConsult.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
+        gotoConsult.putExtra(Constant.GENDER, getIntent().getExtras().getString(Constant.GENDER));
+        gotoConsult.putExtra(Constant.BIRTHDAY, getIntent().getExtras().getString(Constant.BIRTHDAY));
+        gotoConsult.putExtra(Constant.NAME, getIntent().getExtras().getString(Constant.NAME));
+        gotoConsult.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
+        gotoConsult.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
+        gotoConsult.putExtra(Constant.AGE, ageCorrector.age(getIntent().getExtras().getString(Constant.AGE)));
+        gotoConsult.putExtra(Constant.MEM_STATUS, getIntent().getExtras().getString(Constant.MEM_STATUS));
+        startActivity(gotoConsult);
 
+    }
+
+
+    private void gotoMaternity(String DESTINATION) {
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.DESTINATION, DESTINATION, context);
+        AgeCorrector ageCorrector = new AgeCorrector();
+        Intent gtoMaternity = new Intent(context, HospitalListAcitivity.class);
+        gtoMaternity.putExtra(ORIGIN, TO_DETAILS_ACT);
+        gtoMaternity.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
+        gtoMaternity.putExtra(Constant.GENDER, getIntent().getExtras().getString(Constant.GENDER));
+        gtoMaternity.putExtra(Constant.BIRTHDAY, getIntent().getExtras().getString(Constant.BIRTHDAY));
+        gtoMaternity.putExtra(Constant.NAME, getIntent().getExtras().getString(Constant.NAME));
+        gtoMaternity.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
+        gtoMaternity.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
+        gtoMaternity.putExtra(Constant.AGE, ageCorrector.age(getIntent().getExtras().getString(Constant.AGE)));
+        gtoMaternity.putExtra(Constant.MEM_STATUS, MEMBERSTATUS);
+        startActivity(gtoMaternity);
     }
 
     public void startTest(int content) {
         if (content == NEW_LAYOUT) {
+            AgeCorrector ageCorrector = new AgeCorrector();
             Intent intent = new Intent(this, TestActivity.class);
-            SharedPref.setStringValue(SharedPref.USER,SharedPref.DESTINATION,TEST,context);
+            SharedPref.setStringValue(SharedPref.USER, SharedPref.DESTINATION, TEST, context);
+            intent.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
+            intent.putExtra(Constant.GENDER, getIntent().getExtras().getString(Constant.GENDER));
+            intent.putExtra(Constant.BIRTHDAY, getIntent().getExtras().getString(Constant.BIRTHDAY));
+            intent.putExtra(Constant.NAME, getIntent().getExtras().getString(Constant.NAME));
+            intent.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
+            intent.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
+            intent.putExtra(Constant.AGE, ageCorrector.age(getIntent().getExtras().getString(Constant.AGE)));
+            intent.putExtra(Constant.MEM_STATUS, MEMBERSTATUS);
             startActivity(intent);
         } else {
             Intent intent = new Intent(this, TestsActivity.class);

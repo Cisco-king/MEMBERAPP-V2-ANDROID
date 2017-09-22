@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/mini_margin"
             android:background="@color/colorPrimaryDark"
-            android:text="OK"
+            android:text="YES"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
 
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/mini_margin"
             android:background="@color/colorPrimaryDark"
-            android:text="Cancel"
+            android:text="NO"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
 

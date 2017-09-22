@@ -86,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/fab_margin"
-            android:src="@drawable/ic_person_add_white"
+            android:src="@drawable/ic_letter_icon"
             app:backgroundTint="@android:color/white"
             app:elevation="6dp"
             app:pressedTranslationZ="12dp" />

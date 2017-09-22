@@ -567,6 +567,8 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/ll_linearDentalBenefits"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -603,7 +605,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/sub_margin"
                 android:gravity="center"
-                android:text="@string/request_for_loa"
+                android:text="@string/request_for_approval_request"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_small"
                 android:visibility="invisible" />
@@ -613,7 +615,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/fab_margin"
-                android:src="@drawable/ic_person_add_white"
+                android:src="@drawable/pending"
                 app:backgroundTint="@android:color/white"
                 app:elevation="6dp"
                 app:pressedTranslationZ="12dp" />

@@ -49,21 +49,25 @@ public class HospitalAdapter extends RecyclerView.Adapter<HospitalAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        HospitalList hospitalModel = array.get(position);
+        holder.name.setText(hospitalModel.getHospitalName());
+        holder.tv_address.setText(getStringName(hospitalModel.getStreetAddress()) + ", " +
+                getStringName(hospitalModel.getCity()) + ", " +
+                getStringName(hospitalModel.getProvince()) + ", " +
+                getStringName(hospitalModel.getRegion()));
+        try {
+            if (hospitalModel.getPhoneNo().isEmpty())
+                holder.contact.setText("NO CONTACT NUMBER");
+            else
+                holder.contact.setText("Tel. No: " + hospitalModel.getPhoneNo());
 
-        holder.name.setText(array.get(position).getHospitalName());
-        holder.tv_address.setText(getStringName(array.get(position).getStreetAddress()) + ", " +
-                getStringName(array.get(position).getCity()) + ", " +
-                getStringName(array.get(position).getProvince()) + ", " +
-                getStringName(array.get(position).getRegion()));
-        if(array.get(position).getPhoneNo().isEmpty() && array.get(position).getPhoneNo().length() ==0){
-            holder.contact.setVisibility(View.GONE);
-        }else{
-            holder.contact.setText("Tel. No: " + array.get(position).getPhoneNo());
-        }
-        if(null == array.get(position).getContactPerson() || (array.get(position).getContactPerson().isEmpty() && array.get(position).getContactPerson().length() ==0)){
-            holder.person.setVisibility(View.GONE);
-        }else{
-            holder.person.setText("Contact Person: " + array.get(position).getContactPerson());
+            if (null == hospitalModel.getContactPerson() || (hospitalModel.getContactPerson().isEmpty() && hospitalModel.getContactPerson().length() == 0)) {
+                holder.person.setVisibility(View.GONE);
+            } else {
+                holder.person.setText("Contact Person: " + hospitalModel.getContactPerson());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }

@@ -1,10 +1,15 @@
 package modules.requestnewapproval;
 
+import android.app.ProgressDialog;
+
 import com.medicard.member.core.model.DiagnosisTests;
 
+import java.io.File;
 import java.util.List;
 
 import model.Attachment;
+import model.AttachmentModel;
+import model.TestsModel;
 import model.newtest.DiagnosisDetails;
 import model.newtest.DiagnosisProcedure;
 import model.newtest.NewTestRequest;
@@ -32,6 +37,17 @@ public interface RequestNewMvp {
 
         void onRequestSuccess(MaceRequestResponse maceRequestResponse);
 
+        void onSuccessTestsResponse(String requestCode);
+
+        void onSuccessAttachmentResponse();
+
+        void internetConnected(TestsModel testsModel);
+
+        void noInternetConnection();
+
+
+
+
     }
 
     interface Presenter extends Mvp.Presenter<RequestNewMvp.View> {
@@ -45,6 +61,14 @@ public interface RequestNewMvp {
         void submitNewRequest(NewTestRequest newTestRequest);
 
         void submitTestRequest(DiagnosisTestRequest request, List<Attachment> attachments);
+
+        void requestForTests(TestsModel testsModel);
+
+        void checkOnline(TestsModel TestsModel);
+
+        void submitAttachments(File file, String requestCode);
+
+        void submitFinalAttachment(File file ,String requestCode);
 
     }
 

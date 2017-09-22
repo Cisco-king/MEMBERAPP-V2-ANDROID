@@ -51,9 +51,13 @@ public class DoctorActivity extends BaseActivity
 
     @Override
     public void onDoctorSelected() {
-        Timber.d("doctor %s and hospital %s", DoctorSession.getDoctor().getFullName(), DoctorSession.getDoctor().getHospitalName());
-        Timber.d("reason for consult %s", ConsultSession.getReasonForConsult());
-        transitionTo(new Intent(this, HospitalActivity.class));
+        try {
+            Timber.d("doctor %s and hospital %s", DoctorSession.getDoctor().getFullName(), DoctorSession.getDoctor().getHospitalName());
+            Timber.d("reason for consult %s", ConsultSession.getReasonForConsult());
+            transitionTo(new Intent(this, HospitalActivity.class));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -52,6 +53,7 @@ import constants.FileGenerator;
 import constants.PatientLaboratoryForm;
 import model.Attachment;
 import model.HospitalList;
+import model.newtest.AttachmentSession;
 import modules.prescriptionattachment.adapter.AttachmentAdapter;
 import modules.prescriptionattachment.adapter.AttachmentForTestAdapter;
 import rx.Observable;
@@ -81,7 +83,7 @@ import utilities.ViewUtilities;
 import v2.LoaPageActivity;
 import v2.RequestButtonsActivity;
 
-public class TestResults extends Fragment implements ScreenshotCallback{
+public class TestResults extends Fragment implements ScreenshotCallback {
 
     @BindView(R.id.sv_whole)
     ScrollView sv_whole;
@@ -190,8 +192,18 @@ public class TestResults extends Fragment implements ScreenshotCallback{
     @BindView(R.id.rvAttachments)
     RecyclerView rvAttachments;
 
+    //Updated August 13, 2017
+    @BindView(R.id.cvRequestPhysician)
+    CardView cvRequestPhysician;
+    @BindView(R.id.cardView3)
+    CardView cardView3;
+    @BindView(R.id.cardViewTest)
+    CardView cardViewTest;
+
+
     AttachmentForTestAdapter attachmentAdapter;
     Fragment fragment;
+    GenderPicker genderPicker = new GenderPicker();
 
     private PatientLaboratoryForm.Builder patientLaboratoryBuilder;
 
@@ -251,36 +263,36 @@ public class TestResults extends Fragment implements ScreenshotCallback{
     }
 
 
-    public static TestResults newInstance(String getRefCode, String getMemId,
+    public static TestResults newInstance(String getMemId,
                                           String getAge, String getName,
                                           String getGender, String getCompany,
-                                          String getCondition, String getRequest,
+                                          String getRequest,
                                           String getReqDate, String getValDate,
-                                          String doctor_u, String hosp_u, String batchCode,
-                                          String bday, ArrayList<Attachment> attachmentArrayList,
-                                          String getReasonForConsult, List<DiagnosisTests> diagnosisTestsList
+                                          String hosp_u,
+                                          String bday, ArrayList<Attachment> attachmentArrayList
+
     ) {
         TestResults fragment = new TestResults();
         Bundle args = new Bundle();
-        args.putString(ARG_refCode, getRefCode);
+        //args.putString(ARG_refCode, getRefCode);
         args.putString(ARG_memId, getMemId);
         args.putString(ARG_age, getAge);
         args.putString(ARG_name, getName);
         args.putString(ARG_gender, getGender);
         args.putString(ARG_company, getCompany);
         //  args.putString(ARG_remark, getRemark);
-        args.putString(ARG_condition, getCondition);
+        //args.putString(ARG_condition, getCondition);
         args.putString(ARG_request, getRequest);
         args.putString(ARG_valDate, getValDate);
         args.putString(ARG_reqDate, getReqDate);
         //       args.putString(ARG_withProvider, getWithProvider);
-        args.putString(ARG_DOCTORU, doctor_u);
+        //args.putString(ARG_DOCTORU, doctor_u);
         args.putString(ARG_HOSPU, hosp_u);
-        args.putString(KEY_BATCH_CODE, batchCode);
+        //args.putString(KEY_BATCH_CODE, batchCode);
         args.putString(ARG_BDAY, bday);
         args.putParcelableArrayList(ARG_ATTACHMENTS, attachmentArrayList);
-        args.putString(ARG_REASONFORCONSULT, getReasonForConsult);
-        args.putSerializable(ARG_DIAGNOSISTESTS, (Serializable) diagnosisTestsList);
+        //args.putString(ARG_REASONFORCONSULT, getReasonForConsult);
+        //args.putSerializable(ARG_DIAGNOSISTESTS, (Serializable) diagnosisTestsList);
 
         fragment.setArguments(args);
         return fragment;
@@ -290,26 +302,26 @@ public class TestResults extends Fragment implements ScreenshotCallback{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            refCode = getArguments().getString(ARG_refCode);
+            //refCode = getArguments().getString(ARG_refCode);
             memId = getArguments().getString(ARG_memId);
             age = getArguments().getString(ARG_age);
             name = getArguments().getString(ARG_name);
             gender = getArguments().getString(ARG_gender);
             company = getArguments().getString(ARG_company);
             remark = getArguments().getString(ARG_remark);
-            condition = getArguments().getString(ARG_condition);
+            //condition = getArguments().getString(ARG_condition);
             request = getArguments().getString(ARG_request);
             valDate = getArguments().getString(ARG_valDate);
             reqDate = getArguments().getString(ARG_reqDate);
-            withProvider = getArguments().getString(ARG_withProvider);
-            doctorU = getArguments().getString(ARG_DOCTORU);
+            //withProvider = getArguments().getString(ARG_withProvider);
+            //doctorU = getArguments().getString(ARG_DOCTORU);
             hospU = getArguments().getString(ARG_HOSPU);
-            batchCode = getArguments().getString(KEY_BATCH_CODE);
+            //batchCode = getArguments().getString(KEY_BATCH_CODE);
             bday = getArguments().getString(ARG_BDAY);
             attachments = getArguments().getParcelableArrayList(ARG_ATTACHMENTS);
-            reasonForConsult = getArguments().getString(ARG_REASONFORCONSULT);
-            diagnosisTestses = (List<DiagnosisTests>) getArguments().getSerializable(ARG_DIAGNOSISTESTS);
-            doctor = DoctorSession.getDoctor();
+            //reasonForConsult = getArguments().getString(ARG_REASONFORCONSULT);
+            //diagnosisTestses = (List<DiagnosisTests>) getArguments().getSerializable(ARG_DIAGNOSISTESTS);
+            //doctor = DoctorSession.getDoctor();
             hospital = HospitalSession.getHospital();
         }
 
@@ -346,6 +358,7 @@ public class TestResults extends Fragment implements ScreenshotCallback{
                             public void onOkClick() {
 
                                 DiagnosisTestSession.releaseContent();
+                                AttachmentSession.releaseContent();
                                 Intent intent = new Intent(context, NavigationActivity.class);
                                 startActivity(intent);
                             }
@@ -371,34 +384,36 @@ public class TestResults extends Fragment implements ScreenshotCallback{
 //        tv_sched_doctor.setText(ResultSetters.schedSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_U, context)));
 
 
-        // tv_ref_code.setText("Reference No: " + refCode);
-        //tv_ref_code2.setText(refCode);
+//         tv_ref_code.setText("Reference No: " + refCode);
+//        tv_ref_code2.setText(refCode);
         tv_hospName.append(getHospitalDetails(hospital));
 //        tv_hospAddress.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD, context));
         //      tv_hospAddress.setText(SharedPref.getPreferenceByKey(context, SharedPref.KEY_HOSPITAL_FULL_ADDRESS));
 
         //     tv_doc_det.setText(ResultSetters.descSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, context)));
-        tv_doc_name.setText(doctor.getFullName());
-        tv_doc_name.append(getDoctorDetails(doctor));
+//        tv_doc_name.setText(doctor.getFullName());
+//        tv_doc_name.append(getDoctorDetails(doctor));
 
         tv_validity_date.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.VAL_DATE, context));
         tv_effective_date.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.EFF_DATE, context));
         tv_member_code.setText(memId);
         tv_age.setText(age);
         tv_member_name.setText(name);
-        tv_gender.setText(gender);
+        tv_gender.setText(genderPicker.setGender((Integer.parseInt(gender))));
         tv_company.setText(company);
-        tv_primaryDiagnosis.setText(condition);
-        tv_remarks.setText(remark);
-        tv_condition.setText(condition);
-        tv_sub_title.setText(Constant.SUBTITLEPENDING);
+//        tv_primaryDiagnosis.setText(condition);
+        //      tv_remarks.setText(remark);
+        //    tv_condition.setText(condition);
 
-        tv_testNameResult.setText(diagnosisTestses.get(0).getTests().get(0).getProcedureName());
+
+        //  tv_testNameResult.setText(diagnosisTestses.get(0).getTests().get(0).getProcedureName());
 
         tv_bday.setText(bday);
 
         tv_title.setText(ResultSetters.titleSetter(request));
         tv_date_approved.setText(reqDate);
+
+        //img_qrcode.setImageBitmap(qrCodeCreator.getBitmapFromString(refCode));
 
         rvAttachments.setLayoutManager(new LinearLayoutManager(getContext()));
         attachmentAdapter = new AttachmentForTestAdapter(attachments);
@@ -406,10 +421,9 @@ public class TestResults extends Fragment implements ScreenshotCallback{
 
         tv_date_requested.setText(reqDate);
         tv_date.setText(valDate);
-//        img_qrcode.setVisibility(View.GONE);
-//        img_qrcode.setImageBitmap(qrCodeCreator.getBitmapFromString(refCode));
 
-        if (tv_title.getText().toString().trim().equals(ResultSetters.REQUEST_APPROVED)) {
+
+        if (tv_title.getText().toString().trim().equals(ResultSetters.REQUEST_TEST_APPROVED)) {
             setApproved();
         } else if (tv_title.getText().toString().trim().equals(ResultSetters.REQUEST_DISAPPROVED)) {
             setDisapproved();
@@ -430,8 +444,8 @@ public class TestResults extends Fragment implements ScreenshotCallback{
         patientLaboratoryBuilder = new PatientLaboratoryForm.Builder()
                 .validFrom(validFrom)
                 .validUntil(validUntil)
-                .referenceNumber(refCode)
-                .doctor(doctor.getFullName())
+                //              .referenceNumber(refCode)
+//                .doctor(doctor.getFullName())
                 .hospital(hospital.getHospitalName())
                 .memberName(name)
                 .age(AgeCorrector.age(SharedPref.getStringValue(SharedPref.USER, SharedPref.AGE, getActivity())))
@@ -440,9 +454,9 @@ public class TestResults extends Fragment implements ScreenshotCallback{
                 //  .remarks(remarkTemp)
                 .serviceType(FileGenerator.TEST)
                 .validityDate(SharedPref.getStringValue(SharedPref.USER, SharedPref.VAL_DATE, context))
-                .dateEffectivity(SharedPref.getStringValue(SharedPref.USER, SharedPref.EFF_DATE, context))
-                .diagnosis(condition)
-                .procedure(diagnosisTestses.get(0).getTests().get(0).getProcedureName());
+                .dateEffectivity(SharedPref.getStringValue(SharedPref.USER, SharedPref.EFF_DATE, context));
+        //            .diagnosis(condition)
+        //          .procedure(diagnosisTestses.get(0).getTests().get(0).getProcedureName());
 
 
 //        ResultSetters.setDoctorWithProvider(withProvider, tv_doc_app);
@@ -482,6 +496,11 @@ public class TestResults extends Fragment implements ScreenshotCallback{
         ll_approved_req.setVisibility(View.GONE);
         ll_ref_code_details.setVisibility(View.GONE);
         ll_pending.setVisibility(View.VISIBLE);
+        cvRequestPhysician.setVisibility(View.GONE);
+        cardView3.setVisibility(View.GONE);
+        cardViewTest.setVisibility(View.GONE);
+        btn_shot.setVisibility(View.GONE);
+
 //        tv_disclaimer.setVisibility(View.GONE);
         //   img_qrcode.setVisibility(View.GONE);
         ll_approved_validity.setVisibility(View.GONE);
@@ -489,8 +508,9 @@ public class TestResults extends Fragment implements ScreenshotCallback{
         ll_hospital_details.setVisibility(View.VISIBLE);
         tv_sub_title.setVisibility(View.VISIBLE);
         ll_ref_code_details.setVisibility(View.GONE);
-        ll_doctor_details.setVisibility(View.VISIBLE);
-        ll_primaryDiagnosis.setVisibility(View.VISIBLE);
+        ll_doctor_details.setVisibility(View.GONE);
+        ll_primaryDiagnosis.setVisibility(View.GONE);
+        tv_sub_title.setText(Constant.SUBTITLEPENDING);
 
 //        if (withProvider.equals(ResultSetters.WITHPROVIDER)) {
 //            tv_disclaimer.setText(getString(R.string.doctor_with_app));
@@ -514,6 +534,9 @@ public class TestResults extends Fragment implements ScreenshotCallback{
         ll_disapproved_req.setVisibility(View.GONE);
         ll_approved_validity.setVisibility(View.VISIBLE);
         ll_approved_req.setVisibility(View.VISIBLE);
+        ll_ref_code_details.setVisibility(View.VISIBLE);
+        tv_sub_title.setText(Constant.SUBTITLEAPPROVED);
+
 
     }
 
@@ -539,8 +562,8 @@ public class TestResults extends Fragment implements ScreenshotCallback{
                             .save(bitmap, callback);*/
 
                     PatientLaboratoryForm build = patientLaboratoryBuilder.build();
-                    if (FileUtils.fileExistance(build.getServiceType(),build.getReferenceNumber())) {
-                        onShowNotifyExistingPdfDialog(build.getServiceType(),build.getReferenceNumber());
+                    if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
+                        onShowNotifyExistingPdfDialog(build.getServiceType(), build.getReferenceNumber());
                     } else {
                         generateLoaForm(patientLaboratoryBuilder.build(), getResources().openRawResource(R.raw.test_form));
                     }
@@ -657,7 +680,7 @@ public class TestResults extends Fragment implements ScreenshotCallback{
         btn_ok.setVisibility(View.VISIBLE);
         btn_shot.setVisibility(View.VISIBLE);
         PatientLaboratoryForm build = patientLaboratoryBuilder.build();
-        onShowNotifyExistingPdfDialog(build.getServiceType(),build.getReferenceNumber());
+        onShowNotifyExistingPdfDialog(build.getServiceType(), build.getReferenceNumber());
         /*alertDialogCustom.showMe(
                 context,
                 alertDialogCustom.CONGRATULATIONS_title,
@@ -682,7 +705,8 @@ public class TestResults extends Fragment implements ScreenshotCallback{
             Toast.makeText(context, "No PDF Viewer Installed", Toast.LENGTH_LONG).show();
         }
     }
-    public void showLoaFormNoServicetype(Context context,String referenceNumber) {
+
+    public void showLoaFormNoServicetype(Context context, String referenceNumber) {
 
         try {
             File pdfFolder = new File(Environment.getExternalStoragePublicDirectory(
@@ -699,6 +723,7 @@ public class TestResults extends Fragment implements ScreenshotCallback{
             Toast.makeText(context, "No PDF Viewer Installed", Toast.LENGTH_LONG).show();
         }
     }
+
     public void onShowNotifyExistingPdfDialog(final String serviceType, final String referenceNumber) {
         btn_ok.setVisibility(View.VISIBLE);
         btn_shot.setVisibility(View.VISIBLE);
@@ -715,7 +740,6 @@ public class TestResults extends Fragment implements ScreenshotCallback{
                     }
                 });
     }
-
 
 
 }

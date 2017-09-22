@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +44,7 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 import utilities.AgeCorrector;
 import utilities.AlertDialogCustom;
+import utilities.Constant;
 import utilities.FileUtils;
 import utilities.GenderPicker;
 import utilities.ImageSaver;
@@ -168,6 +172,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     private static final String ARG_withProvider = "wWithProvider";
     private static final String ARG_approved = "aproved";
     private static final String KEY_BATCH_CODE = "batchCode";
+    private static final String ARG_memstatus = "memStatus";
 
     String refCode;
     String memId;
@@ -181,6 +186,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     String reqDate;
     String valDate;
     String withProvider;
+    String memStatus;
 
     String batchCode;
 
@@ -200,7 +206,8 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
                                                  String getRequest, String getReqDate,
                                                  String getValDate, String getWithProvider,
                                                  String doctor_u, String doc_room, String hosp_contact,
-                                                 String hosp_contact_per, String hosp_u, String batchCode
+                                                 String hosp_contact_per, String hosp_u, String batchCode,
+                                                 String mem_stat
     ) {
         ConsultationResult fragment = new ConsultationResult();
         Bundle args = new Bundle();
@@ -217,6 +224,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
         args.putString(ARG_reqDate, getReqDate);
         args.putString(ARG_withProvider, getWithProvider);
         args.putString(KEY_BATCH_CODE, batchCode);
+        args.putString(ARG_memstatus, mem_stat);
 
         fragment.setArguments(args);
         return fragment;
@@ -240,6 +248,9 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
             withProvider = getArguments().getString(ARG_withProvider);
 
             batchCode = getArguments().getString(KEY_BATCH_CODE);
+            memStatus = getArguments().getString(ARG_memstatus);
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
         }
 
         callback = this;
@@ -288,7 +299,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
 
     private void setDetails() {
 
-        tv_contact_person.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, context));
+        tv_contact_person.setVisibility(View.GONE); //this is empty string because the contact person of a hospital is unspecified.
         tv_contact.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, context));
         tv_sched.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_U, context));
         tv_spec.setText(ResultSetters.specSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, context)));
@@ -300,6 +311,12 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
         tv_hospName.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, context));
 //        tv_hospAddress.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD, context));
         tv_hospAddress.setText(SharedPref.getPreferenceByKey(context, SharedPref.KEY_HOSPITAL_FULL_ADDRESS));
+        try {
+            tv_contact_person.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, context));
+        }catch (Exception e){
+            e.printStackTrace();
+            tv_contact_person.setVisibility(View.GONE);
+        }
 
         tv_doc_det.setText(ResultSetters.descSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, context)));
         tv_doc_name.setText(ResultSetters.nameSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, context), context));
@@ -314,13 +331,19 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
         tv_remarks.setText(remark);
         tv_condition.setText(condition);
 
-        tv_title.setText(ResultSetters.titleSetter(request));
+        tv_title.setText(ResultSetters.titleSetter(memStatus));
         tv_date_approved.setText(reqDate);
+
+        tv_sub_title.setText(Constant.SUBTITLEPENDING);
 
         tv_date_requested.setText(reqDate);
         tv_date.setText(valDate);
-        img_qrcode.setVisibility(View.VISIBLE);
-        img_qrcode.setImageBitmap(qrCodeCreator.getBitmapFromString(refCode));
+        try {
+            img_qrcode.setVisibility(View.VISIBLE);
+            img_qrcode.setImageBitmap(qrCodeCreator.getBitmapFromString(refCode));
+        }catch (Exception e){
+            img_qrcode.setVisibility(View.GONE);
+        }
 
         if (tv_title.getText().toString().trim().equals(ResultSetters.REQUEST_APPROVED)) {
             setApproved();
@@ -375,10 +398,11 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
 
     private void setPending() {
 
-        ll_disapproved_req.setVisibility(View.VISIBLE);
+        ll_disapproved_req.setVisibility(View.GONE);
         ll_approved_req.setVisibility(View.VISIBLE);
         ll_ref_code_details.setVisibility(View.GONE);
-        ll_pending.setVisibility(View.VISIBLE);
+        ll_pending.setVisibility(View.GONE);
+        btn_shot.setVisibility(View.GONE);
 //        tv_disclaimer.setVisibility(View.GONE);
         //   img_qrcode.setVisibility(View.GONE);
         ll_approved_validity.setVisibility(View.GONE);
@@ -435,7 +459,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
                     if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
                         onShowNotifyExistingPdfDialog(build.getServiceType(), build.getReferenceNumber());
                     } else {
-                        generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.test_request_form));
+                        generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_lab_form));
                     }
 
                 }
@@ -455,7 +479,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 
-                    generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.test_request_form));
+                    generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_lab_form));
 
                 } else {
                     Timber.d("permission denied");

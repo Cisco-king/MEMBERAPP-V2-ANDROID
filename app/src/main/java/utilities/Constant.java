@@ -15,6 +15,8 @@ public class Constant {
     public static String GENDER = "GENDER";
     public static String COMPANY = "COMPANY";
     public static String STATUS = "STATUS";
+    //this string is used for Member status
+    public static String MEM_STATUS = "MEM_STATUS";
     public static String CANCELLED = "CANCELLED";
     public static String MEDICARD_ONLY = "MEDICARD_ONLY";
 
@@ -95,7 +97,13 @@ public class Constant {
      *This variable will be use in pending request in Tests
      * this will replace the value of R.id.tv_subTitle
      */
-    public static String SUBTITLEPENDING = "This request is subject for approval. \n Please wait for further advice.";
+    public static String SUBTITLEPENDING = "This request has been routed for approval.\n Go to My Approval Requests to view the status of the request. If there is no update within two hours, please call our Customer Support at 841-8080 or Toll Free: 1-800-1-888-9001. Globe Toll Free 1-800-8-944-8400.\n This request is valid for 60 days.";
+
+    /*
+     *This variable will be use in approved request in TESTS
+     * this will replace the value of R.id.tv_subtitle
+     */
+    public static String SUBTITLEAPPROVED  ="This approval shall be subjected to existing benefits and \n actual available limits under the plan. Member may still \n be billed for the amount paid. \n\n This serves as your approved request form. Please download, print and submit this to the cost center of the clinic/hospital. \n\n Availment is subject to hospital/clinic's availability of \n service";
 
     /*
      *These variable is used in RecyclerView attachments in Test
@@ -119,4 +127,22 @@ public class Constant {
      */
     public static String REASONFORCONSULT = "REASONFORCONSULT";
     public static String TESTSRESULTS = "TESTSRESULTS";
+
+    /*
+     *The following Strings are different types of Member Status
+     */
+    public static String ACTIVEMEMBER = "ACTIVE";
+    public static String ONHOLDMEMBER = "ON HOLD";
+    public static String FORREACTIVATION = "FOR REACTIVATION";
+    public static String VERIFYPAYMENTWRMD = "VERIFY PAYMENT WITH RMD";
+    public static String VERIFYRENEWAL = "VERIFY RENEWAL FROM MARKETING / SALES";
+    public static String VERIFYMEMBERSHIP = "VERIFY MEMBERSHIP";
+
+
+
+
+    // Directory name to store captured images and videos
+    public static final String IMAGE_DIRECTORY_NAME = "Android File Upload";
+
+    public static final String NO_CONNECTION_TO_SERVER = "CANNOT CONNECT TO SERVER";
 }

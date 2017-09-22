@@ -87,6 +87,14 @@ public class MaceRequest implements Serializable {
     @SerializedName("hospitalName")
     private String hospitalName;
 
+    @Expose
+    @SerializedName("hospitalAddress")
+    private String hospitalAddress;
+
+    @Expose
+    @SerializedName("hospitalContact")
+    private String hospitalContact;
+
 
     @SerializedName("memLname")
     @Expose
@@ -484,6 +492,21 @@ public class MaceRequest implements Serializable {
         this.requestDevice = requestDevice;
     }
 
+    public String getHospitalAddress() {
+        return hospitalAddress;
+    }
+
+    public void setHospitalAddress(String hospitalAddress) {
+        this.hospitalAddress = hospitalAddress;
+    }
+
+    public String getHospitalContact() {
+        return hospitalContact;
+    }
+
+    public void setHospitalContact(String hospitalContact) {
+        this.hospitalContact = hospitalContact;
+    }
 
     public Object getDisclaimerTicked() {
         return disclaimerTicked;
