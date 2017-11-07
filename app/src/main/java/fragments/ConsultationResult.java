@@ -431,6 +431,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
         ll_disapproved_req.setVisibility(View.GONE);
         ll_approved_validity.setVisibility(View.VISIBLE);
         ll_approved_req.setVisibility(View.VISIBLE);
+        btn_shot.setText("DOWNLOAD OUT-PATIENT CONSULTATION FORM");
 
     }
 
@@ -459,7 +460,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
                     if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
                         onShowNotifyExistingPdfDialog(build.getServiceType(), build.getReferenceNumber());
                     } else {
-                        generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_lab_form));
+                        generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form_member));
                     }
 
                 }
@@ -479,7 +480,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 
-                    generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_lab_form));
+                    generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form_member));
 
                 } else {
                     Timber.d("permission denied");

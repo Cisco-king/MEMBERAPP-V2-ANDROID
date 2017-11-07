@@ -33,7 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:layout_marginLeft="@dimen/_10dp"
             android:padding="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/prescription_other_attachment"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 

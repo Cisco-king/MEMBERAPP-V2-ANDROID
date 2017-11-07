@@ -354,6 +354,7 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
             ll_disapproved2.setVisibility(View.VISIBLE);
             ll_disapproved1.setVisibility(View.VISIBLE);
             tv_disapproved.setVisibility(View.GONE);
+            btn_shot.setText("DOWNLOAD OUT-PATIENT CONSULTATION FORM");
 
         } else if (tv_title.getText().toString().trim().equalsIgnoreCase(ResultSetters.REQUEST_APPROVAL)) {
             ll_approved_effective_date.setVisibility(View.GONE);
@@ -410,7 +411,7 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
                         if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
                             onShowNotifyExistingPdfDialog(build.getServiceType(), build.getReferenceNumber());
                         } else {
-                            generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form));
+                            generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form_member));
                         }
 
                     }
@@ -434,7 +435,7 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 
-                    generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form));
+                    generateLoaForm(loaFormBuilder.build(), getResources().openRawResource(R.raw.loa_consultation_form_member));
 
                 } else {
                     Timber.d("permission denied");

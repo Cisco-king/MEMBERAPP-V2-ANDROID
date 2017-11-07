@@ -97,7 +97,7 @@ public class Constant {
      *This variable will be use in pending request in Tests
      * this will replace the value of R.id.tv_subTitle
      */
-    public static String SUBTITLEPENDING = "This request has been routed for approval.\n Go to My Approval Requests to view the status of the request. If there is no update within two hours, please call our Customer Support at 841-8080 or Toll Free: 1-800-1-888-9001. Globe Toll Free 1-800-8-944-8400.\n This request is valid for 60 days.";
+    public static String SUBTITLEPENDING = "This request has been routed for approval.\n Go to My Approval Requests to view the status of the request. If there is no update within two hours, please call our Customer Support at 841-8080 or Toll Free: 1-800-1-888-9001. Globe Toll Free 1-800-8-944-8400.\n";
 
     /*
      *This variable will be use in approved request in TESTS
