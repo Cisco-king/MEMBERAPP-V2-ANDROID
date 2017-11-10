@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -57,6 +58,7 @@ import utilities.Loader;
 import utilities.NetworkTest;
 import utilities.PermissionUtililities;
 import utilities.QrCodeCreator;
+import utilities.RequestType;
 import utilities.ResultSetters;
 import utilities.SharedPref;
 import utilities.ViewUtilities;
@@ -65,7 +67,6 @@ import v2.module.loapage.LoaPagePresenter;
 
 public class LoaPageActivity extends AppCompatActivity
         implements LoaPage.View, ScreenshotCallback, LoaPageInterface {
-
 
     public static final String REFERENCE_NUMBER = "Reference No : ";
 
@@ -166,6 +167,17 @@ public class LoaPageActivity extends AppCompatActivity
 
     @BindView(R.id.tvDisclaimerInfo2)
     TextView tvDisclaimerInfo2;
+
+    //used for other test selected data
+    @BindView(R.id.cv_othertest_tests)
+    CardView cv_othertest_tests;
+    @BindView(R.id.rv_otherTest)
+    RecyclerView rv_otherTest;
+    @BindView(R.id.tv_total_title)
+    TextView tv_total_title;
+    @BindView(R.id.tv_total_price)
+    TextView tv_total_price;
+
 
     private int RESULT_GETTER;
     int position;
@@ -357,6 +369,11 @@ public class LoaPageActivity extends AppCompatActivity
             setApproved();
         }
 
+        if(loa.getRequestType().equalsIgnoreCase(RequestType.OTHER_TEST)){
+            setOtherTestData(loaList,position);
+        }
+
+
 
 //        String doctorInfo = new StringBuilder()
 //                .append(loa.getDoctorSpec())
@@ -395,6 +412,14 @@ public class LoaPageActivity extends AppCompatActivity
 
         //cas
         //Timber.d("WithProvider ......... %s", loa.getWithProvider());
+
+
+
+    }
+
+    private void setOtherTestData(List<MaceRequest> loaList,int position) {
+        loa = loaList.get(position);
+        cv_othertest_tests.setVisibility(View.VISIBLE);
 
     }
 

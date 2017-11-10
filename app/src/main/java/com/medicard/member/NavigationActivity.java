@@ -143,8 +143,6 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.tv_account_settings:
-
-
                 tv_header.setText("Account Settings");
 
                 fragment = null;
@@ -158,8 +156,6 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.btn_logOut:
-
-
                 new AlertDialog.Builder(context)
                         .setTitle("Hold On")
                         .setMessage("Are you sure you want to logout?")

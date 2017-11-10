@@ -72,6 +72,9 @@ public interface AppInterface {
     String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
     String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
 
+//    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8081/";
+//    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8081/downloadpicture/";
+
 //    String ENDPOINT = "http://10.10.24.195:8080/";
 //    String PHOTOLINK = "http://10.10.24.195:8080/downloadpicture/";
 

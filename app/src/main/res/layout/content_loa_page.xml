@@ -678,7 +678,6 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/sub_margin">
@@ -707,6 +706,69 @@
                             android:textColor="@color/BLACK" />
 
 
+                    </LinearLayout>
+
+
+                </android.support.v7.widget.CardView>
+
+                //display for selected other tests
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv_othertest_tests"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/sub_margin"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/other_test"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_small" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/rv_otherTest"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                >
+
+                            </android.support.v7.widget.RecyclerView>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="20dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_total_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_weight="1"
+                                android:text="Total:"
+                                android:textColor="@color/BLACK"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_total_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.02"
+                                android:text="0"
+                                android:textColor="@color/BLACK"
+                                android:textStyle="bold" />
+                        </LinearLayout>
                     </LinearLayout>
 
 

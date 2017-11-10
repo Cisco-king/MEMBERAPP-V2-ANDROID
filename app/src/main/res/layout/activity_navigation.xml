@@ -9,8 +9,6 @@
     tools:openDrawer="right">
 
 
-
-
     <include layout="@layout/app_bar_navigation" />
 
 

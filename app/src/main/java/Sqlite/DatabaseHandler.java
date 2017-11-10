@@ -23,7 +23,6 @@ import model.CitiesAdapter;
 import model.GetDoctorsToHospital;
 import model.HospitalList;
 import model.LoaFetch;
-import model.LoaList;
 import model.Provinces;
 import model.ProvincesAdapter;
 import model.SimpleData;

@@ -7,7 +7,6 @@ import java.util.List;
 
 import InterfaceService.LOARequestCallback;
 import model.Loa;
-import model.LoaList;
 import services.response.LoaListResponse;
 import timber.log.Timber;
 

@@ -25,7 +25,8 @@ import services.response.LoaListResponse;
 public class ViewLoaRetrieve {
 
     Context context;
-    public ViewLoaRetrieve(Context context){
+
+    public ViewLoaRetrieve(Context context) {
         this.context = context;
     }
 
@@ -35,14 +36,14 @@ public class ViewLoaRetrieve {
                 .enqueue(new Callback<LoaListResponse>() {
                     @Override
                     public void onResponse(Call<LoaListResponse> call, Response<LoaListResponse> response) {
-                        if(response.isSuccessful()){
+                        if (response.isSuccessful()) {
                             try {
-                                if(response.body()!=null){
+                                if (response.body() != null) {
                                     callback.onSuccess(response.body().getLoaList());
-                                }else {
+                                } else {
                                     callback.onFailure();
                                 }
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                                 callback.onFailure();
                             }
@@ -63,7 +64,7 @@ public class ViewLoaRetrieve {
         temp.clear();
     }
 
-    public interface ViewLoaRetrieveCallback{
+    public interface ViewLoaRetrieveCallback {
 
         void onSuccess(List<MaceRequest> maceRequests);
 

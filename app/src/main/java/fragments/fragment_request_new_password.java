@@ -31,7 +31,6 @@ import utilities.SnackBar;
 
 public class fragment_request_new_password extends Fragment {
 
-
     EditText et_emailAdd, et_member_code;
     Button btn_sendNewPassword;
     SnackBar snackBar;

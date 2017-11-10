@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+import services.model.LoaList;
+
 /**
  * Created by mpx-pawpaw on 2/15/17.
  */

@@ -19,9 +19,7 @@ import model.DoctorTest;
  * Created by John Paul Cas on 4/11/2017.
  */
 
-public class TestAdapter extends
-        RecyclerView.Adapter<TestAdapter.ViewHolder> {
-
+public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
     private Context context;
     private LayoutInflater inflater;
@@ -58,9 +56,12 @@ public class TestAdapter extends
     public class ViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        @BindView(R.id.tvHospitalName) TextView tvHospitalName;
-        @BindView(R.id.tvDoctorName) TextView tvDoctorName;
-        @BindView(R.id.tvDateOfConsultation) TextView tvDateOfConsultation;
+        @BindView(R.id.tvHospitalName)
+        TextView tvHospitalName;
+        @BindView(R.id.tvDoctorName)
+        TextView tvDoctorName;
+        @BindView(R.id.tvDateOfConsultation)
+        TextView tvDateOfConsultation;
 
         public ViewHolder(View itemView) {
             super(itemView);

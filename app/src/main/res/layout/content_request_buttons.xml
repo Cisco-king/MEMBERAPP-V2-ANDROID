@@ -285,11 +285,12 @@
                     android:layout_height="56dp"
                     android:src="@drawable/basic_test" />
 
+                //changed from Tests to Requests
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="@string/test"
+                    android:text="@string/request_title"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             </LinearLayout>

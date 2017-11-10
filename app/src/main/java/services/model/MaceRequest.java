@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import utilities.DateConverter;
 
@@ -221,6 +222,169 @@ public class MaceRequest implements Serializable {
     @Expose
     private String serviceType;
 
+    @SerializedName("groupedByCostCenters")
+    @Expose
+    private ArrayList<GroupedByCostCenter> groupedByCostCenters;
+
+    public ArrayList<GroupedByCostCenter> getGroupedByCostCenters() {
+        return groupedByCostCenters;
+    }
+
+    public void setGroupedByCostCenters(ArrayList<GroupedByCostCenter> groupedByCostCenters) {
+        this.groupedByCostCenters = groupedByCostCenters;
+    }
+
+    private class GroupedByCostCenter implements Serializable{
+        private String costCenter;
+
+        private String subTotal;
+
+        private String status;
+
+        private ArrayList<GroupedByDiag> groupedByDiag;
+
+        private class GroupedByDiag implements Serializable{
+
+            private Integer diagType;
+
+            private String diagDesc;
+
+            private String approvalNo;
+
+            private ArrayList<MappedTest> mappedTest;
+
+            public ArrayList<MappedTest> getMappedTest() {
+                return mappedTest;
+            }
+
+            public void setMappedTest(ArrayList<MappedTest> mappedTest) {
+                this.mappedTest = mappedTest;
+            }
+
+            public Integer getDiagType() {
+                return diagType;
+            }
+
+            public void setDiagType(Integer diagType) {
+                this.diagType = diagType;
+            }
+
+            public String getDiagDesc() {
+                return diagDesc;
+            }
+
+            public void setDiagDesc(String diagDesc) {
+                this.diagDesc = diagDesc;
+            }
+
+            public String getApprovalNo() {
+                return approvalNo;
+            }
+
+            public void setApprovalNo(String approvalNo) {
+                this.approvalNo = approvalNo;
+            }
+        }
+
+        public ArrayList<GroupedByDiag> getGroupedByDiag() {
+            return groupedByDiag;
+        }
+
+        public void setGroupedByDiag(ArrayList<GroupedByDiag> groupedByDiag) {
+            this.groupedByDiag = groupedByDiag;
+        }
+
+        public String getCostCenter() {
+            return costCenter;
+        }
+
+        public void setCostCenter(String costCenter) {
+            this.costCenter = costCenter;
+        }
+
+        public String getSubTotal() {
+            return subTotal;
+        }
+
+        public void setSubTotal(String subTotal) {
+            this.subTotal = subTotal;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+
+    }
+
+    private ArrayList<MappedTest> mappedTest;
+
+    private class MappedTest implements Serializable{
+
+        private String procCode;
+
+        private Integer diagType;
+
+        private String procDesc;
+
+        private String costCenter;
+
+        private String amount;
+
+        private String notes;
+
+        public String getProcCode() {
+            return procCode;
+        }
+
+        public void setProcCode(String procCode) {
+            this.procCode = procCode;
+        }
+
+        public Integer getDiagType() {
+            return diagType;
+        }
+
+        public void setDiagType(Integer diagType) {
+            this.diagType = diagType;
+        }
+
+        public String getProcDesc() {
+            return procDesc;
+        }
+
+        public void setProcDesc(String procDesc) {
+            this.procDesc = procDesc;
+        }
+
+        public String getCostCenter() {
+            return costCenter;
+        }
+
+        public void setCostCenter(String costCenter) {
+            this.costCenter = costCenter;
+        }
+
+        public String getAmount() {
+            return amount;
+        }
+
+        public void setAmount(String amount) {
+            this.amount = amount;
+        }
+
+        public String getNotes() {
+            return notes;
+        }
+
+        public void setNotes(String notes) {
+            this.notes = notes;
+        }
+    }
 
     public String getRequestType() {
         return requestType;
@@ -603,5 +767,7 @@ public class MaceRequest implements Serializable {
     public void setMbasupdateOn(Object mbasupdateOn) {
         this.mbasupdateOn = mbasupdateOn;
     }
+
+
 
 }

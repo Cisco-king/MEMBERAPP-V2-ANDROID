@@ -82,7 +82,7 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
         MaceRequest maceRequest = arrayList.get(position);
         //Timber.d("%s", loaFetch.toString());
         System.out.println("approval no." + maceRequest.getStatus());
-// TODO REPLACE DUMMY DATA
+        // TODO REPLACE DUMMY DATA
         holder.tv_requestType.setText(maceRequest.getRequestType());
         holder.tv_req_date.setText("Request Date: " + DateConverter.convertDateToMMddyyyy(DateConverter.convertDatetoMMMddyyy(maceRequest.getRequestDatetime())));
         try {
@@ -147,7 +147,6 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
         public Holder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
 
             cv_account.setOnClickListener(new View.OnClickListener() {
                 @Override

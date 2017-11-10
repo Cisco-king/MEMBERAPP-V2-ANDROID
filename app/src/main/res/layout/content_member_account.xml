@@ -178,7 +178,6 @@
                             android:orientation="horizontal">
 
                             <TextView
-
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -568,10 +567,10 @@
 
         <LinearLayout
             android:id="@+id/ll_linearDentalBenefits"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/tv_dentist_benefits"
@@ -594,6 +593,7 @@
                 app:elevation="6dp"
                 app:pressedTranslationZ="12dp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

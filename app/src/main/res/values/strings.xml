@@ -221,6 +221,7 @@
     <string name="title_activity_sort_loa_req">SortLoaReqActivity</string>
     <string name="service_type">Service Type</string>
     <string name="test">Tests</string>
+    <string name="request_title">Requests</string>
     <string name="diagnosis">Diagnosis</string>
     <string name="request_date">Request Date</string>
     <string name="availed">Availed</string>

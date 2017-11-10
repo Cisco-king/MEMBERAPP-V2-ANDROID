@@ -246,13 +246,11 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
             valDate = getArguments().getString(ARG_valDate);
             reqDate = getArguments().getString(ARG_reqDate);
             withProvider = getArguments().getString(ARG_withProvider);
-
             batchCode = getArguments().getString(KEY_BATCH_CODE);
             memStatus = getArguments().getString(ARG_memstatus);
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
         }
-
         callback = this;
         alertDialogCustom = new AlertDialogCustom();
         loader = new Loader(context);
