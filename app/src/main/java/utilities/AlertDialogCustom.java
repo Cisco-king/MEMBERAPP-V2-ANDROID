@@ -88,6 +88,9 @@ public class AlertDialogCustom {
     public String successfully_updated = "Setting is successfully updated.";
     public String skipDiagnosis = "You can skip this screen";
     public String skipDiagnosisAlert = "Alert";
+    public String no_connection_to_server = "Cannot connect to server ";
+
+
 
     public static final String LOA_GENERATE_PDF_SUCCESS =
             "Saved to \"MediCard\" folder";

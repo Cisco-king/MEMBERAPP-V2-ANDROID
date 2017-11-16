@@ -171,6 +171,12 @@ public class SignInActivity extends AppCompatActivity
                                         context,
                                         alertDialogCustom.HOLD_ON_title,
                                         alertDialogCustom.errorNoUsername, 1);
+
+                            } else if (e.getMessage().toString().contains("HTTP 500")) { // added to display, server connection error -jhay
+                                alertDialogCustom.showMe(
+                                        context,
+                                        alertDialogCustom.HOLD_ON_title,
+                                        alertDialogCustom.no_connection_to_server, 1);
                             }
 
                             pd.dismiss();

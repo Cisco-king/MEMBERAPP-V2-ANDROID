@@ -716,6 +716,7 @@
                     android:id="@+id/cv_othertest_tests"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     >
 
                     <LinearLayout
@@ -752,22 +753,25 @@
 
                             <TextView
                                 android:id="@+id/tv_total_title"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginLeft="20sp"
                                 android:layout_weight="1"
                                 android:text="Total:"
                                 android:textColor="@color/BLACK"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="@dimen/text_small"/>
 
                             <TextView
                                 android:id="@+id/tv_total_price"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="27sp"
                                 android:layout_weight="1.02"
                                 android:text="0"
                                 android:textColor="@color/BLACK"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="@dimen/text_small"/>
                         </LinearLayout>
                     </LinearLayout>
 

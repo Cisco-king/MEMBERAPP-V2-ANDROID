@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -34,6 +35,7 @@ import InterfaceService.LoaPageInterface;
 import InterfaceService.LoaPageRetieve;
 import InterfaceService.ScreenshotCallback;
 import Sqlite.DatabaseHandler;
+import adapter.OtherTestLoaAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -182,6 +184,8 @@ public class LoaPageActivity extends AppCompatActivity
     private int RESULT_GETTER;
     int position;
     List<MaceRequest> loaList = new ArrayList<>();
+    ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> arrayListGroupedByDiag = new ArrayList<>();
+    OtherTestLoaAdapter otherTestLoaAdapter;
     Context context;
     ScreenshotCallback screenshotCallback;
     MaceRequest loa;
@@ -304,7 +308,7 @@ public class LoaPageActivity extends AppCompatActivity
 
         try {
             implement.setExpiredStatus(btn_download, btn_cancel_req, loa.getStatus());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -365,14 +369,14 @@ public class LoaPageActivity extends AppCompatActivity
 
         if (tv_status.getText().toString().trim().equals(ResultSetters.REQUEST_APPROVAL)) {
             setPending();
-        } else if(tv_status.getText().toString().trim().equals(ResultSetters.REQUEST_CONFIRMED)){
+        } else if (tv_status.getText().toString().trim().equals(ResultSetters.REQUEST_CONFIRMED)) {
             setApproved();
         }
 
-        if(loa.getRequestType().equalsIgnoreCase(RequestType.OTHER_TEST)){
-            setOtherTestData(loaList,position);
-        }
 
+        if (loa.getRequestType().equalsIgnoreCase(RequestType.OTHER_TEST)) {
+            setOtherTestData(loaList, position);
+        }
 
 
 //        String doctorInfo = new StringBuilder()
@@ -414,16 +418,90 @@ public class LoaPageActivity extends AppCompatActivity
         //Timber.d("WithProvider ......... %s", loa.getWithProvider());
 
 
-
     }
 
-    private void setOtherTestData(List<MaceRequest> loaList,int position) {
+    private void setOtherTestData(List<MaceRequest> loaList, int position) {
         loa = loaList.get(position);
         cv_othertest_tests.setVisibility(View.VISIBLE);
+        tv_total_price.setText("P "+loa.getTotalAmount());
+
+
+        ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> unfilteredGrouping = new ArrayList<>();
+        for (MaceRequest.GroupedByCostCenter groupedByCostCenter : loa.getGroupedByCostCenters()) {
+            for (int i = 0; i < groupedByCostCenter.getGroupedByDiag().size(); i++) {
+                MaceRequest.GroupedByCostCenter.GroupedByDiag groupedByDiag = groupedByCostCenter.getGroupedByDiag().get(i);
+                groupedByDiag.setBasicTestFlag(loa.getRequestType().contains("BASIC TEST") ? true : false);
+                groupedByDiag.setCostCenter(groupedByCostCenter.getCostCenter());
+                groupedByDiag.setStatus(groupedByCostCenter.getStatus());
+                groupedByDiag.setSubTotal(groupedByCostCenter.getSubTotal());
+                unfilteredGrouping.add(groupedByDiag);
+            }
+        }
+        //Process and group by DiagType -> Tests + CostCenter
+        arrayListGroupedByDiag.addAll(processGrouping(unfilteredGrouping));
+        otherTestLoaAdapter = new OtherTestLoaAdapter(context, arrayListGroupedByDiag);
+        rv_otherTest.setLayoutManager(new LinearLayoutManager(this));
+        rv_otherTest.setAdapter(otherTestLoaAdapter);
+        try {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
-    public void setApproved(){
+    private ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> processGrouping(ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> gbdList) {
+        ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> returnedList = new ArrayList<>();
+        ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> primaryList = arrangeListByDiagType(gbdList, 1);
+        ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> otherList = arrangeListByDiagType(gbdList, 2);
+
+        returnedList.addAll(setSubTotalAndIndices(primaryList));
+        returnedList.addAll(setSubTotalAndIndices(otherList));
+
+        return returnedList;
+    }
+
+    private ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> arrangeListByDiagType(ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> gbdList, int diagType) {
+        int a = 0;
+        ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> primaryList = new ArrayList<>();
+        for (MaceRequest.GroupedByCostCenter.GroupedByDiag groupedByDiag : gbdList) {
+            if (groupedByDiag.getDiagType() == diagType) {
+                groupedByDiag.setFirstInstance(a++ == 0 ? true : false);
+                groupedByDiag.setLastInstance(false);
+                groupedByDiag.setBasicTestFlag(false);
+                primaryList.add(groupedByDiag);
+            }
+        }
+        return primaryList;
+    }
+
+    private ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> setSubTotalAndIndices(ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> primaryList) {
+        //Subtotal of CostCenter
+        String costCenter = "";
+        Double subTotal = 0.0;
+        for (int i = 0; i < primaryList.size(); i++) {
+            //Set initial CostCenter
+            if (i == 0)
+                costCenter = primaryList.get(i).getCostCenter();
+            //Check if grouped CostCenter is equal to current CostCenter
+            if (!primaryList.get(i).getCostCenter().equals(costCenter)) {
+                costCenter = primaryList.get(i).getCostCenter();
+                primaryList.get(i - 1).setSubTotal(String.valueOf(subTotal));
+                primaryList.get(i - 1).setLastInstance(true);
+                subTotal = 0.0;
+            }
+            for (MaceRequest.MappedTest mappedTest : primaryList.get(i).getMappedTest()) {
+                subTotal += Double.valueOf(mappedTest.getAmount());
+            }
+            if (i == primaryList.size() - 1) {
+                primaryList.get(i).setSubTotal(String.valueOf(subTotal));
+                primaryList.get(i).setLastInstance(true);
+            }
+        }
+
+        return primaryList;
+    }
+
+    public void setApproved() {
         tvDisclaimerInfo.setVisibility(View.VISIBLE);
         tv_sub_title.setVisibility(View.GONE);
         btn_download.setVisibility(View.VISIBLE);
@@ -440,10 +518,10 @@ public class LoaPageActivity extends AppCompatActivity
         tvValidityDate.setVisibility(View.GONE);
         tv_validity_date.setVisibility(View.GONE);
         ivQrApprovalNumber.setVisibility(View.GONE);
-        if(loa.getRequestType().equals("TEST")){
+        if (loa.getRequestType().equals("TEST")) {
             cvDoctorDetails.setVisibility(View.GONE);
             ll_problem.setVisibility(View.GONE);
-        }else{
+        } else {
             cvDoctorDetails.setVisibility(View.VISIBLE);
             ll_problem.setVisibility(View.VISIBLE);
         }
@@ -572,7 +650,7 @@ public class LoaPageActivity extends AppCompatActivity
     }
 
     @Override
-    public void  onSuccess() {
+    public void onSuccess() {
         tv_status.setText("REQUEST CANCELLED");
         btn_download.setVisibility(View.GONE);
         btn_cancel_req.setVisibility(View.GONE);

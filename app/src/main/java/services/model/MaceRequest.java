@@ -222,9 +222,15 @@ public class MaceRequest implements Serializable {
     @Expose
     private String serviceType;
 
+
+    @SerializedName("totalAmount")
+    @Expose
+    private String totalAmount;
+
+
     @SerializedName("groupedByCostCenters")
     @Expose
-    private ArrayList<GroupedByCostCenter> groupedByCostCenters;
+    public ArrayList<GroupedByCostCenter> groupedByCostCenters;
 
     public ArrayList<GroupedByCostCenter> getGroupedByCostCenters() {
         return groupedByCostCenters;
@@ -234,7 +240,7 @@ public class MaceRequest implements Serializable {
         this.groupedByCostCenters = groupedByCostCenters;
     }
 
-    private class GroupedByCostCenter implements Serializable{
+    public class GroupedByCostCenter implements Serializable{
         private String costCenter;
 
         private String subTotal;
@@ -243,7 +249,19 @@ public class MaceRequest implements Serializable {
 
         private ArrayList<GroupedByDiag> groupedByDiag;
 
-        private class GroupedByDiag implements Serializable{
+        public class GroupedByDiag implements Serializable{
+
+            private String costCenter;
+
+            private String subTotal;
+
+            private String status;
+
+            private boolean firstInstance;
+
+            private boolean lastInstance;
+
+            public boolean basicTestFlag;
 
             private Integer diagType;
 
@@ -251,14 +269,63 @@ public class MaceRequest implements Serializable {
 
             private String approvalNo;
 
-            private ArrayList<MappedTest> mappedTest;
+            public ArrayList<MappedTest> mappedTests;
+
+            public String getCostCenter() {
+                return costCenter;
+            }
+
+            public void setCostCenter(String costCenter) {
+                this.costCenter = costCenter;
+            }
+
+            public String getSubTotal() {
+                return subTotal;
+            }
+
+            public void setSubTotal(String subTotal) {
+                this.subTotal = subTotal;
+            }
+
+            public String getStatus() {
+                return status;
+            }
+
+            public void setStatus(String status) {
+                this.status = status;
+            }
+
+            public boolean isBasicTestFlag() {
+                return basicTestFlag;
+            }
+
+            public void setBasicTestFlag(boolean basicTestFlag) {
+                this.basicTestFlag = basicTestFlag;
+            }
+
 
             public ArrayList<MappedTest> getMappedTest() {
-                return mappedTest;
+                return mappedTests;
             }
 
             public void setMappedTest(ArrayList<MappedTest> mappedTest) {
-                this.mappedTest = mappedTest;
+                this.mappedTests = mappedTest;
+            }
+
+            public boolean isFirstInstance() {
+                return firstInstance;
+            }
+
+            public void setFirstInstance(boolean firstInstance) {
+                this.firstInstance = firstInstance;
+            }
+
+            public boolean isLastInstance() {
+                return lastInstance;
+            }
+
+            public void setLastInstance(boolean lastInstance) {
+                this.lastInstance = lastInstance;
             }
 
             public Integer getDiagType() {
@@ -321,9 +388,9 @@ public class MaceRequest implements Serializable {
 
     }
 
-    private ArrayList<MappedTest> mappedTest;
+    public ArrayList<MappedTest> mappedTest;
 
-    private class MappedTest implements Serializable{
+    public class MappedTest implements Serializable{
 
         private String procCode;
 
@@ -416,6 +483,22 @@ public class MaceRequest implements Serializable {
 
     public void setRequestTypeDetail03(String requestTypeDetail03) {
         this.requestTypeDetail03 = requestTypeDetail03;
+    }
+
+    public String getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public ArrayList<MappedTest> getMappedTest() {
+        return mappedTest;
+    }
+
+    public void setMappedTest(ArrayList<MappedTest> mappedTest) {
+        this.mappedTest = mappedTest;
     }
 
     public String getDoctorName() {
