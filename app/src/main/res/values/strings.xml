@@ -166,6 +166,8 @@
     <string name="attachments">Attachments</string>
     <string name="hospital_clinic_">Clinic/Hospital: <font fgcolor="red"><b> * </b></font> </string>
     <string name="doctor">Requesting Physician</string>
+    <string name="preferred_doctor">Preferred Physician</string>
+    <string name="preferred_hospital">Preferred Hospital/Clinic</string>
     <string name="doctor_">Doctor: <font fgcolor="red"><b> * </b></font> </string>
     <string name="prob_cond">Problem/Condition:</string>
     <string name="prob_cond_">Reason for Consult: <font fgcolor="red"><b> * </b></font> </string>

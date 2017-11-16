@@ -17,13 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin"
+        android:alpha="70"
         android:background="@color/l_gray"
         android:fadeScrollbars="false"
-        android:scrollbars="vertical"
-        android:alpha="70"
-        android:scrollbarThumbVertical="@color/colorAccent"
         android:scrollbarSize="12dp"
-        android:scrollbarStyle="outsideInset">
+        android:scrollbarStyle="outsideInset"
+        android:scrollbarThumbVertical="@color/colorAccent"
+        android:scrollbars="vertical">
 
 
         <LinearLayout
@@ -712,12 +712,12 @@
                 </android.support.v7.widget.CardView>
 
                 //display for selected other tests
+
                 <android.support.v7.widget.CardView
                     android:id="@+id/cv_othertest_tests"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    >
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -739,8 +739,7 @@
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/rv_otherTest"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                >
+                                android:layout_height="match_parent">
 
                             </android.support.v7.widget.RecyclerView>
                         </RelativeLayout>
@@ -759,8 +758,8 @@
                                 android:layout_weight="1"
                                 android:text="Total:"
                                 android:textColor="@color/BLACK"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/text_small"/>
+                                android:textSize="@dimen/text_small"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/tv_total_price"
@@ -770,8 +769,8 @@
                                 android:layout_weight="1.02"
                                 android:text="0"
                                 android:textColor="@color/BLACK"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/text_small"/>
+                                android:textSize="@dimen/text_small"
+                                android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -837,14 +836,8 @@
                             fancy:fb_defaultColor="@color/colorPrimary"
                             fancy:fb_focusColor="@color/colorPrimaryBlueDark"
                             fancy:fb_text="@string/download_loa" />
-
-
                     </LinearLayout>
-
-
                 </android.support.v7.widget.CardView>
-
-
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

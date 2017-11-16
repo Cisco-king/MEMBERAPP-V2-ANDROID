@@ -23,4 +23,13 @@
     <color name="red">#ff0000</color>
 
     <color name="orange_a200">#FF6E40</color>
+
+
+    <color name="orange">#FF6E40</color>
+    <color name="color_a">#90caf9</color>90caf9
+    <color name="color_b">#9fa8da</color>
+    <color name="color_c">#c3fdff</color>c3fdff
+
+    <color name="color_d">#231F20</color>
+
 </resources>

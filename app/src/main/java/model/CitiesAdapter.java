@@ -9,8 +9,6 @@ import android.os.Parcelable;
 
 public class CitiesAdapter implements Parcelable {
 
-
-
     private String regionCode;
 
     private String countryName;

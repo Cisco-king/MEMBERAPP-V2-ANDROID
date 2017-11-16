@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/margin"
-                android:background="@color/light_grey" />
+                android:background="@color/color_d" />
 
             <LinearLayout
 
@@ -49,147 +49,193 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_memberInfo"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/nav_padding"
-                    android:text="@string/nav_myAccount"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/nav_text_size"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin"
+                    android:orientation="vertical">
 
-                <View
+                    <TextView
+                        android:id="@+id/tv_memberInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/sub_margin"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/nav_padding"
+                        android:text="@string/nav_myAccount"
+                        android:textColor="@color/BLACK"
+                        android:textSize="@dimen/nav_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_d" />
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_grey" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_loa_req"
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_d" />
+
+                    <TextView
+                        android:id="@+id/tv_loa_req"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/sub_margin"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/nav_padding"
+                        android:text="@string/nav_my_loa_request"
+                        android:textColor="@color/BLACK"
+                        android:textSize="@dimen/nav_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_d" />
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/nav_padding"
-                    android:text="@string/nav_my_loa_request"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/nav_text_size"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin"
+                    android:orientation="vertical">
 
-                <View
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_d" />
 
+                    <TextView
+                        android:id="@+id/nav_dentist"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/sub_margin"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/nav_padding"
+                        android:text="@string/nav_dentist"
+                        android:textColor="@color/BLACK"
+                        android:textSize="@dimen/nav_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_d" />
+
+                    <TextView
+                        android:id="@+id/nav_doctor"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/sub_margin"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/nav_padding"
+                        android:text="@string/nav_doctor"
+                        android:textColor="@color/BLACK"
+                        android:textSize="@dimen/nav_text_size"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_d" />
+
+                    <TextView
+                        android:id="@+id/nav_hospital"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/sub_margin"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/nav_padding"
+                        android:text="@string/nav_hospital"
+                        android:textColor="@color/BLACK"
+                        android:textSize="@dimen/nav_text_size"
+                        android:textStyle="bold" />
+
+
+                    <View
+
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_d" />
+                    <!--
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="@dimen/sub_margin"
+                                            android:gravity="center_vertical"
+                                            android:padding="@dimen/nav_padding"
+                                            android:text="@string/nav_faqs"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="@dimen/nav_text_size"
+                                            android:textStyle="bold" />
+                   -->
+
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_grey" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/nav_padding"
-                    android:text="@string/nav_dentist"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/nav_text_size"
-                    android:textStyle="bold" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_d" />
 
-                <View
-
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_grey" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/nav_padding"
-                    android:text="@string/nav_hospital"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/nav_text_size"
-                    android:textStyle="bold" />
-
-                <View
+                    <TextView
+                        android:id="@+id/tv_account_settings"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/sub_margin"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/nav_padding"
+                        android:text="@string/nav_account_setting"
+                        android:textColor="@color/BLACK"
+                        android:textSize="@dimen/nav_text_size"
+                        android:textStyle="bold" />
 
 
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_grey" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/nav_padding"
-                    android:text="@string/nav_doctor"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/nav_text_size"
-                    android:textStyle="bold" />
-
-                <!--
-                <View
-
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_grey" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/nav_padding"
-                    android:text="@string/nav_faqs"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/nav_text_size"
-                    android:textStyle="bold" />
-                -->
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_grey" />
-
-                <TextView
-                    android:id="@+id/tv_account_settings"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/nav_padding"
-                    android:text="@string/nav_account_setting"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/nav_text_size"
-                    android:textStyle="bold" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_d" />
 
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_grey" />
+                    <TextView
+                        android:id="@+id/btn_logOut"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/sub_margin"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/nav_padding"
+                        android:text="@string/action_settings"
+                        android:textColor="@color/BLACK"
+                        android:textSize="@dimen/nav_text_size"
+                        android:textStyle="bold" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_d" />
 
-                <TextView
-                    android:id="@+id/btn_logOut"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/sub_margin"
-                    android:gravity="center_vertical"
-                    android:padding="@dimen/nav_padding"
-                    android:text="@string/action_settings"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/nav_text_size"
-                    android:textStyle="bold" />
+                </LinearLayout>
 
 
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-
 
 </RelativeLayout>

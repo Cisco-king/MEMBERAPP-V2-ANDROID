@@ -73,7 +73,6 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
     ArrayList<ProvincesAdapter> selectedProvince = new ArrayList<>();
     private String search_string = "";
     private String isMedicardOnly = "false";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

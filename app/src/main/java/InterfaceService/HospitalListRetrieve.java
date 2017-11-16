@@ -59,7 +59,6 @@ public class HospitalListRetrieve {
         } else
             array.addAll(handler.retrieveHospital(isMedicardOnly, selectedProvince, data_sort, selectedCity, s));
         hospitalAdapter.notifyDataSetChanged();
-
     }
 
     public void updateListForTest(String isMedicardOnly, ArrayList<ProvincesAdapter> selectedProvince, String sortBy, ArrayList<CitiesAdapter> selectedCity, HospitalDoctorAdapter hospitalAdapter, List<HospitalList> array, String s) {

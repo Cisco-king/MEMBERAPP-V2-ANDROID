@@ -23,7 +23,10 @@ import android.widget.TextView;
 import com.medicard.member.module.viewLoa.ViewLoaListFragment;
 import com.tapadoo.alerter.Alert;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import fragments.fragment_changePassword;
+import fragments.fragment_hospitalList;
 import fragments.fragment_memberInfo;
 
 import utilities.AlertDialogCustom;
@@ -35,56 +38,77 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
 
     SharedPref s = new SharedPref();
 
-    TextView tv_memberInfo;
 
+
+    @BindView(R.id.container_body)
     FrameLayout container_body;
-    DrawerLayout drawer;
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer_layout;
+
+    @BindView(R.id.tv_memberInfo)
+    TextView tv_memberInfo;
+    @BindView(R.id.tv_account_settings)
+    TextView tv_account_settings;
+    @BindView(R.id.tv_name)
+    TextView tv_name;
+    @BindView(R.id.tv_loa_req)
+    TextView tv_loa_req;
+    @BindView(R.id.btn_logOut)
+    TextView btn_logOut;
+    @BindView(R.id.tv_header)
+    TextView tv_header;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.btn_nav)
+    ImageButton btn_nav;
+
+    @BindView(R.id.nav_dentist)
+    TextView nav_dentist;
+    @BindView(R.id.nav_doctor)
+    TextView nav_doctor;
+    @BindView(R.id.nav_hospital)
+    TextView nav_hospital;
+
+
+
+
+    Context context;
     Fragment fragment;
     FragmentTransaction fragmentTransaction;
-    Toolbar toolbar;
-    TextView tv_loa_req, btn_logOut, tv_name, tv_account_settings;
-    ImageButton btn_nav;
-    Context context;
-    TextView tv_header;
 
     ConnectivityManager connectivityManager;
     NetworkInfo wifiInfo, mobileInfo;
     boolean connected = false;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-
+        ButterKnife.bind(this);
 
         init();
     }
 
     private void init() {
         context = this;
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // MOVING BURGER MENU TO THE RIGHT`
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 
-        container_body = (FrameLayout) findViewById(R.id.container_body);
-        tv_memberInfo = (TextView) findViewById(R.id.tv_memberInfo);
-        tv_account_settings = (TextView) findViewById(R.id.tv_account_settings);
-        btn_logOut = (TextView) findViewById(R.id.btn_logOut);
-        btn_nav = (ImageButton) findViewById(R.id.btn_nav);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        tv_name = (TextView) findViewById(R.id.tv_name);
-        tv_header = (TextView) findViewById(R.id.tv_header);
-        tv_loa_req = (TextView) findViewById(R.id.tv_loa_req);
+
         btn_nav.setOnClickListener(this);
         tv_account_settings.setOnClickListener(this);
         btn_logOut.setOnClickListener(this);
         tv_memberInfo.setOnClickListener(this);
         tv_loa_req.setOnClickListener(this);
-
+        nav_dentist.setOnClickListener(this);
+        nav_doctor.setOnClickListener(this);
+        nav_hospital.setOnClickListener(this);
 
         tv_name.setText(s.getStringValue(s.USER, s.NAME, context));
 
@@ -106,12 +130,12 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
     public void onBackPressed() {
         tv_header.setText("My Account");
         if (fragment.equals(fragment_memberInfo.class)) {
-            if (drawer.isDrawerOpen(Gravity.RIGHT)) {
-                drawer.closeDrawer(Gravity.RIGHT);
+            if (drawer_layout.isDrawerOpen(Gravity.RIGHT)) {
+                drawer_layout.closeDrawer(Gravity.RIGHT);
             }
         } else {
-            if (drawer.isDrawerOpen(Gravity.RIGHT)) {
-                drawer.closeDrawer(Gravity.RIGHT);
+            if (drawer_layout.isDrawerOpen(Gravity.RIGHT)) {
+                drawer_layout.closeDrawer(Gravity.RIGHT);
             }
             fragment = null;
             fragment = new fragment_memberInfo();
@@ -141,6 +165,43 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
                 }
 
                 break;
+
+            case R.id.nav_dentist:
+                tv_header.setText("Dentist List");
+
+//                fragment = null;
+//                fragment = new fragment_changePassword();
+//                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction.replace(R.id.container_body, fragment);
+//                fragmentTransaction.commit();
+                closeDrawer();
+
+                break;
+
+            case R.id.nav_doctor:
+                tv_header.setText("Doctor List");
+
+//                fragment = null;
+//                fragment = new fragment_changePassword();
+//                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction.replace(R.id.container_body, fragment);
+//                fragmentTransaction.commit();
+                closeDrawer();
+
+                break;
+
+            case R.id.nav_hospital:
+                tv_header.setText("Hospital List");
+
+                fragment = null;
+                fragment = new fragment_hospitalList();
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment);
+                fragmentTransaction.commit();
+                closeDrawer();
+
+                break;
+
 
             case R.id.tv_account_settings:
                 tv_header.setText("Account Settings");
@@ -197,10 +258,10 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
 
     private void closeDrawer() {
 
-        if (drawer.isDrawerOpen(Gravity.RIGHT)) {
-            drawer.closeDrawer(Gravity.RIGHT);
+        if (drawer_layout.isDrawerOpen(Gravity.RIGHT)) {
+            drawer_layout.closeDrawer(Gravity.RIGHT);
         } else {
-            drawer.openDrawer(Gravity.RIGHT);
+            drawer_layout.openDrawer(Gravity.RIGHT);
         }
 
 
