@@ -80,6 +80,7 @@
             android:id="@+id/cvHospitalDetails"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             >
 
             <LinearLayout
@@ -130,8 +131,6 @@
                     android:textColor="@color/BLACK"
                     android:textSize="@dimen/text_small" />
             </LinearLayout>
-
-
         </android.support.v7.widget.CardView>
 
         <LinearLayout

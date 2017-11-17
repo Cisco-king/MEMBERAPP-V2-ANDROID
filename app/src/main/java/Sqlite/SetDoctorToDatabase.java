@@ -6,6 +6,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import InterfaceService.DoctorInterface;
+import InterfaceService.FragmentApiDocCallback;
 import model.Doctors;
 import model.GetDoctorsToHospital;
 import model.HospitalList;
@@ -17,11 +18,7 @@ import model.HospitalList;
 public class SetDoctorToDatabase {
 
     public static void insertToDb(final DatabaseHandler databaseHandler, final Doctors doctors, final DoctorInterface callback) {
-
-
         Log.e("DOCTOR", doctors.getGetDoctorsToHospital().size() + "");
-
-
         AsyncTask insertion = new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] params) {
@@ -33,7 +30,6 @@ public class SetDoctorToDatabase {
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-
                 callback.onSuccess(doctors);
 
             }
@@ -51,10 +47,7 @@ public class SetDoctorToDatabase {
 
 
     public static void setDocToDb(ArrayList<GetDoctorsToHospital> doc, DatabaseHandler databaseH) {
-
-
         for (int x = 0; x < doc.size(); x++) {
-
             databaseH.insertDoctorList(new GetDoctorsToHospital(
                             doc.get(x).getRegion(),
                             doc.get(x).getStreetAddress(),
@@ -81,8 +74,6 @@ public class SetDoctorToDatabase {
                             doc.get(x).getRoomBoard(),
                             doc.get(x).getRemarks2(),
                             doc.get(x).getRoom()
-
-
                     )
             );
 
@@ -90,6 +81,35 @@ public class SetDoctorToDatabase {
         }
 
 
+    }
+
+
+    //used for nav doctor list
+    public static void insertToDb(final DatabaseHandler databaseHandler, final Doctors doctors, final FragmentApiDocCallback callback) {
+        Log.e("DOCTOR", doctors.getGetDoctorsToHospital().size() + "");
+        AsyncTask insertion = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] params) {
+                SetDoctorToDatabase.setDocToDb(doctors.getGetDoctorsToHospital(), databaseHandler);
+                return null;
+            }
+
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                callback.onSuccess(doctors);
+
+            }
+
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+        };
+
+        insertion.execute();
     }
 
 

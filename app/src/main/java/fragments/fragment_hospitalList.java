@@ -1,5 +1,6 @@
 package fragments;
 
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +28,7 @@ import InterfaceService.FragmentApiHospCallback;
 import InterfaceService.HospitalListRetrieve;
 import Sqlite.DatabaseHandler;
 import adapter.HospitalAdapter;
+import adapter.HospitalListAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mehdi.sakout.fancybuttons.FancyButton;
@@ -42,7 +46,7 @@ import utilities.SharedPref;
  */
 
 
-public class fragment_hospitalList extends Fragment implements View.OnClickListener, OnClicklistener, FragmentApiHospCallback {
+public class fragment_hospitalList extends Fragment implements View.OnClickListener, FragmentApiHospCallback {
 
 
     @BindView(R.id.ed_searchHosp)
@@ -67,12 +71,12 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
     LinearLayout btn_sort;
 
     Context context;
-    AlertDialogCustom alertDialogCustom = new AlertDialogCustom() ;
+    AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
     ProgressDialog pd;
     HospitalListRetrieve implement;
     DatabaseHandler databaseHandler;
 
-    HospitalAdapter hospitalAdapter;
+    HospitalListAdapter hospitalAdapter;
     ArrayList<CitiesAdapter> selectedCity = new ArrayList<>();
     ArrayList<ProvincesAdapter> selectedProvince = new ArrayList<>();
     ArrayList<HospitalList> arraylistHospital = new ArrayList<>();
@@ -80,6 +84,10 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
     String sortBy = "";
 
     LinearLayoutManager llm;
+
+
+    FragmentApiHospCallback fragmentApiHospCallback;
+    private String search_string = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,6 +102,7 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
         View view = inflater.inflate(R.layout.fragment_hospital_list, container, false);
         ButterKnife.bind(this, view);
         context = getContext();
+        fragmentApiHospCallback = this;
         databaseHandler = new DatabaseHandler(context);
         implement = new HospitalListRetrieve(context, databaseHandler);
 
@@ -103,10 +112,9 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
         rv_hospital.setLayoutManager(llm);
 
         if (NetworkTest.isOnline(context)) {
-//            ExclusionRetrieve.getHospInPatient(context, databaseHandler, SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context), get);
+            ExclusionRetrieve.getHospInPatient(context, databaseHandler, SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context), fragmentApiHospCallback);
         } else
             alertDialogCustom.showMe(context, alertDialogCustom.NO_Internet_title, alertDialogCustom.NO_Internet, 1);
-
 
         init();
         return view;
@@ -117,69 +125,51 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
     private void init() {
         pd = new ProgressDialog(getContext(), R.style.MyTheme);
         pd.setCancelable(false);
-        pd.setMessage("Requesting...");
+        pd.setMessage("Loading Hospital...");
         pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-
-
         btn_sort.setOnClickListener(this);
-
-        hospitalAdapter = new HospitalAdapter(context, arraylistHospital);
+        hospitalAdapter = new HospitalListAdapter(context, arraylistHospital, fragmentApiHospCallback);
         rv_hospital.setAdapter(hospitalAdapter);
-
         retrieveHosp("");
+        ed_searchHosp.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                retrieveHosp(String.valueOf(s));
+                search_string = String.valueOf(s);
+            }
+        });
 
     }
 
-    private void retrieveHosp(String s) {
+    private void retrieveHosp(final String s) {
         System.out.println("isMedicardOnly " + isMedicardOnly);
         System.out.println("selectedProvince " + selectedProvince);
         System.out.println("sortBy " + sortBy);
         System.out.println("selectedCity " + selectedCity);
         System.out.println("hospitalAdapter " + hospitalAdapter);
         System.out.println("s " + s);
-
-        implement.updateList(isMedicardOnly, selectedProvince, sortBy, selectedCity, hospitalAdapter, arraylistHospital, s);
+        implement.updateHospitalList(isMedicardOnly, selectedProvince, sortBy, selectedCity, arraylistHospital, s);
+        hospitalAdapter.notifyDataSetChanged();
         implement.updateListUI(arraylistHospital, rv_hospital, tv_hosp_not_found);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_sort:
 
                 break;
         }
-    }
-
-    @Override
-    public void onClickListener(int position) {
-
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, arraylistHospital.get(position).getHospitalName(), context);
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, arraylistHospital.get(position).getHospitalCode(), context);
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD, arraylistHospital.get(position).getStreetAddress(), context);
-        SharedPref.setAppPreference(context, SharedPref.KEY_HOSPITAL_FULL_ADDRESS, arraylistHospital.get(position).getFullAddress());
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, arraylistHospital.get(position).getPhoneNo(), context);
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, arraylistHospital.get(position).getContactPerson(), context);
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_U, "", context);
-
-
-        Log.d(SharedPref.HOSPITAL_NAME, arraylistHospital.get(position).getHospitalName());
-        Log.d(SharedPref.HOSPITAL_CODE, arraylistHospital.get(position).getHospitalCode());
-        Log.d(SharedPref.HOSPITAL_ADD, arraylistHospital.get(position).getStreetAddress());
-
-        try {
-            cvHospitalDetails.setVisibility(View.VISIBLE);
-            tvHospitalName.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME,context));
-            tvAddress.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD,context));
-            tvContactNo.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT,context));
-            tvContactPerson.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON,context));
-        }catch (Exception e){
-            cvHospitalDetails.setVisibility(View.GONE);
-
-        }
-
     }
 
 
@@ -203,5 +193,38 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
     @Override
     public void onSuccess() {
         retrieveHosp("");
+    }
+
+    @Override
+    public void onHospitalSelect(ArrayList<HospitalList> array, int position) {
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, arraylistHospital.get(position).getHospitalName(), context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, arraylistHospital.get(position).getHospitalCode(), context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_ADD, arraylistHospital.get(position).getStreetAddress(), context);
+        SharedPref.setAppPreference(context, SharedPref.KEY_HOSPITAL_FULL_ADDRESS, arraylistHospital.get(position).getFullAddress());
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, arraylistHospital.get(position).getPhoneNo(), context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, arraylistHospital.get(position).getContactPerson(), context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_U, "", context);
+
+
+        Log.d(SharedPref.HOSPITAL_NAME, arraylistHospital.get(position).getHospitalName());
+        Log.d(SharedPref.HOSPITAL_CODE, arraylistHospital.get(position).getHospitalCode());
+        Log.d(SharedPref.HOSPITAL_ADD, arraylistHospital.get(position).getStreetAddress());
+
+        try {
+            cvHospitalDetails.setVisibility(View.VISIBLE);
+            tvHospitalName.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, context));
+            tvAddress.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.KEY_HOSPITAL_FULL_ADDRESS, context));
+            if (arraylistHospital.get(position).getPhoneNo().isEmpty())
+                tvContactNo.setText("NO CONTACT NUMBER");
+            else
+                tvContactNo.setText("Tel. No: " + SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, context));
+            if (null == arraylistHospital.get(position).getContactPerson() || (arraylistHospital.get(position).getContactPerson().isEmpty() && arraylistHospital.get(position).getContactPerson().length() == 0)) {
+                tvContactPerson.setVisibility(View.GONE);
+            } else {
+                tvContactPerson.setText("Contact Person: " +SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, context));
+            }
+        } catch (Exception e) {
+            cvHospitalDetails.setVisibility(View.GONE);
+        }
     }
 }

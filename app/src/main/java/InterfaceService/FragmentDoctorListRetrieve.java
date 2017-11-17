@@ -1,13 +1,10 @@
 package InterfaceService;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-
-import com.medicard.member.R;
-
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.EditText;
+
+import com.medicard.member.R;
 
 import Sqlite.DatabaseHandler;
 import Sqlite.SetDoctorToDatabase;
@@ -20,19 +17,18 @@ import services.AppService;
 import utilities.AlertDialogCustom;
 import utilities.ErrorMessage;
 import utilities.NetworkTest;
-import v2.DoctorListActivity;
 
 /**
- * Created by mpx-pawpaw on 1/4/17.
+ * Created by IPC on 11/17/2017.
  */
 
-public class DoctorRetrieve {
+public class FragmentDoctorListRetrieve {
 
     Context context;
-    DoctorInterface callback;
+    FragmentApiDocCallback callback;
     DatabaseHandler databaseHandler;
 
-    public DoctorRetrieve(Context context, DoctorInterface callback, DatabaseHandler databaseHandler) {
+    public FragmentDoctorListRetrieve(Context context, FragmentApiDocCallback callback, DatabaseHandler databaseHandler) {
         this.callback = callback;
         this.context = context;
         this.databaseHandler = databaseHandler;
@@ -62,12 +58,8 @@ public class DoctorRetrieve {
 
                     @Override
                     public void onError(Throwable e) {
-
                         try {
-
-
                             Log.e("DOCTOR", e.getMessage());
-
                             callback.onError(e.getMessage());
                         } catch (Exception error) {
                             AlertDialogCustom alertDialogCustom = new AlertDialogCustom();

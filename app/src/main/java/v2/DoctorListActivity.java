@@ -142,7 +142,6 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
                 gotoMaternity.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
                 gotoMaternity.putExtra(Constant.MEM_STATUS, getIntent().getExtras().getString(Constant.MEM_STATUS));
                 startActivity(gotoMaternity);
-
                 finish();
             }
         });

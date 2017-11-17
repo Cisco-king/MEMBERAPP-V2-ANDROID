@@ -26,6 +26,7 @@ import com.tapadoo.alerter.Alert;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fragments.fragment_changePassword;
+import fragments.fragment_doctorList;
 import fragments.fragment_hospitalList;
 import fragments.fragment_memberInfo;
 
@@ -168,7 +169,6 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.nav_dentist:
                 tv_header.setText("Dentist List");
-
 //                fragment = null;
 //                fragment = new fragment_changePassword();
 //                fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -180,12 +180,11 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.nav_doctor:
                 tv_header.setText("Doctor List");
-
-//                fragment = null;
-//                fragment = new fragment_changePassword();
-//                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//                fragmentTransaction.replace(R.id.container_body, fragment);
-//                fragmentTransaction.commit();
+                fragment = null;
+                fragment = new fragment_doctorList();
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment);
+                fragmentTransaction.commit();
                 closeDrawer();
 
                 break;
