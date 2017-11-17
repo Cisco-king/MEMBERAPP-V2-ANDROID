@@ -24,15 +24,12 @@ public class Loader {
     }
 
     public void startLad() {
-
-
         pd = new ProgressDialog(context, R.style.MyTheme);
         pd.setCancelable(false);
         pd.setMessage("Logging in...");
         pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
         pd.show();
     }
-
 
     public void stopLoad() {
         pd.dismiss();

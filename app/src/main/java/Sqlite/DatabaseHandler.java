@@ -20,6 +20,7 @@ import java.util.Set;
 import database.entity.Doctor;
 import model.Cities;
 import model.CitiesAdapter;
+import model.DentistList;
 import model.GetDoctorsToHospital;
 import model.HospitalList;
 import model.LoaFetch;
@@ -155,6 +156,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private String docSpecCode = "docSpecCode";
     // private String hospitalName = "hospitalName";
 
+    //do not remove the commented lines for dentist table, its the table structure -- jj
+    private String dentistTable = "dentistTable";
+    private String dentistCode = "dentistCode";
+    private String lastName = "lastName";
+    private String firstName = "firstName";
+    private String middleName = "middleName";
+    private String dentistAddress = "dentistAddress";
+    private String contactNo = "contactNo";
+    //    private String schedule= "schedule";
+    private String clinic = "clinic";
+    //    private String provinceCode= "provinceCode";
+//    private String regionCode= "regionCode";
+//    private String cityCode= "cityCode";
+    private String faxNo = "faxNo";
+    private String oldCode = "oldCode";
+    //    private String gracePeriod= "gracePeriod";
+    private String effDate = "effDate";
+    private String isAccredited = "isAccredited";
+    private String effDateRa = "effDateRa";
+    private String effDateNap = "effDateNap";
+    //    private String vat= "vat";
+    private String tinNo = "tinNo";
+    private String taxable = "taxable";
+    private String wTax = "specialRem";
+    //    private String specialRem= "specialRem";
+    private String email = "email";
+    private String otherSpecialty = "otherSpecialty";
+    //    private String remarks= "remarks";
+    private String createdDate = "createdDate";
+    private String createdBy = "createdBy";
+    //    private String updatedDate= "updatedDate";
+//    private String updatedBy= "updatedBy";
+    private String withPRC = "withPRC";
+    private String withDiploma = "withDiploma";
+    private String withPermit = "withPermit";
+    private String oldDentistCode = "oldDentistCode";
+
+
     protected static final String databaseName = "Medicard";
     private String hospTable = "hospital";
 
@@ -273,6 +312,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             remarks2 + " TEXT ," +
             room + " TEXT )";
 
+    private String createDentistStatement = "CREATE TABLE " +
+            dentistTable + " ( " +
+            lastName + " TEXT ," +
+            firstName + " TEXT ," +
+            middleName + " TEXT ," +
+            dentistAddress + " TEXT ," +
+            contactNo + " TEXT ," +
+            schedule + " TEXT ," +
+            clinic + " TEXT ," +
+            provinceCode + " TEXT ," +
+            regionCode + " TEXT ," +
+            cityCode + " TEXT ," +
+            faxNo + " TEXT ," +
+            oldCode + " TEXT ," +
+            gracePeriod + " TEXT ," +
+            effDate + " TEXT ," +
+            isAccredited + " TEXT ," +
+            effDateRa + " TEXT ," +
+            effDateNap + " TEXT ," +
+            vat + " TEXT ," +
+            tinNo + " TEXT ," +
+            taxable + " TEXT ," +
+            wTax + " TEXT ," +
+            specialRem + " TEXT ," +
+            email + " TEXT ," +
+            otherSpecialty + " TEXT ," +
+            remarks + " TEXT ," +
+            createdDate + " TEXT ," +
+            createdBy + " TEXT ," +
+            updatedDate + " TEXT ," +
+            updatedBy + " TEXT ," +
+            withPRC + " TEXT ," +
+            withDiploma + " TEXT ," +
+            withPermit + " TEXT ," +
+            oldDentistCode + " TEXT )";
+
+
     private static DatabaseHandler instance;
 
 
@@ -301,6 +377,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.execSQL(createLoaRequest);
         Log.e(TAG, createLoaRequest);
+
+        db.execSQL(createDentistStatement);
+        Log.e(TAG, createDentistStatement);
 
         db.execSQL(Doctor.getTableStructure());
         db.execSQL(Procedure.getTableStructure());
@@ -349,7 +428,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-//    public void insertLoa(services.model.LoaList loa) {
+    //    public void insertLoa(services.model.LoaList loa) {
 //        boolean createSuccessful = false;
 //
 //        SQLiteDatabase db = this.getWritableDatabase();
@@ -416,17 +495,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-
-
-
 //        Timber.d("loa actual value : %s", loa.getWithProvider());
 //        Timber.d("with provider is inserted %s", (loa.getWithProvider() ? 1 : 0));
 
         createSuccessful = db.insert(loaTable, null, values) > 0;
-
-
         if (createSuccessful) {
-           // Log.e("LOAD_LOA", loa.getId() + " created.");
+            // Log.e("LOAD_LOA", loa.getId() + " created.");
         }
     }
 
@@ -447,8 +521,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } else {
             data = "EXPIRED";
         }
-
-
         return data;
     }
 
@@ -519,7 +591,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-
         values.put(hospitalCode, hosp.getHospitalCode());
         values.put(hospitalName, hosp.getHospitalName());
         values.put(keyword, hosp.getKeyword());
@@ -534,9 +605,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(faxno, hosp.getFaxno());
         values.put(contactPerson, hosp.getContactPerson());
         values.put(excluded, "false");
-
         createSuccessful = db.insert(hospTable, null, values) > 0;
-
         db.close();
 
         if (createSuccessful) {
@@ -546,12 +615,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public void insertDoctorList(GetDoctorsToHospital doc) {
-
         boolean createSuccessful = false;
-
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-
         values.put(region, doc.getRegion());
         values.put(streetAddress, doc.getStreetAddress());
         values.put(specialRem, doc.getSpecialRem());
@@ -577,16 +643,55 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(roomBoard, doc.getRoomBoard());
         values.put(remarks2, doc.getRemarks());
         values.put(room, doc.getRoom());
-
-
         createSuccessful = db.insert(doctable, null, values) > 0;
-
         db.close();
-
         if (createSuccessful) {
             Log.e(TAG, docLname + " created.");
         }
+    }
 
+    public void insertDentistList(DentistList dentist) {
+        boolean createSuccessful = false;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(lastName, dentist.getLastName());
+        values.put(firstName, dentist.getFirstName());
+        values.put(middleName, dentist.getMiddleName());
+        values.put(dentistAddress, dentist.getDentistAddress());
+        values.put(contactNo, dentist.getContactNo());
+        values.put(schedule, dentist.getSchedule());
+        values.put(clinic, dentist.getClinic());
+        values.put(provinceCode, dentist.getProvinceCode());
+        values.put(regionCode, dentist.getRegionCode());
+        values.put(cityCode, dentist.getCityCode());
+        values.put(faxNo, dentist.getFaxNo());
+        values.put(oldCode, dentist.getOldCode());
+        values.put(gracePeriod, dentist.getGracePeriod());
+        values.put(effDate, dentist.getEffDate());
+        values.put(isAccredited, dentist.getIsAccredited());
+        values.put(effDateRa, dentist.getEffDateRa());
+        values.put(effDateNap, dentist.getEffDateNap());
+        values.put(vat, dentist.getVat());
+        values.put(tinNo, dentist.getTinNo());
+        values.put(taxable, dentist.getTaxable());
+        values.put(wTax, dentist.getwTax());
+        values.put(specialRem, dentist.getSpecialRem());
+        values.put(email, dentist.getEmail());
+        values.put(otherSpecialty, dentist.getOtherSpecialty());
+        values.put(remarks, dentist.getRemarks());
+        values.put(createdDate, dentist.getCreatedDate());
+        values.put(createdBy, dentist.getCreatedBy());
+        values.put(updatedDate, dentist.getUpdatedDate());
+        values.put(updatedBy, dentist.getCreatedBy());
+        values.put(withPRC, dentist.getWithPRC());
+        values.put(withDiploma, dentist.getWithDiploma());
+        values.put(withPermit, dentist.getWithPermit());
+        values.put(oldDentistCode, dentist.getOldDentistCode());
+        createSuccessful = db.insert(dentistTable, null, values) > 0;
+        db.close();
+        if (createSuccessful) {
+            Log.e(TAG, lastName + " created.");
+        }
     }
 
 
@@ -927,8 +1032,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-
-
     private ArrayList<GetDoctorsToHospital> getDoctoList(Cursor cursor) {
 
         ArrayList<GetDoctorsToHospital> docs = new ArrayList<>();
@@ -974,7 +1077,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private List<HospitalsToDoctor> getDoctoLists(Cursor cursor) {
 
-        List<HospitalsToDoctor>  docs = new ArrayList<>();
+        List<HospitalsToDoctor> docs = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
 
@@ -1062,10 +1165,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public void dropDoctor() {
-
         SQLiteDatabase db = this.getWritableDatabase();
         String sql = "DELETE FROM " + doctable;
+        db.execSQL(sql);
+        db.close();
+    }
 
+
+    public void dropDentist() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql = "DELETE FROM " + dentistTable;
         db.execSQL(sql);
         db.close();
     }
@@ -1163,9 +1272,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //TEST IF QUERY IS ONLY FOR MEDICARD CLINICS
 
 
-      // if (!getSortByProvinceCityOrHospName(data_sort)) {
-            arrayList.addAll(getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
-     //   }
+        // if (!getSortByProvinceCityOrHospName(data_sort)) {
+        arrayList.addAll(getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
+        //   }
         arrayList.addAll(getHospitalList(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
 
 
@@ -1207,12 +1316,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String sql2 = "";
         sql2 += "SELECT * FROM " + hospTable;
         sql2 += " WHERE " + hospitalName + "  LIKE '%" + s + "%' ";
-     //   if (!getSortByProvinceCityOrHospName(data_sort)) {
-            sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp + "%' ";
-            sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp2 + "%' ";
-            sql2 += " AND " + hospitalName + " IS NOT NULL ";
-            sql2 += " AND " + hospitalName + " != ''";
-      //  }
+        //   if (!getSortByProvinceCityOrHospName(data_sort)) {
+        sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp + "%' ";
+        sql2 += " AND " + hospitalName + " NOT  LIKE '" + primaryHosp2 + "%' ";
+        sql2 += " AND " + hospitalName + " IS NOT NULL ";
+        sql2 += " AND " + hospitalName + " != ''";
+        //  }
         sql2 += " AND ( " + excluded + " = 'false' ) ";
 
         if (selectedProvince.size() >= 1) {
@@ -1277,7 +1386,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             if (selectedProvince.size() >= 1) {
                 primary += " AND (";
                 for (int x = 0; x < selectedProvince.size(); x++) {
-                    primary += " "+ province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' OR ";
+                    primary += " " + province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' OR ";
                 }
 
                 //remove and
@@ -1288,7 +1397,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
 
-        primary += " ORDER BY " +  data_sort  + " COLLATE NOCASE ";
+        primary += " ORDER BY " + data_sort + " COLLATE NOCASE ";
         Log.e(TAG, "sql: " + primary);
 
         cursor = database.rawQuery(primary, null);
@@ -1523,22 +1632,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return hosp;
     }
 
-
     private boolean setDataDetailsSpecCharacters(String doctorCode) {
         boolean data = true;
-
         for (int x = 0; x < doctorCode.length(); x++) {
-
             String character = String.valueOf(doctorCode.charAt(x));
-
             if (character.equals(" ")) {
                 data = false;
                 break;
             }
         }
-
         return data;
     }
-
-
 }

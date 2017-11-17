@@ -1,6 +1,6 @@
 package fragments;
 
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -22,24 +22,23 @@ import com.medicard.member.R;
 
 import java.util.ArrayList;
 
-import InterfaceService.ApiHospCallback;
 import InterfaceService.ExclusionRetrieve;
 import InterfaceService.FragmentApiHospCallback;
 import InterfaceService.HospitalListRetrieve;
 import Sqlite.DatabaseHandler;
-import adapter.HospitalAdapter;
 import adapter.HospitalListAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import mehdi.sakout.fancybuttons.FancyButton;
 import model.CitiesAdapter;
 import model.HospitalList;
 import model.ProvincesAdapter;
-import services.OnClicklistener;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.NetworkTest;
 import utilities.SharedPref;
+import v2.SortHospitalActivity;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by IPC on 11/16/2017.
@@ -82,6 +81,8 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
     ArrayList<HospitalList> arraylistHospital = new ArrayList<>();
     private String isMedicardOnly = "false";
     String sortBy = "";
+    private int SORT_CALL = 100;
+
 
     LinearLayoutManager llm;
 
@@ -117,10 +118,14 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
             alertDialogCustom.showMe(context, alertDialogCustom.NO_Internet_title, alertDialogCustom.NO_Internet, 1);
 
         init();
+
+        diplayCurrentSelectedHospital();
         return view;
 
 
     }
+
+
 
     private void init() {
         pd = new ProgressDialog(getContext(), R.style.MyTheme);
@@ -167,7 +172,13 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_sort:
-
+                Intent intent = new Intent(getActivity(), SortHospitalActivity.class);
+                intent.putExtra(Constant.MEDICARD_ONLY, isMedicardOnly);
+                intent.putExtra(Constant.SORT_BY, sortBy);
+                intent.putParcelableArrayListExtra(Constant.SELECTED_CITY, selectedCity);
+                intent.putParcelableArrayListExtra(Constant.SELECTED_PROVINCE, selectedProvince);
+                intent.putExtra(Constant.SEARCH_STRING, search_string);
+                startActivityForResult(intent, SORT_CALL);
                 break;
         }
     }
@@ -205,6 +216,16 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, arraylistHospital.get(position).getContactPerson(), context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_U, "", context);
 
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.LAST_POSITION, String.valueOf(position), context);
+
+
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, Constant.NOT_SET, context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, Constant.NOT_SET, context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, Constant.NOT_SET, context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_U, Constant.NOT_SET, context);
+        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, Constant.NOT_SET, context);
+
+
 
         Log.d(SharedPref.HOSPITAL_NAME, arraylistHospital.get(position).getHospitalName());
         Log.d(SharedPref.HOSPITAL_CODE, arraylistHospital.get(position).getHospitalCode());
@@ -225,6 +246,51 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
             }
         } catch (Exception e) {
             cvHospitalDetails.setVisibility(View.GONE);
+        }
+    }
+
+
+    private void diplayCurrentSelectedHospital() {
+        try {
+            cvHospitalDetails.setVisibility(View.VISIBLE);
+            tvHospitalName.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, context));
+            tvAddress.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.KEY_HOSPITAL_FULL_ADDRESS, context));
+            int position = Integer.parseInt(SharedPref.getStringValue(SharedPref.USER, SharedPref.KEY_HOSPITAL_FULL_ADDRESS, context));
+            if (arraylistHospital.get(position).getPhoneNo().isEmpty())
+                tvContactNo.setText("NO CONTACT NUMBER");
+            else
+                tvContactNo.setText("Tel. No: " + SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, context));
+            if (null == arraylistHospital.get(position).getContactPerson() || (arraylistHospital.get(position).getContactPerson().isEmpty() && arraylistHospital.get(position).getContactPerson().length() == 0)) {
+                tvContactPerson.setVisibility(View.GONE);
+            } else {
+                tvContactPerson.setText("Contact Person: " +SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, context));
+            }
+        } catch (Exception e) {
+            cvHospitalDetails.setVisibility(View.GONE);
+        }
+    }
+
+
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == SORT_CALL && resultCode == RESULT_OK) {
+            isMedicardOnly = data.getStringExtra(Constant.MEDICARD_ONLY);
+            sortBy = data.getStringExtra(Constant.SORT_BY);
+            selectedCity = data.getParcelableArrayListExtra(Constant.SELECTED_CITY);
+            selectedProvince = data.getParcelableArrayListExtra(Constant.SELECTED_PROVINCE);
+            search_string = data.getStringExtra(Constant.SEARCH_STRING);
+
+//            Log.d("sort_by", sortBy);
+//            for (int x = 0; x < selectedCity.size(); x++) {
+//                Log.d("selected_city", selectedCity.get(x).getCityName());
+//           }
+            ed_searchHosp.setText(search_string);
+            retrieveHosp(search_string);
         }
     }
 }

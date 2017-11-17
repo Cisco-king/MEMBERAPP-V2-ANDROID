@@ -8,7 +8,6 @@ public class SetUnfilledField {
 
     public static String setData(String schedule) {
 
-
         return (schedule.equals("") ? "Not Specified" : schedule);
     }
 

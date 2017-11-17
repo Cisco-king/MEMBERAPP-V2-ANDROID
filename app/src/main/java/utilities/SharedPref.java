@@ -32,6 +32,7 @@ public class SharedPref {
     public static String DOCTOR_NAME = "DOCTOR_NAME";
     public static String DOCTOR_CODE = "DOCTOR_CODE";
     public static String DOCTOR_DESC = "DOCTOR_DESC";
+    public static String DOCTOR_SCHED = "DOCTOR_SCHED";
     public static String DOCTOR_U = "DOCTOR_U";
     public static String DOCTOR_ROOM = "DOCTOR_ROOM";
 
@@ -64,6 +65,8 @@ public class SharedPref {
 
     public static final String KEY_HOSPITAL_FULL_ADDRESS = "fullAddress";
 
+
+    public static String LAST_POSITION = "LAST_POSITION";
 
     public void setBoolValue(String Key, boolean value, Context context) {
         SharedPreferences prefs = context.getSharedPreferences(Key, Context.MODE_PRIVATE);

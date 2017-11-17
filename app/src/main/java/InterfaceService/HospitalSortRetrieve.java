@@ -42,7 +42,6 @@ public class HospitalSortRetrieve implements View.OnClickListener {
 
     public void showSortBy() {
 
-
         FancyButton hospital_clinic;
         FancyButton med_clinic_first;
         FancyButton city;

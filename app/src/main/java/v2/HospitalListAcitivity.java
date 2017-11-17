@@ -183,6 +183,7 @@ public class HospitalListAcitivity extends AppCompatActivity implements OnClickl
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, array.get(position).getPhoneNo(), context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, array.get(position).getContactPerson(), context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.HOSPITAL_U, "", context);
+
         SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, Constant.NOT_SET, context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, Constant.NOT_SET, context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, Constant.NOT_SET, context);

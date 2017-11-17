@@ -1,6 +1,5 @@
 package fragments;
 
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,21 +21,15 @@ import android.widget.TextView;
 import com.medicard.member.R;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
-import InterfaceService.DoctorRetrieve;
-import InterfaceService.FragmentApiDocCallback;
-import InterfaceService.FragmentDoctorListRetrieve;
+import InterfaceService.FragmentApiDentistCallback;
+import InterfaceService.FragmentDentistListRetrive;
 import Sqlite.DatabaseHandler;
-import adapter.DoctorAdapter;
-import adapter.DoctorListAdapter;
+import adapter.DentistListAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import model.Doctors;
-import model.GetDoctorsToHospital;
-import model.SpecsAdapter;
+import model.DentistList;
 import timber.log.Timber;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
@@ -44,15 +37,12 @@ import utilities.ErrorMessage;
 import utilities.Loader;
 import utilities.SetUnfilledField;
 import utilities.SharedPref;
-import v2.SortDoctorActivity;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
- * Created by IPC on 11/16/2017.
+ * Created by IPC on 11/17/2017.
  */
 
-public class fragment_doctorList extends Fragment implements FragmentApiDocCallback, View.OnClickListener {
+public class fragment_dentistList extends Fragment implements FragmentApiDentistCallback, View.OnClickListener {
 
     @BindView(R.id.ed_searchDoctor)
     EditText ed_searchDoctor;
@@ -80,14 +70,14 @@ public class fragment_doctorList extends Fragment implements FragmentApiDocCallb
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom() ;
     ProgressDialog pd;
     Context context;
-    FragmentApiDocCallback callback;
-    DoctorListAdapter doctorAdapter;
+    FragmentApiDentistCallback callback;
+    DentistListAdapter doctorAdapter;
     DatabaseHandler databaseHandler;
     Loader loader;
-    FragmentDoctorListRetrieve implement;
+    FragmentDentistListRetrive implement;
     LinearLayoutManager llm;
-    ArrayList<GetDoctorsToHospital> array = new ArrayList<>();
-    ArrayList<SpecsAdapter> selectedSpec = new ArrayList<>();
+    ArrayList<DentistList> array = new ArrayList<>();
+//    ArrayList<SpecsAdapter> selectedSpec = new ArrayList<>();
     private String search_string = "";
     private String sort_by = "";
     private String room_number = "";
@@ -108,7 +98,7 @@ public class fragment_doctorList extends Fragment implements FragmentApiDocCallb
         callback = this;
         databaseHandler = new DatabaseHandler(context);
         loader = new Loader(context);
-        implement = new FragmentDoctorListRetrieve(context, callback, databaseHandler);
+        implement = new FragmentDentistListRetrive(context, callback, databaseHandler);
 
         llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -116,14 +106,14 @@ public class fragment_doctorList extends Fragment implements FragmentApiDocCallb
 
         String hosp_code = SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context);
         if(hosp_code != null){
-            implement.dropDoctors();
-            implement.getDoctors(hosp_code);
+            implement.dropDentist();
+            implement.getDentistList();
         }else {
             tv_doc_not_found.setVisibility(View.VISIBLE);
             tv_doc_not_found.setText("Please Select Hospital first");
         }
 
-        doctorAdapter = new DoctorListAdapter(context, array,callback);
+        doctorAdapter = new DentistListAdapter(context, array,callback);
         rv_doctor.setAdapter(doctorAdapter);
 
 
@@ -141,7 +131,7 @@ public class fragment_doctorList extends Fragment implements FragmentApiDocCallb
 
             @Override
             public void afterTextChanged(Editable s) {
-                getSearchDoctor(String.valueOf(s), selectedSpec, sort_by, room_number);
+//                getSearchDoctor(String.valueOf(s), selectedSpec, sort_by, room_number);
                 search_string = String.valueOf(s);
             }
         });
@@ -150,30 +140,30 @@ public class fragment_doctorList extends Fragment implements FragmentApiDocCallb
         return view;
     }
 
-    private void getSearchDoctor(String editable, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number) {
-
-        array.clear();
-        array.addAll(databaseHandler.retrieveDoctor(String.valueOf(editable), selectedSpec, implement.testSort(sort_by), room_number));
-
-        // get only the unique value from the set
-        Timber.d("original size with duplicate %s", array.size());
-        Set<GetDoctorsToHospital> uniqueSet = new LinkedHashSet<>(array);
-        array.clear();
-        array.addAll(uniqueSet);
-        Timber.d("new set without duplicate %s", array.size());
-
-        doctorAdapter.notifyDataSetChanged();
-
-        if (array.size() == 0) {
-            tv_doc_not_found.setVisibility(View.VISIBLE);
-            cvDoctorDetails.setVisibility(View.GONE);
-            rv_doctor.setVisibility(View.GONE);
-        } else {
-            doctorAdapter.notifyDataSetChanged();
-            rv_doctor.setVisibility(View.VISIBLE);
-            tv_doc_not_found.setVisibility(View.GONE);
-        }
-    }
+//    private void getSearchDoctor(String editable, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number) {
+//
+//        array.clear();
+//        array.addAll(databaseHandler.retrieveDoctor(String.valueOf(editable), selectedSpec, implement.testSort(sort_by), room_number));
+//
+//        // get only the unique value from the set
+//        Timber.d("original size with duplicate %s", array.size());
+//        Set<GetDoctorsToHospital> uniqueSet = new LinkedHashSet<>(array);
+//        array.clear();
+//        array.addAll(uniqueSet);
+//        Timber.d("new set without duplicate %s", array.size());
+//
+//        doctorAdapter.notifyDataSetChanged();
+//
+//        if (array.size() == 0) {
+//            tv_doc_not_found.setVisibility(View.VISIBLE);
+//            cvDoctorDetails.setVisibility(View.GONE);
+//            rv_doctor.setVisibility(View.GONE);
+//        } else {
+//            doctorAdapter.notifyDataSetChanged();
+//            rv_doctor.setVisibility(View.VISIBLE);
+//            tv_doc_not_found.setVisibility(View.GONE);
+//        }
+//    }
 
     private void init() {
         pd = new ProgressDialog(getContext(), R.style.MyTheme);
@@ -187,12 +177,12 @@ public class fragment_doctorList extends Fragment implements FragmentApiDocCallb
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_sort:
-                Intent intent = new Intent(getActivity(), SortDoctorActivity.class);
-                intent.putExtra(Constant.SEARCH_STRING, search_string);
-                intent.putParcelableArrayListExtra(Constant.SELECTED_SPECIALIZATION, selectedSpec);
-                intent.putExtra(Constant.SORT_BY, sort_by);
-                intent.putExtra(Constant.ROOM_NUMBER, room_number);
-                startActivityForResult(intent, DOCTOR_CALL);
+//                Intent intent = new Intent(getActivity(), SortDoctorActivity.class);
+//                intent.putExtra(Constant.SEARCH_STRING, search_string);
+//                intent.putParcelableArrayListExtra(Constant.SELECTED_SPECIALIZATION, selectedSpec);
+//                intent.putExtra(Constant.SORT_BY, sort_by);
+//                intent.putExtra(Constant.ROOM_NUMBER, room_number);
+//                startActivityForResult(intent, DOCTOR_CALL);
                 break;
         }
     }
@@ -210,13 +200,13 @@ public class fragment_doctorList extends Fragment implements FragmentApiDocCallb
     }
 
     @Override
-    public void onDoctorSelect(ArrayList<GetDoctorsToHospital> array, int position) {
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, array.get(position).getDocLname() +", "+ array.get(position).getDocLname() +" "+ array.get(position).getDocFname() , context);
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, array.get(position).getDoctorCode(), context);
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, array.get(position).getSpecDesc(), context);
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_SCHED, array.get(position).getSchedule(), context);
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_U, "", context);
-        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, array.get(position).getRoom(), context);
+    public void onDentistSelect(ArrayList<DentistList> array, int position) {
+//        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, array.get(position).getDocLname() +", "+ array.get(position).getDocLname() +" "+ array.get(position).getDocFname() , context);
+//        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, array.get(position).getDoctorCode(), context);
+//        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, array.get(position).getSpecDesc(), context);
+//        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_SCHED, array.get(position).getSchedule(), context);
+//        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_U, "", context);
+//        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, array.get(position).getRoom(), context);
 
         try{
             cvDoctorDetails.setVisibility(View.VISIBLE);
@@ -227,14 +217,13 @@ public class fragment_doctorList extends Fragment implements FragmentApiDocCallb
         }catch (Exception e){
             cvDoctorDetails.setVisibility(View.GONE);
         }
-
     }
 
     @Override
-    public void internetConnected(String hospCode) {
+    public void internetConnected() {
         loader.startLad();
         loader.setMessage("Getting Doctor List...");
-        implement.getDoctorList(hospCode);
+        implement.getDentistList();
     }
 
     @Override
@@ -250,30 +239,30 @@ public class fragment_doctorList extends Fragment implements FragmentApiDocCallb
     }
 
     @Override
-    public void onSuccess(Doctors doctors) {
+    public void onSuccess(DentistList doctors) {
         loader.stopLoad();
-
-        Timber.d("doctor list : %s", doctors.toString());
-        if (doctors.getGetDoctorsToHospital() != null && doctors.getGetDoctorsToHospital().size() > 0) {
-            alertDialogCustom.showMe(
-                    context,
-                    alertDialogCustom.HOLD_ON_title,
-                    getString(R.string.success_load_doctors),
-                    1);
-        }
-        getSearchDoctor("", selectedSpec, sort_by, "");
+//
+//        Timber.d("doctor list : %s", doctors.toString());
+//        if (doctors.getGetDoctorsToHospital() != null && doctors.getGetDoctorsToHospital().size() > 0) {
+//            alertDialogCustom.showMe(
+//                    context,
+//                    alertDialogCustom.HOLD_ON_title,
+//                    getString(R.string.success_load_doctors),
+//                    1);
+//        }
+//        getSearchDoctor("", selectedSpec, sort_by, "");
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == DOCTOR_CALL && resultCode == RESULT_OK) {
-            selectedSpec = data.getParcelableArrayListExtra(Constant.SELECTED_SPECIALIZATION);
-            search_string = data.getStringExtra(Constant.SEARCH_STRING);
-            sort_by = data.getStringExtra(Constant.SORT_BY);
-            room_number = data.getStringExtra(Constant.ROOM_NUMBER);
-            getSearchDoctor(search_string, selectedSpec, sort_by, room_number);
-            implement.setSearchStringtoUI(search_string, ed_searchDoctor);
-        }
+//        if (requestCode == DOCTOR_CALL && resultCode == RESULT_OK) {
+//            selectedSpec = data.getParcelableArrayListExtra(Constant.SELECTED_SPECIALIZATION);
+//            search_string = data.getStringExtra(Constant.SEARCH_STRING);
+//            sort_by = data.getStringExtra(Constant.SORT_BY);
+//            room_number = data.getStringExtra(Constant.ROOM_NUMBER);
+//            getSearchDoctor(search_string, selectedSpec, sort_by, room_number);
+//            implement.setSearchStringtoUI(search_string, ed_searchDoctor);
+//        }
     }
 }

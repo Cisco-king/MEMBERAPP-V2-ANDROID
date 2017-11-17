@@ -100,6 +100,4 @@ public class FragmentDoctorListRetrieve {
             return "docLname";
         }
     }
-
-
 }
