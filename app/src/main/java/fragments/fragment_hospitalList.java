@@ -156,17 +156,7 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
 
     }
 
-    private void retrieveHosp(final String s) {
-        System.out.println("isMedicardOnly " + isMedicardOnly);
-        System.out.println("selectedProvince " + selectedProvince);
-        System.out.println("sortBy " + sortBy);
-        System.out.println("selectedCity " + selectedCity);
-        System.out.println("hospitalAdapter " + hospitalAdapter);
-        System.out.println("s " + s);
-        implement.updateHospitalList(isMedicardOnly, selectedProvince, sortBy, selectedCity, arraylistHospital, s);
-        hospitalAdapter.notifyDataSetChanged();
-        implement.updateListUI(arraylistHospital, rv_hospital, tv_hosp_not_found);
-    }
+
 
     @Override
     public void onClick(View v) {
@@ -231,22 +221,22 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
         Log.d(SharedPref.HOSPITAL_CODE, arraylistHospital.get(position).getHospitalCode());
         Log.d(SharedPref.HOSPITAL_ADD, arraylistHospital.get(position).getStreetAddress());
 
-        try {
-            cvHospitalDetails.setVisibility(View.VISIBLE);
-            tvHospitalName.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, context));
-            tvAddress.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.KEY_HOSPITAL_FULL_ADDRESS, context));
-            if (arraylistHospital.get(position).getPhoneNo().isEmpty())
-                tvContactNo.setText("NO CONTACT NUMBER");
-            else
-                tvContactNo.setText("Tel. No: " + SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, context));
-            if (null == arraylistHospital.get(position).getContactPerson() || (arraylistHospital.get(position).getContactPerson().isEmpty() && arraylistHospital.get(position).getContactPerson().length() == 0)) {
-                tvContactPerson.setVisibility(View.GONE);
-            } else {
-                tvContactPerson.setText("Contact Person: " +SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, context));
-            }
-        } catch (Exception e) {
-            cvHospitalDetails.setVisibility(View.GONE);
-        }
+//        try {
+//            cvHospitalDetails.setVisibility(View.VISIBLE);
+//            tvHospitalName.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_NAME, context));
+//            tvAddress.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.KEY_HOSPITAL_FULL_ADDRESS, context));
+//            if (arraylistHospital.get(position).getPhoneNo().isEmpty())
+//                tvContactNo.setText("NO CONTACT NUMBER");
+//            else
+//                tvContactNo.setText("Tel. No: " + SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, context));
+//            if (null == arraylistHospital.get(position).getContactPerson() || (arraylistHospital.get(position).getContactPerson().isEmpty() && arraylistHospital.get(position).getContactPerson().length() == 0)) {
+//                tvContactPerson.setVisibility(View.GONE);
+//            } else {
+//                tvContactPerson.setText("Contact Person: " +SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT_PERSON, context));
+//            }
+//        } catch (Exception e) {
+//            cvHospitalDetails.setVisibility(View.GONE);
+//        }
     }
 
 
@@ -292,5 +282,17 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
             ed_searchHosp.setText(search_string);
             retrieveHosp(search_string);
         }
+    }
+
+    private void retrieveHosp(final String s) {
+        System.out.println("isMedicardOnly " + isMedicardOnly);
+        System.out.println("selectedProvince " + selectedProvince);
+        System.out.println("sortBy " + sortBy);
+        System.out.println("selectedCity " + selectedCity);
+        System.out.println("hospitalAdapter " + hospitalAdapter);
+        System.out.println("s " + s);
+        implement.updateHospitalList(isMedicardOnly, selectedProvince, sortBy, selectedCity, arraylistHospital, s);
+        hospitalAdapter.notifyDataSetChanged();
+        implement.updateListUI(arraylistHospital, rv_hospital, tv_hosp_not_found);
     }
 }

@@ -13,6 +13,7 @@ import com.medicard.member.R;
 import java.util.ArrayList;
 
 import InterfaceService.FragmentApiDentistCallback;
+import Sqlite.DatabaseHandler;
 import model.DentistList;
 import utilities.SetUnfilledField;
 
@@ -25,12 +26,12 @@ public class DentistListAdapter extends RecyclerView.Adapter<DentistListAdapter.
     private Context context;
     private ArrayList<DentistList> array = new ArrayList<>();
     FragmentApiDentistCallback callback;
-
-    public DentistListAdapter(Context context, ArrayList<DentistList> array, FragmentApiDentistCallback callback) {
+    DatabaseHandler databaseHandler;
+    public DentistListAdapter(Context context, ArrayList<DentistList> array, FragmentApiDentistCallback callback,DatabaseHandler databaseHandler) {
         this.context = context;
         this.array = array;
         this.callback = callback;
-
+        this.databaseHandler = databaseHandler;
     }
 
     @Override
@@ -42,7 +43,7 @@ public class DentistListAdapter extends RecyclerView.Adapter<DentistListAdapter.
     @Override
     public void onBindViewHolder(DentistListAdapter.ViewHolder holder, int position) {
         holder.name.setText(array.get(position).getLastName() + ", " + array.get(position).getFirstName() + " " + array.get(position).getMiddleName());
-        holder.position.setText("Contact No: " + array.get(position).getContactNo());
+        holder.position.setText("Contact No: " + SetUnfilledField.setData(array.get(position).getContactNo()));
         holder.tv_sched.setText("Schedule: " + SetUnfilledField.setData(array.get(position).getSchedule()));
         holder.tv_room.setText("Clinic: " + SetUnfilledField.setData(array.get(position).getClinic()));
     }

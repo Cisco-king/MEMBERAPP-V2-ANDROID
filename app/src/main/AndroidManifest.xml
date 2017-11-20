@@ -129,6 +129,12 @@
             android:label="@string/title_activity_sort_doctor"
             android:theme="@style/AppTheme" />
         <activity
+            android:name="v2.SortDentistFragment"
+            android:label="@string/title_activity_sort_doctor"
+            android:theme="@style/AppTheme" />
+
+
+        <activity
             android:name="v2.LoaPageActivity"
             android:label="@string/title_activity_loa_page"
             android:theme="@style/AppTheme" />

@@ -40,10 +40,10 @@
         android:textColor="@android:color/black"
         android:textSize="@dimen/text_main"
         android:visibility="gone"
-        android:layout_below="@+id/textView2"/>
+        android:layout_below="@+id/tv_title"/>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -63,7 +63,7 @@
         android:scrollbarStyle="outsideInset"
         android:scrollbarThumbVertical="@color/colorAccent"
         android:scrollbars="vertical"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/tv_title"
         android:layout_above="@+id/linearLayout3"
 
         />

@@ -1,6 +1,5 @@
 package fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,14 +28,19 @@ import adapter.DentistListAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import model.CitiesAdapter;
 import model.DentistList;
-import timber.log.Timber;
+import model.ProvincesAdapter;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.ErrorMessage;
 import utilities.Loader;
 import utilities.SetUnfilledField;
 import utilities.SharedPref;
+import v2.SortDentistFragment;
+import v2.SortHospitalActivity;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by IPC on 11/17/2017.
@@ -62,26 +66,36 @@ public class fragment_dentistList extends Fragment implements FragmentApiDentist
     @BindView(R.id.tv_sched)
     TextView tv_sched;
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
+
     @BindView(R.id.btn_sort)
     LinearLayout btn_sort;
 
     int DOCTOR_CALL = 100;
 
-    AlertDialogCustom alertDialogCustom = new AlertDialogCustom() ;
-    ProgressDialog pd;
+    AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
     Context context;
     FragmentApiDentistCallback callback;
-    DentistListAdapter doctorAdapter;
+    DentistListAdapter dentistListAdapter;
     DatabaseHandler databaseHandler;
     Loader loader;
     FragmentDentistListRetrive implement;
     LinearLayoutManager llm;
-    ArrayList<DentistList> array = new ArrayList<>();
-//    ArrayList<SpecsAdapter> selectedSpec = new ArrayList<>();
+    ArrayList<DentistList> dentistListArrayList = new ArrayList<>();
+    //    ArrayList<SpecsAdapter> selectedSpec = new ArrayList<>();
     private String search_string = "";
     private String sort_by = "";
     private String room_number = "";
     private String DERMATOLOGY = "DERMATOLOGY";
+
+    private String isMedicardOnly = "false";
+    String sortBy = "";
+    ArrayList<CitiesAdapter> selectedCity = new ArrayList<>();
+    ArrayList<ProvincesAdapter> selectedProvince = new ArrayList<>();
+    private int SORT_CALL = 100;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,19 +118,14 @@ public class fragment_dentistList extends Fragment implements FragmentApiDentist
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rv_doctor.setLayoutManager(llm);
 
-        String hosp_code = SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context);
-        if(hosp_code != null){
-            implement.dropDentist();
-            implement.getDentistList();
-        }else {
-            tv_doc_not_found.setVisibility(View.VISIBLE);
-            tv_doc_not_found.setText("Please Select Hospital first");
-        }
 
-        doctorAdapter = new DentistListAdapter(context, array,callback);
-        rv_doctor.setAdapter(doctorAdapter);
+        implement.dropDentist();
+        implement.getDentistConnection();
 
 
+        dentistListAdapter = new DentistListAdapter(context, dentistListArrayList, callback,databaseHandler);
+        rv_doctor.setAdapter(dentistListAdapter);
+        tv_title.setText(context.getString(R.string.select_dentist));
 
         ed_searchDoctor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -131,11 +140,10 @@ public class fragment_dentistList extends Fragment implements FragmentApiDentist
 
             @Override
             public void afterTextChanged(Editable s) {
-//                getSearchDoctor(String.valueOf(s), selectedSpec, sort_by, room_number);
+                getSearchDoctor(String.valueOf(s));
                 search_string = String.valueOf(s);
             }
         });
-        init();
         btn_sort.setOnClickListener(this);
         return view;
     }
@@ -165,24 +173,20 @@ public class fragment_dentistList extends Fragment implements FragmentApiDentist
 //        }
 //    }
 
-    private void init() {
-        pd = new ProgressDialog(getContext(), R.style.MyTheme);
-        pd.setCancelable(false);
-        pd.setMessage("Requesting...");
-        pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-    }
+
 
 
     @OnClick({R.id.btn_sort})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_sort:
-//                Intent intent = new Intent(getActivity(), SortDoctorActivity.class);
-//                intent.putExtra(Constant.SEARCH_STRING, search_string);
-//                intent.putParcelableArrayListExtra(Constant.SELECTED_SPECIALIZATION, selectedSpec);
-//                intent.putExtra(Constant.SORT_BY, sort_by);
-//                intent.putExtra(Constant.ROOM_NUMBER, room_number);
-//                startActivityForResult(intent, DOCTOR_CALL);
+                Intent intent = new Intent(getActivity(), SortDentistFragment.class);
+                intent.putExtra(Constant.MEDICARD_ONLY, isMedicardOnly);
+                intent.putExtra(Constant.SORT_BY, sortBy);
+                intent.putParcelableArrayListExtra(Constant.SELECTED_CITY, selectedCity);
+                intent.putParcelableArrayListExtra(Constant.SELECTED_PROVINCE, selectedProvince);
+                intent.putExtra(Constant.SEARCH_STRING, search_string);
+                startActivityForResult(intent, SORT_CALL);
                 break;
         }
     }
@@ -208,21 +212,22 @@ public class fragment_dentistList extends Fragment implements FragmentApiDentist
 //        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_U, "", context);
 //        SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, array.get(position).getRoom(), context);
 
-        try{
-            cvDoctorDetails.setVisibility(View.VISIBLE);
-            tv_name.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, context));
-            tv_spec.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, context));
-            tv_sched.setText("Schedule: " + SetUnfilledField.setData(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_SCHED, context)));
-            tv_room.setText("Room: " + SetUnfilledField.setData(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, context)));
-        }catch (Exception e){
-            cvDoctorDetails.setVisibility(View.GONE);
-        }
+//        try {
+//            cvDoctorDetails.setVisibility(View.VISIBLE);
+//            tv_name.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, context));
+//            tv_spec.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, context));
+//            tv_sched.setText("Schedule: " + SetUnfilledField.setData(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_SCHED, context)));
+//            tv_room.setText("Room: " + SetUnfilledField.setData(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, context)));
+//        } catch (Exception e) {
+//            cvDoctorDetails.setVisibility(View.GONE);
+//        }
     }
 
     @Override
     public void internetConnected() {
+        loader.checkLoad();
         loader.startLad();
-        loader.setMessage("Getting Doctor List...");
+        loader.setMessage("Getting Dentist List...");
         implement.getDentistList();
     }
 
@@ -239,30 +244,87 @@ public class fragment_dentistList extends Fragment implements FragmentApiDentist
     }
 
     @Override
-    public void onSuccess(DentistList doctors) {
-        loader.stopLoad();
-//
-//        Timber.d("doctor list : %s", doctors.toString());
-//        if (doctors.getGetDoctorsToHospital() != null && doctors.getGetDoctorsToHospital().size() > 0) {
-//            alertDialogCustom.showMe(
-//                    context,
-//                    alertDialogCustom.HOLD_ON_title,
-//                    getString(R.string.success_load_doctors),
-//                    1);
-//        }
-//        getSearchDoctor("", selectedSpec, sort_by, "");
+    public void onSuccess(ArrayList<DentistList> DentistLists) {
+        implement.updateDentistList(DentistLists);
     }
+
+    @Override
+    public void onSuccessDataInsert(ArrayList<DentistList> DentistLists) {
+
+        if (DentistLists != null && DentistLists.size() > 0) {
+            alertDialogCustom.showMe(
+                    context,
+                    alertDialogCustom.HOLD_ON_title,
+                    getString(R.string.success_load_dentist),
+                    1);
+        }
+        getSearchDoctor("");
+        loader.stopLoad();
+    }
+
+
+
+
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == DOCTOR_CALL && resultCode == RESULT_OK) {
-//            selectedSpec = data.getParcelableArrayListExtra(Constant.SELECTED_SPECIALIZATION);
-//            search_string = data.getStringExtra(Constant.SEARCH_STRING);
-//            sort_by = data.getStringExtra(Constant.SORT_BY);
-//            room_number = data.getStringExtra(Constant.ROOM_NUMBER);
-//            getSearchDoctor(search_string, selectedSpec, sort_by, room_number);
-//            implement.setSearchStringtoUI(search_string, ed_searchDoctor);
+
+        if (requestCode == SORT_CALL && resultCode == RESULT_OK) {
+            isMedicardOnly = data.getStringExtra(Constant.MEDICARD_ONLY);
+            sortBy = data.getStringExtra(Constant.SORT_BY);
+            selectedCity = data.getParcelableArrayListExtra(Constant.SELECTED_CITY);
+            selectedProvince = data.getParcelableArrayListExtra(Constant.SELECTED_PROVINCE);
+            search_string = data.getStringExtra(Constant.SEARCH_STRING);
+
+//            Log.d("sort_by", sortBy);
+//            for (int x = 0; x < selectedCity.size(); x++) {
+//                Log.d("selected_city", selectedCity.get(x).getCityName());
+//           }
+            ed_searchDoctor.setText(search_string);
+            getSearchDoctor(search_string);
+        }
+    }
+
+
+    private void getSearchDoctor(String editable) {
+
+//        array.clear();
+//        array.addAll(databaseHandler.retrieveDentist(String.valueOf(editable)));
+//
+//        dentistListAdapter.notifyDataSetChanged();
+//
+//        if (array.size() == 0) {
+//            tv_doc_not_found.setVisibility(View.VISIBLE);
+//            cvDoctorDetails.setVisibility(View.GONE);
+//            rv_doctor.setVisibility(View.GONE);
+//        } else {
+//            dentistListAdapter.notifyDataSetChanged();
+//            rv_doctor.setVisibility(View.VISIBLE);
+//            tv_doc_not_found.setVisibility(View.GONE);
 //        }
+        System.out.println("isMedicardOnly " + isMedicardOnly);
+        System.out.println("selectedProvince " + selectedProvince);
+        System.out.println("sortBy " + sortBy);
+        System.out.println("selectedCity " + selectedCity);
+        System.out.println("dentistListAdapter " + dentistListAdapter);
+        System.out.println("s " + editable);
+        implement.updateDentistList(isMedicardOnly, selectedProvince, sortBy, selectedCity, dentistListArrayList, editable);
+        dentistListAdapter.notifyDataSetChanged();
+        implement.updateListUI(dentistListArrayList, rv_doctor, tv_doc_not_found);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        loader.checkLoad();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        loader.checkLoad();
     }
 }

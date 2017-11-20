@@ -1,18 +1,17 @@
 package model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by IPC on 11/17/2017.
  */
 
 public class DentistList {
     private String dentistCode;
-
     private String lastName;
-
     private String firstName;
-
     private String middleName;
-
     private String dentistAddress;
     private String contactNo;
     private String schedule;
@@ -43,6 +42,60 @@ public class DentistList {
     private String withDiploma;
     private String withPermit;
     private String oldDentistCode;
+
+    private String isSelected;
+
+
+    public DentistList(String dentistCode, String lastName, String firstName, String middleName, String dentistAddress, String contactNo, String schedule, String clinic, String provinceCode, String regionCode, String cityCode, String faxNo, String oldCode, String gracePeriod, String effDate, String isAccredited, String effDateRa, String effDateNap, String vat, String tinNo, String taxable, String wTax, String specialRem, String email, String otherSpecialty, String remarks, String createdDate, String createdBy, String updatedDate, String updatedBy, String withPRC, String withDiploma, String withPermit, String oldDentistCode,String isSelected) {
+        this.dentistCode = dentistCode;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.dentistAddress = dentistAddress;
+        this.contactNo = contactNo;
+        this.schedule = schedule;
+        this.clinic = clinic;
+        this.provinceCode = provinceCode;
+        this.regionCode = regionCode;
+        this.cityCode = cityCode;
+        this.faxNo = faxNo;
+        this.oldCode = oldCode;
+        this.gracePeriod = gracePeriod;
+        this.effDate = effDate;
+        this.isAccredited = isAccredited;
+        this.effDateRa = effDateRa;
+        this.effDateNap = effDateNap;
+        this.vat = vat;
+        this.tinNo = tinNo;
+        this.taxable = taxable;
+        this.wTax = wTax;
+        this.specialRem = specialRem;
+        this.email = email;
+        this.otherSpecialty = otherSpecialty;
+        this.remarks = remarks;
+        this.createdDate = createdDate;
+        this.createdBy = createdBy;
+        this.updatedDate = updatedDate;
+        this.updatedBy = updatedBy;
+        this.withPRC = withPRC;
+        this.withDiploma = withDiploma;
+        this.withPermit = withPermit;
+        this.oldDentistCode = oldDentistCode;
+        this.isSelected = isSelected;
+
+    }
+
+    public DentistList() {
+
+    }
+
+    public String getIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(String isSelected) {
+        this.isSelected = isSelected;
+    }
 
     public String getDentistCode() {
         return dentistCode;
@@ -357,4 +410,5 @@ public class DentistList {
         print += "]";
         return print;
     }
+
 }

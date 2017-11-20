@@ -37,6 +37,9 @@ public class HospitalList implements Parcelable, Table.Hospital {
 
     private String city;
 
+
+    private Boolean isSelected;
+
     public HospitalList( ) {
 
     }
@@ -62,6 +65,8 @@ public class HospitalList implements Parcelable, Table.Hospital {
         setContactPerson(getStringCursorValue(cursor, CONTACT_PERSON));
         setCity(getStringCursorValue(cursor, CITY));
     }
+
+
 
     public HospitalList(String phoneNo, String region, String streetAddress, String category, String faxno, String alias, String keyword, String province, String hospitalName, String hospitalCode, String coordinator, String contactPerson, String city) {
         this.phoneNo = phoneNo;
@@ -93,6 +98,15 @@ public class HospitalList implements Parcelable, Table.Hospital {
         this.coordinator = hospital.getCoordinator();
         this.contactPerson = hospital.getContactPerson();
         this.city = hospital.getCity();
+    }
+
+
+    public Boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(Boolean selected) {
+        isSelected = selected;
     }
 
     public String getPhoneNo ()

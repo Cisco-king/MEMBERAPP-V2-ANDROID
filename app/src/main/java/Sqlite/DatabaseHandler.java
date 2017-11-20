@@ -12,9 +12,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 
 import database.entity.Doctor;
@@ -179,7 +177,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //    private String vat= "vat";
     private String tinNo = "tinNo";
     private String taxable = "taxable";
-    private String wTax = "specialRem";
+    private String wTax = "wTax";
     //    private String specialRem= "specialRem";
     private String email = "email";
     private String otherSpecialty = "otherSpecialty";
@@ -192,6 +190,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private String withDiploma = "withDiploma";
     private String withPermit = "withPermit";
     private String oldDentistCode = "oldDentistCode";
+
+
+    private String isSelected = "isSelected";
 
 
     protected static final String databaseName = "Medicard";
@@ -314,6 +315,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private String createDentistStatement = "CREATE TABLE " +
             dentistTable + " ( " +
+            dentistCode + " TEXT ," +
             lastName + " TEXT ," +
             firstName + " TEXT ," +
             middleName + " TEXT ," +
@@ -423,6 +425,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + hospTable);
         db.execSQL("DROP TABLE IF EXISTS " + doctable);
         db.execSQL("DROP TABLE IF EXISTS " + loaTable);
+        db.execSQL("DROP TABLE IF EXISTS " + dentistTable);
 //        db.execSQL("");
         onCreate(db);
     }
@@ -693,7 +696,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Log.e(TAG, lastName + " created.");
         }
     }
-
 
     /**
      * @param sort_by           == ORDER BY
@@ -1122,10 +1124,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private ArrayList<HospitalList> getHospList(Cursor cursor) {
         ArrayList<HospitalList> hospitals = new ArrayList<>();
 
-
         if (cursor.moveToFirst()) {
-
-
             do {
                 HospitalList hospital = new HospitalList();
                 hospital.setAlias(cursor.getString(cursor.getColumnIndex(alias)));
@@ -1135,14 +1134,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 hospital.setHospitalName(cursor.getString(cursor.getColumnIndex(hospitalName)));
                 hospital.setKeyword(cursor.getString(cursor.getColumnIndex(keyword)));
                 hospital.setStreetAddress(cursor.getString(cursor.getColumnIndex(streetAddress)));
-
                 hospital.setCity(cursor.getString(cursor.getColumnIndex(city)));
                 hospital.setProvince(cursor.getString(cursor.getColumnIndex(province)));
                 hospital.setRegion(cursor.getString(cursor.getColumnIndex(region)));
                 hospital.setPhoneNo(cursor.getString(cursor.getColumnIndex(phoneNo)));
                 hospital.setFaxno(cursor.getString(cursor.getColumnIndex(faxno)));
                 hospital.setContactPerson(cursor.getString(cursor.getColumnIndex(contactPerson)));
-
                 hospitals.add(hospital);
                 Log.e(TAG, "sql: " + cursor.getString(cursor.getColumnIndex(city)));
             } while (cursor.moveToNext());
@@ -1151,6 +1148,56 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         cursor.close();
         return hospitals;
+    }
+
+    private ArrayList<DentistList> getDentistList(Cursor cursor) {
+        ArrayList<DentistList> dentist = new ArrayList<>();
+
+
+        if (cursor.moveToFirst()) {
+            do {
+                DentistList insertion = new DentistList();
+                insertion.setDentistCode(cursor.getString(cursor.getColumnIndex(dentistCode)));
+                insertion.setLastName(cursor.getString(cursor.getColumnIndex(lastName)));
+                insertion.setFirstName(cursor.getString(cursor.getColumnIndex(firstName)));
+                insertion.setMiddleName(cursor.getString(cursor.getColumnIndex(middleName)));
+                insertion.setDentistAddress(cursor.getString(cursor.getColumnIndex(dentistAddress)));
+                insertion.setContactNo(cursor.getString(cursor.getColumnIndex(contactNo)));
+                insertion.setSchedule(cursor.getString(cursor.getColumnIndex(schedule)));
+                insertion.setClinic(cursor.getString(cursor.getColumnIndex(clinic)));
+                insertion.setProvinceCode(cursor.getString(cursor.getColumnIndex(provinceCode)));
+                insertion.setRegionCode(cursor.getString(cursor.getColumnIndex(regionCode)));
+                insertion.setCityCode(cursor.getString(cursor.getColumnIndex(cityCode)));
+                insertion.setFaxNo(cursor.getString(cursor.getColumnIndex(faxNo)));
+                insertion.setOldCode(cursor.getString(cursor.getColumnIndex(oldCode)));
+                insertion.setGracePeriod(cursor.getString(cursor.getColumnIndex(gracePeriod)));
+                insertion.setEffDate(cursor.getString(cursor.getColumnIndex(effDate)));
+                insertion.setIsAccredited(cursor.getString(cursor.getColumnIndex(isAccredited)));
+                insertion.setEffDateRa(cursor.getString(cursor.getColumnIndex(effDateRa)));
+                insertion.setEffDateNap(cursor.getString(cursor.getColumnIndex(effDateNap)));
+                insertion.setVat(cursor.getString(cursor.getColumnIndex(vat)));
+                insertion.setTinNo(cursor.getString(cursor.getColumnIndex(tinNo)));
+                insertion.setTaxable(cursor.getString(cursor.getColumnIndex(taxable)));
+                insertion.setwTax(cursor.getString(cursor.getColumnIndex(wTax)));
+                insertion.setSpecialRem(cursor.getString(cursor.getColumnIndex(specialRem)));
+                insertion.setEmail(cursor.getString(cursor.getColumnIndex(email)));
+                insertion.setOtherSpecialty(cursor.getString(cursor.getColumnIndex(otherSpecialty)));
+                insertion.setRemarks(cursor.getString(cursor.getColumnIndex(remarks)));
+                insertion.setCreatedDate(cursor.getString(cursor.getColumnIndex(createdDate)));
+                insertion.setCreatedBy(cursor.getString(cursor.getColumnIndex(createdBy)));
+                insertion.setUpdatedDate(cursor.getString(cursor.getColumnIndex(updatedDate)));
+                insertion.setUpdatedBy(cursor.getString(cursor.getColumnIndex(updatedBy)));
+                insertion.setWithPRC(cursor.getString(cursor.getColumnIndex(withPRC)));
+                insertion.setWithDiploma(cursor.getString(cursor.getColumnIndex(withDiploma)));
+                insertion.setWithPermit(cursor.getString(cursor.getColumnIndex(withPermit)));
+                insertion.setOldDentistCode(cursor.getString(cursor.getColumnIndex(oldDentistCode)));
+                insertion.setIsSelected(cursor.getString(cursor.getColumnIndex(isSelected)));
+                dentist.add(insertion);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return dentist;
     }
 
 
@@ -1642,5 +1689,177 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             }
         }
         return data;
+    }
+
+
+    public void setDentistsDataToDatabase(ArrayList<DentistList> doctors) {
+        for (int x = 0; x < doctors.size(); x++) {
+            insertDentistList(new DentistList(
+                    doctors.get(x).getDentistCode(),
+                    doctors.get(x).getLastName(),
+                    doctors.get(x).getFirstName(),
+                    doctors.get(x).getMiddleName(),
+                    doctors.get(x).getDentistAddress(),
+                    doctors.get(x).getContactNo(),
+                    doctors.get(x).getSchedule(),
+                    doctors.get(x).getClinic(),
+                    doctors.get(x).getProvinceCode(),
+                    doctors.get(x).getRegionCode(),
+                    doctors.get(x).getCityCode(),
+                    doctors.get(x).getFaxNo(),
+                    doctors.get(x).getOldCode(),
+                    doctors.get(x).getGracePeriod(),
+                    doctors.get(x).getEffDate(),
+                    doctors.get(x).getIsAccredited(),
+                    doctors.get(x).getEffDateRa(),
+                    doctors.get(x).getEffDateNap(),
+                    doctors.get(x).getVat(),
+                    doctors.get(x).getTinNo(),
+                    doctors.get(x).getTaxable(),
+                    doctors.get(x).getwTax(),
+                    doctors.get(x).getSpecialRem(),
+                    doctors.get(x).getEmail(),
+                    doctors.get(x).getOtherSpecialty(),
+                    doctors.get(x).getRemarks(),
+                    doctors.get(x).getCreatedDate(),
+                    doctors.get(x).getCreatedBy(),
+                    doctors.get(x).getUpdatedDate(),
+                    doctors.get(x).getUpdatedBy(),
+                    doctors.get(x).getWithPRC(),
+                    doctors.get(x).getWithDiploma(),
+                    doctors.get(x).getWithPermit(),
+                    doctors.get(x).getOldDentistCode(),
+                    "false"));
+        }
+    }
+
+    public Collection<? extends DentistList> getOnlyMedicardClinics_dentist(ArrayList<ProvincesAdapter> selectedProvince, String data_sort, ArrayList<CitiesAdapter> selectedCity, String isMedicardOnly, String data) {
+        ArrayList<DentistList> arrayList = new ArrayList<>();
+        String s = data.toUpperCase().replace("'", "`");
+        SQLiteDatabase database;
+        Cursor cursor = null;
+        database = getReadableDatabase();
+
+        String primary = "";
+        primary += "SELECT * FROM " + dentistTable;
+        primary += " WHERE " + clinic + " LIKE  '%" + s + "%' ";
+        primary += " AND (" + clinic + "  LIKE '%" + primaryHosp + "%' ";
+        primary += " OR " + clinic + "  LIKE '%" + primaryHosp2 + "%' )";
+        primary += " AND " + clinic + " IS NOT NULL ";
+        primary += " AND " + clinic + " != ''";
+
+        if (selectedCity.size() != 0) {
+            primary += " AND  (";
+            for (int x = 0; x < selectedCity.size(); x++) {
+                primary += "   " + cityCode + " LIKE '%" + selectedCity.get(x).getCityName() + "%'  " + "  OR  ";
+            }
+            //remove and
+            primary = primary.substring(0, primary.length() - 6);
+            primary += " ) ";
+        }
+        if (selectedCity.size() == 0) {
+            if (selectedProvince.size() >= 1) {
+                primary += " AND (";
+                for (int x = 0; x < selectedProvince.size(); x++) {
+                    primary += " " + provinceCode + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' OR ";
+                }
+
+                //remove and
+                primary = primary.substring(0, primary.length() - 3);
+                primary += " ) ";
+
+            }
+        }
+        primary += " ORDER BY " + data_sort + " COLLATE NOCASE ";
+        Log.e(TAG, "sql: " + primary);
+
+        cursor = database.rawQuery(primary, null);
+        Log.e(TAG, cursor.getCount() + "");
+        arrayList.addAll(getDentistList(cursor));
+
+        database.close();
+        return arrayList;
+    }
+
+    public ArrayList<DentistList> retrieveDentist(String isMedicardOnly, ArrayList<ProvincesAdapter> selectedProvince, String data_sort, ArrayList<CitiesAdapter> selectedCity, String data) {
+        ArrayList<DentistList> arrayList = new ArrayList<>();
+        String s = data.toUpperCase().replace("'", "`");
+
+        arrayList.addAll(getOnlyMedicardClinics_dentist(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
+
+        arrayList.addAll(getSortedDentist(isMedicardOnly, selectedProvince, data_sort, selectedCity, s));
+        return arrayList;
+    }
+
+
+    public ArrayList<DentistList> getSortedDentist( String isMedicardOnly,ArrayList<ProvincesAdapter> selectedProvince, String data_sort, ArrayList<CitiesAdapter> selectedCity, String s ){
+        ArrayList<DentistList> arrayList = new ArrayList<>();
+        SQLiteDatabase database;
+        Cursor cursor = null;
+        database = getReadableDatabase();
+
+        ///WILDCARD AT START
+        //   if (selectedCity.size() == 0) {
+        String sql2 = "";
+        sql2 += "SELECT * FROM " + dentistTable;
+        sql2 += " WHERE " + clinic + "  LIKE '%" + s + "%' ";
+        //   if (!getSortByProvinceCityOrHospName(data_sort)) {
+        sql2 += " AND " + clinic + " NOT  LIKE '" + primaryHosp + "%' ";
+        sql2 += " AND " + clinic + " NOT  LIKE '" + primaryHosp2 + "%' ";
+        sql2 += " AND " + clinic + " IS NOT NULL ";
+        sql2 += " AND " + clinic + " != ''";
+        //  }
+
+        if (selectedProvince.size() >= 1) {
+            Log.d("testable", "getHospitalList: this method is called selectedProvince.size())");
+            sql2 += "  AND ( ";
+            for (int x = 0; x < selectedProvince.size(); x++) {
+                sql2 += provinceCode + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%'   OR  ";
+            }
+            String temp;
+            temp = sql2;
+            sql2 = "";
+            sql2 = temp.substring(0, temp.length() - 4);
+            sql2 += " ) ";
+        }
+
+        if (selectedCity.size() != 0) {
+            Log.d("testable", "getHospitalList: this method is called selectedCity.size()");
+            sql2 += " AND (";
+            for (int x = 0; x < selectedCity.size(); x++) {
+                sql2 += "   " + cityCode + " LIKE '%" + selectedCity.get(x).getCityName() + "%'   " + "  OR  ";
+            }
+            //remove and
+            sql2 = sql2.substring(0, sql2.length() - 6);
+            sql2 += " ) ";
+        }
+        sql2 += " ORDER BY " + data_sort + " COLLATE NOCASE ";
+        Log.e(TAG, "sql: " + sql2);
+
+        cursor = database.rawQuery(sql2, null);
+        Log.e(TAG, cursor.getCount() + "");
+        arrayList.addAll(getDentistList(cursor));
+
+        database.close();
+        return arrayList;
+    }
+
+
+    public void updateSelectedDentist(String dentistCode) {
+        String sql = "";
+        SQLiteDatabase db = this.getWritableDatabase();
+        sql = dentistCode + " = '" + dentistCode + "'";
+        ContentValues con = new ContentValues();
+        con.put(isSelected, "true");
+        db.update(dentistTable, con, sql, null);
+    }
+
+    public void updateDeselectDentist() {
+        String sql = "";
+        SQLiteDatabase db = this.getWritableDatabase();
+        sql = isSelected + " = 'true'";
+        ContentValues con = new ContentValues();
+        con.put(isSelected, "false");
+        db.update(dentistTable, con, sql, null);
     }
 }

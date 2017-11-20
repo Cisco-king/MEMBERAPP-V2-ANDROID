@@ -1,13 +1,11 @@
 package services;
 
-import java.io.File;
-
 import model.AddDepenceResponse;
 import model.AddDependence;
-import model.BasicTestOrOtherTest;
 import model.ChangePassword;
 import model.City;
 import model.Confirm;
+import model.DentistModel;
 import model.Disclaimer;
 import model.DoctorNORoom;
 import model.Doctors;
@@ -26,10 +24,10 @@ import model.ReturnRequestPassword;
 import model.SendLoa;
 import model.SignInDetails;
 import model.SpecializationList;
-import model.TestsModel;
 import model.TheDoctor;
 import model.UpdatePin;
 import model.VerifyMemberData;
+import model.DentistList;
 import model.newtest.NewTestRequest;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -49,7 +47,6 @@ import services.response.DentalBenefitsResponse;
 import services.response.LoaListResponse;
 import services.response.MaceRequestResponse;
 import services.response.TestModelResponse;
-import utilities.SharedPref;
 
 /**
  * Created by window on 10/5/2016.
@@ -140,6 +137,10 @@ public interface AppInterface {
 
     @GET("listing/getDoctorsToHospital/?")
     Observable<Doctors> getDoctors(@Query("hospitalCode") String hospitalCode);
+
+
+    @GET("/v2/listing/getDentistList")
+    Call<DentistModel> getDentist();
 
     @POST("memberloa/requestLOAConsult/")
     Observable<RequestResult> sendConsultation(@Body SendLoa sendLoa);

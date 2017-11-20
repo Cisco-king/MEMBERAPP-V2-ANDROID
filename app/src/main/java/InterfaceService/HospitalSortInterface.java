@@ -6,7 +6,6 @@ package InterfaceService;
 
 public interface HospitalSortInterface {
 
-
       void onSortByListener(String sort);
 
 }

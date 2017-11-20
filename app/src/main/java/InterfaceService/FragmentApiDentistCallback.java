@@ -17,5 +17,7 @@ public interface FragmentApiDentistCallback {
 
     void onError(String message);
 
-    void onSuccess(DentistList doctors);
+    void onSuccess(ArrayList<DentistList> DentistLists);
+
+    void onSuccessDataInsert(ArrayList<DentistList> DentistLists);
 }

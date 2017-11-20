@@ -31,6 +31,11 @@ public class Loader {
         pd.show();
     }
 
+    public void checkLoad(){
+        if((pd != null))
+            pd.dismiss();
+    }
+
     public void stopLoad() {
         pd.dismiss();
     }

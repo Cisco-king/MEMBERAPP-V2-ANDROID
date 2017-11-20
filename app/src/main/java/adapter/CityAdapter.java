@@ -42,7 +42,6 @@ public class CityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-
         if (viewType == TYPE_SELECTED) {
             View itemView = LayoutInflater.from(context).inflate(R.layout.row_province_selected, parent, false);
             return new HolderSelected(itemView);
@@ -50,7 +49,6 @@ public class CityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             View itemView = LayoutInflater.from(context).inflate(R.layout.row_province, parent, false);
             return new Holder(itemView);
         }
-
 
         throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
         // return new Holder(LayoutInflater.from(context).inflate(R.layout.row_province, parent, false));
@@ -63,7 +61,6 @@ public class CityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             final Holder Holder = (CityAdapter.Holder) holder;
             Holder.name.setText(array.get(position).getCityName().trim());
             Log.d("PROViNCE", array.get(position).getCityName().trim() + "//");
-
 
             Holder.ll_bg.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -94,13 +91,10 @@ public class CityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-
-
         if (array.get(position).getSelected().equals("true"))
             return TYPE_SELECTED;
         else
             return TYPE_NOT_SELECTED;
-
 
     }
 
@@ -139,7 +133,6 @@ public class CityAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Log.d("sel", array.get(position).getSelected().trim() + "//");
         Log.d("sel", position + "//");
         selected.add(array.get(position));
-
     }
 
     private void setDeSelected(int position) {

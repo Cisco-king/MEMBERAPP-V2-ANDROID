@@ -89,7 +89,6 @@ public class HospitalListRetrieve {
             array.addAll(handler.getOnlyMedicardClinics(selectedProvince, data_sort, selectedCity, isMedicardOnly, s));
         } else
             array.addAll(handler.retrieveHospital(isMedicardOnly, selectedProvince, data_sort, selectedCity, s));
-
     }
 
     public void updateListForTest(String isMedicardOnly, ArrayList<ProvincesAdapter> selectedProvince, String sortBy, ArrayList<CitiesAdapter> selectedCity, HospitalDoctorAdapter hospitalAdapter, List<HospitalList> array, String s) {

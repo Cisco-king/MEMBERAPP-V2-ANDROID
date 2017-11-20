@@ -26,6 +26,7 @@ import com.tapadoo.alerter.Alert;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fragments.fragment_changePassword;
+import fragments.fragment_dentistList;
 import fragments.fragment_doctorList;
 import fragments.fragment_hospitalList;
 import fragments.fragment_memberInfo;
@@ -169,13 +170,12 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.nav_dentist:
                 tv_header.setText("Dentist List");
-//                fragment = null;
-//                fragment = new fragment_changePassword();
-//                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//                fragmentTransaction.replace(R.id.container_body, fragment);
-//                fragmentTransaction.commit();
+                fragment = null;
+                fragment = new fragment_dentistList();
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment);
+                fragmentTransaction.commit();
                 closeDrawer();
-
                 break;
 
             case R.id.nav_doctor:
@@ -245,8 +245,9 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
 
 
             case R.id.tv_loa_req:
-
                 tv_header.setText(getString(R.string.my_loa_req));
+                fragment = null;
+                fragment = new fragment_loaRequest();
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_body, ViewLoaListFragment.newInstance());
                 fragmentTransaction.commit();

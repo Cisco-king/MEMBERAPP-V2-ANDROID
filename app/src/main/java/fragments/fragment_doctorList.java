@@ -218,15 +218,15 @@ public class fragment_doctorList extends Fragment implements FragmentApiDocCallb
         SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_U, "", context);
         SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, array.get(position).getRoom(), context);
 
-        try{
-            cvDoctorDetails.setVisibility(View.VISIBLE);
-            tv_name.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, context));
-            tv_spec.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, context));
-            tv_sched.setText("Schedule: " + SetUnfilledField.setData(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_SCHED, context)));
-            tv_room.setText("Room: " + SetUnfilledField.setData(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, context)));
-        }catch (Exception e){
-            cvDoctorDetails.setVisibility(View.GONE);
-        }
+//        try{
+//            cvDoctorDetails.setVisibility(View.VISIBLE);
+//            tv_name.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, context));
+//            tv_spec.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, context));
+//            tv_sched.setText("Schedule: " + SetUnfilledField.setData(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_SCHED, context)));
+//            tv_room.setText("Room: " + SetUnfilledField.setData(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, context)));
+//        }catch (Exception e){
+//            cvDoctorDetails.setVisibility(View.GONE);
+//        }
 
     }
 
