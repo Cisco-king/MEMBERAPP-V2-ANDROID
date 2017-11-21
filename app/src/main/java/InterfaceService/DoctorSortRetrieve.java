@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.CitiesAdapter;
+import model.ProvincesAdapter;
 import model.SpecsAdapter;
 import utilities.Constant;
 
@@ -200,5 +201,64 @@ public class DoctorSortRetrieve {
     public void setRoom(String room_number, EditText et_room_number) {
 
         et_room_number.setText(room_number);
+    }
+
+    public void setCityText(TextView tv_city, ArrayList<CitiesAdapter> selected) {
+
+        String data = "";
+        if (selected.size() != 0) {
+            for (int x = 0; x < selected.size(); x++) {
+                data = data + selected.get(x).getCityName().trim() + ",";
+            }
+            Log.d("CITY_SEL", data);
+            tv_city.setText(data.substring(0, data.length() - 1));
+        } else {
+            tv_city.setText(Constant.ALL_CITIES);
+        }
+
+    }
+
+    public void setProvinceText(TextView tv_province, ArrayList<ProvincesAdapter> selectedProvince) {
+
+        String data = "";
+        if (selectedProvince.size() != 0) {
+            for (int x = 0; x < selectedProvince.size(); x++) {
+                data = data + selectedProvince.get(x).getProvinceName().trim() + ",";
+            }
+            tv_province.setText(data.substring(0, data.length() - 1));
+        } else {
+            tv_province.setText(Constant.ALL_PROVINCES);
+        }
+
+    }
+
+    public void updateCityList(ArrayList<CitiesAdapter> selectedCity, ArrayList<ProvincesAdapter> selectedProvince, TextView tv_city) {
+
+        ArrayList<CitiesAdapter> temp = new ArrayList<>();
+
+        for (int city = 0; city < selectedCity.size(); city++) {
+            for (int prov = 0; prov < selectedProvince.size(); prov++) {
+                if (selectedCity.get(city).getProvinceCode().equals(selectedProvince.get(prov).getProvinceCode())) {
+                    temp.add(selectedCity.get(city));
+                }
+            }
+        }
+
+        selectedCity.clear();
+        selectedCity.addAll(temp);
+
+        setCityText(tv_city, selectedCity);
+
+    }
+
+    public void setResetCity(TextView tv_city, ArrayList<CitiesAdapter> selectedCity, EditText et_search) {
+        tv_city.setText(Constant.ALL_CITIES);
+        selectedCity.clear();
+        et_search.setText("");
+    }
+
+    public void setResetProvince(TextView tv_province, ArrayList<ProvincesAdapter> selectedProvince) {
+        tv_province.setText(Constant.ALL_PROVINCES);
+        selectedProvince.clear();
     }
 }

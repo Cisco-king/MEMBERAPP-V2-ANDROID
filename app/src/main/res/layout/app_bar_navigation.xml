@@ -21,28 +21,28 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <LinearLayout
-                android:layout_marginRight="@dimen/margin"
-                android:gravity="right"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin"
+                android:gravity="right"
                 android:orientation="horizontal">
 
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:gravity="center"
-                    android:layout_weight=".1"
-                    android:id="@+id/tv_header"
-                    android:textSize="@dimen/text_main"
-                    android:textColor="@android:color/white"/>
                 <ImageButton
                     android:id="@+id/btn_nav"
-                    android:background="@android:color/transparent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
                     android:src="@drawable/ic_menu" />
 
+                <TextView
+                    android:id="@+id/tv_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_weight=".1"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_main" />
 
             </LinearLayout>
         </android.support.v7.widget.Toolbar>

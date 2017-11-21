@@ -30,13 +30,16 @@ import java.util.TreeSet;
 import InterfaceService.DoctorInterface;
 import InterfaceService.DoctorRetrieve;
 import Sqlite.DatabaseHandler;
+import Sqlite.SetDoctorToDatabase;
 import adapter.DoctorAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
+import model.CitiesAdapter;
 import model.Doctors;
 import model.GetDoctorsToHospital;
+import model.ProvincesAdapter;
 import model.SpecsAdapter;
 import services.OnClicklistener;
 import timber.log.Timber;
@@ -87,6 +90,8 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     int DOCTOR_CALL = 100;
     ArrayList<GetDoctorsToHospital> array = new ArrayList<>();
     ArrayList<SpecsAdapter> selectedSpec = new ArrayList<>();
+    ArrayList<CitiesAdapter> selectedCity = new ArrayList<>();
+    ArrayList<ProvincesAdapter> selectedProvince = new ArrayList<>();
     private String search_string = "";
     private String sort_by = "";
     private String room_number = "";
@@ -175,6 +180,8 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
                 intent.putParcelableArrayListExtra(Constant.SELECTED_SPECIALIZATION, selectedSpec);
                 intent.putExtra(Constant.SORT_BY, sort_by);
                 intent.putExtra(Constant.ROOM_NUMBER, room_number);
+                intent.putParcelableArrayListExtra(Constant.SELECTED_CITY, selectedCity);
+                intent.putParcelableArrayListExtra(Constant.SELECTED_PROVINCE, selectedProvince);
                 startActivityForResult(intent, DOCTOR_CALL);
                 break;
         }
@@ -183,7 +190,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     private void getSearchDoctor(String editable, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number) {
 
         array.clear();
-        array.addAll(databaseHandler.retrieveDoctor(String.valueOf(editable), selectedSpec, implement.testSort(sort_by), room_number));
+        array.addAll(databaseHandler.retrieveDoctor(selectedCity,selectedProvince,String.valueOf(editable), selectedSpec, implement.testSort(sort_by), room_number));
 
         // get only the unique value from the set
         Timber.d("original size with duplicate %s", array.size());
@@ -215,6 +222,8 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
             search_string = data.getStringExtra(Constant.SEARCH_STRING);
             sort_by = data.getStringExtra(Constant.SORT_BY);
             room_number = data.getStringExtra(Constant.ROOM_NUMBER);
+            selectedCity = data.getParcelableArrayListExtra(Constant.SELECTED_CITY);
+            selectedProvince = data.getParcelableArrayListExtra(Constant.SELECTED_PROVINCE);
             getSearchDoctor(search_string, selectedSpec, sort_by, room_number);
             implement.setSearchStringtoUI(search_string, ed_searchDoctor);
         }
@@ -256,16 +265,16 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
 
     @Override
-    public void onError(String message) {
+    public void onDoctorError(String message) {
         Log.e("DOCTOR", message);
         loader.stopLoad();
         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
     }
 
     @Override
-    public void onSuccess(Doctors doctors) {
+    public void onDoctorSuccess(Doctors doctors) {
+        SetDoctorToDatabase.insertToDb(databaseHandler, doctors, callback);
         loader.stopLoad();
-
         Timber.d("doctor list : %s", doctors.toString());
         if (doctors.getGetDoctorsToHospital() != null && doctors.getGetDoctorsToHospital().size() > 0) {
             alertDialogCustom.showMe(

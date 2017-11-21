@@ -42,6 +42,9 @@ import model.LogIn;
 import model.Province;
 import model.SignInDetails;
 import model.SpecializationList;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -65,15 +68,21 @@ import utilities.UpdateCaller;
 public class SignInActivity extends AppCompatActivity
         implements View.OnClickListener, SignInCallback, UpdateCaller.DialogUpdateInterface {
 
-    @BindView(R.id.btn_signUp) Button btn_signUp;
-    @BindView(R.id.btn_signIn) Button btn_signIn;
+    @BindView(R.id.btn_signUp)
+    Button btn_signUp;
+    @BindView(R.id.btn_signIn)
+    Button btn_signIn;
 
-    @BindView(R.id.ed_password) EditText ed_password;
-    @BindView(R.id.ed_userid) EditText ed_userid;
+    @BindView(R.id.ed_password)
+    EditText ed_password;
+    @BindView(R.id.ed_userid)
+    EditText ed_userid;
 
-    @BindView(R.id.tv_forgot_password) TextView tv_forgot_password;
+    @BindView(R.id.tv_forgot_password)
+    TextView tv_forgot_password;
 
-    @BindView(R.id.coords) CoordinatorLayout coords;
+    @BindView(R.id.coords)
+    CoordinatorLayout coords;
 
     Context context;
 
@@ -109,7 +118,7 @@ public class SignInActivity extends AppCompatActivity
         context = this;
         callback = this;
         callbackDialog = this;
-
+        databaseHandler = new DatabaseHandler(context);
         implement = new SignInRetrieve(context, callback);
 
         btn_signUp.setOnClickListener(this);
@@ -263,13 +272,11 @@ public class SignInActivity extends AppCompatActivity
 
         //this is a note that the download will take a while
         Toast toast = Toast.makeText(context, "Download will take a while. Please wait.", Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.TOP| Gravity.CENTER_HORIZONTAL,0,0);
+        toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
         toast.show();
 
-
-
         pd.setMessage("Updating Hospitals...");
-        getHospitalList(responseBody, username, password);
+        implement.getHospitalList(responseBody, username, password);
 
         memCode = responseBody.getUserAccount().getMEM_CODE();
 
@@ -290,99 +297,6 @@ public class SignInActivity extends AppCompatActivity
         }
     }
 
-
-    private void getHospitalList(final SignInDetails responseBody, final String username, final String password) {
-
-        AppInterface appInterface;
-        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-        appInterface.getHospital()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<Hospital>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        try {
-                            Log.d("ERROR_SIGN", e.getMessage());
-
-                            pd.dismiss();
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
-
-                        } catch (Exception error) {
-                            pd.dismiss();
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
-
-                            Log.e("Rx_ERROR", error.getCause().getMessage());
-                            Log.d("ERROR_SIGN", e.getMessage());
-                        }
-
-                    }
-
-                    @Override
-                    public void onNext(Hospital hospital) {
-                        Log.d("Hospital", hospital.toString());
-
-                        setToDatabase(hospital, responseBody);
-
-                    }
-                });
-
-    }
-
-    private void setToDatabase(final Hospital hospital, final SignInDetails responseBody) {
-
-
-        AsyncTask setHosp = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-                databaseHandler.dropHospital();
-                SetHospitalToDatabase.setHospToDb(hospital.getHospitalList(), databaseHandler);
-
-                return null;
-            }
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                databaseHandler = new DatabaseHandler(context);
-
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-                String data = "";
-                String filterNull = "";
-                try {
-                    filterNull = SharedPref.getStringValue(SharedPref.USER, SharedPref.FIRST_TIME, context);
-                    if (!filterNull.equals("null"))
-                        data = filterNull;
-                } catch (Exception e) {
-
-                }
-                /*Log.d("LOG_IN", data);*/
-                /*if (data.equals("TRUE") || data.equals("")) {*/
-                    pd.setMessage("Updating Database...");
-                    databaseHandler.dropProvince();
-                    databaseHandler.dropCity();
-                    databaseHandler.dropSpecialization();
-                    implement.getProvince();
-               /* } else {
-//                    loadDoctorList(responseBody);
-                    gotoNavigationTest(responseBody);
-                }*/
-
-            }
-
-        };
-
-        setHosp.execute();
-    }
 
     // currently not use
     private void loadDoctorList(final SignInDetails responseBody) {
@@ -448,31 +362,31 @@ public class SignInActivity extends AppCompatActivity
                 subscriber.onNext(success);
             }
         }).subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Observer<Boolean>() {
-            @Override
-            public void onCompleted() {
-                Timber.d("doctor load complete");
-            }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("doctor load complete");
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                if (pd.isShowing()) pd.dismiss();
-                Timber.d("something happen while inseting all doctor to database %s", e.toString());
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        if (pd.isShowing()) pd.dismiss();
+                        Timber.d("something happen while inseting all doctor to database %s", e.toString());
+                    }
 
-            @Override
-            public void onNext(Boolean success) {
-                if (success == Boolean.TRUE) {
-                    Timber.d("all doctor data is inserted");
-                } else {
-                    Timber.d("kindly check the log in DoctorDao for more information");
-                }
+                    @Override
+                    public void onNext(Boolean success) {
+                        if (success == Boolean.TRUE) {
+                            Timber.d("all doctor data is inserted");
+                        } else {
+                            Timber.d("kindly check the log in DoctorDao for more information");
+                        }
 
-                gotoNavigationTest(responseBody);
-            }
+                        gotoNavigationTest(responseBody);
+                    }
 
-        });
+                });
 
     }
 
@@ -602,6 +516,36 @@ public class SignInActivity extends AppCompatActivity
 //        gotoNavigationTest(signInDetails);
     }
 
+    @Override
+    public void onHospitalError(String message) {
+        if(pd != null)
+            pd.dismiss();
+        alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(message), 1);
+    }
+
+    @Override
+    public void onHospitalSuccess() {
+        String data = "";
+        String filterNull = "";
+        try {
+            filterNull = SharedPref.getStringValue(SharedPref.USER, SharedPref.FIRST_TIME, context);
+            if (!filterNull.equals("null"))
+                data = filterNull;
+        } catch (Exception e) {
+
+        }
+                /*Log.d("LOG_IN", data);*/
+                /*if (data.equals("TRUE") || data.equals("")) {*/
+        pd.setMessage("Updating Database...");
+        databaseHandler.dropProvince();
+        databaseHandler.dropCity();
+        databaseHandler.dropSpecialization();
+        implement.getProvince();
+               /* } else {
+//                    loadDoctorList(responseBody);
+                    gotoNavigationTest(responseBody);
+                }*/
+    }
 
 
     @Override

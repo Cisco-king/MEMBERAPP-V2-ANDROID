@@ -168,18 +168,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/color_d" />
-                    <!--
-                                        <TextView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_marginLeft="@dimen/sub_margin"
-                                            android:gravity="center_vertical"
-                                            android:padding="@dimen/nav_padding"
-                                            android:text="@string/nav_faqs"
-                                            android:textColor="@color/colorPrimary"
-                                            android:textSize="@dimen/nav_text_size"
-                                            android:textStyle="bold" />
-                   -->
 
                 </LinearLayout>
 
@@ -188,6 +176,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_d" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/sub_margin"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/nav_padding"
+                        android:text="@string/nav_faqs"
+                        android:textColor="@color/BLACK"
+                        android:textSize="@dimen/nav_text_size"
+                        android:textStyle="bold" />
+
 
                     <View
                         android:layout_width="match_parent"

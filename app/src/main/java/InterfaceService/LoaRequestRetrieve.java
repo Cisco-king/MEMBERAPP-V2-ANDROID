@@ -102,7 +102,7 @@ public class LoaRequestRetrieve {
 //                    }
 //
 //                    @Override
-//                    public void onError(Throwable e) {
+//                    public void onDoctorError(Throwable e) {
 //                        callback.onErrorLoaListener(e.getMessage());
 //                    }
 //
@@ -221,7 +221,7 @@ public class LoaRequestRetrieve {
 //                    }
 //
 //                    @Override
-//                    public void onError(Throwable e) {
+//                    public void onDoctorError(Throwable e) {
 //                        Log.d("DOCTOR_CODE", e.getMessage());
 //
 //                        if (e.getMessage().contains("Expected BEGIN_OBJECT but was STRING")) {
@@ -419,7 +419,7 @@ public class LoaRequestRetrieve {
 //                    }
 //
 //                    @Override
-//                    public void onError(Throwable e) {
+//                    public void onDoctorError(Throwable e) {
 //                        getLoaOnly(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context));
 //                    }
 //

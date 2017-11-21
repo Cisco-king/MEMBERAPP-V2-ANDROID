@@ -8,8 +8,9 @@ import model.Doctors;
 
 public interface DoctorInterface {
 
-    void onError(String message);
-    void onSuccess(Doctors data);
+    void onDoctorError(String message);
+
+    void onDoctorSuccess(Doctors data);
 
     void noInternetConnection();
 

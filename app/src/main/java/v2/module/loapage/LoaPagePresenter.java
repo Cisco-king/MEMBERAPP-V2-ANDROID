@@ -62,7 +62,7 @@ public class LoaPagePresenter
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "onError: " + e.toString());
+                        Log.d(TAG, "onDoctorError: " + e.toString());
                         loaPageView.onNetworkError();
                     }
 

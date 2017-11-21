@@ -17,7 +17,9 @@ public interface FragmentApiDocCallback {
 
     void noInternetConnection();
 
-    void onError(String message);
+    void onFragDoctorError(String message);
 
-    void onSuccess(Doctors doctors);
+    void onFragDoctorSuccess(Doctors doctors);
+
+    void onSuccess(ArrayList<GetDoctorsToHospital> getDoctorsToHospital);
 }

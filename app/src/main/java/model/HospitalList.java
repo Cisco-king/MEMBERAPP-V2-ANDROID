@@ -38,7 +38,7 @@ public class HospitalList implements Parcelable, Table.Hospital {
     private String city;
 
 
-    private Boolean isSelected;
+
 
     public HospitalList( ) {
 
@@ -101,13 +101,7 @@ public class HospitalList implements Parcelable, Table.Hospital {
     }
 
 
-    public Boolean getSelected() {
-        return isSelected;
-    }
 
-    public void setSelected(Boolean selected) {
-        isSelected = selected;
-    }
 
     public String getPhoneNo ()
     {

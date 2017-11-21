@@ -34,7 +34,7 @@ public class GetDoctorsToHospital
 
     private String phoneNo;
 
-    private Boolean isSelected;
+
 
     public GetDoctorsToHospital() {
     }
@@ -71,13 +71,6 @@ public class GetDoctorsToHospital
         this.room = room;
     }
 
-    public Boolean getSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(Boolean selected) {
-        isSelected = selected;
-    }
 
     private String specCode;
 

@@ -132,12 +132,12 @@ public interface AppInterface {
     @POST("/v2/requestChangePassword/")
     Observable<ReturnRequestPassword> requestPassword(@Body RequestNewPassword requestNewPassword);
 
-    @GET("listing/getHospitals/")
-    Observable<Hospital> getHospital();
+    @GET("/v2/listing/getHospitals/")
+    Call<Hospital> getHospital(@Query("last_update_date") String last_update_date);
 
-    @GET("listing/getDoctorsToHospital/?")
-    Observable<Doctors> getDoctors(@Query("hospitalCode") String hospitalCode);
-
+    @GET("/v2/listing/getDoctorsToHospital/")
+    Call<Doctors> getDoctors(@Query("hospitalCode") String hospitalCode,
+                             @Query("last_update_date") String last_update_date);
 
     @GET("/v2/listing/getDentistList")
     Call<DentistModel> getDentist();

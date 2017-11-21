@@ -106,7 +106,7 @@ public class fragment_dentistList extends Fragment implements FragmentApiDentist
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_doctor_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_dentist_list, container, false);
         ButterKnife.bind(this, view);
         context = getContext();
         callback = this;

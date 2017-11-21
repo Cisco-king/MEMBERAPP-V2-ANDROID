@@ -206,6 +206,11 @@
     <string name="medicard_clinic">MediCard Clinics</string>
     <string name="city">City</string>
     <string name="reset_filter">Reset Filters</string>
+
+    <string name="show_under_hospital">Show Doctors Under Selected Hospital</string>
+    <string name="show_top_doctors">Show Top Doctors</string>
+
+
     <string name="show_result">Show Result</string>
     <string name="medicard_first">MediCard Clinics First</string>
     <string name="hospital_clinic_name">Clinic/Hospital Name</string>

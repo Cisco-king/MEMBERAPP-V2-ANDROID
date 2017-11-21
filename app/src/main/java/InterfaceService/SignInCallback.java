@@ -28,4 +28,7 @@ public interface SignInCallback {
 
 
     void onSpecsToDBListener();
+    void onHospitalError(String s);
+    void onHospitalSuccess();
+
 }

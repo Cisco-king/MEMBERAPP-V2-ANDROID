@@ -164,7 +164,6 @@ public class HospitalSortRetrieve implements View.OnClickListener {
         tv_city.setText(Constant.ALL_CITIES);
         selectedCity.clear();
         et_search.setText("");
-
     }
 
 

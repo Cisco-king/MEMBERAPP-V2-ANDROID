@@ -43,10 +43,10 @@ public class DentistList {
     private String withPermit;
     private String oldDentistCode;
 
-    private String isSelected;
 
 
-    public DentistList(String dentistCode, String lastName, String firstName, String middleName, String dentistAddress, String contactNo, String schedule, String clinic, String provinceCode, String regionCode, String cityCode, String faxNo, String oldCode, String gracePeriod, String effDate, String isAccredited, String effDateRa, String effDateNap, String vat, String tinNo, String taxable, String wTax, String specialRem, String email, String otherSpecialty, String remarks, String createdDate, String createdBy, String updatedDate, String updatedBy, String withPRC, String withDiploma, String withPermit, String oldDentistCode,String isSelected) {
+
+    public DentistList(String dentistCode, String lastName, String firstName, String middleName, String dentistAddress, String contactNo, String schedule, String clinic, String provinceCode, String regionCode, String cityCode, String faxNo, String oldCode, String gracePeriod, String effDate, String isAccredited, String effDateRa, String effDateNap, String vat, String tinNo, String taxable, String wTax, String specialRem, String email, String otherSpecialty, String remarks, String createdDate, String createdBy, String updatedDate, String updatedBy, String withPRC, String withDiploma, String withPermit, String oldDentistCode) {
         this.dentistCode = dentistCode;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -81,7 +81,7 @@ public class DentistList {
         this.withDiploma = withDiploma;
         this.withPermit = withPermit;
         this.oldDentistCode = oldDentistCode;
-        this.isSelected = isSelected;
+
 
     }
 
@@ -89,13 +89,7 @@ public class DentistList {
 
     }
 
-    public String getIsSelected() {
-        return isSelected;
-    }
 
-    public void setIsSelected(String isSelected) {
-        this.isSelected = isSelected;
-    }
 
     public String getDentistCode() {
         return dentistCode;

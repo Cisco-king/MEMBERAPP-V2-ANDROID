@@ -132,12 +132,12 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
     public void onBackPressed() {
         tv_header.setText("My Account");
         if (fragment.equals(fragment_memberInfo.class)) {
-            if (drawer_layout.isDrawerOpen(Gravity.RIGHT)) {
-                drawer_layout.closeDrawer(Gravity.RIGHT);
+            if (drawer_layout.isDrawerOpen(Gravity.LEFT)) {
+                drawer_layout.closeDrawer(Gravity.LEFT);
             }
         } else {
-            if (drawer_layout.isDrawerOpen(Gravity.RIGHT)) {
-                drawer_layout.closeDrawer(Gravity.RIGHT);
+            if (drawer_layout.isDrawerOpen(Gravity.LEFT)) {
+                drawer_layout.closeDrawer(Gravity.LEFT);
             }
             fragment = null;
             fragment = new fragment_memberInfo();
@@ -258,10 +258,10 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
 
     private void closeDrawer() {
 
-        if (drawer_layout.isDrawerOpen(Gravity.RIGHT)) {
-            drawer_layout.closeDrawer(Gravity.RIGHT);
+        if (drawer_layout.isDrawerOpen(Gravity.LEFT)) {
+            drawer_layout.closeDrawer(Gravity.LEFT);
         } else {
-            drawer_layout.openDrawer(Gravity.RIGHT);
+            drawer_layout.openDrawer(Gravity.LEFT);
         }
 
 

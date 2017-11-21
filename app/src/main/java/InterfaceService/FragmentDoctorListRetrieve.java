@@ -9,6 +9,9 @@ import com.medicard.member.R;
 import Sqlite.DatabaseHandler;
 import Sqlite.SetDoctorToDatabase;
 import model.Doctors;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -46,41 +49,35 @@ public class FragmentDoctorListRetrieve {
     public void getDoctorList(String hospCode) {
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-        appInterface.getDoctors(hospCode)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<Doctors>() {
+        appInterface.getDoctors(hospCode,"1900-01-01")
+                .enqueue(new Callback<Doctors>() {
                     @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
+                    public void onResponse(Call<Doctors> call, Response<Doctors> response) {
                         try {
-                            Log.e("DOCTOR", e.getMessage());
-                            callback.onError(e.getMessage());
-                        } catch (Exception error) {
-                            AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
-                            alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, ErrorMessage.setErrorMessage(e.getMessage()), 1);
-                            Log.e("Rx_ERROR", error.getCause().getMessage());
+                            if (response.body() != null) {
+                                callback.onFragDoctorSuccess(response.body());
+                            } else {
+                                callback.onFragDoctorError("no response to server");
+                            }
+                        } catch (Exception e) {
+                            callback.onFragDoctorError("");
                         }
-
                     }
 
                     @Override
-                    public void onNext(Doctors doctors) {
-                        SetDoctorToDatabase.insertToDb(databaseHandler, doctors, callback);
+                    public void onFailure(Call<Doctors> call, Throwable t) {
+                        try {
+                            callback.onFragDoctorError(t.getMessage());
+                        } catch (Exception e) {
+                            callback.onFragDoctorError("");
+                        }
                     }
                 });
-
 
     }
 
 
     public void dropDoctors() {
-
         databaseHandler.dropDoctor();
     }
 

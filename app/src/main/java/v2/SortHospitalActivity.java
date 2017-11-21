@@ -106,7 +106,6 @@ public class SortHospitalActivity extends AppCompatActivity implements HospitalS
                 gotoSelection1.putParcelableArrayListExtra(Constant.SELECTED_CITY, selectedCity);
                 startActivityForResult(gotoSelection1, CITY_CALL);
                 break;
-
             case R.id.btn_reset:
                 implement.resetDetails(tv_province, tv_city, tv_sort_by);
                 implement.setResetCity(tv_city, selectedCity, et_search);

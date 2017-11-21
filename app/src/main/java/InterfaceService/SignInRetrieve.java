@@ -1,16 +1,24 @@
 package InterfaceService;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Sqlite.DatabaseHandler;
+import Sqlite.SetHospitalToDatabase;
 import database.dao.ProcedureDao;
 import model.City;
+import model.Hospital;
 import model.Province;
 import model.SignInDetails;
 import model.SpecializationList;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -23,6 +31,7 @@ import services.client.ProcedureClient;
 import services.model.Procedure;
 import services.response.ProcedureResponse;
 import timber.log.Timber;
+import utilities.SharedPref;
 
 /**
  * Created by mpx-pawpaw on 1/24/17.
@@ -220,5 +229,64 @@ public class SignInRetrieve {
 
                 });
     }
+
+    public void getHospitalList(final SignInDetails responseBody, final String username, final String password) {
+        AppInterface appInterface;
+        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+        appInterface.getHospital("1900-01-01")
+                .enqueue(new Callback<Hospital>() {
+                    @Override
+                    public void onResponse(Call<Hospital> call, Response<Hospital> response) {
+                        try {
+                            if (response.body() != null) {
+                                setToDatabase(response.body(),responseBody);
+                            } else {
+                                callback.onHospitalError("no response to server");
+                            }
+                        } catch (Exception e) {
+                            callback.onHospitalError("");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Hospital> call, Throwable t) {
+                        try {
+                            callback.onHospitalError(t.getMessage());
+                        } catch (Exception e) {
+                            callback.onHospitalError("");
+                        }
+                    }
+                });
+
+    }
+
+    private void setToDatabase(final Hospital hospital, final SignInDetails responseBody) {
+        final DatabaseHandler databaseHandler = new DatabaseHandler(context);
+        AsyncTask setHosp = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] params) {
+                databaseHandler.dropHospital();
+                SetHospitalToDatabase.setHospToDb(hospital.getHospitalList(), databaseHandler);
+                return null;
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                callback.onHospitalSuccess();
+
+
+            }
+
+        };
+
+        setHosp.execute();
+    }
+
 
 }

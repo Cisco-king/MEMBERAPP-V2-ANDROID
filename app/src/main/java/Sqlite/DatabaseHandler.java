@@ -647,10 +647,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(remarks2, doc.getRemarks());
         values.put(room, doc.getRoom());
         createSuccessful = db.insert(doctable, null, values) > 0;
-        db.close();
         if (createSuccessful) {
-            Log.e(TAG, docLname + " created.");
+            Log.e(TAG, "created " + doc.getDocFname());
         }
+        db.close();
     }
 
     public void insertDentistList(DentistList dentist) {
@@ -986,7 +986,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<GetDoctorsToHospital> retrieveDoctor(String searchData, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number_Data) {
+    public ArrayList<GetDoctorsToHospital> retrieveDoctor(ArrayList<CitiesAdapter> selectedCity, ArrayList<ProvincesAdapter> selectedProvince, String searchData, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number_Data) {
         String searchTerm = searchData.toUpperCase().replace("'", "`");
         String room_number = room_number_Data.toUpperCase().replace("'", "`");
         SQLiteDatabase database;
@@ -1012,13 +1012,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             sql += " ) ";
         }
 
+        if (selectedCity.size() != 0) {
+            sql += " AND  (";
+            for (int x = 0; x < selectedCity.size(); x++) {
+                sql += "   " + city + " LIKE '%" + selectedCity.get(x).getCityName() + "%'  " + "  OR  ";
+            }
+            //remove and
+            sql = sql.substring(0, sql.length() - 6);
+            sql += " ) ";
+        }
+        if (selectedCity.size() == 0) {
+            if (selectedProvince.size() >= 1) {
+                sql += " AND (";
+                for (int x = 0; x < selectedProvince.size(); x++) {
+                    sql += " " + province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' OR ";
+                }
+
+                //remove and
+                sql = sql.substring(0, sql.length() - 3);
+                sql += " ) ";
+
+            }
+        }
+
 
         sql += " ORDER BY " + sort_by + "  ASC ";
         Log.e(TAG, "objectName: " + sql);
         cursor = database.rawQuery(sql, null);
-        Log.e(TAG, "Count " + cursor.getCount());
         doc.addAll(getDoctoList(cursor));
-
         database.close();
 
         // remove all the duplicate without rearranging the actual list
@@ -1191,7 +1212,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 insertion.setWithDiploma(cursor.getString(cursor.getColumnIndex(withDiploma)));
                 insertion.setWithPermit(cursor.getString(cursor.getColumnIndex(withPermit)));
                 insertion.setOldDentistCode(cursor.getString(cursor.getColumnIndex(oldDentistCode)));
-                insertion.setIsSelected(cursor.getString(cursor.getColumnIndex(isSelected)));
                 dentist.add(insertion);
 
             } while (cursor.moveToNext());
@@ -1728,8 +1748,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     doctors.get(x).getWithPRC(),
                     doctors.get(x).getWithDiploma(),
                     doctors.get(x).getWithPermit(),
-                    doctors.get(x).getOldDentistCode(),
-                    "false"));
+                    doctors.get(x).getOldDentistCode()));
         }
     }
 
@@ -1792,7 +1811,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<DentistList> getSortedDentist( String isMedicardOnly,ArrayList<ProvincesAdapter> selectedProvince, String data_sort, ArrayList<CitiesAdapter> selectedCity, String s ){
+    public ArrayList<DentistList> getSortedDentist(String isMedicardOnly, ArrayList<ProvincesAdapter> selectedProvince, String data_sort, ArrayList<CitiesAdapter> selectedCity, String s) {
         ArrayList<DentistList> arrayList = new ArrayList<>();
         SQLiteDatabase database;
         Cursor cursor = null;

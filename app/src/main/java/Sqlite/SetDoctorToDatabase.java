@@ -9,7 +9,6 @@ import InterfaceService.DoctorInterface;
 import InterfaceService.FragmentApiDocCallback;
 import model.Doctors;
 import model.GetDoctorsToHospital;
-import model.HospitalList;
 
 /**
  * Created by mpx-pawpaw on 1/4/17.
@@ -30,7 +29,7 @@ public class SetDoctorToDatabase {
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                callback.onSuccess(doctors);
+//                callback.onDoctorSuccess(doctors);
 
             }
 
@@ -44,7 +43,6 @@ public class SetDoctorToDatabase {
 
         insertion.execute();
     }
-
 
     public static void setDocToDb(ArrayList<GetDoctorsToHospital> doc, DatabaseHandler databaseH) {
         for (int x = 0; x < doc.size(); x++) {
@@ -77,12 +75,9 @@ public class SetDoctorToDatabase {
                     )
             );
 
-
         }
 
-
     }
-
 
     //used for nav doctor list
     public static void insertToDb(final DatabaseHandler databaseHandler, final Doctors doctors, final FragmentApiDocCallback callback) {
@@ -94,14 +89,11 @@ public class SetDoctorToDatabase {
                 return null;
             }
 
-
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                callback.onSuccess(doctors);
-
+                callback.onSuccess(doctors.getGetDoctorsToHospital());
             }
-
 
             @Override
             protected void onPreExecute() {
