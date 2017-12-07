@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:focusableInTouchMode="true"
+        android:visibility="invisible">
+
+        <EditText
+            android:id="@+id/ed_searchHosp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/sub_margin"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:hint="Search..."
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="@dimen/sub_margin"
+            android:textColor="@color/BLACK"
+            android:textSize="@dimen/text_main" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/sub_margin"
+        android:text="@string/faqs"
+        android:textColor="@color/BLACK"
+        android:textSize="@dimen/text_main"
+        android:layout_below="@+id/linearLayout2"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_faqs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>

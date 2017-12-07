@@ -43,9 +43,10 @@ public class DentistListAdapter extends RecyclerView.Adapter<DentistListAdapter.
     @Override
     public void onBindViewHolder(DentistListAdapter.ViewHolder holder, int position) {
         holder.name.setText(array.get(position).getLastName() + ", " + array.get(position).getFirstName() + " " + array.get(position).getMiddleName());
-        holder.position.setText("Contact No: " + SetUnfilledField.setData(array.get(position).getContactNo()));
+        holder.position.setText("Clinic: " + SetUnfilledField.setData(array.get(position).getDentistAddress()));
+        holder.tv_room.setText("Contact No: " + SetUnfilledField.setData(array.get(position).getContactNo()));
         holder.tv_sched.setText("Schedule: " + SetUnfilledField.setData(array.get(position).getSchedule()));
-        holder.tv_room.setText("Clinic: " + SetUnfilledField.setData(array.get(position).getClinic()));
+
     }
 
     @Override

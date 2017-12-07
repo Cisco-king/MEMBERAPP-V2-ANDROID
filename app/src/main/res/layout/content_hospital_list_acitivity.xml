@@ -85,7 +85,7 @@
         android:textSize="@dimen/text_main"
         fancy:fb_defaultColor="@color/colorPrimary"
         fancy:fb_focusColor="@color/colorPrimaryBlueDark"
-
-        fancy:fb_text="SORT AND FILTER" />
+        fancy:fb_text="SORT AND FILTER"
+        />
 
 </RelativeLayout>

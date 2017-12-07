@@ -10,6 +10,7 @@ import model.Disclaimer;
 import model.DoctorNORoom;
 import model.Doctors;
 import model.Exclusions;
+import model.FAQsModel;
 import model.GetUSER;
 import model.Hospital;
 import model.LogIn;
@@ -142,6 +143,9 @@ public interface AppInterface {
     @GET("/v2/listing/getDentistList")
     Call<DentistModel> getDentist();
 
+    @GET("/v2/listing/getMaceFaqs")
+    Call<FAQsModel> getMaceFAQs();
+
     @POST("memberloa/requestLOAConsult/")
     Observable<RequestResult> sendConsultation(@Body SendLoa sendLoa);
 
@@ -207,7 +211,9 @@ public interface AppInterface {
                                                         @Query("requestCode") String requestCode);
 
 
-    @GET("/membership/getDentalBenefitByMemberCode/")
+    @GET("/membership/getDentalBenefits/")
     Call<DentalBenefitsResponse> getDentalBenefitByMemberCode(@Query("memberCode") String memberCode);
+
+
 
 }

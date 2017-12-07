@@ -20,6 +20,5 @@ public interface DentalBenefitsMVP {
 
         void loadDentalBenefits(String memberCode, DentalBenefitsPresenter.DentalBenefitCallback callback   );
 
-
     }
 }

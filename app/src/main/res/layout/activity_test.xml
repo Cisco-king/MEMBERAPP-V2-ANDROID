@@ -2,48 +2,64 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.medicard.member.module.test.TestActivity">
 
     <android.support.design.widget.AppBarLayout
+        app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <mehdi.sakout.fancybuttons.FancyButton
-                android:id="@+id/toolbarBack"
-                android:layout_width="@dimen/btn_back_width"
-                android:layout_height="match_parent"
+            <LinearLayout
                 android:gravity="center"
-                app:fb_defaultColor="@color/transparent"
-                app:fb_focusColor="@color/colorPrimaryBlueDark"
-                app:fb_iconResource="@drawable/ic_action_arrow_left"
-                app:fb_text="" />
-
-
-            <TextView
-                android:id="@+id/toolbarTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/btn_back_width"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_main" />
+                android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/btnNext"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_action_arrow_left" />
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/toolbarBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    fancy:fb_defaultColor="@color/transparent"
+                    fancy:fb_focusColor="@color/colorPrimaryBlueDark"
+                    fancy:fb_iconResource="@drawable/ic_action_arrow_left"
+                    fancy:fb_text="" />
+
+                <TextView
+                    android:id="@+id/toolbarTitle"
+                    android:text="@string/request"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_main" />
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btnNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    fancy:fb_defaultColor="@color/transparent"
+                    fancy:fb_focusColor="@color/colorPrimaryBlueDark"
+                    fancy:fb_iconResource="@drawable/ic_action_arrow_left"
+                    fancy:fb_text=""
+                    android:visibility="invisible"/>
+
+                </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
 
@@ -53,6 +69,7 @@
     <include
         android:id="@+id/include2"
         layout="@layout/content_test" />
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_marginTop="70dp"

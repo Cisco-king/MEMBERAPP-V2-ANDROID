@@ -57,7 +57,6 @@ public class DentalBenefitsActivity extends BaseActivity implements DentalBenefi
 
     @Override
     public void onSuccess(String message) {
-
         tv_dental_benefits_details.setText(message.trim());
     }
 }

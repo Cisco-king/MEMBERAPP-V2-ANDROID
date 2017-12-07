@@ -343,7 +343,6 @@ public class MemberAccountActivity extends AppCompatActivity
             fab1.startAnimation(fab_close);
             fab2.startAnimation(fab_close);
 
-
             tv_view.setAnimation(fab_close);
             tv_dentist_benefits.setAnimation(fab_close);
 

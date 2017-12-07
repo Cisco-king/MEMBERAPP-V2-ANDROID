@@ -53,7 +53,6 @@ public class DentalBenefitsPresenter implements DentalBenefitsMVP.Presenter {
                 .enqueue(new Callback<DentalBenefitsResponse>() {
                     @Override
                     public void onResponse(Call<DentalBenefitsResponse> call, Response<DentalBenefitsResponse> response) {
-
                         if(response.isSuccessful()){
                             System.out.println("=============== MENSAHE " + response.body().getVal());
                             callback.onSuccess(response.body().getVal());

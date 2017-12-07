@@ -113,7 +113,7 @@
     <string name="title_activity_termNcon">Terms and Conditions</string>
 
     <string name="termsNcond_security_title">Security</string>
-    <string name="termsNcond_security_message">By agreeing to these terms and conditions, you accept and consent to your personal data being provided to the Service for the sole purpose of requesting for Letter of Authorization (Approval). The MediCard Online Approval respects the privacy of every individual who use this facility and MediCard website contains security measures in place to protect the loss, misuse and alteration of the information under MediCard’s control.</string>
+    <string name="termsNcond_security_message">By agreeing to these terms and conditions, you accept and consent to your personal data being provided to the Service for the sole purpose of requesting for Letter of Authorization (Approval). The MediCard Online Approval respects the privacy of every individual who uses this facility and MediCard website contains security measures in place to protect the loss, misuse and alteration of the information under MediCard’s control.</string>
 
     <string name="termsNcond_facility_title">Facility</string>
     <string name="termsNcond_facility_message">Your requested schedule, specifically, date and time are subject to availability. Notwithstanding any request confirmation, the schedule for a doctor or laboratory/diagnostic services may be subject to change without prior notification.</string>
@@ -176,6 +176,7 @@
     <string name="screenshot">Download Approval form</string>
     <string name="request">Request Approval</string>
     <string name="select_hospital">Select Clinic/Hospital</string>
+    <string name="faqs">Frequently Asked Questions</string>
     <string name="select_doctor">Select Doctor</string>
     <string name="select_dentist">Select Dentist</string>
     <string name="req_details">Request Details</string>
@@ -286,7 +287,7 @@
     <!--</string>-->
 
     <string name="note_upload">
-    Note: Please attach a clear image of your prescription, maximum file size of 5MB.
+    Note: Please attach a clear image of your request for laboratory test, maximum file size of 5MB.
     </string>
 
     <string name="maternity_consulation">(MATERNITY CONSULATION)</string>
@@ -333,7 +334,7 @@
         Schedule of the dentist is subject to changes. Please call the clinic or coordinator for confirmation
     </string>
     <string name="no_data_found">No data found.</string>
-    <string name="prescription_other_attachment">Prescription / Request or Consultation Form</string>
+    <string name="prescription_other_attachment">Request for Laboratory Test / Request or Consultation Form</string>
 
     <string name="disclaimer_info">
         Please print 2 copies of the dowloaded Approval form to present directly to your consulting doctor

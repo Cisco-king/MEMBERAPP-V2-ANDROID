@@ -31,8 +31,8 @@ public class AlertDialogCustom {
     public String success_pin_message = "You have successfully registered a PIN.";
     public String PASSWORD_CRED_message = "Password must have at least one (1) capitalized letter, one (1) number and a minimum of eight (8) characters.";
     public String PASSWORD_MATCH_message = "Password did not match. Please try again.";
-    public String PASSWORD_RETYPEPASS_MATCH_message = "New Password and Re-Type Password did not match. Please try again.";
-    public String PIN_RETYPEPIN_MATCH_message = "PIN and Re-Type PIN did not match. Please try again.";
+    public String PASSWORD_RETYPEPASS_MATCH_message = "New Password and Re-Typed Password did not match. Please try again.";
+    public String PIN_RETYPEPIN_MATCH_message = "PIN and Re-Typed PIN did not match. Please try again.";
     public String PIN_RETYPE_LENGTH_message = "PIN must be four (4) digits long";
 
     public String CONGRATULATIONS_title = "Success!";

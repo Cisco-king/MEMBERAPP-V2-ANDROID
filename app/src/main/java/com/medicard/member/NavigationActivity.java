@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -25,12 +26,14 @@ import com.tapadoo.alerter.Alert;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import fragments.fragment_FAQs;
 import fragments.fragment_changePassword;
 import fragments.fragment_dentistList;
 import fragments.fragment_doctorList;
 import fragments.fragment_hospitalList;
 import fragments.fragment_memberInfo;
 
+import mehdi.sakout.fancybuttons.FancyButton;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.SharedPref;
@@ -72,7 +75,8 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
     @BindView(R.id.nav_hospital)
     TextView nav_hospital;
 
-
+    @BindView(R.id.nav_faqs)
+    TextView nav_faqs;
 
 
     Context context;
@@ -92,6 +96,7 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
         ButterKnife.bind(this);
 
         init();
+
     }
 
     private void init() {
@@ -111,6 +116,7 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
         nav_dentist.setOnClickListener(this);
         nav_doctor.setOnClickListener(this);
         nav_hospital.setOnClickListener(this);
+        nav_faqs.setOnClickListener(this);
 
         tv_name.setText(s.getStringValue(s.USER, s.NAME, context));
 
@@ -200,7 +206,17 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
                 closeDrawer();
 
                 break;
+            case R.id.nav_faqs:
+                tv_header.setText(context.getString(R.string.faqs));
 
+                fragment = null;
+                fragment = new fragment_FAQs();
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container_body, fragment);
+                fragmentTransaction.commit();
+                closeDrawer();
+
+                break;
 
             case R.id.tv_account_settings:
                 tv_header.setText("Account Settings");
