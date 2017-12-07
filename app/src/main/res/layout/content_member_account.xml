@@ -569,8 +569,7 @@
             android:id="@+id/ll_linearDentalBenefits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_dentist_benefits"
@@ -581,15 +580,14 @@
                 android:text="@string/dental_benefits"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_small"
-                android:visibility="invisible"
-                />
+                android:visibility="invisible" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/fab_margin"
-                android:src="@drawable/pending"
+                android:src="@drawable/ic_tooth"
                 app:backgroundTint="@android:color/white"
                 app:elevation="6dp"
                 app:pressedTranslationZ="12dp" />

@@ -46,9 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void initComponents(Bundle savedInstanceState) {
         setContentView(getLayoutResource());
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
-
         context = this;
         toolbarTitle.setText(activityTitle());
     }

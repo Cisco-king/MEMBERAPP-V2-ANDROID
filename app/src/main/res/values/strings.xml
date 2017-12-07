@@ -389,5 +389,12 @@
     <string name="with_provider_prescribed_test">Tap a consultation from the list if the prescribed test came from the Provider app</string>
     <string name="with_exisitng_consulation_form">Tap the Request Approval for Prescribed Test button if you have a prescription from the doctor </string>
 
+    <string name="prin_ben">Principal Benefits</string>
+    <string name="other_ben">Other Benefits</string>
+    <string name="util_ben">Utilization</string>
+
+
+
+
     <!-- all module text here -->
 </resources>

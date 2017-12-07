@@ -86,7 +86,7 @@ public class fragment_FAQs extends Fragment implements FAQsCallback {
         maceFAQ.clear();
         maceFAQ.addAll(body.getMaceFaqs());
         pd.dismiss();
-        adapter = new FAQsAdapter(rv_faqs, getContext(), maceFAQ);
+        adapter = new FAQsAdapter(rv_faqs,context, maceFAQ);
         rv_faqs.setLayoutManager(new LinearLayoutManager(context));
         rv_faqs.setAdapter(adapter);
     }

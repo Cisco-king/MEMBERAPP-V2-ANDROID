@@ -36,7 +36,7 @@
         <net.cachapa.expandablelayout.ExpandableLayout
             android:background="@color/colorPrimaryDark"
             android:id="@+id/expandable_layout"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
             app:el_duration="300"
             app:el_expanded="false">
@@ -47,8 +47,6 @@
                 android:gravity="left"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:maxLength="200"
-                android:ellipsize="end"
                 android:padding="16dp"
                 android:textColor="#fff" />
 

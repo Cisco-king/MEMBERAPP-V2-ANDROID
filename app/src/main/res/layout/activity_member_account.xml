@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
-
     android:orientation="vertical"
     tools:context="com.medicard.member.MemberAccountActivity">
 
@@ -51,7 +50,6 @@
                     android:textSize="@dimen/text_main" />
 
                 <mehdi.sakout.fancybuttons.FancyButton
-
                     android:id="@+id/btn_next"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

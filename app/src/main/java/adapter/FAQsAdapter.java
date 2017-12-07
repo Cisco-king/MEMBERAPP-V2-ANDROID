@@ -1,6 +1,7 @@
 package adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,14 +84,14 @@ public class FAQsAdapter extends RecyclerView.Adapter<FAQsAdapter.ViewHolder> {
             ViewHolder holder = (ViewHolder) recyclerView.findViewHolderForAdapterPosition(selectedItem);
             if (holder != null) {
                 holder.tv_index.setSelected(false);
-//                holder.tv_index.setTextColor(context.getColor(R.color.BLACK));
+                holder.tv_index.setTextColor(ContextCompat.getColor(context, R.color.BLACK));
                 holder.expandable_layout.collapse();
             }
             if (position == selectedItem) {
                 selectedItem = UNSELECTED;
             } else {
                 tv_index.setSelected(true);
-//                tv_index.setTextColor(context.getColor(R.color.white));
+                tv_index.setTextColor(ContextCompat.getColor(context, R.color.white));
                 expandable_layout.expand();
                 selectedItem = position;
             }
