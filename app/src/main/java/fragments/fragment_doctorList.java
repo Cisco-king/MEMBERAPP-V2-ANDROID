@@ -151,6 +151,10 @@ public class fragment_doctorList extends Fragment implements FragmentApiDocCallb
         btn_show_selected_hospital.setOnClickListener(this);
         btn_show_all.setOnClickListener(this);
         btn_sort.setOnClickListener(this);
+
+
+        implement.dropDoctors();
+        implement.getDoctors("");
         return view;
     }
 

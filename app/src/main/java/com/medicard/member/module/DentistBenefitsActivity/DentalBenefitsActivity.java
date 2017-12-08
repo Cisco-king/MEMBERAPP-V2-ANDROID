@@ -2,6 +2,7 @@ package com.medicard.member.module.DentistBenefitsActivity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -57,6 +58,25 @@ public class DentalBenefitsActivity extends BaseActivity implements DentalBenefi
 
     @Override
     public void onSuccess(String message) {
-        tv_dental_benefits_details.setText(message.trim());
+        message = "Dental Benefits for 2621761 - DELA CRUZ, JUAN: Perm Amalgam = 2 SURFACES AT MPI CLINICS ONLY;  Lightcure = 3 TEETH AT MPI CLINICS ONLY;  Prophy = ANNUAL; others = NOTE:-LIGHT CURE CAN BE AVAILED AT MEDICARD OWNED CLINICS ONLY AND FOR PROVINCIAL EMPLOYEES & QUALIFIED DEPENDENTS RESIDING IN PROVINCES MAY AVAIL OF THE SERVICE T ANY ACCREDITED DENTAL CLINICS EMERGENCY OUT-PATIENT DENTAL TREATMENT, TMJ CONSULTATIONS, RESTORATIVE & PROSTHODONTIC CONSULTATIONS, DENTAL NUTRITION & DIETARY COUNSELING, DENTAL HEALTH EDUCATION, PRE-NATAL & POST-NATAL DENTAL CONSULTATIONS-COVERED;;";
+
+        if(message.contains(":")){
+            String parts[] = message.split(";");
+            String allText = "";
+            for(int i=0;i<parts.length;i++){
+                if(parts[i].contains("\\,"))
+                    allText += "\n";
+                else
+                    allText += parts[i] + "\n";
+            }
+
+            tv_dental_benefits_details.setText(allText);
+        }else {
+            tv_dental_benefits_details.setText(message);
+        }
+
+
+
+//        tv_dental_benefits_details.setText(message.trim());
     }
 }

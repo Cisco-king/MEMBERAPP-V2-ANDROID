@@ -49,14 +49,15 @@ public class DentalBenefitsPresenter implements DentalBenefitsMVP.Presenter {
     public void loadDentalBenefits(String memberCode, final DentalBenefitCallback callback) {
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-        appInterface.getDentalBenefitByMemberCode(memberCode)
+        appInterface.getDentalBenefitByMemberCode("2621761")
                 .enqueue(new Callback<DentalBenefitsResponse>() {
                     @Override
                     public void onResponse(Call<DentalBenefitsResponse> call, Response<DentalBenefitsResponse> response) {
-                        if(response.isSuccessful()){
-                            System.out.println("=============== MENSAHE " + response.body().getVal());
-                            callback.onSuccess(response.body().getVal());
+                        if(response.body() != null){
+                            System.out.println("=============== MENSAHE " + response.body().getDentalBenefits());
+                            callback.onSuccess(response.body().getDentalBenefits());
                         }
+                        callback.onSuccess("");
                     }
 
                     @Override

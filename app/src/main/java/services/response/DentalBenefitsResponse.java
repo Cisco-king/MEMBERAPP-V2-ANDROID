@@ -17,9 +17,9 @@ public class DentalBenefitsResponse {
     @Expose
     private String responseDesc;
 
-    @SerializedName("Val")
+    @SerializedName("dentalBenefits")
     @Expose
-    private String Val;
+    private String dentalBenefits;
 
     public Integer getResponseCode() {
         return responseCode;
@@ -37,11 +37,11 @@ public class DentalBenefitsResponse {
         this.responseDesc = responseDesc;
     }
 
-    public String getVal() {
-        return Val;
+    public String getDentalBenefits() {
+        return dentalBenefits;
     }
 
-    public void setVal(String val) {
-        Val = val;
+    public void setDentalBenefits(String dentalBenefits) {
+        this.dentalBenefits = dentalBenefits;
     }
 }
