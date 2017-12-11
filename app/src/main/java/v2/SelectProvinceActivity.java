@@ -113,10 +113,11 @@ public class SelectProvinceActivity extends AppCompatActivity {
         ORIGIN = getIntent().getStringExtra(Constant.SELECT);
 //        SPEC_SEARCH = getIntent().getStringExtra(Constant.SPEC_SEARCH);
         SPEC_SEARCH = "";
-        ed_search.setText(SPEC_SEARCH);
+
         if (implement.testOriginFromCity(ORIGIN)) {
             rv_provinces.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
             tv_header.setText("City");
+            ed_search.setHint("Search City...");
             prevSelectedProvince = getIntent().getParcelableArrayListExtra(Constant.SELECT_CODE);
             arrayCity.addAll(implement.setArrayCity(handler, prevSelectedProvince, SPEC_SEARCH));
             prevSelectedCity = getIntent().getParcelableArrayListExtra(Constant.SELECTED_CITY);
@@ -126,6 +127,7 @@ public class SelectProvinceActivity extends AppCompatActivity {
         } else if (implement.testOriginFromSpecialization(ORIGIN)) {
             rv_provinces.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
             tv_header.setText("Specialization");
+            ed_search.setHint("Search Specialization...");
             arraySpecialization.addAll(implement.setArraySpecs(handler, SPEC_SEARCH));
             prevSelectedSpecialization = getIntent().getParcelableArrayListExtra(Constant.SELECTED_SPECIALIZATION);
             implement.setSelectedDataSpecs(prevSelectedSpecialization, arraySpecialization, selectedSpecialization);
@@ -134,6 +136,7 @@ public class SelectProvinceActivity extends AppCompatActivity {
         } else if (implement.testOriginFromProvince(ORIGIN)) {
             rv_provinces.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
             tv_header.setText("Province");
+            ed_search.setHint("Search Province...");
             arrayProvince.addAll(implement.setArrayData(handler, SPEC_SEARCH));
             prevSelectedProvince = getIntent().getParcelableArrayListExtra(Constant.SELECTED_PROVINCE);
             implement.setSelectedProvinceData(prevSelectedProvince, arrayProvince, selectedProvince);
@@ -142,6 +145,7 @@ public class SelectProvinceActivity extends AppCompatActivity {
         } else if (implement.testOriginFromLoaReq(ORIGIN)) {
             rv_provinces.setLayoutManager(new LinearLayoutManager(this));
             tv_header.setText("Hospital");
+            ed_search.setHint("Search Hospital...");
             ArrayList<LoaFetch> temp;
             temp = getIntent().getParcelableArrayListExtra(Constant.LOA_REQUEST);
             arrayListMaster.addAll(temp);
@@ -172,6 +176,7 @@ public class SelectProvinceActivity extends AppCompatActivity {
         } else if (implement.testOriginFromDoctors(ORIGIN)) {
             rv_provinces.setLayoutManager(new LinearLayoutManager(this));
             tv_header.setText("Doctors");
+            ed_search.setHint("Search Doctors...");
             ArrayList<LoaFetch> temp;
             temp = getIntent().getParcelableArrayListExtra(Constant.DOCTOR_LIST);
             arrayListMaster.addAll(temp);

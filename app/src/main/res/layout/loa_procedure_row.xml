@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/ll_row"
+    android:paddingLeft="@dimen/mini_margin"
+    android:paddingRight="@dimen/mini_margin">
+
+    <TextView
+        android:id="@+id/tv_proc_desc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textSize="@dimen/text_small"
+        android:textColor="@color/BLACK"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_proc_amount"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|right"
+        android:layout_weight="1"
+        android:textSize="@dimen/text_small"
+        android:textColor="@color/BLACK"
+        android:text="TextView" />
+</LinearLayout>

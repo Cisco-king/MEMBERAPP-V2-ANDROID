@@ -120,13 +120,12 @@
         android:weightSum="1">
 
         <de.hdodenhof.circleimageview.CircleImageView
-
             android:id="@+id/ci_error_image"
             android:layout_width="@dimen/alert_circle_width"
             android:layout_height="70dp"
             android:layout_alignParentTop="true"
             android:layout_marginTop="10dp"
-            android:src="@drawable/ic_person_add_purple"
+            android:src="@mipmap/ic_search_purple"
             app:civ_border_color="@android:color/white"
             app:civ_border_width="10px" />
 

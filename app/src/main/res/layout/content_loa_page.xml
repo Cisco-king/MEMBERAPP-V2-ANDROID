@@ -680,10 +680,11 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/sub_margin">
-
+                    android:layout_marginTop="@dimen/sub_margin"
+                    android:id="@+id/cv_problem"
+                    >
                     <LinearLayout
-                        android:id="@+id/ll_problem"
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/sub_margin"
@@ -712,11 +713,11 @@
                 </android.support.v7.widget.CardView>
 
                 //display for selected other tests
-
                 <android.support.v7.widget.CardView
                     android:id="@+id/cv_othertest_tests"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sub_margin"
                     android:visibility="gone">
 
                     <LinearLayout
@@ -772,6 +773,108 @@
                                 android:textSize="@dimen/text_small"
                                 android:textStyle="bold" />
                         </LinearLayout>
+                    </LinearLayout>
+
+
+                </android.support.v7.widget.CardView>
+
+
+                <!--FOR  PROCEDURE LIST-->
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv_procedures_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sub_margin"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/sub_margin"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/cv_procedures_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/procedure"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_small"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/sub_margin"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_procedures_diagnosis"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center|left"
+                                android:text="Total:"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small"
+                                android:paddingLeft="@dimen/mini_margin"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_procedures_approval_no"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="0"
+                                android:gravity="center|right"
+                                android:paddingRight="@dimen/mini_margin"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/sub_margin">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/rv_procedures"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                            </android.support.v7.widget.RecyclerView>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/sub_margin"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_procedures_total_title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Total:"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small"
+                                android:paddingLeft="@dimen/mini_margin"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_procedures_total_price"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="0"
+                                android:gravity="center|right"
+                                android:paddingRight="@dimen/mini_margin"
+                                android:textColor="@color/BLACK"
+                                android:textSize="@dimen/text_small"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
 

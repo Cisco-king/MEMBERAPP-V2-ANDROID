@@ -84,7 +84,13 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
         System.out.println("approval no." + maceRequest.getStatus());
         // TODO REPLACE DUMMY DATA
         holder.tv_requestType.setText(maceRequest.getRequestType());
-        holder.tv_req_date.setText("Request Date: " + DateConverter.convertDateToMMddyyyy(DateConverter.convertDatetoMMMddyyy(maceRequest.getRequestDatetime())));
+        try{
+            holder.tv_req_date.setText("Request Date: " + DateConverter.convertDateToMMddyyyy(DateConverter.convertDatetoMMMddyyy(maceRequest.getRequestDatetime())));
+
+        }catch (Exception e){
+            holder.tv_req_date.setText("Request Date: " + maceRequest.getRequestDatetime());
+        }
+
         try {
             holder.tv_status.setText(maceRequest.getStatus().trim());
         }catch (Exception e){

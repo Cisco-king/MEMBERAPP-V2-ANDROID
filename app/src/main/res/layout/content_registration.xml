@@ -20,6 +20,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/cardview_margin"
+                android:layout_marginRight="@dimen/cardview_margin"
+                android:layout_marginTop="@dimen/cardview_margin"
+                android:text="@string/registration"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_main"
+                android:textStyle="bold" />
+
+
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,7 +125,6 @@
                         android:padding="@dimen/sub_margin"
                         android:textColorHint="@color/colorAccent"
                         android:textSize="@dimen/text_small" />
-
 
                     <RelativeLayout
                         android:layout_width="match_parent"

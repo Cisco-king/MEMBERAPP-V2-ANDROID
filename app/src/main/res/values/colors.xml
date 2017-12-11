@@ -16,6 +16,7 @@
     <color name="semiDark">#cc000000</color>
     <color name="light_grey">#ddd</color>
     <color name="grey">#808080</color>
+    <color name="grey_1">#50808080</color>
     <color name="BLACK">#231F20</color>
     <color name="l_gray">#ddd</color>
     <color name="l_gray_bg">#e7e5e5</color>

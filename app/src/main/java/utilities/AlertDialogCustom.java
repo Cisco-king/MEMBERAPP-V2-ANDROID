@@ -58,7 +58,7 @@ public class AlertDialogCustom {
     public String unknown = "Alert";
 
     public String data_cancelled = "Request successfully cancelled.";
-    public String didnt_match_old_new_pin = "Incorrect Old PIN.";
+    public String didnt_match_old_new_pin = "Incorrect Old Password.";
     public String success = "Success";
     public String success_msg = "You have successfully uploaded your photo.";
     public String errorUploadPhoto = "Failed to upload photo. Please try again.";

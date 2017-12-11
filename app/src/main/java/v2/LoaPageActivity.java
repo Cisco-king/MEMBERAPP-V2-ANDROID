@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
-import com.medicard.member.NavigationActivity;
 import com.medicard.member.R;
 import com.medicard.member.module.viewLoa.ViewLoaListFragment;
 
@@ -21,8 +20,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ import InterfaceService.LoaPageRetieve;
 import InterfaceService.ScreenshotCallback;
 import Sqlite.DatabaseHandler;
 import adapter.OtherTestLoaAdapter;
+import adapter.ProcedureLoaAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -44,8 +47,6 @@ import constants.OutPatientConsultationForm;
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.Doctor;
 import model.GetUSER;
-import model.HospitalList;
-import model.LoaFetch;
 import model.MemberInfo;
 import services.model.MaceRequest;
 import timber.log.Timber;
@@ -74,8 +75,8 @@ public class LoaPageActivity extends AppCompatActivity
 
     @BindView(R.id.content_loa_page)
     ScrollView content_loa_page;
-    @BindView(R.id.ll_problem)
-    LinearLayout ll_problem;
+    @BindView(R.id.cv_problem)
+    CardView cv_problem;
 
     @BindView(R.id.tv_status)
     TextView tv_status;
@@ -180,6 +181,22 @@ public class LoaPageActivity extends AppCompatActivity
     @BindView(R.id.tv_total_price)
     TextView tv_total_price;
 
+    //used for other test selected data
+    @BindView(R.id.cv_procedures_box)
+    CardView cv_procedures_box;
+    @BindView(R.id.rv_procedures)
+    RecyclerView rv_procedures;
+    @BindView(R.id.tv_procedures_total_title)
+    TextView tv_procedures_total_title;
+    @BindView(R.id.tv_procedures_total_price)
+    TextView tv_procedures_total_price;
+
+    @BindView(R.id.tv_procedures_diagnosis)
+    TextView tv_procedures_diagnosis;
+    @BindView(R.id.tv_procedures_approval_no)
+    TextView tv_procedures_approval_no;
+
+    ProcedureLoaAdapter procedureLoaAdapter;
 
     private int RESULT_GETTER;
     int position;
@@ -322,7 +339,12 @@ public class LoaPageActivity extends AppCompatActivity
                 SharedPref.getStringValue(SharedPref.USER, SharedPref.GENDER, this))));
         tv_company.setText(loa.getMemCompany());
 
-        tv_date_approved.setText(DateConverter.convertDatetoMMMddyyy(loa.getRequestDatetime())); // view is invisible
+        try{
+            tv_date_approved.setText(DateConverter.convertDatetoMMMddyyy(loa.getRequestDatetime())); // view is invisible
+        }catch (Exception e){
+            tv_date_approved.setText(loa.getRequestDatetime());
+        }
+
 
         /*tvValidityDate.setText(changeFormat);
         tvEffectiveDate.setText(DateConverter.validityDatePLusDay(changeFormat, 3));
@@ -332,9 +354,9 @@ public class LoaPageActivity extends AppCompatActivity
 
         tv_doc_name.setText(loa.getDoctorName());
         if (null == loa.getReasonForConsult()) {
-            ll_problem.setVisibility(View.GONE);
+            cv_problem.setVisibility(View.GONE);
         } else {
-            ll_problem.setVisibility(View.VISIBLE);
+            cv_problem.setVisibility(View.VISIBLE);
             tv_problem.setText(loa.getReasonForConsult());
         }
 
@@ -379,6 +401,11 @@ public class LoaPageActivity extends AppCompatActivity
         }
 
 
+        if (loa.getRequestType().equalsIgnoreCase(RequestType.PROCEDURE)) {
+            setProcedureData(loaList, position);
+        }
+
+
 //        String doctorInfo = new StringBuilder()
 //                .append(loa.getDoctorSpec())
 //                .append(!(loa.get() == null || loa.getRoom().equals("null")) ? "\n\n" + loa.getRoom() : "")
@@ -420,8 +447,27 @@ public class LoaPageActivity extends AppCompatActivity
 
     }
 
-    private void setOtherTestData(List<MaceRequest> loaList, int position) {
+    private void setProcedureData(List<MaceRequest> loaList, int position) {
         loa = loaList.get(position);
+        cv_problem.setVisibility(View.GONE);
+        cv_procedures_box.setVisibility(View.VISIBLE);
+
+        tv_procedures_diagnosis.setText("Diagnosis:\n"+loa.getPrimaryDiag());
+        tv_procedures_approval_no.setText(loa.getStatus() == RequestType.APPROVED ? loa.getApprovalNo():"");
+        procedureLoaAdapter = new ProcedureLoaAdapter(context, loa.getMappedTest());
+        rv_procedures.setLayoutManager(new LinearLayoutManager(this));
+        rv_procedures.setAdapter(procedureLoaAdapter);
+
+        tv_procedures_total_price.setText("P "+loa.getTotalAmount());
+
+    }
+
+
+    private void setOtherTestData(List<MaceRequest> loaList, int position) {
+
+        loa = loaList.get(position);
+
+        cv_problem.setVisibility(View.GONE);
         cv_othertest_tests.setVisibility(View.VISIBLE);
         tv_total_price.setText("P "+loa.getTotalAmount());
 
@@ -520,10 +566,10 @@ public class LoaPageActivity extends AppCompatActivity
         ivQrApprovalNumber.setVisibility(View.GONE);
         if (loa.getRequestType().equals("TEST")) {
             cvDoctorDetails.setVisibility(View.GONE);
-            ll_problem.setVisibility(View.GONE);
+            cv_problem.setVisibility(View.GONE);
         } else {
             cvDoctorDetails.setVisibility(View.VISIBLE);
-            ll_problem.setVisibility(View.VISIBLE);
+            cv_problem.setVisibility(View.VISIBLE);
         }
     }
 

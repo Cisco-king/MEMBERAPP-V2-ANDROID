@@ -55,7 +55,6 @@ public class ViewLoaRetrieve {
                         callback.onFailure();
                     }
                 });
-
     }
 
     public void replactDataArray(ArrayList<SimpleData> masterList, ArrayList<SimpleData> temp) {

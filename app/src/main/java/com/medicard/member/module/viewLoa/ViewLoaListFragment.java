@@ -182,7 +182,6 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
          */
     @Override
     public void onSuccess(List<MaceRequest> maceRequests) {
-
         this.list = maceRequests;
         pb.setVisibility(View.GONE);
         adapter = new LoaRequestAdapter(context, maceRequests, callback);
