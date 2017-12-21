@@ -102,7 +102,6 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .into(headerHolder.iv_user, new Callback() {
                         @Override
                         public void onSuccess() {
-
                             headerHolder.progressBar.setVisibility(View.GONE);
                         }
 

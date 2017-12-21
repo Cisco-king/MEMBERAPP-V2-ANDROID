@@ -20,11 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +33,9 @@ import InterfaceService.LoaPageInterface;
 import InterfaceService.LoaPageRetieve;
 import InterfaceService.ScreenshotCallback;
 import Sqlite.DatabaseHandler;
+import adapter.BasicTestLoaAdapter;
+import adapter.FileUploadLoaAdapter;
+import adapter.OperatingRoomLoaAdapter;
 import adapter.OtherTestLoaAdapter;
 import adapter.ProcedureLoaAdapter;
 import butterknife.BindView;
@@ -48,6 +47,7 @@ import mehdi.sakout.fancybuttons.FancyButton;
 import model.Doctor;
 import model.GetUSER;
 import model.MemberInfo;
+import services.model.AttachmentObject;
 import services.model.MaceRequest;
 import timber.log.Timber;
 import utilities.AgeCorrector;
@@ -180,6 +180,8 @@ public class LoaPageActivity extends AppCompatActivity
     TextView tv_total_title;
     @BindView(R.id.tv_total_price)
     TextView tv_total_price;
+    @BindView(R.id.tv_other_test)
+    TextView tv_other_test;
 
     //used for other test selected data
     @BindView(R.id.cv_procedures_box)
@@ -190,6 +192,25 @@ public class LoaPageActivity extends AppCompatActivity
     TextView tv_procedures_total_title;
     @BindView(R.id.tv_procedures_total_price)
     TextView tv_procedures_total_price;
+
+    //used for other test selected data
+    @BindView(R.id.cv_OperatingRoom)
+    CardView cv_OperatingRoom;
+    @BindView(R.id.rv_OperatingRoom)
+    RecyclerView rv_OperatingRoom;
+    @BindView(R.id.tv_total_title_OperatingRoom)
+    TextView tv_total_title_OperatingRoom;
+    @BindView(R.id.tv_total_price_OperatingRoom)
+    TextView tv_total_price_OperatingRoom;
+
+
+    //used for pictures of attachments
+    @BindView(R.id.cv_FileUpload)
+    CardView cv_FileUpload;
+    @BindView(R.id.rv_FileUpload)
+    RecyclerView rv_FileUpload;
+
+
 
     @BindView(R.id.tv_procedures_diagnosis)
     TextView tv_procedures_diagnosis;
@@ -202,7 +223,13 @@ public class LoaPageActivity extends AppCompatActivity
     int position;
     List<MaceRequest> loaList = new ArrayList<>();
     ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> arrayListGroupedByDiag = new ArrayList<>();
+    ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> arrayListGroupedByDiagOP = new ArrayList<>();
+    ArrayList<AttachmentObject> attachmentObjectArrayList = new ArrayList<>();
     OtherTestLoaAdapter otherTestLoaAdapter;
+    BasicTestLoaAdapter basicTestLoaAdapter;
+    OperatingRoomLoaAdapter operatingRoomLoaAdapter;
+    FileUploadLoaAdapter fileUploadLoaAdapter;
+
     Context context;
     ScreenshotCallback screenshotCallback;
     MaceRequest loa;
@@ -339,9 +366,9 @@ public class LoaPageActivity extends AppCompatActivity
                 SharedPref.getStringValue(SharedPref.USER, SharedPref.GENDER, this))));
         tv_company.setText(loa.getMemCompany());
 
-        try{
+        try {
             tv_date_approved.setText(DateConverter.convertDatetoMMMddyyy(loa.getRequestDatetime())); // view is invisible
-        }catch (Exception e){
+        } catch (Exception e) {
             tv_date_approved.setText(loa.getRequestDatetime());
         }
 
@@ -395,14 +422,28 @@ public class LoaPageActivity extends AppCompatActivity
             setApproved();
         }
 
-
+        //to show data for other test
         if (loa.getRequestType().equalsIgnoreCase(RequestType.OTHER_TEST)) {
             setOtherTestData(loaList, position);
         }
 
+        //to show data for basic test
+        if (loa.getRequestType().equalsIgnoreCase(RequestType.BASIC_TEST)) {
+            setBasicTestData(loaList, position);
+        }
 
+        //to show data for procedure
         if (loa.getRequestType().equalsIgnoreCase(RequestType.PROCEDURE)) {
             setProcedureData(loaList, position);
+        }
+
+        //to show data for operating room
+        if (loa.getRequestType().equalsIgnoreCase(RequestType.OP_OR)) {
+            setOperatingRoomData(loaList, position);
+        }
+
+        if (loa.getRequestType().equalsIgnoreCase(RequestType.FILE_UPLOAD)) {
+            setFileUploadData(loaList, position);
         }
 
 
@@ -447,21 +488,88 @@ public class LoaPageActivity extends AppCompatActivity
 
     }
 
+    private void setFileUploadData(List<MaceRequest> loaList, int position) {
+        loa = loaList.get(position);
+        cvDoctorDetails.setVisibility(View.GONE);
+        cv_problem.setVisibility(View.GONE);
+        cv_FileUpload.setVisibility(View.VISIBLE);
+
+        attachmentObjectArrayList.clear();
+        attachmentObjectArrayList.addAll(loa.getAttachments());
+        fileUploadLoaAdapter = new FileUploadLoaAdapter(context, attachmentObjectArrayList);
+        rv_FileUpload.setLayoutManager(new LinearLayoutManager(this));
+        rv_FileUpload.setAdapter(fileUploadLoaAdapter);
+
+    }
+
+    private void setBasicTestData(List<MaceRequest> loaList, int position) {
+        loa = loaList.get(position);
+        cv_problem.setVisibility(View.GONE);
+
+        cv_othertest_tests.setVisibility(View.VISIBLE);
+        tv_other_test.setText(context.getString(R.string.basic_test));
+        tv_total_price.setText("P " + loa.getTotalAmount());
+
+
+        ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> unfilteredGrouping = new ArrayList<>();
+        for (MaceRequest.GroupedByCostCenter groupedByCostCenter : loa.getGroupedByCostCenters()) {
+            for (int i = 0; i < groupedByCostCenter.getGroupedByDiag().size(); i++) {
+                MaceRequest.GroupedByCostCenter.GroupedByDiag groupedByDiag = groupedByCostCenter.getGroupedByDiag().get(i);
+                groupedByDiag.setFirstInstance(i == 0 ? true : false);
+                groupedByDiag.setBasicTestFlag(loa.getRequestType().contains(RequestType.BASIC_TEST) ? true : false);
+                groupedByDiag.setCostCenter(groupedByCostCenter.getCostCenter());
+                groupedByDiag.setStatus(groupedByCostCenter.getStatus());
+                groupedByDiag.setSubTotal(groupedByCostCenter.getSubTotal());
+                unfilteredGrouping.add(groupedByDiag);
+            }
+        }
+        //Process and group by DiagType -> Tests + CostCenter
+        arrayListGroupedByDiag.addAll(unfilteredGrouping);
+        basicTestLoaAdapter = new BasicTestLoaAdapter(context, unfilteredGrouping);
+        rv_otherTest.setLayoutManager(new LinearLayoutManager(this));
+        rv_otherTest.setAdapter(basicTestLoaAdapter);
+
+    }
+
+    private void setOperatingRoomData(List<MaceRequest> loaList, int position) {
+        loa = loaList.get(position);
+        cv_problem.setVisibility(View.GONE);
+        cv_OperatingRoom.setVisibility(View.VISIBLE);
+        tv_total_price_OperatingRoom.setText("P " + loa.getTotalAmount());
+
+        ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> unfilteredGrouping = new ArrayList<>();
+        for (MaceRequest.GroupedByCostCenter groupedByCostCenter : loa.getGroupedByCostCenters()) {
+            for (int i = 0; i < groupedByCostCenter.getGroupedByDiag().size(); i++) {
+                MaceRequest.GroupedByCostCenter.GroupedByDiag groupedByDiag = groupedByCostCenter.getGroupedByDiag().get(i);
+//                groupedByDiag.setFirstInstance(i == 0 ? true : false);
+//                groupedByDiag.setBasicTestFlag(groupedByDiag.getDiagDesc().equals(groupedByCostCenter.getGroupedByDiag().get(i)) ?  : false);
+                groupedByDiag.setCostCenter(groupedByCostCenter.getCostCenter());
+                groupedByDiag.setStatus(groupedByCostCenter.getStatus());
+                groupedByDiag.setSubTotal(groupedByCostCenter.getSubTotal());
+                unfilteredGrouping.add(groupedByDiag);
+            }
+        }
+        arrayListGroupedByDiagOP.addAll(processGrouping(unfilteredGrouping));
+        operatingRoomLoaAdapter = new OperatingRoomLoaAdapter(context, arrayListGroupedByDiagOP);
+        rv_OperatingRoom.setLayoutManager(new LinearLayoutManager(this));
+        rv_OperatingRoom.setAdapter(operatingRoomLoaAdapter);
+
+    }
+
     private void setProcedureData(List<MaceRequest> loaList, int position) {
         loa = loaList.get(position);
         cv_problem.setVisibility(View.GONE);
         cv_procedures_box.setVisibility(View.VISIBLE);
 
-        tv_procedures_diagnosis.setText("Diagnosis:\n"+loa.getPrimaryDiag());
-        tv_procedures_approval_no.setText(loa.getStatus() == RequestType.APPROVED ? loa.getApprovalNo():"");
+        tv_procedures_diagnosis.setText("Diagnosis: " + loa.getPrimaryDiag());
+        tv_procedures_approval_no.setText(loa.getStatus() == RequestType.APPROVED ? loa.getApprovalNo() : "");
         procedureLoaAdapter = new ProcedureLoaAdapter(context, loa.getMappedTest());
         rv_procedures.setLayoutManager(new LinearLayoutManager(this));
         rv_procedures.setAdapter(procedureLoaAdapter);
 
-        tv_procedures_total_price.setText("P "+loa.getTotalAmount());
+        tv_procedures_total_price.setText("P " + loa.getTotalAmount());
 
     }
-
 
     private void setOtherTestData(List<MaceRequest> loaList, int position) {
 
@@ -469,14 +577,13 @@ public class LoaPageActivity extends AppCompatActivity
 
         cv_problem.setVisibility(View.GONE);
         cv_othertest_tests.setVisibility(View.VISIBLE);
-        tv_total_price.setText("P "+loa.getTotalAmount());
+        tv_total_price.setText("P " + loa.getTotalAmount());
 
 
         ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> unfilteredGrouping = new ArrayList<>();
         for (MaceRequest.GroupedByCostCenter groupedByCostCenter : loa.getGroupedByCostCenters()) {
             for (int i = 0; i < groupedByCostCenter.getGroupedByDiag().size(); i++) {
                 MaceRequest.GroupedByCostCenter.GroupedByDiag groupedByDiag = groupedByCostCenter.getGroupedByDiag().get(i);
-                groupedByDiag.setBasicTestFlag(loa.getRequestType().contains("BASIC TEST") ? true : false);
                 groupedByDiag.setCostCenter(groupedByCostCenter.getCostCenter());
                 groupedByDiag.setStatus(groupedByCostCenter.getStatus());
                 groupedByDiag.setSubTotal(groupedByCostCenter.getSubTotal());
@@ -488,11 +595,6 @@ public class LoaPageActivity extends AppCompatActivity
         otherTestLoaAdapter = new OtherTestLoaAdapter(context, arrayListGroupedByDiag);
         rv_otherTest.setLayoutManager(new LinearLayoutManager(this));
         rv_otherTest.setAdapter(otherTestLoaAdapter);
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     private ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> processGrouping(ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> gbdList) {
@@ -508,12 +610,13 @@ public class LoaPageActivity extends AppCompatActivity
 
     private ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> arrangeListByDiagType(ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> gbdList, int diagType) {
         int a = 0;
+        int b = 2;
         ArrayList<MaceRequest.GroupedByCostCenter.GroupedByDiag> primaryList = new ArrayList<>();
         for (MaceRequest.GroupedByCostCenter.GroupedByDiag groupedByDiag : gbdList) {
             if (groupedByDiag.getDiagType() == diagType) {
                 groupedByDiag.setFirstInstance(a++ == 0 ? true : false);
                 groupedByDiag.setLastInstance(false);
-                groupedByDiag.setBasicTestFlag(false);
+                groupedByDiag.setBasicTestFlag(true);
                 primaryList.add(groupedByDiag);
             }
         }
@@ -564,13 +667,10 @@ public class LoaPageActivity extends AppCompatActivity
         tvValidityDate.setVisibility(View.GONE);
         tv_validity_date.setVisibility(View.GONE);
         ivQrApprovalNumber.setVisibility(View.GONE);
-        if (loa.getRequestType().equals("TEST")) {
-            cvDoctorDetails.setVisibility(View.GONE);
-            cv_problem.setVisibility(View.GONE);
-        } else {
-            cvDoctorDetails.setVisibility(View.VISIBLE);
-            cv_problem.setVisibility(View.VISIBLE);
-        }
+
+        cvDoctorDetails.setVisibility(View.VISIBLE);
+        cv_problem.setVisibility(View.VISIBLE);
+
     }
 
     @Override

@@ -60,6 +60,7 @@
     <string name="fecalysis">Fecalysis</string>
     <string name="urinalysis">Urinalysis</string>
     <string name="other_test">Other Tests</string>
+    <string name="oper_room">Operating Room</string>
     <string name="in_patient">In-Patient</string>
 
     <string name="add_Account">Add an Account</string>
@@ -130,6 +131,7 @@
     <string name="title_activity_terms_ncond">Terms and Conditions</string>
     <string name="verify">VERIFY ACCOUNT</string>
     <string name="accept_terms">Agree</string>
+    <string name="request_other">Request LOA of Prescribed Test or Procedure</string>
     <string name="decline_terms">Disagree</string>
     <string name="skipdiagnosis">This step is optional. You may opt to skip this \n step by tapping Skip at the upper right part of the screen</string>
     <string name="hospitalMessage">All tests that will be selected should be done in the selected Clinic/Hospital</string>
@@ -255,7 +257,7 @@
     <string name="all_doctors">All Doctors</string>
     <string name="all_test">All Test</string>
     <string name="all_diagnosis">All Diagnosis</string>
-    <string name="are_you_sure_you_want">Are you sure you want to cancel the Approval Request?</string>
+    <string name="are_you_sure_you_want">Are you sure you want to cancel your approval?</string>
     <string name="there_is_an_existing_request_with_the_same_details_submitting_this_may_cause_duplicate_requests_and_may_affect_your_existing_utilization_limits_are_you_sure_you_want_to_submit_this_request">
         There is an existing entry from the same hospital. Submitting this may cause duplicate request and may affect your existing utilization limits.
         Are you sure you want to submit this?</string>
@@ -292,14 +294,14 @@
     <!--</string>-->
 
     <string name="note_upload">
-    Note: Please attach a clear image of your request for laboratory test, maximum file size of 5MB.
+    Note: Please attach a clear image of your request for laboratory test or procedure, maximum file size of 5MB.
     </string>
 
     <string name="maternity_consulation">(MATERNITY CONSULATION)</string>
     <string name="select_hospital_clinic_for_availment">Examination to be done at (Clinic/Hospital)</string>
     <string name="select_test_s">Select Test/s</string>
     <string name="reason_for_consult">Reason For Consult</string>
-    <string name="download_loa">Download Approval</string>
+    <string name="download_loa">Download Form</string>
 
 
     <string name="maternity_consultation_not_available">
@@ -342,8 +344,7 @@
     <string name="prescription_other_attachment">Request for Laboratory Test / Request or Consultation Form</string>
 
     <string name="disclaimer_info">
-        Please print 2 copies of the dowloaded Approval form to present directly to your consulting doctor
-        or go to the Coordinator for the issuance of Approval.
+        Please print 2 copies of the dowloaded approval form to be presented to your doctor or go to Coordinator or MediCard clinic for the issuance of LOA
         \n\n
         This shall be subject to existing benefits and actual available limits under the plan.
         Member may still be billed for the amount.
@@ -389,7 +390,7 @@
 
     <string name="alert_cancel_new_request">Are you sure you want to cancel this request?</string>
     <string name="alert_mace_success">MaceTest successully submitted.</string>
-    <string name="request_new_approval">Request Approval for Prescribed Test</string>
+    <string name="request_new_approval">Request Approval for Prescribed Test or Procedure</string>
     <string name="prescribed_test_empty">No List of Consultation with Prescribed Test</string>
     <string name="with_provider_prescribed_test">Tap a consultation from the list if the prescribed test came from the Provider app</string>
     <string name="with_exisitng_consulation_form">Tap the Request Approval for Prescribed Test button if you have a prescription from the doctor </string>

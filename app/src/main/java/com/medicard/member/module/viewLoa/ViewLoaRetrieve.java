@@ -2,6 +2,7 @@ package com.medicard.member.module.viewLoa;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.medicard.member.module.viewLoa.session.ViewLoaListSession;
 

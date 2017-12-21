@@ -68,6 +68,11 @@ public class SharedPref {
 
     public static String LAST_POSITION = "LAST_POSITION";
 
+    //used for the adapter of OP_OR in Approval List
+    public static String OP_TITLE = "title";
+
+
+
     public void setBoolValue(String Key, boolean value, Context context) {
         SharedPreferences prefs = context.getSharedPreferences(Key, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();

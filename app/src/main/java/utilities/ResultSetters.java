@@ -14,7 +14,7 @@ public class ResultSetters {
     public static final String Pending = "PENDING";
     public static final String Cancelled = "CANCELLED";
     public static final String REQUEST_APPROVED = "REQUEST SUBMITTED";
-    public static final String REQUEST_CONFIRMED = "REQUEST CONFIRMED";
+    public static final String REQUEST_CONFIRMED = "REQUEST APPROVED";
 
     public static final String REQUEST_TEST_APPROVED = "REQUEST APPROVED";
     public static final String REQUEST_DISAPPROVED = "REQUEST DISAPPROVED";
@@ -92,7 +92,7 @@ public class ResultSetters {
         } else if (newString.equalsIgnoreCase(Pending)) {
             return REQUEST_APPROVAL;
         } else if (newString.equalsIgnoreCase(Approved)) {
-            return REQUEST_CONFIRMED;
+            return REQUEST_TEST_APPROVED;
         } else if (newString.equalsIgnoreCase(ONHOLD)) {
             return REQUEST_APPROVAL;
         } else if (newString.equalsIgnoreCase(FORREACTIVATIONMEMBER)) {

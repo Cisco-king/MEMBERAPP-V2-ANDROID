@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.medicard.member.NavigationActivity;
 import com.medicard.member.R;
@@ -192,9 +193,8 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     @Override
     public void onFailure() {
         pb.setVisibility(View.GONE);
+        Toast.makeText(context,"Failed to connect",Toast.LENGTH_SHORT);
         tv_list.setVisibility(View.VISIBLE);
-
-
     }
 }
 

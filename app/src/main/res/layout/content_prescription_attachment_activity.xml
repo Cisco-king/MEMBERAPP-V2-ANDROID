@@ -25,6 +25,9 @@
             android:layout_above="@+id/btn_next"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/BLACK"
+            android:textSize="@dimen/text_medium"
             android:layout_marginTop="10dp"
             android:text="@string/note_upload" />
 
@@ -37,7 +40,8 @@
             android:padding="10dp"
             android:layout_marginRight="10dp"
             android:text="@string/prescription_other_attachment"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btnUpload"

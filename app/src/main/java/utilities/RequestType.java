@@ -15,8 +15,13 @@ public class RequestType {
 
     public static final String  TEST = "TEST";
 
+    public static final String  OP_OR = "OP/OR";
+
     public static final String  PROCEDURE = "PROCEDURE";
+
     public static final String  APPROVED = "APPROVED";
+
+    public static final String  FILE_UPLOAD = "FILE UPLOAD";
 
 
 }

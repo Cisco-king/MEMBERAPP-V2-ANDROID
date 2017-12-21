@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import utilities.DateConverter;
 
@@ -227,6 +228,18 @@ public class MaceRequest implements Serializable {
     @Expose
     private String totalAmount;
 
+    @SerializedName("attachments")
+    @Expose
+    private List<AttachmentObject> attachments;
+
+
+    public List<AttachmentObject> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<AttachmentObject> attachments) {
+        this.attachments = attachments;
+    }
 
     @SerializedName("groupedByCostCenters")
     @Expose
@@ -240,7 +253,7 @@ public class MaceRequest implements Serializable {
         this.groupedByCostCenters = groupedByCostCenters;
     }
 
-    public class GroupedByCostCenter implements Serializable{
+    public class GroupedByCostCenter implements Serializable {
         private String costCenter;
 
         private String subTotal;
@@ -249,7 +262,7 @@ public class MaceRequest implements Serializable {
 
         private ArrayList<GroupedByDiag> groupedByDiag;
 
-        public class GroupedByDiag implements Serializable{
+        public class GroupedByDiag implements Serializable {
 
             private String costCenter;
 
@@ -390,7 +403,7 @@ public class MaceRequest implements Serializable {
 
     public ArrayList<MappedTest> mappedTest;
 
-    public class MappedTest implements Serializable{
+    public class MappedTest implements Serializable {
 
         private String procCode;
 
@@ -850,7 +863,6 @@ public class MaceRequest implements Serializable {
     public void setMbasupdateOn(Object mbasupdateOn) {
         this.mbasupdateOn = mbasupdateOn;
     }
-
 
 
 }

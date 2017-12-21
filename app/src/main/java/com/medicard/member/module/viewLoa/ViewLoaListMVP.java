@@ -19,7 +19,6 @@ public interface ViewLoaListMVP {
     }
 
     interface Presenter extends Mvp.Presenter<View> {
-
         void loadLoaList(List<MaceRequest> maceRequestList);
 
     }

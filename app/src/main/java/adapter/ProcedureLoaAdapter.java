@@ -47,11 +47,9 @@ public class ProcedureLoaAdapter extends RecyclerView.Adapter<ProcedureLoaAdapte
     @Override
     public void onBindViewHolder(ProcedureLoaAdapter.Holder holder, int position) {
         MaceRequest.MappedTest mappedTest = mappedTests.get(position);
-        holder.ll_row.setBackgroundColor((position%2) == 0 ? ContextCompat.getColor(context, R.color.grey_1):ContextCompat.getColor(context, R.color.white));
+        holder.ll_row.setBackgroundColor((position%2) != 0 ? ContextCompat.getColor(context, R.color.grey_1):ContextCompat.getColor(context, R.color.white));
         holder.tv_proc_desc.setText(mappedTest.getProcDesc());
         holder.tv_proc_amount.setText("P " + mappedTest.getAmount());
-
-
 
     }
 

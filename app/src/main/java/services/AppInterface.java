@@ -58,17 +58,14 @@ public interface AppInterface {
 //    String ENDPOINT = "http://mace-public01.medicardphils.com:8080/";
 //    String PHOTOLINK = "http://mace-public01.medicardphils.com:8080/downloadpicture/";
 
-
-
 //    String ENDPOINT = "http://192.168.1.5:8080";
 //    String PHOTOLINK = "http://192.168.1.5:8080/downloadpicture/";
-
 
 //    String ENDPOINT = "http://10.10.24.195:8080/";
 //    String PHOTOLINK = "http://10.10.24.195:8080/downloadpicture/";
 
-    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
-    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
+//    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
+//    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
 
 //    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8081/";
 //    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8081/downloadpicture/";
@@ -76,25 +73,18 @@ public interface AppInterface {
 //    String ENDPOINT = "http://10.10.24.195:8080/";
 //    String PHOTOLINK = "http://10.10.24.195:8080/downloadpicture/";
 
-
-/*
-    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8080/downloadpicture/";
-    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8080/";
-*/
+    String PHOTOLINK = "http://macetestsvr01.medicardphils.com:8443/downloadpicture/";
+    String ENDPOINT = "http://macetestsvr01.medicardphils.com:8443/";
 
 //    String ENDPOINT = "http://125.5.100.202:8080/";
 //    String PHOTOLINK = "http://125.5.100.202:8080/downloadpicture/";
 
-//    String ENDPOINT = "http://125.5.100.202:8080/";
-//    String PHOTOLINK = "http://125.5.100.202:8080/downloadpicture/";
+//    String ENDPOINT = "http://125.5.100.202:8081/";
+//    String PHOTOLINK = "http://125.5.100.202:8081/downloadpicture/";
 
 
 //    String ENDPOINT = "http://10.10.26.12:8080/";
 //    String PHOTOLINK = "http://10.10.26.12:8080/downloadpicture/";
-
-
-
-
 
     @POST("v2/registerAccount/")
     Observable<ResponseBody> requestUser(@Body RequestAccount requestAccount);
@@ -102,10 +92,8 @@ public interface AppInterface {
     @GET("v2/verifyMember/?")
     Observable<VerifyMemberData> verifyMember(@Query("memberCode") String id, @Query("dob") String dob);
 
-
     @POST("v2/loginMember/")
     Observable<SignInDetails> logInUser(@Body LogIn logIn);
-
 
     @Multipart
     @POST("uploadpicture")
@@ -113,7 +101,6 @@ public interface AppInterface {
                                     @Part("memCode") RequestBody memCode,
                                     @Part("appUsername") RequestBody appUsername,
                                     @Part("userType") RequestBody userType);
-
 
     @GET("v2/viewAccountInfo/{id}")
     Observable<GetUSER> getMemberInfo(@Path("id") String id);
@@ -151,7 +138,6 @@ public interface AppInterface {
 
     @POST("memberloa/requestLOAMaternity/")
     Observable<RequestResult> sendMaternity(@Body SendLoa sendLoa);
-
 
     @GET("listing/getInpatientHospitalExclusionList/?")
     Observable<Exclusions> getInpatientExclusions(@Query("memberCode") String memberCode);
@@ -210,10 +196,7 @@ public interface AppInterface {
     Call<AttachmentResponse> addAttachmentByRequestCode(@Part MultipartBody.Part filePart,
                                                         @Query("requestCode") String requestCode);
 
-
     @GET("/membership/getDentalBenefits/")
     Call<DentalBenefitsResponse> getDentalBenefitByMemberCode(@Query("memberCode") String memberCode);
-
-
 
 }

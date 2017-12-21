@@ -22,7 +22,7 @@
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
         android:textStyle="bold"
-        android:text="Request LOA of Prescribed Test"
+        android:text="@string/request_new_approval"
         android:textColor="@color/white"
         android:textSize="10dp" />
 
