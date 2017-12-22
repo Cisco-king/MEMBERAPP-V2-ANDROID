@@ -2,6 +2,8 @@ package utilities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 
 import com.medicard.member.R;
@@ -9,16 +11,21 @@ import com.medicard.member.RegistrationActivity;
 
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import model.RequestResult;
+import services.model.AttachmentObject;
 
 /**
  * Created by mpx-pawpaw on 10/21/16.
@@ -442,6 +449,49 @@ public class AlertDialogCustom {
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.width = width;
+        dialog.getWindow().setAttributes(lp);
+
+    }
+
+
+    public void showSelectedAttachment(Context context, ArrayList<AttachmentObject> attachmentObjects, int position) {
+
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_file_selected);
+        dialog.getWindow().setWindowAnimations(R.style.CustomDialogAnimation);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//        dialog.setCancelable(false);
+
+        TextView tv_no,tv_filename,tv_close;
+        ImageView iv_image;
+        Button btn_close;
+        tv_no = (TextView)dialog.findViewById(R.id.tv_no);
+        tv_filename = (TextView)dialog.findViewById(R.id.tv_filename);
+        iv_image = (ImageView)dialog.findViewById(R.id.iv_image);
+        tv_close = (TextView)dialog.findViewById(R.id.tv_close);
+
+        tv_no.setText(""+(position +1));
+        tv_filename.setText(attachmentObjects.get(position).getOriginalFileName());
+        byte[] decodedString = Base64.decode(attachmentObjects.get(position).getContent(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        iv_image.setImageBitmap(decodedByte);
+        tv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+
+        int width = (int) (context.getResources().getDisplayMetrics().widthPixels * .90);
+        int height = (int) (context.getResources().getDisplayMetrics().widthPixels * .90);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.height = height;
         lp.width = width;
         dialog.getWindow().setAttributes(lp);
 

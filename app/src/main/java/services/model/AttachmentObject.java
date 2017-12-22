@@ -17,10 +17,71 @@ import okhttp3.internal.http.HttpHeaders;
 
 public class AttachmentObject implements Serializable  {
 
+    private int id;
+    private int requestId;
+    private String fileId;
+    private String contentType;
+    private String originalFileName;
+    private String fileSuffix;
+    private String fileNameNoSuffix;
     private String content;
+    private String requestCode;
 
+    public int getId() {
+        return id;
+    }
 
-    private HttpHeaders headers;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getOriginalFileName() {
+        return originalFileName;
+    }
+
+    public void setOriginalFileName(String originalFileName) {
+        this.originalFileName = originalFileName;
+    }
+
+    public String getFileSuffix() {
+        return fileSuffix;
+    }
+
+    public void setFileSuffix(String fileSuffix) {
+        this.fileSuffix = fileSuffix;
+    }
+
+    public String getFileNameNoSuffix() {
+        return fileNameNoSuffix;
+    }
+
+    public void setFileNameNoSuffix(String fileNameNoSuffix) {
+        this.fileNameNoSuffix = fileNameNoSuffix;
+    }
 
     public String getContent() {
         return content;
@@ -30,11 +91,11 @@ public class AttachmentObject implements Serializable  {
         this.content = content;
     }
 
-    public HttpHeaders getHeaders() {
-        return headers;
+    public String getRequestCode() {
+        return requestCode;
     }
 
-    public void setHeaders(HttpHeaders headers) {
-        this.headers = headers;
+    public void setRequestCode(String requestCode) {
+        this.requestCode = requestCode;
     }
 }

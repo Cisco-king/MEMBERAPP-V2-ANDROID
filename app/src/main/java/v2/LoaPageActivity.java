@@ -496,7 +496,7 @@ public class LoaPageActivity extends AppCompatActivity
 
         attachmentObjectArrayList.clear();
         attachmentObjectArrayList.addAll(loa.getAttachments());
-        fileUploadLoaAdapter = new FileUploadLoaAdapter(context, attachmentObjectArrayList);
+        fileUploadLoaAdapter = new FileUploadLoaAdapter(context, attachmentObjectArrayList,alertDialogCustom);
         rv_FileUpload.setLayoutManager(new LinearLayoutManager(this));
         rv_FileUpload.setAdapter(fileUploadLoaAdapter);
 

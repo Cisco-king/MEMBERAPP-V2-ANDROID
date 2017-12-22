@@ -4,11 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import services.model.AttachmentObject;
 import services.model.MaceRequest;
+import utilities.AlertDialogCustom;
 import utilities.SharedPref;
 
 /**
@@ -30,11 +33,12 @@ import utilities.SharedPref;
 public class FileUploadLoaAdapter extends RecyclerView.Adapter<FileUploadLoaAdapter.Holder> {
     private Context context;
     ArrayList<AttachmentObject> attachmentObjectArrayList = new ArrayList<>();
+   AlertDialogCustom alertDialogCustom;
 
-
-    public FileUploadLoaAdapter(Context context, ArrayList<AttachmentObject> attachmentObjectArrayList) {
+    public FileUploadLoaAdapter(Context context, ArrayList<AttachmentObject> attachmentObjectArrayList,AlertDialogCustom alertDialogCustom) {
         this.context = context;
         this.attachmentObjectArrayList = attachmentObjectArrayList;
+        this.alertDialogCustom = alertDialogCustom;
     }
 
 
@@ -52,10 +56,13 @@ public class FileUploadLoaAdapter extends RecyclerView.Adapter<FileUploadLoaAdap
 
         AttachmentObject attachmentObject = attachmentObjectArrayList.get(position);
 
-        holder.tv_no.setText(position);
-//        Bitmap bitmap = BitmapFactory.decodeByteArray(attachmentObject.getContent(), 0, attachmentObject.getContent().length);
-//        holder.iv_image.setImageBitmap(bitmap);
-        holder.tv_filename.setText("filename");
+        holder.tv_no.setText("" + (position + 1));
+
+        byte[] decodedString = Base64.decode(attachmentObject.getContent(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+        holder.iv_image.setImageBitmap(decodedByte);
+        holder.tv_filename.setText(attachmentObject.getOriginalFileName());
 
     }
 
@@ -72,11 +79,18 @@ public class FileUploadLoaAdapter extends RecyclerView.Adapter<FileUploadLoaAdap
         ImageView iv_image;
         @BindView(R.id.tv_filename)
         TextView tv_filename;
-
+        @BindView(R.id.lv_file)
+        LinearLayout lv_file;
 
         public Holder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            lv_file.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialogCustom.showSelectedAttachment(context,attachmentObjectArrayList,getAdapterPosition());
+                }
+            });
         }
     }
 }
