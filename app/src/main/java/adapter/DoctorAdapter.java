@@ -39,8 +39,9 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.name.setText(array.get(position).getDocLname() + ", " + array.get(position).getDocFname());
-        holder.position.setText(array.get(position).getSpecDesc());
+        holder.tv_name.setText(array.get(position).getDocLname() + ", " + array.get(position).getDocFname());
+        holder.tv_spec.setText(array.get(position).getSpecDesc() );
+//                + "\nContact No: " +SetUnfilledField.setData(array.get(position).getPhoneNo()));
         holder.tv_sched.setText("Schedule: " + SetUnfilledField.setData(array.get(position).getSchedule()));
         holder.tv_room.setText("Room: " + SetUnfilledField.setData(array.get(position).getRoom()));
     }
@@ -58,13 +59,13 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, position, tv_sched, tv_room, tv_spec;
+        TextView tv_name, tv_spec, tv_sched, tv_room;
         CardView cv_item;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.tv_name);
-            position = (TextView) itemView.findViewById(R.id.tv_spec);
+            tv_name = (TextView) itemView.findViewById(R.id.tv_name);
+            tv_spec = (TextView) itemView.findViewById(R.id.tv_spec);
             tv_sched = (TextView) itemView.findViewById(R.id.tv_sched);
             tv_room = (TextView) itemView.findViewById(R.id.tv_room);
             cv_item = (CardView) itemView.findViewById(R.id.cv_item);

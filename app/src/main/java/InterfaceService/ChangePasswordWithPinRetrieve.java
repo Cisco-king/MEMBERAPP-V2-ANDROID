@@ -160,7 +160,6 @@ public class ChangePasswordWithPinRetrieve {
         if (getText(et_old_pin).equals("") || getText(et_new_pin).equals("") || getText(et_retype_pin_new).equals("")) {
             callback.testInputListener();
         } else {
-
             if (getText(et_new_pin).equals(getText(et_retype_pin_new))) {
                 if (getText(et_new_pin).length() < 4)
                     callback.testInputPinLengthListener();
@@ -186,7 +185,6 @@ public class ChangePasswordWithPinRetrieve {
     }
 
     private void updatePin(final String newPIN, String oldPIN) {
-
 
         UpdatePin updatePin = new UpdatePin();
         updatePin.setNewPin(newPIN);

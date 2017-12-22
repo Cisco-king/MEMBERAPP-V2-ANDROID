@@ -171,10 +171,12 @@
                             android:background="@drawable/button_border"
                             android:hint="@string/reg_username"
                             android:inputType="text"
-                            android:maxLength="16"
                             android:padding="@dimen/sub_margin"
                             android:textColorHint="@color/colorAccent"
-                            android:textSize="@dimen/text_small" />
+                            android:textSize="@dimen/text_small"
+                            android:maxLines="1"
+                            android:maxLength="16"
+                            android:digits="@string/special_charac"/>
 
 
                         <TextView

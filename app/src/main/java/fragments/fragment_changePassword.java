@@ -146,7 +146,6 @@ public class fragment_changePassword extends Fragment implements ChangePasswordW
 
 
             case R.id.btn_changePin_new:
-
                 implement.testInput(et_pin, et_retype_pin);
                 break;
 
