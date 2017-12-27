@@ -16,7 +16,6 @@ public class SetHospitalToDatabase {
 
 
         for (int x = 0; x < hosp.size(); x++) {
-
             databaseH.insertHospital(new HospitalList(
                             hosp.get(x).getPhoneNo(),
                             hosp.get(x).getRegion(),

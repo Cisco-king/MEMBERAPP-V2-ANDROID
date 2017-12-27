@@ -50,7 +50,7 @@
             android:drawableStart="@drawable/ic_upload"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="Add Attachment"
+            android:text="@string/add_attachment"
             android:textAllCaps="false" />
 
     </LinearLayout>

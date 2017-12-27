@@ -11,6 +11,7 @@ public class Attachment implements Parcelable {
 
     private String fileName;
     private String uri;
+    private String content;
 
     public Attachment() {
     }
@@ -18,17 +19,21 @@ public class Attachment implements Parcelable {
     private Attachment(Builder builder) {
         setFileName(builder.fileName);
         setUri(builder.uri);
+        setContent(builder.content);
     }
 
     protected Attachment(Parcel in) {
         fileName = in.readString();
         uri = in.readString();
+        content = in.readString();
+
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(fileName);
         dest.writeString(uri);
+        dest.writeString(content);
     }
 
     @Override
@@ -64,10 +69,18 @@ public class Attachment implements Parcelable {
         this.uri = uri;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public static final class Builder {
         private String fileName;
         private String uri;
+        private String content;
 
         public Builder() {
         }
@@ -81,6 +94,12 @@ public class Attachment implements Parcelable {
             uri = val;
             return this;
         }
+
+        public Builder content(String val) {
+            content = val;
+            return this;
+        }
+
 
         public Attachment build() {
             return new Attachment(this);

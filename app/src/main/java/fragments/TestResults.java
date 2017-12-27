@@ -416,7 +416,7 @@ public class TestResults extends Fragment implements ScreenshotCallback {
         //img_qrcode.setImageBitmap(qrCodeCreator.getBitmapFromString(refCode));
 
         rvAttachments.setLayoutManager(new LinearLayoutManager(getContext()));
-        attachmentAdapter = new AttachmentForTestAdapter(attachments);
+        attachmentAdapter = new AttachmentForTestAdapter(context,attachments);
         rvAttachments.setAdapter(attachmentAdapter);
 
         tv_date_requested.setText(reqDate);

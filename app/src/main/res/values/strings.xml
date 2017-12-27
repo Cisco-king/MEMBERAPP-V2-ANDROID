@@ -386,6 +386,7 @@
     <string name="alert_submit_test">Are you sure you want yo submit the request?</string>
 
     <string name="field_required">This field is required.</string>
+    <string name="add_attachment">Add Attachment</string>
 
     <string name="opps">Opps..</string>
     <string name="accept_terms_and_conditions">Please accept terms and condition to proceed.</string>

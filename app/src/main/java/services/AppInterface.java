@@ -196,8 +196,6 @@ public interface AppInterface {
     @POST("/memberloa/addAttachmentByRequestCode/")
     Call<AttachmentResponse> addAttachmentByRequestCode(@Part MultipartBody.Part filePart,
                                                         @Query("requestCode") String requestCode);
-
     @GET("/membership/getDentalBenefits/")
     Call<DentalBenefitsResponse> getDentalBenefitByMemberCode(@Query("memberCode") String memberCode);
-
 }

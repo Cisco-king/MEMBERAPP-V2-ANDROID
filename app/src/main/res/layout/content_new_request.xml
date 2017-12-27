@@ -230,7 +230,7 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="5dp"
                             android:drawableStart="@drawable/ic_attachment"
-                            android:text="Add Attachment"
+                            android:text="@string/add_attachment"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimary" />
 

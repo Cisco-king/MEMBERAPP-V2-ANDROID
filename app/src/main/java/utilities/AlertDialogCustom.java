@@ -22,8 +22,10 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import model.Attachment;
 import model.RequestResult;
 import services.model.AttachmentObject;
 
@@ -454,7 +456,7 @@ public class AlertDialogCustom {
 
     }
 
-
+    //used for approval list file upload
     public void showSelectedAttachment(Context context, ArrayList<AttachmentObject> attachmentObjects, int position) {
 
         final Dialog dialog = new Dialog(context);
@@ -474,6 +476,92 @@ public class AlertDialogCustom {
 
         tv_no.setText(""+(position +1));
         tv_filename.setText(attachmentObjects.get(position).getOriginalFileName());
+        byte[] decodedString = Base64.decode(attachmentObjects.get(position).getContent(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        iv_image.setImageBitmap(decodedByte);
+        tv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+
+        int width = (int) (context.getResources().getDisplayMetrics().widthPixels * .90);
+        int height = (int) (context.getResources().getDisplayMetrics().widthPixels * .90);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.height = height;
+        lp.width = width;
+        dialog.getWindow().setAttributes(lp);
+
+    }
+
+    //used for selection of attachments
+    public void showSelectedAttachment(Context context, List<Attachment> attachmentObjects, int position, String ms1) {
+
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_file_selected);
+        dialog.getWindow().setWindowAnimations(R.style.CustomDialogAnimation);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//        dialog.setCancelable(false);
+
+        TextView tv_no,tv_filename,tv_close;
+        ImageView iv_image;
+        Button btn_close;
+        tv_no = (TextView)dialog.findViewById(R.id.tv_no);
+        tv_filename = (TextView)dialog.findViewById(R.id.tv_filename);
+        iv_image = (ImageView)dialog.findViewById(R.id.iv_image);
+        tv_close = (TextView)dialog.findViewById(R.id.tv_close);
+
+        tv_no.setText(""+(position +1));
+        tv_filename.setText(attachmentObjects.get(position).getFileName());
+        byte[] decodedString = Base64.decode(attachmentObjects.get(position).getContent(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        iv_image.setImageBitmap(decodedByte);
+        tv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+
+        int width = (int) (context.getResources().getDisplayMetrics().widthPixels * .90);
+        int height = (int) (context.getResources().getDisplayMetrics().widthPixels * .90);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.height = height;
+        lp.width = width;
+        dialog.getWindow().setAttributes(lp);
+
+    }
+
+    //used for request details
+    public void showSelectedAttachment(Context context, List<Attachment> attachmentObjects, int position, String ms1, String ms2) {
+
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_file_selected);
+        dialog.getWindow().setWindowAnimations(R.style.CustomDialogAnimation);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//        dialog.setCancelable(false);
+
+        TextView tv_no,tv_filename,tv_close;
+        ImageView iv_image;
+        Button btn_close;
+        tv_no = (TextView)dialog.findViewById(R.id.tv_no);
+        tv_filename = (TextView)dialog.findViewById(R.id.tv_filename);
+        iv_image = (ImageView)dialog.findViewById(R.id.iv_image);
+        tv_close = (TextView)dialog.findViewById(R.id.tv_close);
+
+        tv_no.setText(""+(position +1));
+        tv_filename.setText(attachmentObjects.get(position).getFileName());
         byte[] decodedString = Base64.decode(attachmentObjects.get(position).getContent(), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         iv_image.setImageBitmap(decodedByte);

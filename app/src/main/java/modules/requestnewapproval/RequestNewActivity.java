@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.itextpdf.text.pdf.codec.Base64;
 import com.medicard.member.NavigationActivity;
 import com.medicard.member.R;
 import com.medicard.member.TermsActivity;
@@ -45,6 +46,7 @@ import com.medicard.member.module.hospital.HospitalActivity;
 import com.medicard.member.module.termsandcondition.TermsAndCondition;
 import com.tapadoo.alerter.Alerter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -111,7 +113,7 @@ public class RequestNewActivity extends TestTrackableActivity
 
     public static final String FROM_TEST = "fromTest";
     public static final int FROM_TEST_REQUEST = 300;
-
+    private String encodedString;
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
 
 
@@ -259,7 +261,7 @@ public class RequestNewActivity extends TestTrackableActivity
 //        presenter.loadDiagnosisTest(diagnosisProcedures);
 //        presenter.loadDiagnosisTests();
         /*if (attachments != null && attachments.size() > 0) {*/
-        attachmentAdapter = new AttachmentAdapter(attachments, this);
+        attachmentAdapter = new AttachmentAdapter(context,attachments, this);
         rvAttachments.setAdapter(attachmentAdapter);
         /*}*/
 
@@ -408,11 +410,21 @@ public class RequestNewActivity extends TestTrackableActivity
                     Bitmap picture = MediaStore.Images.Media.getBitmap(context.getContentResolver(), selectImageUri);
                     File file = new File(FileUtils.getPathFromURI(context, FileUtils.getImageUri(this, picture)));
 
+                    ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                    picture.compress(Bitmap.CompressFormat.JPEG, 100, bao);
+                    byte[] ba = bao.toByteArray();
+
+                    try {
+                        encodedString = Base64.encodeBytes(ba, 0);
+                    } catch (Exception e1) {
+                    }
+
                     Timber.d("file name %s", file.getName());
                     try {
                         attachments.add(
                                 new Attachment.Builder()
                                         .fileName(file.getName())
+                                        .content(encodedString.toString())
                                         .uri(selectImageUri.toString())
                                         .build());
                         attachmentAdapter.update(attachments);

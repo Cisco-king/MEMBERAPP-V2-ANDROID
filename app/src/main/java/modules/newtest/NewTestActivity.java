@@ -82,7 +82,6 @@ public class NewTestActivity extends BaseActivity implements NewTestMvp.View {
     private void displayLayout(int layoutPosition) {
 
         Fragment fragment = fragmentLayout[layoutPosition];
-
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.flNewTest, fragment, null)
                 .commit();

@@ -137,7 +137,7 @@ public class PrescriptionAttachmentActivity extends BaseActivity
         imageAttachments = new ArrayList<>();
 
         attachments = new ArrayList<>();
-        attachmentAdapter = new AttachmentAdapter(attachments, this);
+        attachmentAdapter = new AttachmentAdapter(context,attachments, this);
 
         rvAttachment.setLayoutManager(new LinearLayoutManager(context));
         rvAttachment.setAdapter(attachmentAdapter);
@@ -212,16 +212,21 @@ public class PrescriptionAttachmentActivity extends BaseActivity
         super.onActivityResult(requestCode, resultCode, data);
         try {
             if (resultCode == RESULT_OK && requestCode == SELECT_PICTURE) {
-
                 Uri selectImageUri = data.getData();
                 Timber.d("uri : %s", selectImageUri.toString());
                 if (selectImageUri != null) {
-
-
                     try {
-
                         Bitmap picture = MediaStore.Images.Media.getBitmap(context.getContentResolver(), selectImageUri);
                         File file = new File(FileUtils.getPathFromURI(context, FileUtils.getImageUri(this, picture)));
+
+                        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                        picture.compress(Bitmap.CompressFormat.JPEG, 100, bao);
+                        byte[] ba = bao.toByteArray();
+
+                        try {
+                            encodedString = Base64.encodeBytes(ba, 0);
+                        } catch (Exception e1) {
+                        }
 
 
                         System.out.println("File to save from gallery" + file);
@@ -240,6 +245,7 @@ public class PrescriptionAttachmentActivity extends BaseActivity
                             attachments.add(
                                     new Attachment.Builder()
                                             .fileName(file.getName())
+                                            .content(encodedString.toString())
                                             .uri(selectImageUri.toString())
                                             .build());
                             attachmentAdapter.update(attachments);
@@ -254,7 +260,6 @@ public class PrescriptionAttachmentActivity extends BaseActivity
                     }
                 }
             } else if (requestCode == CAMERA_RQ) {
-
                 if (resultCode != Activity.RESULT_CANCELED) {
                     if (data != null) {
                         ImageConverters imageConverters = new ImageConverters();
@@ -266,7 +271,6 @@ public class PrescriptionAttachmentActivity extends BaseActivity
                         ByteArrayOutputStream bao = new ByteArrayOutputStream();
                         bitmapOrg.compress(Bitmap.CompressFormat.JPEG, 100, bao);
                         byte[] ba = bao.toByteArray();
-
 
                         try {
                             encodedString = Base64.encodeBytes(ba, 0);
@@ -302,6 +306,7 @@ public class PrescriptionAttachmentActivity extends BaseActivity
                             attachments.add(
                                     new Attachment.Builder()
                                             .fileName(f.getName())
+                                            .content(encodedString.toString())
                                             .build());
                             attachmentAdapter.update(attachments);
 
