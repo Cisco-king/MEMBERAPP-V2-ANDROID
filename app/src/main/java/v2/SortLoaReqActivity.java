@@ -97,26 +97,29 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
 //        temp = getIntent().getParcelableArrayListExtra(Constant.LOA_REQUEST);
 //        arrayListMaster.addAll(temp);
 //
-//        searchData = getIntent().getStringExtra(Constant.SEARCHED_DATA);
-//        sort_by = getIntent().getStringExtra(Constant.SORT_BY);
-//        status_sort = getIntent().getStringExtra(Constant.STATUS);
-//        service_type_sort = getIntent().getStringExtra(Constant.SERVICE_TYPE);
-//        date_end_sort = getIntent().getStringExtra(Constant.SELECTED_END_DATE);
-//        date_start_sort = getIntent().getStringExtra(Constant.SELECTED_START_DATE);
-//        ArrayList<SimpleData> temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
-//        implement.replaceData(prevSelected, temp1);
-//        temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
-//        implement.replaceData(prevSelectedDoctor, temp1);
+        searchData = getIntent().getStringExtra(Constant.SEARCHED_DATA);
+        sort_by = getIntent().getStringExtra(Constant.SORT_BY);
+        status_sort = getIntent().getStringExtra(Constant.STATUS);
+        service_type_sort = getIntent().getStringExtra(Constant.SERVICE_TYPE);
+        date_end_sort = getIntent().getStringExtra(Constant.SELECTED_END_DATE);
+        date_start_sort = getIntent().getStringExtra(Constant.SELECTED_START_DATE);
+        ArrayList<SimpleData> temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
+        implement.replaceData(prevSelected, temp1);
+        temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
+        implement.replaceData(prevSelectedDoctor, temp1);
 //
 //        //SET DATA
+        et_search.setText(searchData);
+        tv_sort_by.setText(sort_by);
+        tv_status.setText(status_sort);
+        tv_service_type.setText(service_type_sort);
+
 //        implement.setFetchHospitals(tv_doctor, prevSelectedDoctor);
 //        implement.setFetchHospitals(tv_hosp_clinic, prevSelected);
-//        tv_sort_by.setText(sort_by);
-//        tv_status.setText(status_sort);
-//        tv_service_type.setText(service_type_sort);
-//        tv_req_date_start.setText(date_start_sort);
-//        tv_req_date_end.setText(date_end_sort);
-//        et_search.setText(searchData);
+
+        tv_req_date_start.setText(date_start_sort);
+        tv_req_date_end.setText(date_end_sort);
+
     }
 
     @OnClick({R.id.btn_back, R.id.tv_status, R.id.tv_sort_by, R.id.tv_service_type, R.id.tv_hosp_clinic, R.id.tv_doctor, R.id.tv_test,

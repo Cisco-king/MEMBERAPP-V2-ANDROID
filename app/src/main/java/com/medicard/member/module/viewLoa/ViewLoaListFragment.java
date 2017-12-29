@@ -104,8 +104,6 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     List<MaceRequest> list;
 
 
-
-
     @Override
     public int getLayoutResource() {
         return R.layout.fragment_loarequest;
@@ -139,18 +137,46 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     }
 
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CALL_SORT_LOA && resultCode == RESULT_OK) {
+                if (implement != null) {
+                    seachedData = data.getStringExtra(Constant.SEARCHED_DATA);
+                    sort_by = data.getStringExtra(Constant.SORT_BY);
+                    status_sort = data.getStringExtra(Constant.STATUS);
+                    service_type_sort = data.getStringExtra(Constant.SERVICE_TYPE);
+
+                    ArrayList<SimpleData> temp = data.getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
+                    implement.replactDataArray(hospital_sort, temp);
+                    temp = data.getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
+                    implement.replactDataArray(doctor_sort, temp);
+                    //TODO: add Test and diagnosis sorting
+                    date_start_sort = data.getStringExtra(Constant.SELECTED_START_DATE);
+                    date_end_sort = data.getStringExtra(Constant.SELECTED_END_DATE);
+
+                    sortFilteredData(this.list,adapter,rv_loa_request,seachedData,sort_by,status_sort,service_type_sort,hospital_sort,doctor_sort,date_start_sort,date_end_sort);
+
+//                implement.updateList(arrayMASTERList, databaseHandler, sort_by, status_sort,
+//                        service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort),
+//                        DateConverter.converttoyyyymmddEnd(date_end_sort), doctor_sort, hospital_sort, seachedData);
+//                adapter.notifyDataSetChanged();
+//                adapter.update(loaFetches);
 //
-//        }
-//    }
+//                implement.updateUIList(rv_loa_request, tv_list, arrayMASTERList);
+                }
+                //used if user cancelled a request to update current list
+            }
+        }
+    }
+
+
 
     @Override
     public void onResume() {
         super.onResume();
-        implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context), callback);
+//        implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context), callback);
     }
 
     @Override
@@ -209,5 +235,34 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
         Toast.makeText(context,"Failed to connect",Toast.LENGTH_SHORT);
         tv_list.setVisibility(View.VISIBLE);
     }
+
+    private void sortFilteredData(List<MaceRequest> list, LoaRequestAdapter adapter, RecyclerView rv_loa_request, String seachedData, String sort_by, String status_sort, String service_type_sort, ArrayList<SimpleData> hospital_sort, ArrayList<SimpleData> doctor_sort, String date_start_sort, String date_end_sort) {
+        List<MaceRequest> requestListFiltered = new ArrayList<>();
+
+        if(seachedData.isEmpty() && sort_by.isEmpty() && status_sort.isEmpty() && service_type_sort.isEmpty() && hospital_sort.size() == 0 && doctor_sort.size() == 0 && date_start_sort.isEmpty() && date_end_sort.isEmpty()){
+            adapter = new LoaRequestAdapter(context, list, callback);
+            rv_loa_request.setAdapter(adapter);
+        }else {
+            for(int x = 0; x < list.size(); x++){
+                if(status_sort.equalsIgnoreCase(list.get(x).getStatus())){
+                    requestListFiltered.add(list.get(x));
+                }else if (status_sort.isEmpty() || status_sort.equalsIgnoreCase("")){
+
+                }
+
+                if(service_type_sort.equalsIgnoreCase(list.get(x).getRequestType())){
+                    requestListFiltered.add(list.get(x));
+                }else if(service_type_sort.isEmpty() || service_type_sort.equalsIgnoreCase("")){
+
+                }
+            }
+            adapter = new LoaRequestAdapter(context, requestListFiltered, callback);
+            rv_loa_request.setAdapter(adapter);
+        }
+
+
+
+    }
+
 }
 

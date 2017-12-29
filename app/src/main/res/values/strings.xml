@@ -263,7 +263,7 @@
     <string name="all_doctors">All Doctors</string>
     <string name="all_test">All Test</string>
     <string name="all_diagnosis">All Diagnosis</string>
-    <string name="are_you_sure_you_want">Are you sure you want to cancel your approval?</string>
+    <string name="are_you_sure_you_want">Are you sure you want to cancel your request for approval?</string>
     <string name="there_is_an_existing_request_with_the_same_details_submitting_this_may_cause_duplicate_requests_and_may_affect_your_existing_utilization_limits_are_you_sure_you_want_to_submit_this_request">
         There is an existing entry from the same hospital. Submitting this may cause duplicate request and may affect your existing utilization limits.
         Are you sure you want to submit this?</string>

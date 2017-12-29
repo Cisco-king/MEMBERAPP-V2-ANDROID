@@ -171,24 +171,26 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
         if (requestCode == CALL_SORT_LOA && resultCode == RESULT_OK) {
             if (implement != null) {
+                seachedData = data.getStringExtra(Constant.SEARCHED_DATA);
                 sort_by = data.getStringExtra(Constant.SORT_BY);
                 status_sort = data.getStringExtra(Constant.STATUS);
                 service_type_sort = data.getStringExtra(Constant.SERVICE_TYPE);
-                date_end_sort = data.getStringExtra(Constant.SELECTED_END_DATE);
-                date_start_sort = data.getStringExtra(Constant.SELECTED_START_DATE);
+
                 ArrayList<SimpleData> temp = data.getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
                 implement.replactDataArray(hospital_sort, temp);
                 temp = data.getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
                 implement.replactDataArray(doctor_sort, temp);
-                seachedData = data.getStringExtra(Constant.SEARCHED_DATA);
+                //TODO: add Test and diagnosis sorting
+                date_start_sort = data.getStringExtra(Constant.SELECTED_START_DATE);
+                date_end_sort = data.getStringExtra(Constant.SELECTED_END_DATE);
 
-//                implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
+//                implement.updateList(arrayMASTERList, databaseHandler, sort_by, status_sort,
 //                        service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort),
 //                        DateConverter.converttoyyyymmddEnd(date_end_sort), doctor_sort, hospital_sort, seachedData);
-////                adapter.notifyDataSetChanged();
+//                adapter.notifyDataSetChanged();
 //                adapter.update(loaFetches);
 //
-//                implement.updateUIList(rv_loa_request, tv_list, loaFetches);
+//                implement.updateUIList(rv_loa_request, tv_list, arrayMASTERList);
             }
             //used if user cancelled a request to update current list
         } else if (requestCode == CALL_LOA_VIEW && resultCode == RESULT_OK) {
@@ -241,7 +243,7 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
 
     @Override
     public void onSuccessLoaListener(List<MaceRequest> maceRequestList) {
-        //adapter = new LoaRequestAdapter(context,maceRequestList,callback);
+//        adapter = new LoaRequestAdapter(context,maceRequestList,callback);
         rv_loa_request.setLayoutManager(new LinearLayoutManager(getContext()));
         rv_loa_request.setAdapter(adapter);
         pb.setVisibility(View.GONE);
