@@ -266,7 +266,12 @@ public class SignInRetrieve {
             @Override
             protected Object doInBackground(Object[] params) {
                 databaseHandler.dropHospital();
-                SetHospitalToDatabase.setHospToDb(hospital.getHospitalList(), databaseHandler);
+                try{
+                    SetHospitalToDatabase.setHospToDb(hospital.getHospitalList(), databaseHandler);
+                }catch (Exception e){
+
+                }
+
                 return null;
             }
 
@@ -279,12 +284,8 @@ public class SignInRetrieve {
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
                 callback.onHospitalSuccess();
-
-
             }
-
         };
-
         setHosp.execute();
     }
 

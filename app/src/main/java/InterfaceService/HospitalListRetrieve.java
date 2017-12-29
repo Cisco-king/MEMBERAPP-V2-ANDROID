@@ -107,7 +107,6 @@ public class HospitalListRetrieve {
         }
 
         array.clear();
-
         //ONLY MEDICARD
         if (isMedicardOnly.equals("true")) {
             if (data_sort.equals("") || data_sort.equals("category")) {
@@ -120,6 +119,9 @@ public class HospitalListRetrieve {
 
     }
 
+
+
+
     public void updateListUI(ArrayList<HospitalList> array, RecyclerView rv_hospital, TextView tv_hosp_not_found) {
 
         if (array.size() > 0) {
@@ -131,8 +133,6 @@ public class HospitalListRetrieve {
         }
     }
     public void updateListUIForTest(List<HospitalList> array, RecyclerView rv_hospital) {
-
-
         if (array.size() > 0) {
             rv_hospital.setVisibility(View.VISIBLE);
 

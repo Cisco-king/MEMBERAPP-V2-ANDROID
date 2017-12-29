@@ -51,7 +51,12 @@
         android:padding="@dimen/mini_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"/>
-
+        android:scaleType="fitXY"
+        android:maxHeight="@dimen/imagesizeMax"
+        android:maxWidth="@dimen/imagesizeMax"
+        android:minHeight="@dimen/imagesizeMin"
+        android:minWidth="@dimen/imagesizeMin"
+        android:adjustViewBounds="true"
+        />
 
 </LinearLayout>

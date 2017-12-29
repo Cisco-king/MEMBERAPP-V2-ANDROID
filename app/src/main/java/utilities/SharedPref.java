@@ -3,6 +3,11 @@ package utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import services.model.MaceRequest;
+
 /**
  * Created by window on 9/29/2016.
  */
@@ -70,6 +75,7 @@ public class SharedPref {
 
     //used for the adapter of OP_OR in Approval List
     public static String OP_TITLE = "title";
+    public static List<MaceRequest> MACEREQUESTLIST = new ArrayList<>();
 
 
 

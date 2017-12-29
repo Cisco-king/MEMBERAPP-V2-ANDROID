@@ -18,13 +18,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/iv_file"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:maxHeight="@dimen/imagesizeMin"
+                android:maxWidth="@dimen/imagesizeMin"
+                android:minHeight="@dimen/imagesizeMin"
+                android:minWidth="@dimen/imagesizeMin"
+                android:adjustViewBounds="true"
                 app:srcCompat="@drawable/account_w" />
 
             <TextView

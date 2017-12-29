@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 
 import InterfaceService.DoctorInterface;
 import InterfaceService.FragmentApiDocCallback;
@@ -21,7 +22,13 @@ public class SetDoctorToDatabase {
         AsyncTask insertion = new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] params) {
-                SetDoctorToDatabase.setDocToDb(doctors.getGetDoctorsToHospital(), databaseHandler);
+                try {
+                    SetDoctorToDatabase.setDocToDb(doctors.getGetDoctorsToHospital(), databaseHandler);
+                } catch (EmptyStackException e) {
+
+                }
+
+
                 return null;
             }
 
@@ -33,14 +40,11 @@ public class SetDoctorToDatabase {
 
             }
 
-
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
             }
         };
-
-
         insertion.execute();
     }
 

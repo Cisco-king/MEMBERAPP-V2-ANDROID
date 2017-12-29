@@ -96,6 +96,11 @@ public class LoaRequestAdapter extends RecyclerView.Adapter<LoaRequestAdapter.Ho
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        holder.tv_hospname.setVisibility(null == maceRequest.getHospitalName() ? View.GONE:View.VISIBLE);
+        holder.tv_doctor.setVisibility(null == maceRequest.getDoctorName() ? View.GONE:View.VISIBLE);
+        holder.tv_spec.setVisibility(null == maceRequest.getDoctorSpec() ? View.GONE:View.VISIBLE);
+
         holder.tv_hospname.setText(maceRequest.getHospitalName());
         holder.tv_doctor.setText(maceRequest.getDoctorName());
         holder.tv_spec.setText(maceRequest.getDoctorSpec());

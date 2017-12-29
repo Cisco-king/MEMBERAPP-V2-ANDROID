@@ -73,8 +73,6 @@ public class DialogAddDependence {
 
                 String memberID = et_mem_account.getText().toString();
                 String username = et_username.getText().toString();
-
-
                 if (memberID.equals("") || username.equals("")) {
                     alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.warninginputMemberId, 1);
                 } else {
@@ -113,7 +111,6 @@ public class DialogAddDependence {
 
     private void sendNewDependent(String dependentmemberID, final String username) {
         String memberCode = sharedPref.getStringValue(sharedPref.USER, sharedPref.MEMBERCODE, context);
-
 
         AddDependence addDependence = new AddDependence();
         addDependence.setDepMemberCode(dependentmemberID);

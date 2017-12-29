@@ -21,6 +21,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin"
+        android:scaleType="fitXY"
+        android:maxHeight="@dimen/imagesizeMin"
+        android:maxWidth="@dimen/imagesizeMin"
+        android:minHeight="@dimen/imagesizeMin"
+        android:minWidth="@dimen/imagesizeMin"
+        android:adjustViewBounds="true"
         app:srcCompat="@drawable/alerter_ic_face" />
 
     <TextView

@@ -39,7 +39,6 @@ public class HospitalListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void setHasStableIds(boolean hasStableIds) {
         super.setHasStableIds(hasStableIds);
-
     }
 
     @Override
@@ -141,5 +140,4 @@ public class HospitalListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
         }
     }
-
 }

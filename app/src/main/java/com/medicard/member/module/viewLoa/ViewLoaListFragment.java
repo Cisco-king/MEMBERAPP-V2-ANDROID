@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -46,6 +47,8 @@ import utilities.Constant;
 import utilities.SharedPref;
 import v2.LoaPageActivity;
 import v2.SortLoaReqActivity;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Aquino, Francisco III =) on 7/26/17.
@@ -121,7 +124,7 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                 Bundle args = new Bundle();
                 args.putSerializable(MACEREQUESTBUNLE, (Serializable) list);
                 Intent gotoSort = new Intent(context, SortLoaReqActivity.class);
-                gotoSort.putExtra(Constant.BundleForMaceRequest,args);
+//                gotoSort.putExtra(Constant.BundleForMaceRequest,args);
                 gotoSort.putExtra(Constant.SORT_BY, sort_by);
                 gotoSort.putExtra(Constant.SEARCHED_DATA, seachedData);
                 gotoSort.putExtra(Constant.STATUS, status_sort);
@@ -134,6 +137,15 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                 break;
         }
     }
+
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK) {
+//
+//        }
+//    }
 
     @Override
     public void onResume() {
@@ -169,10 +181,11 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
 
     @Override
     public void gotoLoaPage(List<MaceRequest> maceRequestList, int position) {
+        SharedPref.MACEREQUESTLIST = maceRequestList;
         Intent gotoLoa = new Intent(context, LoaPageActivity.class);
-        Bundle args = new Bundle();
-        args.putSerializable(Constant.DATA_SEARCHED, (Serializable) maceRequestList);
-        gotoLoa.putExtra(Constant.BundleForMaceRequest, args);
+//        Bundle args = new Bundle();
+//        args.putSerializable(Constant.DATA_SEARCHED, (Serializable) maceRequestList);
+//        gotoLoa.putExtra(Constant.BundleForMaceRequest, args);
         gotoLoa.putExtra(Constant.POSITION, position + "");
         startActivityForResult(gotoLoa, CALL_LOA_VIEW);
     }

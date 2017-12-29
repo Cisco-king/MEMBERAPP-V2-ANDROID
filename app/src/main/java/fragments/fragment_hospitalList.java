@@ -82,13 +82,14 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
     private String isMedicardOnly = "false";
     String sortBy = "";
     private int SORT_CALL = 100;
+    private String search_string = "";
 
 
     LinearLayoutManager llm;
 
 
     FragmentApiHospCallback fragmentApiHospCallback;
-    private String search_string = "";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

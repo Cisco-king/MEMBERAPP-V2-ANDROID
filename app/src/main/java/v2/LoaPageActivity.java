@@ -270,10 +270,10 @@ public class LoaPageActivity extends AppCompatActivity
         alertDialogCustom = new AlertDialogCustom();
 
         position = Integer.parseInt(getIntent().getStringExtra(Constant.POSITION));
-        List<MaceRequest> temp;
-        Bundle args = getIntent().getBundleExtra(Constant.BundleForMaceRequest);
-        temp = (List<MaceRequest>) args.getSerializable(Constant.DATA_SEARCHED);
-        loaList.addAll(temp);
+//        List<MaceRequest> temp;
+//        Bundle args = getIntent().getBundleExtra(Constant.BundleForMaceRequest);
+//        temp = (List<MaceRequest>) args.getSerializable(Constant.DATA_SEARCHED);
+        loaList.addAll(SharedPref.MACEREQUESTLIST);
 
 
         presenter = new LoaPagePresenter();

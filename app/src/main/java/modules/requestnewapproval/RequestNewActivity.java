@@ -117,7 +117,7 @@ public class RequestNewActivity extends TestTrackableActivity
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
 
 
-    private int tempCounter =  1; // Use for counting the Attachments
+    private int tempCounter = 1; // Use for counting the Attachments
 
     DialogUtils.OnDiaglogClickListener listener;
     DialogUtils dialogutils;
@@ -153,6 +153,8 @@ public class RequestNewActivity extends TestTrackableActivity
     TextView tvDoctorDetails;
     @BindView(R.id.tvHospitalAvailment)
     TextView tvHospitalAvailment;
+    @BindView(R.id.tvHospitalDetails)
+    TextView tvHospitalDetails;
 
     @BindView(R.id.rvAttachments)
     RecyclerView rvAttachments;
@@ -208,7 +210,7 @@ public class RequestNewActivity extends TestTrackableActivity
 //        Timber.d("device id %s", DeviceUtils.getDeviceId(this));
 //        Timber.d("android id %s", DeviceUtils.getAndroidId(this));
 //
-        pd = new ProgressDialog(context,R.style.MyTheme);
+        pd = new ProgressDialog(context, R.style.MyTheme);
         pd.setCancelable(false);
 //
 //
@@ -250,6 +252,12 @@ public class RequestNewActivity extends TestTrackableActivity
 //        etReasonForConsult.setText(reasonForConsult);
 //        ll_reasonForConsult.setVisibility(View.VISIBLE);
         tvHospitalAvailment.setText(hospital.getHospitalName());
+
+        String setText = "";
+        setText += null == hospital.getFullAddress() ? "":hospital.getFullAddress();
+        setText += null == hospital.getPhoneNo() ? "":"\n\n"+hospital.getPhoneNo();
+        setText += null == hospital.getContactPerson() ? "":"\n\n"+hospital.getContactPerson();
+        tvHospitalDetails.setText(setText);
 //        tvDoctorDetails.setText(doctor.getFullName());
 //        tvDoctorDetails.append(getDoctorDetails(doctor));
 
@@ -261,7 +269,7 @@ public class RequestNewActivity extends TestTrackableActivity
 //        presenter.loadDiagnosisTest(diagnosisProcedures);
 //        presenter.loadDiagnosisTests();
         /*if (attachments != null && attachments.size() > 0) {*/
-        attachmentAdapter = new AttachmentAdapter(context,attachments, this);
+        attachmentAdapter = new AttachmentAdapter(context, attachments, this);
         rvAttachments.setAdapter(attachmentAdapter);
         /*}*/
 
@@ -389,7 +397,6 @@ public class RequestNewActivity extends TestTrackableActivity
 
     @Override
     public void internetConnected(TestsModel testsModelToPass) {
-
         presenter.requestForTests(testsModelToPass);
     }
 
@@ -451,6 +458,11 @@ public class RequestNewActivity extends TestTrackableActivity
         if (resultCode == RESULT_OK && requestCode == FROM_HOSPITAL_REQUEST) {
             hospital = HospitalSession.getHospital();
             tvHospitalAvailment.setText(hospital.getHospitalName());
+            String setText = "";
+            setText += null == hospital.getFullAddress() ? "":hospital.getFullAddress();
+            setText += null == hospital.getPhoneNo() ? "":"\n\n"+hospital.getPhoneNo();
+            setText += null == hospital.getContactPerson() ? "":"\n\n"+hospital.getContactPerson();
+            tvHospitalDetails.setText(setText);
         }
         try {
             if (resultCode == RESULT_OK && requestCode == FROM_TEST_REQUEST) {
@@ -460,6 +472,8 @@ public class RequestNewActivity extends TestTrackableActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
 
@@ -636,7 +650,7 @@ public class RequestNewActivity extends TestTrackableActivity
 //        gotoResult.putExtra(Constant.HOSP_CONTACT_PER, tv_contact_person.getText().toString());
             gotoResult.putExtra(Constant.HOSP_U, hospital.getHospitalName());
 
-          //  gotoResult.putExtra(Constant.BATCH_CODE, data.getBatchCode());
+            //  gotoResult.putExtra(Constant.BATCH_CODE, data.getBatchCode());
 
             startActivity(gotoResult);
             finish();
@@ -697,15 +711,15 @@ public class RequestNewActivity extends TestTrackableActivity
         if (null == requestCode) {
             //TODO if null
         } else {
-            int totalSize = attachmentSession.getAllAttachments().size() -1;
+            int totalSize = attachmentSession.getAllAttachments().size() - 1;
             for (int i = 0; i < attachmentSession.getAllAttachments().size(); i++) {
-                if(i < attachmentSession.getAllAttachments().size() -1){
+                if (i < attachmentSession.getAllAttachments().size() - 1) {
                     pd.setMessage("Uploading File(s) " + tempCounter + "/" + totalSize);
                     pd.setCancelable(false);
                     presenter.submitAttachments(attachmentSession.getAllAttachments().get(i), requestCode);
                     tempCounter++;
-                }else{
-                    presenter.submitFinalAttachment(attachmentSession.getAllAttachments().get(i),requestCode);
+                } else {
+                    presenter.submitFinalAttachment(attachmentSession.getAllAttachments().get(i), requestCode);
                 }
 
             }
@@ -723,7 +737,7 @@ public class RequestNewActivity extends TestTrackableActivity
         try {
             pd.dismiss();
             gotoResult();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

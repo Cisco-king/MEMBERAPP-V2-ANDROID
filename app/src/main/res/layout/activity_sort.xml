@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-
     tools:context="v2.SortHospitalActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -59,4 +58,5 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_sort" />
+
 </android.support.design.widget.CoordinatorLayout>

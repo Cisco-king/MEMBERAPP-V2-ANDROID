@@ -17,6 +17,8 @@
     <dimen name="text_mini">12sp</dimen>
     <dimen name="title_padding">20dp</dimen>
     <dimen name="drawerWidth">230dp</dimen>
+    <dimen name="imagesizeMax">230dp</dimen>
+    <dimen name="imagesizeMin">130dp</dimen>
     <dimen name="cardview_margin">30dp</dimen>
     <dimen name="edit_btn_height">30dp</dimen>
     <dimen name="imageCircle_height">120dp</dimen>

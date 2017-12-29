@@ -186,6 +186,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
             case R.id.btn_show:
 
                 Intent intent = new Intent();
+                intent.putExtra(Constant.SEARCHED_DATA, et_search.getText().toString().trim());
                 intent.putExtra(Constant.SORT_BY, implement.getTextTrimmed(tv_sort_by));
                 intent.putExtra(Constant.STATUS, implement.getTextTrimmed(tv_status));
                 intent.putExtra(Constant.SERVICE_TYPE, implement.getTextTrimmed(tv_service_type));
@@ -193,7 +194,6 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 intent.putParcelableArrayListExtra(Constant.SELECT_DOCTOR, prevSelectedDoctor);
                 intent.putExtra(Constant.SELECTED_START_DATE, implement.getTextTrimmed(tv_req_date_start));
                 intent.putExtra(Constant.SELECTED_END_DATE, implement.getTextTrimmed(tv_req_date_end));
-                intent.putExtra(Constant.SEARCHED_DATA, et_search.getText().toString().trim());
                 setResult(RESULT_OK, intent);
                 finish();
 

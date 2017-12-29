@@ -45,7 +45,7 @@
             android:name=".RegistrationActivity"
             android:label="@string/title_activity_registration"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".AccountActivity"
             android:label="@string/title_activity_account"

@@ -16,13 +16,11 @@
         android:id="@+id/content_loa_page"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin"
         android:alpha="70"
         android:background="@color/l_gray"
         android:fadeScrollbars="false"
         android:scrollbarSize="12dp"
-        android:scrollbarStyle="outsideInset"
-        android:scrollbarThumbVertical="@color/colorAccent"
+        android:scrollbarThumbVertical="@color/colorPrimary"
         android:scrollbars="vertical">
 
 
@@ -965,7 +963,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/attachments"
+                            android:text="@string/attachments_"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_small" />
 

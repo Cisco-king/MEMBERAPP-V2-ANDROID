@@ -43,8 +43,6 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
 
     SharedPref s = new SharedPref();
 
-
-
     @BindView(R.id.container_body)
     FrameLayout container_body;
 
@@ -238,19 +236,15 @@ public class NavigationActivity extends AppCompatActivity implements View.OnClic
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                                 SharedPref sharedPref = new SharedPref();
                                 sharedPref.setStringValue(sharedPref.USER, sharedPref.masterUSERNAME, "", context);
                                 sharedPref.setStringValue(sharedPref.USER, sharedPref.masterPASSWORD, "", context);
-
                                 startActivity(new Intent(NavigationActivity.this, SignInActivity.class));
                                 finish();
                             }
-
                         })
                         .setNegativeButton("No", null)
                         .show();
-
                 closeDrawer();
 
                 break;

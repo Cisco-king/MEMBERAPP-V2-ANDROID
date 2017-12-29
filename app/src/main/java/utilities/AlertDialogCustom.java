@@ -67,13 +67,15 @@ public class AlertDialogCustom {
     public String unknown = "Alert";
 
     public String data_cancelled = "Request successfully cancelled.";
-    public String didnt_match_old_new_pin = "Old PIN is incorrect. Please try again'.";
+    public String didnt_match_old_new_pin = "Old PIN is incorrect. Please try again.";
     public String success = "Success";
     public String success_msg = "You have successfully uploaded your photo.";
     public String errorUploadPhoto = "Failed to upload photo. Please try again.";
     public String delete_msg = "Image successfully deleted.";
-    public String addDependenceAlreadyAdded = "Something went wrong. Account has already been added.";
-    public String addDependenceNotDependent = "Something went wrong. Member ID is not your dependent.";
+
+    public String addDependenceAlreadyAdded = "Account has already been added.";
+    public String addDependenceNotDependent = "Member ID is not your dependent.";
+
     public String successChangePass = "You have successfully changed your password.";
     public String succesCheckEmailPassword = "Password has been sent to your email address.";
     public String errorUnableToChangePass = "Something went wrong. Unable to change your password. Please try again.";
