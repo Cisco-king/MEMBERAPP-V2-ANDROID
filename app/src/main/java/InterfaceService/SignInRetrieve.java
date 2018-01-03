@@ -126,7 +126,6 @@ public class SignInRetrieve {
 
 
     public void getSpecialization() {
-
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
         appInterface.getSpecialization()
@@ -195,11 +194,8 @@ public class SignInRetrieve {
                 ProcedureDao procedureDao = new ProcedureDao(context);
 
                 List<Procedure> procedures = procedureResponse.getProceduresList();
-
                 procedureDao.deleteAll();
-
                 Boolean success = procedureDao.insertAllProcedues(procedures);
-
                 subscriber.onNext(success);
             }
         }).subscribeOn(Schedulers.io())

@@ -15,11 +15,7 @@ public class SetCityToDatabase {
 
 
     public static void setCity(final ArrayList<Cities> cities, final DatabaseHandler databaseHandler, final SignInCallback callback) {
-
-
         AsyncTask asyncTask = new AsyncTask() {
-
-
             @Override
             protected void onPostExecute(Object o) {
                 callback.onCitytoDbListener();

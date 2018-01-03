@@ -279,13 +279,11 @@ public class SignInActivity extends AppCompatActivity
         implement.getHospitalList(responseBody, username, password);
 
         memCode = responseBody.getUserAccount().getMEM_CODE();
-
         name = responseBody.getUserAccount().getMEM_FNAME() + " " + responseBody.getUserAccount().getMEM_LNAME();
         getUsername = username;
         getPassword = password;
         forced_Change = responseBody.getUserAccount().getFORCE_CHANGE_PASSWORD();
         try {
-
             String test = responseBody.getUserAccount().getPIN();
             Log.d("PIN", test);
             SharedPref.setStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, "TRUE", context);
@@ -499,7 +497,6 @@ public class SignInActivity extends AppCompatActivity
 
     @Override
     public void onSuccessSpecs(SpecializationList specializationList) {
-
         SetSpecializationTodDatabase.setSpecs(specializationList.getSpecializations(), context, callback);
     }
 

@@ -259,10 +259,6 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
             adapter = new LoaRequestAdapter(context, requestListFiltered, callback);
             rv_loa_request.setAdapter(adapter);
         }
-
-
-
     }
-
 }
 
