@@ -13,12 +13,18 @@ import com.google.gson.Gson;
 
 import model.LogIn;
 import model.SignInDetails;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import services.AppInterface;
 import services.AppService;
+import utilities.AlertDialogCustom;
+import utilities.ErrorMessage;
 import utilities.SharedPref;
+import utilities.UpdateCaller;
 
 /**
  * Created by mpx-pawpaw on 1/27/17.
@@ -38,8 +44,9 @@ public class SplashScreenRetrieve {
      * TEST CREDENTIALS IF ALREADY EXIST
      * IT WILL SIGN IN ELSE
      * GO TO SIGN ACT. THEN ENTER CREDENTIALS
+     * @param alertDialogCustom
      */
-    public void testCredentials() {
+    public void testCredentials(AlertDialogCustom alertDialogCustom) {
 
 
         if (SharedPref.getStringValue(SharedPref.USER, SharedPref.masterUSERNAME, context).equals("null") ||
@@ -53,7 +60,7 @@ public class SplashScreenRetrieve {
             Log.i("NOT NULL", "NOT NULL");
 
             signIn(SharedPref.getStringValue(SharedPref.USER, SharedPref.masterUSERNAME, context),
-                    SharedPref.getStringValue(SharedPref.USER, SharedPref.masterPASSWORD, context));
+                    SharedPref.getStringValue(SharedPref.USER, SharedPref.masterPASSWORD, context),alertDialogCustom);
 
         }
 
@@ -62,11 +69,11 @@ public class SplashScreenRetrieve {
 
     /**
      * CONNECT TO TO BACK END
-     *
-     * @param username
+     *  @param username
      * @param password
+     * @param alertDialogCustom
      */
-    public void signIn(final String username, final String password) {
+    public void signIn(final String username, final String password, final AlertDialogCustom alertDialogCustom) {
 
         SharedPref.setStringValue(SharedPref.USER, SharedPref.USERNAME, username, context);
 
@@ -76,23 +83,29 @@ public class SplashScreenRetrieve {
         logIn.setVersionNo(BuildConfig.VERSION_NAME);
         Gson gson = new Gson();
         Log.d("JSON", gson.toJson(logIn));
+
+
+
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
-        //   loginSubscription = appInterface.logInUser(logIn)
         appInterface.logInUser(logIn)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<SignInDetails>() {
+                .enqueue(new Callback<SignInDetails>() {
                     @Override
-                    public void onCompleted() {
-
-                        Log.i("hahahaha", "gahahaha");
+                    public void onResponse(Call<SignInDetails> call, Response<SignInDetails> response) {
+                        if(response.body() != null){
+                            callback.onSignInSuccessListener(response.body(), username, password);
+                        }else {
+                            alertDialogCustom.showMe(
+                                    context,
+                                    alertDialogCustom.HOLD_ON_title,
+                                    alertDialogCustom.no_connection_to_server,
+                                    1);
+                        }
 
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-
+                    public void onFailure(Call<SignInDetails> call, Throwable e) {
                         try {
                             callback.onSignInErrorListener(e.getMessage());
 
@@ -101,11 +114,6 @@ public class SplashScreenRetrieve {
 
                             Log.e("RX_ERROR", error.getMessage());
                         }
-                    }
-
-                    @Override
-                    public void onNext(SignInDetails responseBody) {
-                        callback.onSignInSuccessListener(responseBody, username, password);
 
                     }
                 });

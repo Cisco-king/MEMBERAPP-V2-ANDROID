@@ -226,7 +226,6 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         if(context instanceof AppCompatActivity){
             this.listener = (NavigationActivity) context;
         }
-
     }
 
     @Override
@@ -254,7 +253,6 @@ public class fragment_loaRequest extends Fragment implements LOARequestCallback 
         if (implement != null) {
 //            implement.updateList(loaFetches, databaseHandler, sort_by, status_sort,
 //                    service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort), DateConverter.converttoyyyymmdd(date_end_sort), doctor_sort, hospital_sort, seachedData);
-
             implement.getDoctorCreds(loa, databaseHandler);
         }
     }

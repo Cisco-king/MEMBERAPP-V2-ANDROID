@@ -75,12 +75,16 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
 
     //SORTING DATA
+    String seachedData = "";
     String sort_by = "";
     String status_sort = "";
     String service_type_sort = "";
-    String date_end_sort = "";
+    String doctor_sort = "";
+    String hospital_sort = "";
+    String test_sort = "";
+    String diag_sort = "";
     String date_start_sort = "";
-    String searchData = "";
+    String date_end_sort = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,20 +100,25 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
 //        ArrayList<LoaFetch> temp;
 //        temp = getIntent().getParcelableArrayListExtra(Constant.LOA_REQUEST);
 //        arrayListMaster.addAll(temp);
-//
-        searchData = getIntent().getStringExtra(Constant.SEARCHED_DATA);
+
+        seachedData = getIntent().getStringExtra(Constant.SEARCHED_DATA);
         sort_by = getIntent().getStringExtra(Constant.SORT_BY);
         status_sort = getIntent().getStringExtra(Constant.STATUS);
         service_type_sort = getIntent().getStringExtra(Constant.SERVICE_TYPE);
-        date_end_sort = getIntent().getStringExtra(Constant.SELECTED_END_DATE);
+        doctor_sort = getIntent().getStringExtra(Constant.SELECT_DOCTOR);
+        hospital_sort = getIntent().getStringExtra(Constant.SELECT_HOSP);
+        test_sort = getIntent().getStringExtra(Constant.SELECT_TEST);
+        diag_sort = getIntent().getStringExtra(Constant.SELECT_DIAG);
         date_start_sort = getIntent().getStringExtra(Constant.SELECTED_START_DATE);
-        ArrayList<SimpleData> temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
-        implement.replaceData(prevSelected, temp1);
-        temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
-        implement.replaceData(prevSelectedDoctor, temp1);
+        date_end_sort = getIntent().getStringExtra(Constant.SELECTED_END_DATE);
+
+//        ArrayList<SimpleData> temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
+//        implement.replaceData(prevSelected, temp1);
+//        temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
+//        implement.replaceData(prevSelectedDoctor, temp1);
 //
 //        //SET DATA
-        et_search.setText(searchData);
+        et_search.setText(seachedData);
         tv_sort_by.setText(sort_by);
         tv_status.setText(status_sort);
         tv_service_type.setText(service_type_sort);
@@ -125,7 +134,6 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     @OnClick({R.id.btn_back, R.id.tv_status, R.id.tv_sort_by, R.id.tv_service_type, R.id.tv_hosp_clinic, R.id.tv_doctor, R.id.tv_test,
             R.id.tv_diagnosis, R.id.tv_req_date_end, R.id.tv_req_date_start, R.id.btn_reset, R.id.btn_show})
     public void onClick(View v) {
-
 
         switch (v.getId()) {
             case R.id.btn_back:
@@ -144,7 +152,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 break;
 
             case R.id.tv_hosp_clinic:
-                Intent getList = new Intent(SortLoaReqActivity.this, SelectProvinceActivity.class);
+                Intent getList = new Intent(SortLoaReqActivity.this, LoaHospitalListActivity.class);
                 getList.putExtra(Constant.SELECT, Constant.SELECT_LOAREQUEST);
                 getList.putParcelableArrayListExtra(Constant.LOA_REQUEST, arrayListMaster);
                 getList.putParcelableArrayListExtra(Constant.SELECTED_REQUEST, prevSelected);
@@ -169,8 +177,6 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
 
 
             case R.id.tv_req_date_end:
-
-
                 int[] dateStarter = implement.getDateStarter(tv_req_date_start);
                 if (tv_req_date_start.getText().toString().equals(""))
                     alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.pick_start_Date, 1);
@@ -187,7 +193,6 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
 
                 break;
             case R.id.btn_show:
-
                 Intent intent = new Intent();
                 intent.putExtra(Constant.SEARCHED_DATA, et_search.getText().toString().trim());
                 intent.putExtra(Constant.SORT_BY, implement.getTextTrimmed(tv_sort_by));
@@ -230,18 +235,11 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         if (requestCode == CALL_HOSPITALS && resultCode == RESULT_OK) {
-            ArrayList<SimpleData> temp = data.getParcelableArrayListExtra("LOA_REQUEST");
-            for (SimpleData simpleData : temp) {
-                Log.d("DAYDAY", "onActivityResult: " + simpleData.getSelected());
-            }
-            tv_doctor.setText("");
-            prevSelectedDoctor.clear();
-            prevSelected.clear();
-            prevSelected.addAll(temp);
-            implement.setFetchHospitals(tv_hosp_clinic, temp);
+
+
+            tv_hosp_clinic.setText("");
+
         } else if (requestCode == CALL_DOCTORS && resultCode == RESULT_OK) {
             ArrayList<SimpleData> temp = data.getParcelableArrayListExtra("DOCTOR");
             prevSelectedDoctor.clear();
@@ -265,11 +263,9 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
         tv_service_type.setText(sortBy);
     }
 
-
     @Override
     public void datePickerEndDateError() {
         alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.end_must_greater, 1);
-
     }
 
     @Override

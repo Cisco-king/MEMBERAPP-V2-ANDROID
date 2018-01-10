@@ -53,6 +53,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private String keyword = "keyword";
     private String alias = "alias";
     private String category = "category";
+    private String REGION_DESC = "REGION_DESC";
+    private String CLASS = "CLASS";
+    private String ENTRY_TYPE = "ENTRY_TYPE";
+    private String ISACCREDITED = "ISACCREDITED";
     private String coordinator = "coordinator";
     private String streetAddress = "streetAddress";
     private String city = "city";
@@ -276,42 +280,88 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             alias + " TEXT ," +
             category + " TEXT ," +
             coordinator + " TEXT ," +
-            excluded + " TEXT ," +
+            streetAddress + " TEXT ," +
             city + " TEXT ," +
             province + " TEXT ," +
             region + " TEXT ," +
-            phoneNo + " TEXT ," +
             faxno + " TEXT ," +
+            phoneNo + " TEXT ," +
             contactPerson + " TEXT ," +
-            streetAddress + " TEXT )";
+            excluded + " TEXT )";
+
+
+//    private String createHospitalStatement = "CREATE TABLE " +
+//            hospTable + " ( " +
+//            hospitalCode + " TEXT ," +
+//            hospitalName + " TEXT ," +
+//            keyword + " TEXT ," +
+//            alias + " TEXT ," +
+//            category + " TEXT ," +
+//            coordinator + " TEXT ," +
+//            excluded + " TEXT ," +
+//            city + " TEXT ," +
+//            province + " TEXT ," +
+//            region + " TEXT ," +
+//            phoneNo + " TEXT ," +
+//            faxno + " TEXT ," +
+//            contactPerson + " TEXT ," +
+//            streetAddress + " TEXT )";
 
     private String createDoctorStatement = "CREATE TABLE " +
             doctable + " ( " +
-            region + " TEXT ," +
-            streetAddress + " TEXT ," +
-            specialRem + " TEXT ," +
-            docFname + " TEXT ," +
-            specDesc + " TEXT ," +
             doctorCode + " TEXT ," +
-            hospRemarks + " TEXT ," +
-            docMname + " TEXT ," +
-            vat + " TEXT ," +
-            wtax + " TEXT ," +
-            remarks + " TEXT ," +
-            city + " TEXT ," +
-            gracePeriod + " TEXT ," +
-            phoneNo + " TEXT ," +
-            specCode + " TEXT ," +
-            schedule + " TEXT ," +
-            faxno + " TEXT ," +
-            province + " TEXT ," +
-            hospitalName + " TEXT ," +
             docLname + " TEXT ," +
+            docFname + " TEXT ," +
+            docMname + " TEXT ," +
             hospitalCode + " TEXT ," +
-            contactPerson + " TEXT ," +
+            hospitalName + " TEXT ," +
+            specCode + " TEXT ," +
+            specDesc + " TEXT ," +
+            schedule + " TEXT ," +
+            room + " TEXT ," +
+            wtax + " TEXT ," +
+            gracePeriod + " TEXT ," +
+            vat + " TEXT ," +
+            specialRem + " TEXT ," +
+            hospRemarks + " TEXT ," +
             roomBoard + " TEXT ," +
+            remarks + " TEXT ," +
             remarks2 + " TEXT ," +
-            room + " TEXT )";
+            streetAddress + " TEXT ," +
+            city + " TEXT ," +
+            province + " TEXT ," +
+            region + " TEXT ," +
+            faxno + " TEXT ," +
+            phoneNo + " TEXT ," +
+            contactPerson + " TEXT )";
+
+//    private String createDoctorStatement = "CREATE TABLE " +
+//            doctable + " ( " +
+//            region + " TEXT ," +
+//            streetAddress + " TEXT ," +
+//            specialRem + " TEXT ," +
+//            docFname + " TEXT ," +
+//            specDesc + " TEXT ," +
+//            doctorCode + " TEXT ," +
+//            hospRemarks + " TEXT ," +
+//            docMname + " TEXT ," +
+//            vat + " TEXT ," +
+//            wtax + " TEXT ," +
+//            remarks + " TEXT ," +
+//            city + " TEXT ," +
+//            gracePeriod + " TEXT ," +
+//            phoneNo + " TEXT ," +
+//            specCode + " TEXT ," +
+//            schedule + " TEXT ," +
+//            faxno + " TEXT ," +
+//            province + " TEXT ," +
+//            hospitalName + " TEXT ," +
+//            docLname + " TEXT ," +
+//            hospitalCode + " TEXT ," +
+//            contactPerson + " TEXT ," +
+//            roomBoard + " TEXT ," +
+//            remarks2 + " TEXT ," +
+//            room + " TEXT )";
 
     private String createDentistStatement = "CREATE TABLE " +
             dentistTable + " ( " +
@@ -986,7 +1036,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<GetDoctorsToHospital> retrieveDoctor(ArrayList<CitiesAdapter> selectedCity, ArrayList<ProvincesAdapter> selectedProvince, String searchData, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number_Data) {
+    public ArrayList<GetDoctorsToHospital> retrieveDoctor(String hospcode, ArrayList<CitiesAdapter> selectedCity, ArrayList<ProvincesAdapter> selectedProvince, String searchData, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number_Data) {
         String searchTerm = searchData.toUpperCase().replace("'", "`");
         String room_number = room_number_Data.toUpperCase().replace("'", "`");
         SQLiteDatabase database;
@@ -998,10 +1048,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String sql = "";
         sql += "SELECT * FROM " + doctable;
         sql += " WHERE  " + room + " LIKE '%" + room_number + "%' ";
+        sql += " AND " + hospitalCode + " = '" + hospcode + "'";
+        sql += " AND " + docLname + " IS NOT NULL ";
+        sql += " AND " + docLname + " != ''";
         sql += " AND " + "( UPPER(" + docLname + ") LIKE '%" + searchTerm + "%'";
         sql += " OR " + "UPPER(" + specDesc + ") LIKE '%" + searchTerm + "%'   ";
         sql += " OR " + "UPPER(" + docFname + ") LIKE '%" + searchTerm + "%'  )";
-
         if (selectedSpec.size() != 0) {
             sql += " AND (";
             for (int x = 0; x < selectedSpec.size(); x++) {
@@ -1037,6 +1089,79 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
         sql += " ORDER BY " + sort_by + "  ASC ";
+        sql += " LIMIT  100 ";
+
+        Log.e(TAG, "objectName: " + sql);
+        cursor = database.rawQuery(sql, null);
+        doc.addAll(getDoctoList(cursor));
+        database.close();
+
+        // remove all the duplicate without rearranging the actual list
+        /*Set<GetDoctorsToHospital> uniqueDoctor = new LinkedHashSet<>();
+        uniqueDoctor.addAll(doc);
+        Timber.d("doctor size befor set %s", doc.size());
+        doc.clear();
+        doc.addAll(uniqueDoctor);
+        Timber.d("doctor size after set %s", doc.size());
+        Timber.d("the set is being filter");*/
+
+        return doc;
+    }
+
+    public ArrayList<GetDoctorsToHospital> retrieveTop100Doctor(ArrayList<CitiesAdapter> selectedCity, ArrayList<ProvincesAdapter> selectedProvince, String searchData, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number_Data) {
+        String searchTerm = searchData.toUpperCase().replace("'", "`");
+        String room_number = room_number_Data.toUpperCase().replace("'", "`");
+        SQLiteDatabase database;
+        Cursor cursor;
+        ArrayList<GetDoctorsToHospital> doc = new ArrayList<>();
+        database = getReadableDatabase();
+
+
+        String sql = "";
+        sql += "SELECT * FROM " + doctable;
+        sql += " WHERE  " + room + " LIKE '%" + room_number + "%' ";
+        sql += " AND " + docLname + " IS NOT NULL ";
+        sql += " AND " + docLname + " != ''";
+        sql += " AND " + "( UPPER(" + docLname + ") LIKE '%" + searchTerm + "%'";
+        sql += " OR " + "UPPER(" + specDesc + ") LIKE '%" + searchTerm + "%'   ";
+        sql += " OR " + "UPPER(" + docFname + ") LIKE '%" + searchTerm + "%'  )";
+        if (selectedSpec.size() != 0) {
+            sql += " AND (";
+            for (int x = 0; x < selectedSpec.size(); x++) {
+                sql += "  " + specCode + " = '" + selectedSpec.get(x).getSpecializationCode() + "' " + "  OR  ";
+            }
+            //remove and
+            sql = sql.substring(0, sql.length() - 6);
+            sql += " ) ";
+        }
+
+        if (selectedCity.size() != 0) {
+            sql += " AND  (";
+            for (int x = 0; x < selectedCity.size(); x++) {
+                sql += "   " + city + " LIKE '%" + selectedCity.get(x).getCityName() + "%'  " + "  OR  ";
+            }
+            //remove and
+            sql = sql.substring(0, sql.length() - 6);
+            sql += " ) ";
+        }
+        if (selectedCity.size() == 0) {
+            if (selectedProvince.size() >= 1) {
+                sql += " AND (";
+                for (int x = 0; x < selectedProvince.size(); x++) {
+                    sql += " " + province + "  LIKE '%" + selectedProvince.get(x).getProvinceName() + "%' OR ";
+                }
+
+                //remove and
+                sql = sql.substring(0, sql.length() - 3);
+                sql += " ) ";
+
+            }
+        }
+
+
+        sql += " ORDER BY " + sort_by + "  ASC ";
+        sql += " LIMIT  100 ";
+
         Log.e(TAG, "objectName: " + sql);
         cursor = database.rawQuery(sql, null);
         doc.addAll(getDoctoList(cursor));
@@ -1880,5 +2005,67 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues con = new ContentValues();
         con.put(isSelected, "false");
         db.update(dentistTable, con, sql, null);
+    }
+
+    public void insertToHospital(String[] rows, String s, String valueOf) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues cv = new ContentValues();
+        cv.put(hospitalCode, rows.length < 1 ? "" : rows[0].trim());
+        cv.put(hospitalName, rows.length < 2 ? "" : rows[1].trim());
+        cv.put(keyword, rows.length < 3 ? "" : rows[2].trim());
+        cv.put(alias, rows.length < 4 ? "" : rows[3].trim());
+        cv.put(category, rows.length < 5 ? "" : rows[4].trim());
+        cv.put(coordinator, rows.length < 6 ? "" : rows[5].trim());
+        cv.put(streetAddress, rows.length < 7 ? "" : rows[6].trim());
+        cv.put(city, rows.length < 8 ? "" : rows[7].trim());
+        cv.put(province, rows.length < 9 ? "" : rows[8].trim());
+        cv.put(region, rows.length < 10 ? "" : rows[9].trim());
+        cv.put(faxno, rows.length < 11 ? "" : rows[10].trim());
+        cv.put(phoneNo, rows.length < 12 ? "" : rows[11].trim());
+        cv.put(contactPerson, rows.length < 13 ? "" : rows[12].trim());
+        cv.put(excluded, "false");
+        Log.e("FILENAME ", s + " ROW: " +valueOf + " hospitalCode: " +String.valueOf(cv.get(hospitalCode)));
+        db.insert(hospTable, null, cv);
+        db.setTransactionSuccessful();
+        db.endTransaction();
+    }
+
+    public void insertToDocHosp(String[] column, String s, String valueOf) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues cv = new ContentValues();
+        cv.put(doctorCode, column.length < 1 ? "" : column[0].trim());
+        cv.put(docLname, column.length < 2 ? "" : column[1].trim());
+        cv.put(docFname, column.length < 3 ? "" : column[2].trim());
+        cv.put(docMname, column.length < 4 ? "" : column[3].trim());
+        cv.put(hospitalCode, column.length < 5 ? "" : column[4].trim());
+        cv.put(hospitalName, column.length < 6 ? "" : column[5].trim());
+        cv.put(specCode, column.length < 7 ? "" : column[6].trim());
+        cv.put(specDesc, column.length < 8 ? "" : column[7].trim());
+        cv.put(schedule, column.length < 9 ? "" : column[8].trim());
+        cv.put(room, column.length < 10 ? "" : column[9].trim());
+        cv.put(wtax, column.length < 11 ? "" : column[10].trim());
+        cv.put(gracePeriod, column.length < 12 ? "" : column[11].trim());
+        cv.put(vat, column.length < 13 ? "" : column[12].trim());
+        cv.put(specialRem, column.length < 14 ? "" : column[13].trim());
+        cv.put(hospRemarks, column.length < 15 ? "" : column[14].trim());
+        cv.put(roomBoard, column.length < 16 ? "" : column[15].trim());
+        cv.put(remarks, column.length < 17 ? "" : column[16].trim());
+        cv.put(remarks2, column.length < 18 ? "" : column[17].trim());
+        cv.put(streetAddress, column.length < 19 ? "" : column[18].trim());
+        cv.put(city, column.length < 20 ? "" : column[19].trim());
+        cv.put(province, column.length < 21 ? "" : column[20].trim());
+        cv.put(region, column.length < 22 ? "" : column[21].trim());
+        cv.put(faxno, column.length < 23 ? "" : column[22].trim());
+        cv.put(phoneNo, column.length < 24 ? "" : column[23].trim());
+        cv.put(contactPerson, column.length < 25 ? "" : column[24].trim());
+
+//        cv.put(isSelectedAsMain, "false");
+        Log.e("FILENAME ", s + " ROW: " +valueOf + " hospitalCode: " +String.valueOf(cv.get(hospitalCode)));
+        db.insert(doctable, null, cv);
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 }

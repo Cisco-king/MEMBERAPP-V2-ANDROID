@@ -16,8 +16,8 @@
         android:scrollbarThumbVertical="@color/colorAccent"
         android:scrollbarSize="12dp"
         android:scrollbarStyle="outsideInset"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -335,11 +335,12 @@
                             android:layout_marginLeft="10dp" />
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/tvConforme"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_margin="5dp"
                             android:layout_weight="1"
+                            android:clickable="true"
                             android:gravity="center_vertical"
                             android:text="@string/confirmation_test" />
 
@@ -351,10 +352,10 @@
                         android:layout_marginLeft="25dp"
                         android:layout_marginTop="5dp"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <TextView
-                            android:id="@+id/tvConforme"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="true"

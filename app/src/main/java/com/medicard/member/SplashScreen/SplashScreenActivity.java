@@ -50,7 +50,7 @@ public class SplashScreenActivity extends AppCompatActivity
         Log.i("Password", Password);
 
 
-        implement.testCredentials();
+        implement.testCredentials(alertDialogCustom);
 
 
     }

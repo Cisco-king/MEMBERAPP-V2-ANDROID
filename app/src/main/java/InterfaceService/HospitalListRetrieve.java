@@ -1,11 +1,9 @@
 package InterfaceService;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.medicard.member.R;
 
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -15,10 +13,8 @@ import java.util.List;
 
 import Sqlite.DatabaseHandler;
 import adapter.HospitalAdapter;
-import adapter.HospitalListAdapter;
 import model.CitiesAdapter;
 import model.HospitalList;
-import model.Provinces;
 import model.ProvincesAdapter;
 import modules.hospital.adapter.HospitalDoctorAdapter;
 

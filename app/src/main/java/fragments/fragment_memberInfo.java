@@ -166,7 +166,6 @@ public class fragment_memberInfo extends Fragment
                     @Override
                     public void onError(Throwable e) {
 
-
                         try {
                             Log.e(TAG, e.getMessage());
 
@@ -181,8 +180,6 @@ public class fragment_memberInfo extends Fragment
 
                             Log.e("Rx_ERROR" , error.getMessage());
                         }
-
-
 
                     }
 

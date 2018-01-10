@@ -36,7 +36,6 @@ public class ExclusionRetrieve {
         pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
         pd.show();
 
-
         AppInterface appInterface;
         appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
         appInterface.getInpatientExclusions(memberId)

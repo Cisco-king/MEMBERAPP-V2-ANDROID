@@ -211,7 +211,6 @@ public class LoaPageActivity extends AppCompatActivity
     RecyclerView rv_FileUpload;
 
 
-
     @BindView(R.id.tv_procedures_diagnosis)
     TextView tv_procedures_diagnosis;
     @BindView(R.id.tv_procedures_approval_no)
@@ -413,6 +412,12 @@ public class LoaPageActivity extends AppCompatActivity
         }
 
         tvDoctorName.setText(loa.getDoctorName());
+        try{
+          tvDoctorInfo.setText(testData(loa.getDoctorSpec()));
+        }catch (Exception e){
+            tvDoctorInfo.setText("Specialization Not Specified");
+        }
+
         tv_sub_title.setText(Constant.SUBTITLEPENDING);
 
 
@@ -461,6 +466,7 @@ public class LoaPageActivity extends AppCompatActivity
 //            tvDoctorInfo.setVisibility(View.GONE);
 //        }
 
+
         OutPatientConsultationForm build = loaFormBuilder.build();
         if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
             btn_download.setText(getString(R.string.view_loa));
@@ -496,7 +502,7 @@ public class LoaPageActivity extends AppCompatActivity
 
         attachmentObjectArrayList.clear();
         attachmentObjectArrayList.addAll(loa.getAttachments());
-        fileUploadLoaAdapter = new FileUploadLoaAdapter(context, attachmentObjectArrayList,alertDialogCustom);
+        fileUploadLoaAdapter = new FileUploadLoaAdapter(context, attachmentObjectArrayList, alertDialogCustom);
         rv_FileUpload.setLayoutManager(new LinearLayoutManager(this));
         rv_FileUpload.setAdapter(fileUploadLoaAdapter);
 

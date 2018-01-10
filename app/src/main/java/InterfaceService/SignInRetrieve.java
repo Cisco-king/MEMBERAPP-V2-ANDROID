@@ -31,6 +31,8 @@ import services.client.ProcedureClient;
 import services.model.Procedure;
 import services.response.ProcedureResponse;
 import timber.log.Timber;
+import utilities.Constant;
+import utilities.DataReaderFromCsv;
 import utilities.SharedPref;
 
 /**
@@ -224,6 +226,27 @@ public class SignInRetrieve {
                     }
 
                 });
+    }
+
+
+    public void updateAllList(final SignInCallback callback, final DataReaderFromCsv dataReaderFromCsv) {
+        final DatabaseHandler databaseH = new DatabaseHandler(context);
+        AsyncTask updateDoc = new AsyncTask() {
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                callback.onHospitalSuccess();
+            }
+
+            @Override
+            protected Object doInBackground(Object[] params) {
+                databaseH.dropHospital();
+                databaseH.dropDoctor();
+                dataReaderFromCsv.unZip(context, Constant.ZIP_NAME);
+                return null;
+            }
+        };
+        updateDoc.execute();
     }
 
     public void getHospitalList(final SignInDetails responseBody, final String username, final String password) {

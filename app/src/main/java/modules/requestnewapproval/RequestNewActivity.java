@@ -254,9 +254,27 @@ public class RequestNewActivity extends TestTrackableActivity
         tvHospitalAvailment.setText(hospital.getHospitalName());
 
         String setText = "";
-        setText += null == hospital.getFullAddress() ? "":hospital.getFullAddress();
-        setText += null == hospital.getPhoneNo() ? "":"\n\n"+hospital.getPhoneNo();
-        setText += null == hospital.getContactPerson() ? "":"\n\n"+hospital.getContactPerson();
+        if(null == hospital.getFullAddress() || hospital.getFullAddress().isEmpty()){
+            setText += "No address stated";
+        }else {
+            setText += hospital.getFullAddress();
+        }
+
+        if(null == hospital.getPhoneNo() || hospital.getPhoneNo().isEmpty()){
+            setText += "\n\nNo contact number";
+        }else {
+            setText += "\n\n"+hospital.getPhoneNo();
+        }
+
+        if(null == hospital.getContactPerson() || hospital.getContactPerson().isEmpty()){
+            setText += "\n\nNo contact person";
+        }else {
+            setText += "\n\n"+hospital.getContactPerson();
+        }
+
+
+//        setText += (null == hospital.getPhoneNo()) ? "\n\nNo contact number":"\n\n"+hospital.getPhoneNo();
+//        setText += (null == hospital.getContactPerson()) ? "\n\nNo contact person":"\n\n"+hospital.getContactPerson();
         tvHospitalDetails.setText(setText);
 //        tvDoctorDetails.setText(doctor.getFullName());
 //        tvDoctorDetails.append(getDoctorDetails(doctor));

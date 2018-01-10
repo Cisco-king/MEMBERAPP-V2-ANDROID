@@ -1020,7 +1020,7 @@
                                 android:layout_weight="1"
                                 fancy:fb_defaultColor="@color/colorPrimary"
                                 fancy:fb_focusColor="@color/colorPrimaryBlueDark"
-                                fancy:fb_text="Cancel Request" />
+                                fancy:fb_text="@string/can_req" />
 
                             <mehdi.sakout.fancybuttons.FancyButton
                                 android:id="@+id/btn_cancel"
@@ -1030,7 +1030,7 @@
                                 android:layout_weight="1"
                                 fancy:fb_defaultColor="@color/colorPrimary"
                                 fancy:fb_focusColor="@color/colorPrimaryBlueDark"
-                                fancy:fb_text="Go Back" />
+                                fancy:fb_text="@string/go_back" />
                         </LinearLayout>
 
 
@@ -1042,7 +1042,7 @@
                             android:layout_weight="1"
                             fancy:fb_defaultColor="@color/colorPrimary"
                             fancy:fb_focusColor="@color/colorPrimaryBlueDark"
-                            fancy:fb_text="Download Form" />
+                            fancy:fb_text="@string/down_form" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>

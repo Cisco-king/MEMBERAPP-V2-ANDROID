@@ -74,7 +74,6 @@ public class LoaRequestRetrieve {
     }
 
     public void getLoa(String memberCode) {
-
 //        AppInterface appInterface;
         AppInterface appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
         appInterface.getLoaList(memberCode)
@@ -114,6 +113,8 @@ public class LoaRequestRetrieve {
 
 
     }
+
+
 
     public void getData(LoaListResponse loa, DatabaseHandler databaseHandler) {
         SetLoaToDatabase.setLoaToDb(loa, databaseHandler, callback);

@@ -86,8 +86,6 @@ public class fragment_hospitalList extends Fragment implements View.OnClickListe
 
 
     LinearLayoutManager llm;
-
-
     FragmentApiHospCallback fragmentApiHospCallback;
 
 

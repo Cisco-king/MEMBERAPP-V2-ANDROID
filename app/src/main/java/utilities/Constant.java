@@ -6,6 +6,8 @@ package utilities;
 
 public class Constant {
 
+
+
     public static String MEMCODE = "MEMCODE";
     public static String TESTORIGIN = "TESTORIGIN";
     public static String FNAME = "FNAME";
@@ -74,9 +76,14 @@ public class Constant {
     public static String SELECT_LOAREQUEST = "SELECT_LOAREQUEST";
     public static String SELECTED_REQUEST = "SELECTED_REQUEST";
     public static String SELECTED_HOSPITAL = "SELECTED_HOSPITAL";
+    public static String HOSPITAL_CODE = "HOSPITAL_CODE";
     public static String LOA_REQUEST = "LOA_REQUEST";
 
     public static String SELECT_DOCTOR = "SELECT_DOCTOR";
+    public static String SELECT_TEST = "SELECT_TEST";
+    public static String SELECT_DIAG = "SELECT_DIAG";
+    public static String SELECT_HOSP = "SELECT_HOSP";
+    public static String SELECT_HOSP_ID = "SELECT_HOSP_ID";
     public static String DOCTOR_LIST = "DOCTOR_LIST";
     public static String SELECTED_DOCTOR = "SELECTED_DOCTOR";
     public static String SELECTED_START_DATE = "SELECTED_START_DATE";
@@ -119,7 +126,6 @@ public class Constant {
      */
     public static String BundleForMaceRequest = "BundleForMaceRequest";
 
-
     /*
      *This variable is used to access the reason for consult
      * @Param String
@@ -145,4 +151,13 @@ public class Constant {
     public static final String IMAGE_DIRECTORY_NAME = "Android File Upload";
 
     public static final String NO_CONNECTION_TO_SERVER = "CANNOT CONNECT TO SERVER";
+
+
+    public static final String ZIP_NAME = "MaceListing.zip";
+    public static final String DIAGNOSIS_CSV = "Diagnosis.csv";
+    public static final String HOSPITAL_CSV = "Hospitals.csv";
+    public static final String DOC_HOSP_CSV = "DocHosp.csv";
+    public static final String ROOM_CAT_CSV = "RoomCategories.csv";
+    public static final String ROOM_PLANS_CSV = "RoomPlans.csv";
+    public static final String TEST_PROC_LIST_CSV = "TestProcList.csv";
 }

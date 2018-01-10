@@ -43,7 +43,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
     @Override
     public void onBindViewHolder(DoctorListAdapter.ViewHolder holder, int position) {
         holder.name.setText(array.get(position).getDocLname() + ", " + array.get(position).getDocFname());
-        holder.position.setText(array.get(position).getSpecDesc());
+        holder.position.setText(SetUnfilledField.setData(array.get(position).getSpecDesc()));
         holder.tv_sched.setText("Schedule: " + SetUnfilledField.setData(array.get(position).getSchedule()));
         holder.tv_room.setText("Room: " + SetUnfilledField.setData(array.get(position).getRoom()));
     }

@@ -158,10 +158,7 @@ public class SelectProvinceActivity extends AppCompatActivity {
             adapterLoa = new LoaReqAdapter(context, arrayHospitals);
             if (arrayHospitals != null) {
                 if (arrayHospitals.size() != 0) {
-
                     ViewUtilities.hideView(tvNoData);
-
-
                     rv_provinces.setAdapter(adapterLoa);
                 } else {
                     ViewUtilities.hideView(rv_provinces);

@@ -62,16 +62,20 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     private static final String MACEREQUESTBUNLE = "MACEREQUESTBUNLE";
 
     //SORTING DATA
+    String seachedData = "";
     String sort_by = "";
     String status_sort = "";
     String service_type_sort = "";
-    String date_end_sort = "";
+    String doctor_sort = "";
+    String hospital_sort = "";
+    String test_sort = "";
+    String diag_sort = "";
     String date_start_sort = "";
-    ArrayList<SimpleData> doctor_sort = new ArrayList<>();
-    ArrayList<SimpleData> hospital_sort = new ArrayList<>();
-    String seachedData = "";
+    String date_end_sort = "";
 
 
+//    ArrayList<SimpleData> doctor_sort = new ArrayList<>();
+//    ArrayList<SimpleData> hospital_sort = new ArrayList<>();
 
 
     //Initialize of TextViews
@@ -102,7 +106,7 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     ViewLoaRetrieve.ViewLoaRetrieveCallback callback;
 
     List<MaceRequest> list;
-
+    String memberCode;
 
     @Override
     public int getLayoutResource() {
@@ -114,6 +118,41 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
         return fragment;
     }
 
+    @Override
+    protected void initComponents(View view, Bundle savedInstanceState) {
+        super.initComponents(view, savedInstanceState);
+        implement = new ViewLoaRetrieve(context);
+        callback = this;
+        memberCode = SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context);
+
+        //TODO: hide the line below until the sorting is complete
+//        implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context), callback);
+
+
+        /**
+         * new retrieve of list
+         * para of getSortedMemberLoaList
+         *String memberCode,
+         * String status,
+         * String serviceTypeId,
+         * String hospitalCode,
+         * String doctorCode,
+         * String procCode,
+         * String diagCode,
+         * String startDate,
+         * String endDate,
+         * final ViewLoaRetrieveCallback callback
+         */
+        implement.getSortedMemberLoaList(memberCode, null, null, null, null, null, null, null, null, callback);
+
+        presenter = new ViewLoaListPresenter();
+        presenter.attachView(this);
+
+        rv_loa_request.setLayoutManager(new LinearLayoutManager(context));
+
+
+    }
+
     @OnClick({R.id.btn_sort})
     public void onClick(View v) {
 
@@ -123,14 +162,16 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                 args.putSerializable(MACEREQUESTBUNLE, (Serializable) list);
                 Intent gotoSort = new Intent(context, SortLoaReqActivity.class);
 //                gotoSort.putExtra(Constant.BundleForMaceRequest,args);
-                gotoSort.putExtra(Constant.SORT_BY, sort_by);
                 gotoSort.putExtra(Constant.SEARCHED_DATA, seachedData);
+                gotoSort.putExtra(Constant.SORT_BY, sort_by);
                 gotoSort.putExtra(Constant.STATUS, status_sort);
                 gotoSort.putExtra(Constant.SERVICE_TYPE, service_type_sort);
-                gotoSort.putExtra(Constant.SELECTED_END_DATE, date_end_sort);
+                gotoSort.putExtra(Constant.SELECT_HOSP, hospital_sort);
+                gotoSort.putExtra(Constant.SELECT_DOCTOR, doctor_sort);
+                gotoSort.putExtra(Constant.SELECT_TEST, test_sort);
+                gotoSort.putExtra(Constant.SELECT_DIAG, diag_sort);
                 gotoSort.putExtra(Constant.SELECTED_START_DATE, date_start_sort);
-                gotoSort.putParcelableArrayListExtra(Constant.SELECTED_HOSPITAL, hospital_sort);
-                gotoSort.putParcelableArrayListExtra(Constant.SELECT_DOCTOR, doctor_sort);
+                gotoSort.putExtra(Constant.SELECTED_END_DATE, date_end_sort);
                 startActivityForResult(gotoSort, CALL_SORT_LOA);
                 break;
         }
@@ -147,16 +188,56 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                     sort_by = data.getStringExtra(Constant.SORT_BY);
                     status_sort = data.getStringExtra(Constant.STATUS);
                     service_type_sort = data.getStringExtra(Constant.SERVICE_TYPE);
-
-                    ArrayList<SimpleData> temp = data.getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
-                    implement.replactDataArray(hospital_sort, temp);
-                    temp = data.getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
-                    implement.replactDataArray(doctor_sort, temp);
-                    //TODO: add Test and diagnosis sorting
+                    hospital_sort = data.getStringExtra(Constant.SELECT_HOSP);
+                    doctor_sort = data.getStringExtra(Constant.SELECT_DOCTOR);
+                    test_sort = data.getStringExtra(Constant.SELECT_TEST);
+                    diag_sort = data.getStringExtra(Constant.SELECT_DIAG);
                     date_start_sort = data.getStringExtra(Constant.SELECTED_START_DATE);
                     date_end_sort = data.getStringExtra(Constant.SELECTED_END_DATE);
 
-                    sortFilteredData(this.list,adapter,rv_loa_request,seachedData,sort_by,status_sort,service_type_sort,hospital_sort,doctor_sort,date_start_sort,date_end_sort);
+                    if (seachedData.isEmpty()) // search locally?
+                        seachedData = null;
+                    if (sort_by.isEmpty())    //sort locally
+                        sort_by = null;
+                    if (status_sort.isEmpty())
+                        status_sort = null;
+                    if (service_type_sort.isEmpty())
+                        service_type_sort = null;
+                    if (hospital_sort.isEmpty())
+                        hospital_sort = null;
+                    if (doctor_sort.isEmpty())
+                        doctor_sort = null;
+                    if (test_sort.isEmpty())
+                        test_sort = null;
+                    if (diag_sort.isEmpty())
+                        diag_sort = null;
+                    if (date_start_sort.isEmpty())
+                        date_start_sort = null;
+                    if (date_end_sort.isEmpty())
+                        date_end_sort = null;
+                    /**
+                     * new retrieve of list
+                     * para of getSortedMemberLoaList
+                     *String memberCode,
+                     * String status,
+                     * String serviceTypeId,
+                     * String hospitalCode,
+                     * String doctorCode,
+                     * String procCode,
+                     * String diagCode,
+                     * String startDate,
+                     * String endDate,
+                     * final ViewLoaRetrieveCallback callback
+                     */
+                    implement.getSortedMemberLoaList(memberCode, status_sort, service_type_sort, hospital_sort, doctor_sort, test_sort, diag_sort, date_start_sort, date_end_sort, callback);
+
+//
+//                    ArrayList<SimpleData> temp = data.getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
+//                    implement.replactDataArray(hospital_sort, temp);
+//                    temp = data.getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
+//                    implement.replactDataArray(doctor_sort, temp);
+                    //TODO: add Test and diagnosis sorting
+
 
 //                implement.updateList(arrayMASTERList, databaseHandler, sort_by, status_sort,
 //                        service_type_sort, DateConverter.converttoyyyymmdd(date_start_sort),
@@ -172,30 +253,12 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     }
 
 
-
     @Override
     public void onResume() {
         super.onResume();
 //        implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context), callback);
     }
 
-    @Override
-    protected void initComponents(View view, Bundle savedInstanceState) {
-        super.initComponents(view, savedInstanceState);
-
-        implement = new ViewLoaRetrieve(context);
-
-        callback = this;
-
-        implement.getLoa(SharedPref.getStringValue(SharedPref.USER, SharedPref.MEMBERCODE, context), callback);
-
-        presenter = new ViewLoaListPresenter();
-        presenter.attachView(this);
-
-        rv_loa_request.setLayoutManager(new LinearLayoutManager(context));
-
-
-    }
 
     /*
      * This Method is not in use
@@ -232,33 +295,9 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     @Override
     public void onFailure() {
         pb.setVisibility(View.GONE);
-        Toast.makeText(context,"Failed to connect",Toast.LENGTH_SHORT);
+        Toast.makeText(context, "Failed to connect", Toast.LENGTH_SHORT);
         tv_list.setVisibility(View.VISIBLE);
     }
 
-    private void sortFilteredData(List<MaceRequest> list, LoaRequestAdapter adapter, RecyclerView rv_loa_request, String seachedData, String sort_by, String status_sort, String service_type_sort, ArrayList<SimpleData> hospital_sort, ArrayList<SimpleData> doctor_sort, String date_start_sort, String date_end_sort) {
-        List<MaceRequest> requestListFiltered = new ArrayList<>();
-
-        if(seachedData.isEmpty() && sort_by.isEmpty() && status_sort.isEmpty() && service_type_sort.isEmpty() && hospital_sort.size() == 0 && doctor_sort.size() == 0 && date_start_sort.isEmpty() && date_end_sort.isEmpty()){
-            adapter = new LoaRequestAdapter(context, list, callback);
-            rv_loa_request.setAdapter(adapter);
-        }else {
-            for(int x = 0; x < list.size(); x++){
-                if(status_sort.equalsIgnoreCase(list.get(x).getStatus())){
-                    requestListFiltered.add(list.get(x));
-                }else if (status_sort.isEmpty() || status_sort.equalsIgnoreCase("")){
-
-                }
-
-                if(service_type_sort.equalsIgnoreCase(list.get(x).getRequestType())){
-                    requestListFiltered.add(list.get(x));
-                }else if(service_type_sort.isEmpty() || service_type_sort.equalsIgnoreCase("")){
-
-                }
-            }
-            adapter = new LoaRequestAdapter(context, requestListFiltered, callback);
-            rv_loa_request.setAdapter(adapter);
-        }
-    }
 }
 

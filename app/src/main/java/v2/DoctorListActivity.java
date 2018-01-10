@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.medicard.member.R;
-import com.medicard.member.SignInActivity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,10 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 
 import InterfaceService.DoctorInterface;
@@ -48,7 +45,6 @@ import utilities.Constant;
 import utilities.ErrorMessage;
 import utilities.HeaderNameSetter;
 import utilities.Loader;
-import utilities.NetworkTest;
 import utilities.SharedPref;
 
 public class DoctorListActivity extends AppCompatActivity implements OnClicklistener, DoctorInterface {
@@ -99,6 +95,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
     private String DERMATOLOGY = "DERMATOLOGY";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,15 +111,29 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
         origin = getIntent().getExtras().getString(RequestButtonsActivity.ORIGIN);
         MEMBERSTATUS = getIntent().getExtras().getString(Constant.MEM_STATUS);
 
+
         llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rv_doctor.setLayoutManager(llm);
 
-        implement.dropDoctors();
-        implement.getDoctors(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context));
+
+//        implement.dropDoctors();
+
+//        implement.getDoctors(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context));
+
+
+
         doctorAdapter = new DoctorAdapter(context, array);
-
+        rv_doctor.setLayoutManager(llm);
         rv_doctor.setAdapter(doctorAdapter);
+
+        getSearchDoctor(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context),doctorAdapter,"", selectedSpec, sort_by, "");
+
+        alertDialogCustom.showMe(
+                context,
+                alertDialogCustom.HOLD_ON_title,
+                getString(R.string.success_load_doctors),
+                1);
+
         doctorAdapter.setClickListener(this);
         btn_proceed.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,7 +175,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
             @Override
             public void afterTextChanged(Editable s) {
-                getSearchDoctor(String.valueOf(s), selectedSpec, sort_by, room_number);
+                getSearchDoctor(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context), doctorAdapter, String.valueOf(s), selectedSpec, sort_by, room_number);
                 search_string = String.valueOf(s);
             }
         });
@@ -187,19 +198,17 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
         }
     }
 
-    private void getSearchDoctor(String editable, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number) {
+    private void getSearchDoctor(String hospcode, DoctorAdapter doctorAdapter, String editable, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number) {
 
         array.clear();
-        array.addAll(databaseHandler.retrieveDoctor(selectedCity,selectedProvince,String.valueOf(editable), selectedSpec, implement.testSort(sort_by), room_number));
+        array.addAll(databaseHandler.retrieveDoctor(hospcode,selectedCity,selectedProvince,String.valueOf(editable), selectedSpec, implement.testSort(sort_by), room_number));
 
-        // get only the unique value from the set
-        Timber.d("original size with duplicate %s", array.size());
-        Set<GetDoctorsToHospital> uniqueSet = new LinkedHashSet<>(array);
-        array.clear();
-        array.addAll(uniqueSet);
-        Timber.d("new set without duplicate %s", array.size());
-
-        doctorAdapter.notifyDataSetChanged();
+//        // get only the unique value from the set
+//        Timber.d("original size with duplicate %s", array.size());
+//        Set<GetDoctorsToHospital> uniqueSet = new LinkedHashSet<>(array);
+//        array.clear();
+//        array.addAll(uniqueSet);
+//        Timber.d("new set without duplicate %s", array.size());
 
         if (array.size() == 0) {
             ll_no_doctor_found.setVisibility(View.VISIBLE);
@@ -211,6 +220,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
             ll_no_doctor_found.setVisibility(View.GONE);
             tv_no_doc.setVisibility(View.GONE);
         }
+        doctorAdapter.notifyDataSetChanged();
     }
 
 
@@ -224,7 +234,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
             room_number = data.getStringExtra(Constant.ROOM_NUMBER);
             selectedCity = data.getParcelableArrayListExtra(Constant.SELECTED_CITY);
             selectedProvince = data.getParcelableArrayListExtra(Constant.SELECTED_PROVINCE);
-            getSearchDoctor(search_string, selectedSpec, sort_by, room_number);
+            getSearchDoctor(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context), doctorAdapter, search_string, selectedSpec, sort_by, room_number);
             implement.setSearchStringtoUI(search_string, ed_searchDoctor);
         }
     }
@@ -283,7 +293,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
                     getString(R.string.success_load_doctors),
                     1);
         }
-        getSearchDoctor("", selectedSpec, sort_by, "");
+        getSearchDoctor(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context), doctorAdapter, "", selectedSpec, sort_by, "");
     }
 
     @Override
@@ -295,7 +305,10 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     public void internetConnected(String hospCode) {
         loader.startLad();
         loader.setMessage("Getting Doctor List...");
-        implement.getDoctorList(hospCode);
+
+
+        //hide temporarily for data testing of doctor list per hospital code - jhay
+//        implement.getDoctorList(hospCode);
     }
 
 

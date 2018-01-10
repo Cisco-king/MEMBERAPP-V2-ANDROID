@@ -24,6 +24,7 @@ import model.ReturnChangePassword;
 import model.ReturnRequestPassword;
 import model.SendLoa;
 import model.SignInDetails;
+import model.SortedLoaList;
 import model.SpecializationList;
 import model.TheDoctor;
 import model.UpdatePin;
@@ -94,7 +95,7 @@ public interface AppInterface {
     Observable<VerifyMemberData> verifyMember(@Query("memberCode") String id, @Query("dob") String dob);
 
     @POST("v2/loginMember/")
-    Observable<SignInDetails> logInUser(@Body LogIn logIn);
+    Call<SignInDetails> logInUser(@Body LogIn logIn);
 
     @Multipart
     @POST("uploadpicture")
@@ -163,6 +164,10 @@ public interface AppInterface {
 
     @GET("/v2/getLoaByMemberCode/?")
     Call<LoaListResponse> getLoaList(@Query("memberCode") String memberCode);
+
+
+    @POST("/v2/getSortedMemberLoaList")
+    Call<LoaListResponse>getSortedMemberLoaList(@Body SortedLoaList sortedLoaList);
 
 // @GET("/v2/getLoaByMemberCode/?")
 //    Observable<LoaListResponse> getLoaList(@Query("memberCode") String memberCode);

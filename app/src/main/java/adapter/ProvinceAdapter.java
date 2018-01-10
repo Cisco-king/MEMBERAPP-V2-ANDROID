@@ -39,7 +39,6 @@ public class ProvinceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-
         if (viewType == TYPE_SELECTED) {
             View itemView = LayoutInflater.from(context).inflate(R.layout.row_province_selected, parent, false);
             return new HolderSelected(itemView);
@@ -47,7 +46,6 @@ public class ProvinceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             View itemView = LayoutInflater.from(context).inflate(R.layout.row_province, parent, false);
             return new Holder(itemView);
         }
-
 
         throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
         // return new Holder(LayoutInflater.from(context).inflate(R.layout.row_province, parent, false));

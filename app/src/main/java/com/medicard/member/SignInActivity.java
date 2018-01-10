@@ -58,6 +58,7 @@ import services.response.DoctorListResponse;
 import timber.log.Timber;
 import utilities.AccessGooglePlay;
 import utilities.AlertDialogCustom;
+import utilities.DataReaderFromCsv;
 import utilities.ErrorMessage;
 import utilities.Permission;
 import utilities.SharedPref;
@@ -104,7 +105,7 @@ public class SignInActivity extends AppCompatActivity
     String forced_Change;
     String username, password;
     SignInDetails signInDetails;
-
+    DataReaderFromCsv dataReaderFromCsv;
     UpdateCaller.DialogUpdateInterface callbackDialog;
 
     private Unbinder unbinder;
@@ -120,7 +121,7 @@ public class SignInActivity extends AppCompatActivity
         callbackDialog = this;
         databaseHandler = new DatabaseHandler(context);
         implement = new SignInRetrieve(context, callback);
-
+        dataReaderFromCsv = new DataReaderFromCsv(context,databaseHandler);
         btn_signUp.setOnClickListener(this);
         btn_signIn.setOnClickListener(this);
         tv_forgot_password.setOnClickListener(this);
@@ -153,22 +154,80 @@ public class SignInActivity extends AppCompatActivity
         Gson gson = new Gson();
         Log.d("JSON", gson.toJson(logIn));
 
-        AppInterface appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
+        AppInterface appInterface;
+        appInterface = AppService.createApiService(AppInterface.class, AppInterface.ENDPOINT);
         appInterface.logInUser(logIn)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<SignInDetails>() {
+                .enqueue(new Callback<SignInDetails>() {
                     @Override
-                    public void onCompleted() {
+                    public void onResponse(Call<SignInDetails> call, Response<SignInDetails> response) {
+                        if(response.body() != null){
+                            if (response.body().getResponseCode().equals("210")) {
+                                alertDialogCustom.showMe(context,
+                                        alertDialogCustom.HOLD_ON_title,
+                                        alertDialogCustom.errorNoUsername,
+                                        1);
+                                pd.dismiss();
 
+                            } else if (response.body().getResponseCode().equals("220")) {
+                                alertDialogCustom.showMe(
+                                        context,
+                                        alertDialogCustom.HOLD_ON_title,
+                                        alertDialogCustom.errorAccountLocked,
+                                        1);
+
+                                pd.dismiss();
+
+                            } else if (response.body().getResponseCode().equals("230")) {
+                                alertDialogCustom.showMe(context,
+                                        alertDialogCustom.HOLD_ON_title,
+                                        alertDialogCustom.INVALID_PASS_USER,
+                                        1);
+
+                                pd.dismiss();
+
+                            } else if (response.body().getResponseCode().equals("200")) {
+
+                                signInDetails = response.body();
+                                username = getUsername;
+                                password = getPassword;
+
+                                signinCredential(signInDetails);
+                            } else if (response.body().getResponseCode().equals("280")) {
+                                signInDetails = response.body();
+                                username = getUsername;
+                                password = getPassword;
+
+                                UpdateCaller.showUpdateCall(
+                                        context,
+                                        "Optional Update Available",
+                                        false,
+                                        callbackDialog);
+
+                            } else if (response.body().getResponseCode().equals("290")) {
+                                UpdateCaller.showUpdateCall(
+                                        context, "Update Required", true, callbackDialog);
+                            } else {
+                                alertDialogCustom.showMe(
+                                        context,
+                                        alertDialogCustom.HOLD_ON_title,
+                                        ErrorMessage.setErrorMessage(""),
+                                        1);
+                            }
+
+                            Log.d("PIN", SharedPref.getStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, context));
+                        }else {
+                            alertDialogCustom.showMe(
+                                    context,
+                                    alertDialogCustom.HOLD_ON_title,
+                                    alertDialogCustom.no_connection_to_server,
+                                    1);
+                        }
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onFailure(Call<SignInDetails> call, Throwable e) {
                         try {
                             Log.e(TAG, e.getMessage());
-
                             if (e.getMessage().toString().contains("HTTP 401")) {
                                 alertDialogCustom.showMe(
                                         context,
@@ -201,68 +260,10 @@ public class SignInActivity extends AppCompatActivity
 
                             Log.e("Rx_ERROR", error.getMessage());
                         }
-                    }
 
-                    @Override
-                    public void onNext(SignInDetails responseBody) {
-
-                        if (responseBody.getResponseCode().equals("210")) {
-                            alertDialogCustom.showMe(context,
-                                    alertDialogCustom.HOLD_ON_title,
-                                    alertDialogCustom.errorNoUsername,
-                                    1);
-
-                            pd.dismiss();
-
-                        } else if (responseBody.getResponseCode().equals("220")) {
-                            alertDialogCustom.showMe(
-                                    context,
-                                    alertDialogCustom.HOLD_ON_title,
-                                    alertDialogCustom.errorAccountLocked,
-                                    1);
-
-                            pd.dismiss();
-
-                        } else if (responseBody.getResponseCode().equals("230")) {
-                            alertDialogCustom.showMe(context,
-                                    alertDialogCustom.HOLD_ON_title,
-                                    alertDialogCustom.INVALID_PASS_USER,
-                                    1);
-
-                            pd.dismiss();
-
-                        } else if (responseBody.getResponseCode().equals("200")) {
-
-                            signInDetails = responseBody;
-                            username = getUsername;
-                            password = getPassword;
-
-                            signinCredential(signInDetails);
-                        } else if (responseBody.getResponseCode().equals("280")) {
-                            signInDetails = responseBody;
-                            username = getUsername;
-                            password = getPassword;
-
-                            UpdateCaller.showUpdateCall(
-                                    context,
-                                    "Optional Update Available",
-                                    false,
-                                    callbackDialog);
-
-                        } else if (responseBody.getResponseCode().equals("290")) {
-                            UpdateCaller.showUpdateCall(
-                                    context, "Update Required", true, callbackDialog);
-                        } else {
-                            alertDialogCustom.showMe(
-                                    context,
-                                    alertDialogCustom.HOLD_ON_title,
-                                    ErrorMessage.setErrorMessage(""),
-                                    1);
-                        }
-
-                        Log.d("PIN", SharedPref.getStringValue(SharedPref.USER, SharedPref.PIN_IS_AVAILABLE, context));
                     }
                 });
+
     }
 
     private void signinCredential(SignInDetails responseBody) {
@@ -276,7 +277,9 @@ public class SignInActivity extends AppCompatActivity
         toast.show();
 
         pd.setMessage("Updating Hospitals...");
-        implement.getHospitalList(responseBody, username, password);
+        implement.updateAllList(callback, dataReaderFromCsv);
+        //COMMENTED getHospitalList temporarily
+//        implement.getHospitalList(responseBody, username, password);
 
         memCode = responseBody.getUserAccount().getMEM_CODE();
         name = responseBody.getUserAccount().getMEM_FNAME() + " " + responseBody.getUserAccount().getMEM_LNAME();
