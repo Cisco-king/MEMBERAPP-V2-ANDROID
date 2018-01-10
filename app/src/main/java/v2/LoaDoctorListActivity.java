@@ -2,9 +2,6 @@ package v2;
 
 import android.content.Context;
 import android.content.Intent;
-
-import com.medicard.member.R;
-
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,10 +16,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import com.medicard.member.R;
 
+import java.util.ArrayList;
 
 import InterfaceService.DoctorInterface;
 import InterfaceService.DoctorRetrieve;
@@ -47,7 +43,11 @@ import utilities.HeaderNameSetter;
 import utilities.Loader;
 import utilities.SharedPref;
 
-public class DoctorListActivity extends AppCompatActivity implements OnClicklistener, DoctorInterface {
+/**
+ * Created by IPC on 1/10/2018.
+ */
+
+public class LoaDoctorListActivity extends AppCompatActivity implements OnClicklistener, DoctorInterface {
 
     @BindView(R.id.btn_sort)
     FancyButton btn_sort;
@@ -92,6 +92,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     private String sort_by = "";
     private String room_number = "";
     private String MEMBERSTATUS = "";
+    private String hospital_sort_id = "";
 
     private String DERMATOLOGY = "DERMATOLOGY";
 
@@ -108,9 +109,9 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
         databaseHandler = new DatabaseHandler(context);
         loader = new Loader(context);
         implement = new DoctorRetrieve(context, callback, databaseHandler);
-        origin = getIntent().getExtras().getString(RequestButtonsActivity.ORIGIN);
-        MEMBERSTATUS = getIntent().getExtras().getString(Constant.MEM_STATUS);
 
+
+        hospital_sort_id = getIntent().getExtras().getString(Constant.SELECT_HOSP_ID);
 
         llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -125,7 +126,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
         rv_doctor.setLayoutManager(llm);
         rv_doctor.setAdapter(doctorAdapter);
 
-        getSearchDoctor(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context),doctorAdapter,"", selectedSpec, sort_by, "");
+        getSearchDoctor(hospital_sort_id, doctorAdapter, "", selectedSpec, sort_by, "");
 
         alertDialogCustom.showMe(
                 context,
@@ -137,26 +138,15 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
         btn_proceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gotoNextActivity(-1);
+                ;
             }
         });
 
-        tv_header.setText(HeaderNameSetter.setHeader(SharedPref.getStringValue(SharedPref.USER, SharedPref.DESTINATION, context)));
+        tv_header.setText(this.getString(R.string.sort_loa));
 
-        btn_back = (FancyButton) findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotoMaternity = new Intent(context, HospitalListAcitivity.class);
-                gotoMaternity.putExtra(RequestButtonsActivity.ORIGIN, origin);
-                gotoMaternity.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
-                gotoMaternity.putExtra(Constant.GENDER, getIntent().getExtras().getString(Constant.GENDER));
-                gotoMaternity.putExtra(Constant.NAME, getIntent().getExtras().getString(Constant.NAME));
-                gotoMaternity.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
-                gotoMaternity.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
-                gotoMaternity.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
-                gotoMaternity.putExtra(Constant.MEM_STATUS, getIntent().getExtras().getString(Constant.MEM_STATUS));
-                startActivity(gotoMaternity);
                 finish();
             }
         });
@@ -174,7 +164,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
             @Override
             public void afterTextChanged(Editable s) {
-                getSearchDoctor(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context), doctorAdapter, String.valueOf(s), selectedSpec, sort_by, room_number);
+                getSearchDoctor(hospital_sort_id, doctorAdapter, String.valueOf(s), selectedSpec, sort_by, room_number);
                 search_string = String.valueOf(s);
             }
         });
@@ -200,7 +190,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     private void getSearchDoctor(String hospcode, DoctorAdapter doctorAdapter, String editable, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number) {
 
         array.clear();
-        array.addAll(databaseHandler.retrieveDoctor(hospcode,selectedCity,selectedProvince,String.valueOf(editable), selectedSpec, implement.testSort(sort_by), room_number));
+        array.addAll(databaseHandler.retrieveDoctor(hospcode, selectedCity, selectedProvince, String.valueOf(editable), selectedSpec, implement.testSort(sort_by), room_number));
 
 //        // get only the unique value from the set
 //        Timber.d("original size with duplicate %s", array.size());
@@ -233,43 +223,9 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
             room_number = data.getStringExtra(Constant.ROOM_NUMBER);
             selectedCity = data.getParcelableArrayListExtra(Constant.SELECTED_CITY);
             selectedProvince = data.getParcelableArrayListExtra(Constant.SELECTED_PROVINCE);
-            getSearchDoctor(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context), doctorAdapter, search_string, selectedSpec, sort_by, room_number);
+            getSearchDoctor(hospital_sort_id, doctorAdapter, search_string, selectedSpec, sort_by, room_number);
             implement.setSearchStringtoUI(search_string, ed_searchDoctor);
         }
-    }
-
-    private void gotoNextActivity(int position) {
-        if (position <= -1) {
-            SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, Constant.NOT_FOUND, context);
-            SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, Constant.NOT_FOUND, context);
-            SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, Constant.NOT_FOUND, context);
-        } else {
-            SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_NAME, array.get(position).getDocLname()
-                    + " , " + array.get(position).getDocFname(), context);
-            SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_CODE, array.get(position).getDoctorCode(), context);
-            SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_DESC, array.get(position).getSpecDesc(), context);
-            SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_U, array.get(position).getSchedule(), context);
-            SharedPref.setStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, array.get(position).getRoom(), context);
-        }
-
-        // todo add indicator for activity to go to diagnosis list
-        // origin is indicator from {$RequestButtonsActivity#origin}
-        if (origin.equalsIgnoreCase(RequestButtonsActivity.TO_DETAILS_ACT)) {
-            Intent gotoDetails = new Intent(context, DetailsActivity.class);
-            gotoDetails.putExtra(RequestButtonsActivity.ORIGIN, origin);
-            gotoDetails.putExtra(Constant.MEMBER_ID, getIntent().getExtras().getString(Constant.MEMBER_ID));
-            gotoDetails.putExtra(Constant.GENDER, getIntent().getExtras().getString(Constant.GENDER));
-            gotoDetails.putExtra(Constant.NAME, getIntent().getExtras().getString(Constant.NAME));
-            gotoDetails.putExtra(Constant.COMPANY, getIntent().getExtras().getString(Constant.COMPANY));
-            gotoDetails.putExtra(Constant.REMARK, getIntent().getExtras().getString(Constant.REMARK));
-            gotoDetails.putExtra(Constant.AGE, getIntent().getExtras().getString(Constant.AGE));
-            gotoDetails.putExtra(Constant.MEM_STATUS, getIntent().getExtras().getString(Constant.MEM_STATUS));
-            startActivity(gotoDetails);
-            finish();
-        } else {
-            finish();
-        }
-
     }
 
 
@@ -313,10 +269,16 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
     @Override
     public void onClickListener(int position) {
-        if (array.get(position).getSpecDesc().equals(DERMATOLOGY))
+        if (array.get(position).getSpecDesc().equals(DERMATOLOGY)) {
             alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.spec_not_good, 1);
-        else
-            gotoNextActivity(position);
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra(Constant.SELECT_DOCTOR, array.get(position).getDocLname() + ", " + array.get(position).getDocFname());
+            intent.putExtra(Constant.SELECT_DOCTOR_ID, array.get(position).getDoctorCode());
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+
 
     }
 

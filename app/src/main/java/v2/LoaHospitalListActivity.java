@@ -84,20 +84,18 @@ public class LoaHospitalListActivity extends AppCompatActivity implements OnClic
         databaseHandler = new DatabaseHandler(context);
         implement = new HospitalListRetrieve(context, databaseHandler);
         ButterKnife.bind(this);
-        origin = getIntent().getExtras().getString(RequestButtonsActivity.ORIGIN);
+
         llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rv_hospital.setLayoutManager(llm);
         sortBy = context.getString(R.string.medicard_first);
-        MEMBERSTATUS = getIntent().getExtras().getString(Constant.MEM_STATUS);
-
 
 
         hospitalAdapter = new HospitalAdapter(context, array);
         rv_hospital.setAdapter(hospitalAdapter);
 
         retrieveHosp("");
-        tv_header.setText(HeaderNameSetter.setHeader(SharedPref.getStringValue(SharedPref.USER, SharedPref.DESTINATION, context)));
+        tv_header.setText(this.getString(R.string.sort_loa));
 
         ed_searchHosp.addTextChangedListener(new TextWatcher() {
             @Override

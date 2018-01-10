@@ -80,6 +80,7 @@ public class Constant {
     public static String LOA_REQUEST = "LOA_REQUEST";
 
     public static String SELECT_DOCTOR = "SELECT_DOCTOR";
+    public static String SELECT_DOCTOR_ID = "SELECT_DOCTOR_ID";
     public static String SELECT_TEST = "SELECT_TEST";
     public static String SELECT_DIAG = "SELECT_DIAG";
     public static String SELECT_HOSP = "SELECT_HOSP";

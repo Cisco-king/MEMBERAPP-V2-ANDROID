@@ -62,12 +62,7 @@
                     fancy:fb_text=""
                     android:visibility="invisible"/>
 
-
-
-
             </LinearLayout>
-
-
 
 
         </android.support.v7.widget.Toolbar>

@@ -67,7 +67,9 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     String status_sort = "";
     String service_type_sort = "";
     String doctor_sort = "";
+    String doctor_sort_id = "";
     String hospital_sort = "";
+    String hospital_sort_id = ""; //holds the id of the current hosp
     String test_sort = "";
     String diag_sort = "";
     String date_start_sort = "";
@@ -167,7 +169,10 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                 gotoSort.putExtra(Constant.STATUS, status_sort);
                 gotoSort.putExtra(Constant.SERVICE_TYPE, service_type_sort);
                 gotoSort.putExtra(Constant.SELECT_HOSP, hospital_sort);
+                gotoSort.putExtra(Constant.SELECT_HOSP_ID, hospital_sort_id);
                 gotoSort.putExtra(Constant.SELECT_DOCTOR, doctor_sort);
+                gotoSort.putExtra(Constant.SELECT_DOCTOR_ID, doctor_sort);
+
                 gotoSort.putExtra(Constant.SELECT_TEST, test_sort);
                 gotoSort.putExtra(Constant.SELECT_DIAG, diag_sort);
                 gotoSort.putExtra(Constant.SELECTED_START_DATE, date_start_sort);
@@ -189,7 +194,9 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                     status_sort = data.getStringExtra(Constant.STATUS);
                     service_type_sort = data.getStringExtra(Constant.SERVICE_TYPE);
                     hospital_sort = data.getStringExtra(Constant.SELECT_HOSP);
+                    hospital_sort_id = data.getStringExtra(Constant.SELECT_HOSP_ID);
                     doctor_sort = data.getStringExtra(Constant.SELECT_DOCTOR);
+                    doctor_sort_id = data.getStringExtra(Constant.SELECT_DOCTOR_ID);
                     test_sort = data.getStringExtra(Constant.SELECT_TEST);
                     diag_sort = data.getStringExtra(Constant.SELECT_DIAG);
                     date_start_sort = data.getStringExtra(Constant.SELECTED_START_DATE);
@@ -203,10 +210,10 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                         status_sort = null;
                     if (service_type_sort.isEmpty())
                         service_type_sort = null;
-                    if (hospital_sort.isEmpty())
-                        hospital_sort = null;
-                    if (doctor_sort.isEmpty())
-                        doctor_sort = null;
+                    if (hospital_sort_id.isEmpty())
+                        hospital_sort_id = null;
+                    if (doctor_sort_id.isEmpty())
+                        doctor_sort_id = null;
                     if (test_sort.isEmpty())
                         test_sort = null;
                     if (diag_sort.isEmpty())
@@ -229,7 +236,7 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                      * String endDate,
                      * final ViewLoaRetrieveCallback callback
                      */
-                    implement.getSortedMemberLoaList(memberCode, status_sort, service_type_sort, hospital_sort, doctor_sort, test_sort, diag_sort, date_start_sort, date_end_sort, callback);
+                    implement.getSortedMemberLoaList(memberCode, status_sort, service_type_sort, hospital_sort_id, doctor_sort_id, test_sort, diag_sort, date_start_sort, date_end_sort, callback);
 
 //
 //                    ArrayList<SimpleData> temp = data.getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);

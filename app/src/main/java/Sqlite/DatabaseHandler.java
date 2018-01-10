@@ -1048,7 +1048,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String sql = "";
         sql += "SELECT * FROM " + doctable;
         sql += " WHERE  " + room + " LIKE '%" + room_number + "%' ";
-        sql += " AND " + hospitalCode + " = '" + hospcode + "'";
+        if (null == hospcode)
+            hospcode = "";
+        if (!hospcode.isEmpty())
+            sql += " AND " + hospitalCode + " = '" + hospcode + "'";
         sql += " AND " + docLname + " IS NOT NULL ";
         sql += " AND " + docLname + " != ''";
         sql += " AND " + "( UPPER(" + docLname + ") LIKE '%" + searchTerm + "%'";
@@ -2025,7 +2028,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(phoneNo, rows.length < 12 ? "" : rows[11].trim());
         cv.put(contactPerson, rows.length < 13 ? "" : rows[12].trim());
         cv.put(excluded, "false");
-        Log.e("FILENAME ", s + " ROW: " +valueOf + " hospitalCode: " +String.valueOf(cv.get(hospitalCode)));
+        Log.e("FILENAME ", s + " ROW: " + valueOf + " hospitalCode: " + String.valueOf(cv.get(hospitalCode)));
         db.insert(hospTable, null, cv);
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -2063,7 +2066,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(contactPerson, column.length < 25 ? "" : column[24].trim());
 
 //        cv.put(isSelectedAsMain, "false");
-        Log.e("FILENAME ", s + " ROW: " +valueOf + " hospitalCode: " +String.valueOf(cv.get(hospitalCode)));
+        Log.e("FILENAME ", s + " ROW: " + valueOf + " hospitalCode: " + String.valueOf(cv.get(hospitalCode)));
         db.insert(doctable, null, cv);
         db.setTransactionSuccessful();
         db.endTransaction();

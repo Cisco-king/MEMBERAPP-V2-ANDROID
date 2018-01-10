@@ -33,14 +33,15 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     @BindView(R.id.btn_back)
     FancyButton btn_back;
 
+    @BindView(R.id.tv_header)
+    TextView tv_header;
+
     @BindView(R.id.et_search)
     EditText et_search;
-
     @BindView(R.id.tv_sort_by)
     TextView tv_sort_by;
     @BindView(R.id.tv_status)
     TextView tv_status;
-
     @BindView(R.id.tv_service_type)
     TextView tv_service_type;
     @BindView(R.id.tv_hosp_clinic)
@@ -51,10 +52,8 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     TextView tv_test;
     @BindView(R.id.tv_diagnosis)
     TextView tv_diagnosis;
-
     @BindView(R.id.tv_req_date_start)
     TextView tv_req_date_start;
-
     @BindView(R.id.tv_req_date_end)
     TextView tv_req_date_end;
 
@@ -80,7 +79,9 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     String status_sort = "";
     String service_type_sort = "";
     String doctor_sort = "";
+    String doctor_sort_id = "";
     String hospital_sort = "";
+    String hospital_sort_id = "";// holds the id of the hosp
     String test_sort = "";
     String diag_sort = "";
     String date_start_sort = "";
@@ -101,12 +102,14 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
 //        temp = getIntent().getParcelableArrayListExtra(Constant.LOA_REQUEST);
 //        arrayListMaster.addAll(temp);
 
+        //GET DATA
         seachedData = getIntent().getStringExtra(Constant.SEARCHED_DATA);
         sort_by = getIntent().getStringExtra(Constant.SORT_BY);
         status_sort = getIntent().getStringExtra(Constant.STATUS);
         service_type_sort = getIntent().getStringExtra(Constant.SERVICE_TYPE);
         doctor_sort = getIntent().getStringExtra(Constant.SELECT_DOCTOR);
         hospital_sort = getIntent().getStringExtra(Constant.SELECT_HOSP);
+        hospital_sort_id = getIntent().getStringExtra(Constant.SELECT_HOSP_ID);
         test_sort = getIntent().getStringExtra(Constant.SELECT_TEST);
         diag_sort = getIntent().getStringExtra(Constant.SELECT_DIAG);
         date_start_sort = getIntent().getStringExtra(Constant.SELECTED_START_DATE);
@@ -117,17 +120,21 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
 //        temp1 = getIntent().getParcelableArrayListExtra(Constant.SELECT_DOCTOR);
 //        implement.replaceData(prevSelectedDoctor, temp1);
 //
-//        //SET DATA
+        //SET DATA
         et_search.setText(seachedData);
         tv_sort_by.setText(sort_by);
         tv_status.setText(status_sort);
         tv_service_type.setText(service_type_sort);
+        tv_hosp_clinic.setText(hospital_sort);
+        tv_doctor.setText(doctor_sort);
+        tv_test.setText(test_sort);
+        tv_diagnosis.setText(diag_sort);
+        tv_req_date_start.setText(date_start_sort);
+        tv_req_date_end.setText(date_end_sort);
 
 //        implement.setFetchHospitals(tv_doctor, prevSelectedDoctor);
 //        implement.setFetchHospitals(tv_hosp_clinic, prevSelected);
 
-        tv_req_date_start.setText(date_start_sort);
-        tv_req_date_end.setText(date_end_sort);
 
     }
 
@@ -153,17 +160,11 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
 
             case R.id.tv_hosp_clinic:
                 Intent getList = new Intent(SortLoaReqActivity.this, LoaHospitalListActivity.class);
-                getList.putExtra(Constant.SELECT, Constant.SELECT_LOAREQUEST);
-                getList.putParcelableArrayListExtra(Constant.LOA_REQUEST, arrayListMaster);
-                getList.putParcelableArrayListExtra(Constant.SELECTED_REQUEST, prevSelected);
                 startActivityForResult(getList, CALL_HOSPITALS);
                 break;
             case R.id.tv_doctor:
-                Intent getListDoc = new Intent(SortLoaReqActivity.this, SelectProvinceActivity.class);
-                getListDoc.putExtra(Constant.SELECT, Constant.SELECT_DOCTOR);
-                getListDoc.putParcelableArrayListExtra(Constant.DOCTOR_LIST, arrayListMaster);
-                getListDoc.putParcelableArrayListExtra(Constant.SELECTED_DOCTOR, prevSelectedDoctor);
-                getListDoc.putParcelableArrayListExtra(Constant.SELECTED_HOSPITAL, prevSelected);
+                Intent getListDoc = new Intent(SortLoaReqActivity.this, LoaDoctorListActivity.class);
+                getListDoc.putExtra(Constant.SELECT_HOSP_ID, hospital_sort_id);
                 startActivityForResult(getListDoc, CALL_DOCTORS);
                 break;
 
@@ -198,8 +199,12 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 intent.putExtra(Constant.SORT_BY, implement.getTextTrimmed(tv_sort_by));
                 intent.putExtra(Constant.STATUS, implement.getTextTrimmed(tv_status));
                 intent.putExtra(Constant.SERVICE_TYPE, implement.getTextTrimmed(tv_service_type));
-                intent.putParcelableArrayListExtra(Constant.SELECTED_HOSPITAL, prevSelected);
-                intent.putParcelableArrayListExtra(Constant.SELECT_DOCTOR, prevSelectedDoctor);
+                intent.putExtra(Constant.SELECT_HOSP, implement.getTextTrimmed(tv_hosp_clinic));
+                intent.putExtra(Constant.SELECT_HOSP_ID, hospital_sort_id); // holds the id of the current hosp
+                intent.putExtra(Constant.SELECT_DOCTOR, implement.getTextTrimmed(tv_doctor));
+                intent.putExtra(Constant.SELECT_DOCTOR_ID, doctor_sort_id);
+                intent.putExtra(Constant.SELECT_TEST, implement.getTextTrimmed(tv_test));
+                intent.putExtra(Constant.SELECT_DIAG, implement.getTextTrimmed(tv_diagnosis));
                 intent.putExtra(Constant.SELECTED_START_DATE, implement.getTextTrimmed(tv_req_date_start));
                 intent.putExtra(Constant.SELECTED_END_DATE, implement.getTextTrimmed(tv_req_date_end));
                 setResult(RESULT_OK, intent);
@@ -208,23 +213,30 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 break;
             case R.id.btn_reset:
 
+                seachedData = "";
                 sort_by = getString(R.string.request_date);
                 status_sort = "";
                 service_type_sort = "";
-                date_end_sort = "";
+                doctor_sort = "";
+                hospital_sort = "";
+                hospital_sort_id = "";// holds the id of the hosp
+                test_sort = "";
+                diag_sort = "";
                 date_start_sort = "";
-                prevSelectedDoctor.clear();
-                prevSelected.clear();
+                date_end_sort = "";
+
 
                 //SET DATA
-                implement.setFetchHospitals(tv_doctor, prevSelectedDoctor);
-                implement.setFetchHospitals(tv_hosp_clinic, prevSelected);
+                et_search.setText(seachedData);
                 tv_sort_by.setText(sort_by);
                 tv_status.setText(status_sort);
                 tv_service_type.setText(service_type_sort);
+                tv_hosp_clinic.setText(hospital_sort);
+                tv_doctor.setText(doctor_sort);
+                tv_test.setText(test_sort);
+                tv_diagnosis.setText(diag_sort);
                 tv_req_date_start.setText(date_start_sort);
                 tv_req_date_end.setText(date_end_sort);
-                et_search.setText("");
 
                 break;
         }
@@ -237,14 +249,12 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CALL_HOSPITALS && resultCode == RESULT_OK) {
 
-
-            tv_hosp_clinic.setText("");
+            hospital_sort_id = data.getStringExtra(Constant.SELECT_HOSP_ID);
+            tv_hosp_clinic.setText(data.getStringExtra(Constant.SELECT_HOSP));
 
         } else if (requestCode == CALL_DOCTORS && resultCode == RESULT_OK) {
-            ArrayList<SimpleData> temp = data.getParcelableArrayListExtra("DOCTOR");
-            prevSelectedDoctor.clear();
-            prevSelectedDoctor.addAll(temp);
-            implement.setFetchHospitals(tv_doctor, temp);
+            doctor_sort_id = data.getStringExtra(Constant.SELECT_DOCTOR_ID);
+            tv_doctor.setText(data.getStringExtra(Constant.SELECT_DOCTOR));
         }
     }
 

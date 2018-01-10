@@ -467,10 +467,15 @@ public class LoaPageActivity extends AppCompatActivity
 //        }
 
 
-        OutPatientConsultationForm build = loaFormBuilder.build();
-        if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
-            btn_download.setText(getString(R.string.view_loa));
+        try {
+            OutPatientConsultationForm build = loaFormBuilder.build();
+            if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
+                btn_download.setText(getString(R.string.view_loa));
+            }
+        }catch (Exception e){
+
         }
+
 
         if (isCancelledORExpired(loa.getStatus())) {
             ViewUtilities.hideView(tvDisclaimerInfo);
