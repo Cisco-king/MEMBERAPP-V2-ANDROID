@@ -113,7 +113,7 @@ public class ViewLoaRetrieve {
 
     public interface ViewLoaRetrieveCallback {
 
-        void onSuccess(List<MaceRequest> maceRequests);
+        void onSuccess(ArrayList<MaceRequest> maceRequests);
 
         void onFailure();
 

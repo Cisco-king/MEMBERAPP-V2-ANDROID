@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 import model.SimpleData;
@@ -208,6 +207,7 @@ public class SortLoaReqImplement {
         FancyButton other_test;
         FancyButton tv_close;
         FancyButton consultation;
+        FancyButton procedure;
 
 
         dialog = new Dialog(context);
@@ -220,6 +220,7 @@ public class SortLoaReqImplement {
         other_test = (FancyButton) dialog.findViewById(R.id.other_test);
         tv_close = (FancyButton) dialog.findViewById(R.id.tv_close);
         consultation = (FancyButton) dialog.findViewById(R.id.consultation);
+        procedure = (FancyButton) dialog.findViewById(R.id.procedure);
 
         consultation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,10 +243,20 @@ public class SortLoaReqImplement {
                 dialog.dismiss();
             }
         });
+
+        procedure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callback.onSortServiceType(context.getString(R.string.proc));
+                dialog.dismiss();
+            }
+        });
+
+
         other_test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callback.onSortServiceType(context.getString(R.string.other_test_proc));
+                callback.onSortServiceType(context.getString(R.string.other_test_));
                 dialog.dismiss();
             }
         });
@@ -313,7 +324,6 @@ public class SortLoaReqImplement {
                         year = getYear;
                         day = dayOfMonth;
                         String dateTaken = DateConverter.convertDateFromYYYYMDD(year + "," + month + "," + day);
-
 
                         if (isSecond) {
                             if (DateConverter.testDataStartAndEnd(getTextTrimmed(tv_start), dateTaken)) {

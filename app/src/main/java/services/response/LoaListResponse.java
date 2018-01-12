@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import services.model.LoaList;
@@ -17,13 +18,13 @@ public class LoaListResponse implements Serializable {
 
     @SerializedName("loaList")
     @Expose
-    private List<MaceRequest> loaList = null;
+    private ArrayList<MaceRequest> loaList = null;
 
-    public List<MaceRequest> getLoaList() {
+    public ArrayList<MaceRequest> getLoaList() {
         return loaList;
     }
 
-    public void setLoaList(List<MaceRequest> loaList) {
+    public void setLoaList(ArrayList<MaceRequest> loaList) {
         this.loaList = loaList;
     }
 

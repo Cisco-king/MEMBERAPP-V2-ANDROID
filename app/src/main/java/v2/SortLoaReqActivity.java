@@ -8,7 +8,6 @@ import com.medicard.member.R;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 
 import InterfaceService.SortLoaReqCallback;
 import InterfaceService.SortLoaReqImplement;
-import Sqlite.DatabaseHandler;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,7 +24,6 @@ import model.LoaFetch;
 import model.SimpleData;
 import utilities.AlertDialogCustom;
 import utilities.Constant;
-import utilities.DateConverter;
 
 public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqCallback {
 
@@ -85,8 +82,10 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
     String test_sort = "";
     String diag_sort = "";
     String date_start_sort = "";
+    String date_start_sort_format = "";
     String date_end_sort = "";
-
+    String date_end_sort_format = "";
+    String date_check = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,9 +175,15 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.data_not_avilable, 1);
                 break;
 
+            case R.id.tv_req_date_start:
+                int[] dateStarter1 = implement.getDateStarter(tv_req_date_start);
 
+                implement.showDatePicker(tv_req_date_start, false, callback, tv_req_date_end, dateStarter1);
+
+                break;
             case R.id.tv_req_date_end:
                 int[] dateStarter = implement.getDateStarter(tv_req_date_start);
+
                 if (tv_req_date_start.getText().toString().equals(""))
                     alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.pick_start_Date, 1);
                 else {
@@ -186,13 +191,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 }
                 break;
 
-            case R.id.tv_req_date_start:
-                int[] dateStarter1 = implement.getDateStarter(tv_req_date_start);
 
-
-                implement.showDatePicker(tv_req_date_start, false, callback, tv_req_date_end, dateStarter1);
-
-                break;
             case R.id.btn_show:
                 Intent intent = new Intent();
                 intent.putExtra(Constant.SEARCHED_DATA, et_search.getText().toString().trim());
@@ -214,7 +213,7 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
             case R.id.btn_reset:
 
                 seachedData = "";
-                sort_by = getString(R.string.request_date);
+                sort_by = "";
                 status_sort = "";
                 service_type_sort = "";
                 doctor_sort = "";

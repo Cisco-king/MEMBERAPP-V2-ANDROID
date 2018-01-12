@@ -1,49 +1,32 @@
 package com.medicard.member.module.viewLoa;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.medicard.member.NavigationActivity;
 import com.medicard.member.R;
-import com.medicard.member.core.model.DiagnosisTests;
-import com.medicard.member.core.session.DiagnosisTestSession;
-import com.medicard.member.module.DiagnosisTallyActivity.DiagnosisTallyActivity;
-import com.medicard.member.module.DiagnosisTallyActivity.adapter.DiagnosisTallyAdapter;
-import com.medicard.member.module.DiagnosisTallyActivity.fragment.DiagnosisTallyFragment;
-import com.medicard.member.module.base.BaseActivity;
 import com.medicard.member.module.base.BaseFragment;
-import com.medicard.member.module.diagnosis.DiagnosisActivity;
-import com.medicard.member.module.viewLoa.session.ViewLoaListSession;
 
 import java.io.Serializable;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-import InterfaceService.LoaRequestRetrieve;
 import adapter.LoaRequestAdapter;
 import butterknife.BindView;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
-import model.SimpleData;
-import modules.prescriptionattachment.PrescriptionAttachmentActivity;
-import services.model.Diagnosis;
 import services.model.MaceRequest;
-import services.model.Test;
 import utilities.Constant;
+import utilities.DateConverter;
 import utilities.SharedPref;
 import v2.LoaPageActivity;
 import v2.SortLoaReqActivity;
@@ -66,6 +49,7 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     String sort_by = "";
     String status_sort = "";
     String service_type_sort = "";
+    String service_type_sort_id = "";
     String doctor_sort = "";
     String doctor_sort_id = "";
     String hospital_sort = "";
@@ -73,7 +57,9 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     String test_sort = "";
     String diag_sort = "";
     String date_start_sort = "";
+    String date_start_sort_format = "";
     String date_end_sort = "";
+    String date_end_sort_format = "";
 
 
 //    ArrayList<SimpleData> doctor_sort = new ArrayList<>();
@@ -193,6 +179,7 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                     sort_by = data.getStringExtra(Constant.SORT_BY);
                     status_sort = data.getStringExtra(Constant.STATUS);
                     service_type_sort = data.getStringExtra(Constant.SERVICE_TYPE);
+                    service_type_sort_id = service_type_sort;
                     hospital_sort = data.getStringExtra(Constant.SELECT_HOSP);
                     hospital_sort_id = data.getStringExtra(Constant.SELECT_HOSP_ID);
                     doctor_sort = data.getStringExtra(Constant.SELECT_DOCTOR);
@@ -200,28 +187,61 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                     test_sort = data.getStringExtra(Constant.SELECT_TEST);
                     diag_sort = data.getStringExtra(Constant.SELECT_DIAG);
                     date_start_sort = data.getStringExtra(Constant.SELECTED_START_DATE);
+                    if (null != date_start_sort && !date_start_sort.isEmpty()) {
+                        date_start_sort_format = DateConverter.convertDateFromYYYYMDD(date_start_sort, "");
+                    }
                     date_end_sort = data.getStringExtra(Constant.SELECTED_END_DATE);
+                    if (null != date_end_sort && !date_end_sort.isEmpty()) {
+                        date_end_sort_format = DateConverter.convertDateFromYYYYMDD(date_end_sort, "");
+                    }
 
-                    if (seachedData.isEmpty()) // search locally?
-                        seachedData = null;
-                    if (sort_by.isEmpty())    //sort locally
-                        sort_by = null;
+
+                    //do not remove these commented lines, for reference purpose - jhay
+//                    if (seachedData.isEmpty()) // search locally?
+//                        seachedData = null;
+//                    if (sort_by.isEmpty())    //sort locally
+//                        sort_by = null;
                     if (status_sort.isEmpty())
                         status_sort = null;
-                    if (service_type_sort.isEmpty())
-                        service_type_sort = null;
-                    if (hospital_sort_id.isEmpty())
-                        hospital_sort_id = null;
+
+
+                    if (service_type_sort_id.isEmpty()) {
+                        service_type_sort_id = null;
+                    } else if (service_type_sort_id.equalsIgnoreCase(context.getString(R.string.consultation))
+                            || service_type_sort_id.equalsIgnoreCase(context.getString(R.string.maternity))) {
+                        service_type_sort_id = "1";
+                    } else if (service_type_sort_id.equalsIgnoreCase(context.getString(R.string.basic_test))) {
+                        service_type_sort_id = "2";
+                    } else if (service_type_sort_id.equalsIgnoreCase(context.getString(R.string.proc))) {
+                        service_type_sort_id = "3";
+                    } else if (service_type_sort_id.equalsIgnoreCase(context.getString(R.string.other_test_))) {
+                        service_type_sort_id = "2";
+                    }
+
+                    try {
+                        if (hospital_sort_id.isEmpty())
+                            hospital_sort_id = null;
+                    } catch (Exception e) {
+                    }
+
                     if (doctor_sort_id.isEmpty())
                         doctor_sort_id = null;
                     if (test_sort.isEmpty())
                         test_sort = null;
                     if (diag_sort.isEmpty())
                         diag_sort = null;
-                    if (date_start_sort.isEmpty())
-                        date_start_sort = null;
-                    if (date_end_sort.isEmpty())
-                        date_end_sort = null;
+                    try {
+                        if (date_start_sort_format.isEmpty())
+                            date_start_sort_format = null;
+                    } catch (Exception e) {
+                    }
+                    try {
+                        if (date_end_sort_format.isEmpty())
+                            date_end_sort_format = null;
+                    } catch (Exception e) {
+                    }
+
+
                     /**
                      * new retrieve of list
                      * para of getSortedMemberLoaList
@@ -236,7 +256,7 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                      * String endDate,
                      * final ViewLoaRetrieveCallback callback
                      */
-                    implement.getSortedMemberLoaList(memberCode, status_sort, service_type_sort, hospital_sort_id, doctor_sort_id, test_sort, diag_sort, date_start_sort, date_end_sort, callback);
+                    implement.getSortedMemberLoaList(memberCode, status_sort, service_type_sort_id, hospital_sort_id, doctor_sort_id, test_sort, diag_sort, date_start_sort_format, date_end_sort_format, callback);
 
 //
 //                    ArrayList<SimpleData> temp = data.getParcelableArrayListExtra(Constant.SELECTED_HOSPITAL);
@@ -291,11 +311,27 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
          * @Params List<MaceRequest>
          */
     @Override
-    public void onSuccess(List<MaceRequest> maceRequests) {
+    public void onSuccess(ArrayList<MaceRequest> maceRequests) {
         this.list = maceRequests;
         pb.setVisibility(View.GONE);
-        adapter = new LoaRequestAdapter(context, maceRequests, callback);
+        System.out.printf("maceRequests", maceRequests);
+
+        if (null != sort_by || !sort_by.isEmpty() && null == seachedData || seachedData.isEmpty()) {
+            adapter = new LoaRequestAdapter(context, sortBy(maceRequests), callback);
+        } else if (null != seachedData || !seachedData.isEmpty() && null == sort_by || sort_by.isEmpty()) {
+            adapter = new LoaRequestAdapter(context, findBy(maceRequests), callback);
+        } else if (null != seachedData || !seachedData.isEmpty() && null != sort_by || !sort_by.isEmpty()) {
+            adapter = new LoaRequestAdapter(context, findBy(sortBy(maceRequests)), callback);
+        } else {
+            adapter = new LoaRequestAdapter(context, maceRequests, callback);
+        }
+
+        adapter = new LoaRequestAdapter(context, (sort_by == "" ? maceRequests : sortBy(maceRequests)), callback);
+
+
+        System.out.printf("maceRequests", maceRequests);
         rv_loa_request.setAdapter(adapter);
+        tv_list.setVisibility(View.GONE);
 
     }
 
@@ -305,6 +341,48 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
         Toast.makeText(context, "Failed to connect", Toast.LENGTH_SHORT);
         tv_list.setVisibility(View.VISIBLE);
     }
+
+
+    /**
+     * purpose of this method is to sort the data to the following,
+     * status
+     * request date
+     * clinic/hospital
+     * service type
+     */
+    public ArrayList<MaceRequest> sortBy(ArrayList<MaceRequest> sorted) {
+
+        Collections.sort(sorted, new Comparator<MaceRequest>() {
+            @Override
+            public int compare(MaceRequest o1, MaceRequest o2) {
+                if (sort_by.equalsIgnoreCase(context.getString(R.string.status))) {
+                    return o1.getStatus().compareToIgnoreCase(o2.getStatus());
+                } else if (sort_by.equalsIgnoreCase(context.getString(R.string.request_date))) {
+                    return o2.getRequestDatetime().compareToIgnoreCase(o1.getRequestDatetime());
+                } else if (sort_by.equalsIgnoreCase(context.getString(R.string.hospital_clinic))) {
+                    return o1.getHospitalName().compareToIgnoreCase(o2.getHospitalName());
+                } else if (sort_by.equalsIgnoreCase(context.getString(R.string.service_type))) {
+                    return o1.getRequestType().compareToIgnoreCase(o2.getRequestType());
+                }
+                return 0;
+            }
+        });
+
+        return sorted;
+    }
+
+    public ArrayList<MaceRequest> findBy(ArrayList<MaceRequest> sorted) {
+
+        Collections.sort(sorted, new Comparator<MaceRequest>() {
+            @Override
+            public int compare(MaceRequest o1, MaceRequest o2) {
+                return o1.getHospitalName().compareToIgnoreCase(o2.getHospitalName());
+            }
+        });
+
+        return sorted;
+    }
+
 
 }
 

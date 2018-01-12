@@ -199,6 +199,10 @@
             android:name="v2.LoaDoctorListActivity"
             android:theme="@style/AppTheme"></activity>
 
+        <activity
+            android:name="v2.LoaTestsListActivity"
+            android:theme="@style/AppTheme"></activity>
+
     </application>
 
 </manifest>

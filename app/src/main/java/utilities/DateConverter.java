@@ -128,6 +128,20 @@ public class DateConverter {
         return dt1.format(date);
     }
 
+    public static String convertDateFromYYYYMDD(String s,String s1) {
+        Log.d("DATE_DATE_toformat", s + "");
+        SimpleDateFormat dt = new SimpleDateFormat("MMM dd , yyyy");
+        Date date = null;
+        try {
+            date = dt.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-mm-dd");
+        return dt1.format(date);
+    }
+
     public static boolean testDataStartAndEnd(String start, String end) {
 
 
