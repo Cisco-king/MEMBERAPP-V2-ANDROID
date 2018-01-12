@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -25,6 +26,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import mehdi.sakout.fancybuttons.FancyButton;
 import services.model.MaceRequest;
+import utilities.AlertDialogCustom;
 import utilities.Constant;
 import utilities.DateConverter;
 import utilities.SharedPref;
@@ -43,7 +45,7 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     private final int CALL_SORT_LOA = 100;
     private int CALL_LOA_VIEW = 200;
     private static final String MACEREQUESTBUNLE = "MACEREQUESTBUNLE";
-
+    AlertDialogCustom alertDialogCustom = new AlertDialogCustom();
     //SORTING DATA
     String seachedData = "";
     String sort_by = "";
@@ -316,17 +318,18 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
         pb.setVisibility(View.GONE);
         System.out.printf("maceRequests", maceRequests);
 
-        if (null != sort_by || !sort_by.isEmpty() && null == seachedData || seachedData.isEmpty()) {
+        if (!sort_by.isEmpty() && seachedData.isEmpty()) {
             adapter = new LoaRequestAdapter(context, sortBy(maceRequests), callback);
-        } else if (null != seachedData || !seachedData.isEmpty() && null == sort_by || sort_by.isEmpty()) {
+        } else if (!seachedData.isEmpty() && sort_by.isEmpty()) {
             adapter = new LoaRequestAdapter(context, findBy(maceRequests), callback);
-        } else if (null != seachedData || !seachedData.isEmpty() && null != sort_by || !sort_by.isEmpty()) {
-            adapter = new LoaRequestAdapter(context, findBy(sortBy(maceRequests)), callback);
+        } else if (!seachedData.isEmpty() && !sort_by.isEmpty()) {
+            adapter = new LoaRequestAdapter(context, sortBy(findBy(maceRequests)), callback);
         } else {
             adapter = new LoaRequestAdapter(context, maceRequests, callback);
         }
 
-        adapter = new LoaRequestAdapter(context, (sort_by == "" ? maceRequests : sortBy(maceRequests)), callback);
+        //reference - jhay
+//        adapter = new LoaRequestAdapter(context, (sort_by == "" ? maceRequests : sortBy(maceRequests)), callback);
 
 
         System.out.printf("maceRequests", maceRequests);
@@ -338,7 +341,10 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
     @Override
     public void onFailure() {
         pb.setVisibility(View.GONE);
-        Toast.makeText(context, "Failed to connect", Toast.LENGTH_SHORT);
+        alertDialogCustom.showMe(
+                context,
+                alertDialogCustom.HOLD_ON_title,
+                alertDialogCustom.no_connection_to_server, 1);
         tv_list.setVisibility(View.VISIBLE);
     }
 
@@ -371,14 +377,18 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
         return sorted;
     }
 
-    public ArrayList<MaceRequest> findBy(ArrayList<MaceRequest> sorted) {
+    public ArrayList<MaceRequest> findBy(ArrayList<MaceRequest> unsorted) {
+        ArrayList<MaceRequest> sorted = new ArrayList<>();
 
-        Collections.sort(sorted, new Comparator<MaceRequest>() {
-            @Override
-            public int compare(MaceRequest o1, MaceRequest o2) {
-                return o1.getHospitalName().compareToIgnoreCase(o2.getHospitalName());
+        sorted.clear();
+        for (int x = 0; x < unsorted.size(); x++) {
+            Log.e("searchData", null != unsorted.get(x).getDoctorName() ? unsorted.get(x).getDoctorName().toLowerCase() +":" + seachedData.trim().toLowerCase():"");
+            if (null != unsorted.get(x).getHospitalName() && unsorted.get(x).getHospitalName().toLowerCase().contains(seachedData.trim().toLowerCase())){
+                sorted.add(unsorted.get(x));
+            }else if ( null != unsorted.get(x).getDoctorName() && unsorted.get(x).getDoctorName().toLowerCase().contains(seachedData.trim().toLowerCase())){
+                sorted.add(unsorted.get(x));
             }
-        });
+        }
 
         return sorted;
     }

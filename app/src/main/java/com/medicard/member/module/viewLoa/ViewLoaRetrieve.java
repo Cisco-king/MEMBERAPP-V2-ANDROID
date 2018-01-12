@@ -83,16 +83,11 @@ public class ViewLoaRetrieve {
                     @Override
                     public void onResponse(Call<LoaListResponse> call, Response<LoaListResponse> response) {
                         if (response.isSuccessful()) {
-                            try {
                                 if (response.body() != null) {
                                     callback.onSuccess(response.body().getLoaList());
                                 } else {
                                     callback.onFailure();
                                 }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                callback.onFailure();
-                            }
                         }
                     }
 

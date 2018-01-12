@@ -124,13 +124,13 @@ public class DateConverter {
             e.printStackTrace();
         }
 
-        SimpleDateFormat dt1 = new SimpleDateFormat("MMM dd , yyyy");
+        SimpleDateFormat dt1 = new SimpleDateFormat("MMM dd, yyyy");
         return dt1.format(date);
     }
 
     public static String convertDateFromYYYYMDD(String s,String s1) {
         Log.d("DATE_DATE_toformat", s + "");
-        SimpleDateFormat dt = new SimpleDateFormat("MMM dd , yyyy");
+        SimpleDateFormat dt = new SimpleDateFormat("MMM dd, yyyy");
         Date date = null;
         try {
             date = dt.parse(s);
