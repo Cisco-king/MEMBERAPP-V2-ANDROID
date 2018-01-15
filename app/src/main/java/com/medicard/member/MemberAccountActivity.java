@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -217,6 +218,7 @@ public class MemberAccountActivity extends AppCompatActivity
         btn_back = (FancyButton) toolbar.findViewById(R.id.btn_back);
         tv_age.setOnClickListener(this);
         btn_displayQR = (Button) findViewById(R.id.btn_displayQR);
+        btn_displayQR.setBackgroundColor((ContextCompat.getColor(this, R.color.colorPrimary)));
         ci_edit = (CircleImageView) findViewById(R.id.ci_edit);
         btn_displayQR.setOnClickListener(this);
         ci_edit.setOnClickListener(this);

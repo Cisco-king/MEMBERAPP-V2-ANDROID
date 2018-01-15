@@ -21,7 +21,6 @@
             android:background="?attr/colorPrimary"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
-            app:elevation="0dp"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <LinearLayout

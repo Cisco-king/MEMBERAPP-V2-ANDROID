@@ -138,7 +138,7 @@ public class DateConverter {
             e.printStackTrace();
         }
 
-        SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-MM-dd");
         return dt1.format(date);
     }
 
@@ -147,7 +147,7 @@ public class DateConverter {
 
         Date startTime = null;
         Date endTime = null;
-        SimpleDateFormat dfDate = new SimpleDateFormat("MMM dd , yyyy");
+        SimpleDateFormat dfDate = new SimpleDateFormat("MMM dd, yyyy");
 
         try {
             startTime = dfDate.parse(start);
@@ -172,7 +172,7 @@ public class DateConverter {
 
     public static int[] getDates(String s) {
         int[] dates = new int[3];
-        SimpleDateFormat dt = new SimpleDateFormat("MMM dd , yyyy");
+        SimpleDateFormat dt = new SimpleDateFormat("MMM dd, yyyy");
 
         Date date = null;
         try {

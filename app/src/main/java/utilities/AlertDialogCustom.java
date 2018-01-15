@@ -96,6 +96,11 @@ public class AlertDialogCustom {
     public String end_must_greater = "End date should be greater than Start Date.";
     public String start_must_lesser = "Start Date should be lesser than End Date.";
     public String data_not_avilable = "List is not available";
+    public String no_list_1 = "No list for Test";
+    public String no_list_2 = "No list for Diagnosis";
+    public String no_list_3 = "No list for Clinic/Hospital";
+    public String no_list_4 = "No list for Doctors";
+
     public String successfully_updated = "Setting is successfully updated.";
     public String skipDiagnosis = "You can skip this screen";
     public String skipDiagnosisAlert = "Alert";

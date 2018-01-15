@@ -318,19 +318,18 @@ public class LoaPageActivity extends AppCompatActivity
                 .validFrom(DateConverter.convertDateToMMddyyyy(changeFormat))
                 .validUntil(DateConverter.validityDatePLusDay(changeFormat, 3))
                 .dateOfConsult(changeFormat)
-                .referenceNumber(loa.getApprovalNo())
-                .doctor(loa.getDoctorName())
-                .hospital(loa.getHospitalName())
-                .memberName(loa.getMemFname() + " " + loa.getMemLname())
+                .referenceNumber(null == loa.getApprovalNo() ? "":loa.getApprovalNo())
+                .doctor(null == loa.getDoctorName() ? "":loa.getDoctorName())
+                .hospital(null == loa.getHospitalName() ? "":loa.getHospitalName())
+                .memberName((null == loa.getMemFname() ? "":loa.getMemFname()) + " " + (null == loa.getMemLname() ? "":loa.getMemLname()))
                 .age(AgeCorrector.age(SharedPref.getStringValue(SharedPref.USER, SharedPref.AGE, context)))
                 .gender(GenderPicker.setGender(Integer.parseInt(SharedPref.getStringValue(SharedPref.USER, SharedPref.GENDER, this))))
-                .memberId(loa.getMemCode())
-                .company(loa.getMemCompany())
+                .memberId(null == loa.getMemCode() ? "":loa.getMemCode())
+                .company(null == loa.getMemCompany() ? "":loa.getMemCompany())
                 //         .remarks(loa.getRemarks())
-                .chiefComplaint(loa.getReasonForConsult())
-                .serviceType(loa.getServiceType());
+                .chiefComplaint(null == loa.getReasonForConsult() ? "":loa.getReasonForConsult())
+                .serviceType(null == loa.getServiceType() ? "":loa.getServiceType());
         //     .bactchCode(loa.getco);
-
 
         try {
             ivQrApprovalNumber.setVisibility(View.VISIBLE);
@@ -467,11 +466,13 @@ public class LoaPageActivity extends AppCompatActivity
 //        }
 
 
-        try {
+
             OutPatientConsultationForm build = loaFormBuilder.build();
-            if (FileUtils.fileExistance(build.getServiceType(), build.getReferenceNumber())) {
+            if (FileUtils.fileExistance(build.getServiceType(),
+                    build.getReferenceNumber())) {
                 btn_download.setText(getString(R.string.view_loa));
             }
+        try {
         }catch (Exception e){
 
         }

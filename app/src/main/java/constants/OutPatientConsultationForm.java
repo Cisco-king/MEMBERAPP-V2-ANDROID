@@ -152,9 +152,11 @@ public class OutPatientConsultationForm implements OutPatientConsultation {
 
         private String chiefComplaint;
         private String historyOfPresentIllness;
+
         private String pastOrFamilyHistory;
 
         private String serviceType;
+
         private String batchCode;
 
         public Builder() {

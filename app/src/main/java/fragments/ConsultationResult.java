@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,7 +66,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     ScrollView sv_whole;
 
     @BindView(R.id.btn_shot)
-    TextView btn_shot;
+    Button btn_shot;
 
     @BindView(R.id.ll_disapproved_req)
     LinearLayout ll_disapproved_req;
@@ -271,6 +272,8 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
 
     private void init() {
         context = getContext();
+        btn_shot.setBackgroundColor((ContextCompat.getColor(getContext(), R.color.colorPrimary)));
+        btn_ok.setBackgroundColor((ContextCompat.getColor(getContext(), R.color.colorPrimary)));
         // todo button ok change functionality
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -296,13 +299,11 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
     }
 
     private void setDetails() {
-
         tv_contact_person.setVisibility(View.GONE); //this is empty string because the contact person of a hospital is unspecified.
         tv_contact.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CONTACT, context));
         tv_sched.setText(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_U, context));
         tv_spec.setText(ResultSetters.specSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_ROOM, context)));
         tv_sched_doctor.setText(ResultSetters.schedSetter(SharedPref.getStringValue(SharedPref.USER, SharedPref.DOCTOR_U, context)));
-
 
         tv_ref_code.setText("Reference No: " + refCode);
         tv_ref_code2.setText(refCode);
@@ -429,7 +430,7 @@ public class ConsultationResult extends Fragment implements ScreenshotCallback {
         ll_disapproved_req.setVisibility(View.GONE);
         ll_approved_validity.setVisibility(View.VISIBLE);
         ll_approved_req.setVisibility(View.VISIBLE);
-        btn_shot.setText("DOWNLOAD OUT-PATIENT CONSULTATION FORM");
+        btn_shot.setText(getContext().getString(R.string.down_out_form));
 
     }
 

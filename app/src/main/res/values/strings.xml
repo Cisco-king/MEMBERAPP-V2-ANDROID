@@ -147,7 +147,6 @@
     <string name="title_activity_request_buttons">RequestButtonsActivity</string>
 
 
-
     <string name="basci_text">Basic Test \n (CBC, Urinalysis, Fecalysis, Chest X-ray)</string>
     <string name="title_activity_doctor_list">DoctorListActivity</string>
     <string name="title_activity_hospital_list_acitivity">HospitalListAcitivity</string>
@@ -297,8 +296,8 @@
 
     <!--Edited Agusust 10, 2017 -->
     <!--<string name="note_upload">-->
-        <!--Note: Please attach a clear copy of your documents, maximum file size of 5MB.-->
-        <!--Acceptable file types are jpg, jpeg, tiff, pdf, doc, docx, xls, xlsx-->
+    <!--Note: Please attach a clear copy of your documents, maximum file size of 5MB.-->
+    <!--Acceptable file types are jpg, jpeg, tiff, pdf, doc, docx, xls, xlsx-->
     <!--</string>-->
 
     <string name="note_upload">
@@ -353,9 +352,14 @@
 
     <string name="disclaimer_info">
         Please print 2 copies of the downloaded approval form to be presented to your doctor or go to Coordinator or MediCard clinic for the issuance of LOA
-        \n\n
-        This shall be subject to existing benefits and actual available limits under the plan.
-        Member may still be billed for the amount.
+       \n
+       \nIn order to avail of the service, please bring the following to your preferred clinic or hospital:
+       \n1. 2 printed copies of the attached Lab/Diagnostic form. Please don’t forget to sign each form.
+       \n2. Original copy of the doctor’s request.
+       \nPlease make sure to call your chosen clinic/hospital facility prior to your availment to secure yourself a schedule and to be apprised of preparation/s (if any) necessary for your procedure. (e.g. fasting)
+       \n\n
+       This shall be subject to existing benefits and actual available limits under the plan.
+       Member may still be billed for the amount.
     </string>
 
     <string name="waiver_1">Consent is hereby given by the patient or by the next of kin (if patient cannot sign) to the disclosure and processing of the
@@ -367,7 +371,7 @@
         it\'s Medical Service Units/Teams and its Accredited Clinic/Hospitals are hereby released from liability by simple of such disclosure.
     </string>
     <string name="waiver_title">Waiver</string>
-    <string name="view_loa">View Approval</string>
+    <string name="view_loa">VIEW APPROVAL</string>
 
     <string name="mc_06">All tests that will be selected should be done in this clinic/hospital. Are you sure you want to select this clinic/hospital?</string>
     <string name="mc_07">This approval serves as your request form. There is no need to go to Medicard Coordinator. You may go directly to the consulting doctor and present this approval.
@@ -409,11 +413,12 @@
     <string name="util_ben">Utilization</string>
     <string name="can_req">CANCEL REQUEST</string>
     <string name="go_back">GO BACK</string>
+
     <string name="down_form">DOWNLOAD FORM</string>
+    <string name="down_out_form">DOWNLOAD OUT-PATIENT CONSULTATION FORM</string>
+
 
     <string name="sort_loa">Sort and Filter LOA Request</string>
-
-
 
 
     <!-- all module text here -->

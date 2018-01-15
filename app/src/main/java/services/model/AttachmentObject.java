@@ -17,8 +17,8 @@ import okhttp3.internal.http.HttpHeaders;
 
 public class AttachmentObject implements Serializable  {
 
-    private int id;
-    private int requestId;
+    private String id;
+    private String requestId;
     private String fileId;
     private String contentType;
     private String originalFileName;
@@ -27,19 +27,22 @@ public class AttachmentObject implements Serializable  {
     private String content;
     private String requestCode;
 
-    public int getId() {
+
+
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getRequestId() {
+    public String getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(int requestId) {
+    public void setRequestId(String requestId) {
         this.requestId = requestId;
     }
 

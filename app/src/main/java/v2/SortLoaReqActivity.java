@@ -168,11 +168,11 @@ public class SortLoaReqActivity extends AppCompatActivity implements SortLoaReqC
                 break;
 
             case R.id.tv_test:
-                alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.data_not_avilable, 1);
+                alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.no_list_1, 1);
                 break;
 
             case R.id.tv_diagnosis:
-                alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.data_not_avilable, 1);
+                alertDialogCustom.showMe(context, alertDialogCustom.HOLD_ON_title, alertDialogCustom.no_list_2, 1);
                 break;
 
             case R.id.tv_req_date_start:

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,40 +22,50 @@
             app:contentInsetStart="0dp"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-
-            <mehdi.sakout.fancybuttons.FancyButton
-
-                android:id="@+id/btn_back"
-                android:layout_width="@dimen/btn_back_width"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                fancy:fb_defaultColor="@color/transparent"
-                fancy:fb_focusColor="@color/colorPrimaryBlueDark"
-
-                fancy:fb_iconResource="@drawable/ic_action_arrow_left"
-                fancy:fb_text="" />
-
-            <TextView
-                android:id="@+id/tv_header"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/btn_back_width"
-                android:text="@string/sort_loa"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_main" />
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/btn_next"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_action_arrow_left" />
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    fancy:fb_defaultColor="@color/transparent"
+                    fancy:fb_focusColor="@color/colorPrimaryBlueDark"
+                    fancy:fb_iconResource="@drawable/ic_action_arrow_left"
+                    fancy:fb_text="" />
 
+                <TextView
+                    android:id="@+id/tv_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:gravity="center"
+                    android:text="@string/sort_loa"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_main" />
+
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="invisible"
+                    fancy:fb_defaultColor="@color/transparent"
+                    fancy:fb_focusColor="@color/colorPrimaryBlueDark"
+                    fancy:fb_iconResource="@drawable/ic_action_arrow_left"
+                    fancy:fb_text="" />
+
+            </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+
     <include layout="@layout/content_sort_loa_req" />
 
 </android.support.design.widget.CoordinatorLayout>

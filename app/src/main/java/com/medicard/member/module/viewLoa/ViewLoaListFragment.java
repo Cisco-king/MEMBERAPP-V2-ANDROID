@@ -247,7 +247,7 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                     /**
                      * new retrieve of list
                      * para of getSortedMemberLoaList
-                     *String memberCode,
+                     * String memberCode,
                      * String status,
                      * String serviceTypeId,
                      * String hospitalCode,

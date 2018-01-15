@@ -63,7 +63,7 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
     @BindView(R.id.tv_effective_date)
     TextView tv_effective_date;
     @BindView(R.id.btn_shot)
-    TextView btn_shot;
+    Button btn_shot;
 
     @BindView(R.id.ll_approved_validity_date)
     LinearLayout ll_approved_validity_date;
@@ -186,6 +186,10 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
         }
 
         alertDialogCustom = new AlertDialogCustom();
+
+        btn_shot.setBackgroundColor(getContext().getColor(R.color.colorPrimary));
+        btn_ok.setBackgroundColor(getContext().getColor(R.color.colorPrimary));
+
     }
 
     @Override
@@ -354,7 +358,7 @@ public class MaternityResult extends Fragment implements ScreenshotCallback {
             ll_disapproved2.setVisibility(View.VISIBLE);
             ll_disapproved1.setVisibility(View.VISIBLE);
             tv_disapproved.setVisibility(View.GONE);
-            btn_shot.setText("DOWNLOAD OUT-PATIENT CONSULTATION FORM");
+            btn_shot.setText(getContext().getString(R.string.down_out_form));
 
         } else if (tv_title.getText().toString().trim().equalsIgnoreCase(ResultSetters.REQUEST_APPROVAL)) {
             ll_approved_effective_date.setVisibility(View.GONE);
