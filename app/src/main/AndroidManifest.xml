@@ -22,8 +22,8 @@
     <provider
         android:name="android.support.v4.content.FileProvider"
         android:authorities="app_package_name.fileprovider"
-        android:grantUriPermissions="true"
-        android:exported="false">
+        android:exported="false"
+        android:grantUriPermissions="true">
         <meta-data
             android:name="android.support.FILE_PROVIDER_PATHS"
             android:resource="@xml/file_paths" />
@@ -82,7 +82,7 @@
             android:label="@string/title_activity_request_change_password"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".SplashScreen.SplashScreenActivity"
+            android:name="mockup.MockUpDocList"
             android:label="@string/title_activity_splash_screen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
@@ -92,6 +92,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--<activity-->
+            <!--android:name=".SplashScreen.SplashScreenActivity"-->
+            <!--android:label="@string/title_activity_splash_screen"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/AppTheme">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+        <activity
+            android:name=".SplashScreen.SplashScreenActivity"
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".ChangePassword.ChangePasswordActivity"
             android:label="@string/title_activity_change_password"
@@ -202,6 +216,9 @@
         <activity
             android:name="v2.LoaTestsListActivity"
             android:theme="@style/AppTheme"></activity>
+        <!--<activity-->
+            <!--android:name="mockup.MockUpDocList"-->
+            <!--android:theme="@style/AppTheme"></activity>-->
 
     </application>
 

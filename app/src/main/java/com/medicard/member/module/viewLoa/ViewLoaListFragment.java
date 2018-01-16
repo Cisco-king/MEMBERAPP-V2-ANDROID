@@ -189,9 +189,11 @@ public class ViewLoaListFragment extends BaseFragment implements ViewLoaListMVP.
                     test_sort = data.getStringExtra(Constant.SELECT_TEST);
                     diag_sort = data.getStringExtra(Constant.SELECT_DIAG);
                     date_start_sort = data.getStringExtra(Constant.SELECTED_START_DATE);
+
                     if (null != date_start_sort && !date_start_sort.isEmpty()) {
                         date_start_sort_format = DateConverter.convertDateFromYYYYMDD(date_start_sort, "");
                     }
+
                     date_end_sort = data.getStringExtra(Constant.SELECTED_END_DATE);
                     if (null != date_end_sort && !date_end_sort.isEmpty()) {
                         date_end_sort_format = DateConverter.convertDateFromYYYYMDD(date_end_sort, "");

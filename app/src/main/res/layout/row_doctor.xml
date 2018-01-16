@@ -26,7 +26,6 @@
                 android:textSize="@dimen/text_small"
                 android:textStyle="bold" />
 
-
             <TextView
                 android:id="@+id/tv_spec"
                 android:layout_width="match_parent"

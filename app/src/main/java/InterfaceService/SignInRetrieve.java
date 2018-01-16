@@ -172,7 +172,7 @@ public class SignInRetrieve {
                 .subscribe(new Observer<ProcedureResponse>() {
                     @Override
                     public void onCompleted() {
-                        Timber.d("load procedure completed");
+                        Timber.d("loadFirst procedure completed");
                     }
 
                     @Override
@@ -205,7 +205,7 @@ public class SignInRetrieve {
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onCompleted() {
-                        Timber.d("doctor load complete");
+                        Timber.d("doctor loadFirst complete");
                     }
 
                     @Override

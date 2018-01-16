@@ -124,7 +124,7 @@ public class RequestNewPresenter implements RequestNewMvp.Presenter {
 
     @Override
     public void loadDiagnosisTests() {
-        Timber.d("load all diagnosis was called...");
+        Timber.d("loadFirst all diagnosis was called...");
         Timber.d("diagnosis session %s", DiagnosisTestSession.getAllDiagnosisTests().size());
         List<DiagnosisTests> diagnosisTestsList = DiagnosisTestSession.getAllDiagnosisTests();
         requestNewView.displayDiagnosisTests(diagnosisTestsList);

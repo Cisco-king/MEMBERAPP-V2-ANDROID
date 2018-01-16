@@ -34,7 +34,11 @@ public class GetDoctorsToHospital
 
     private String phoneNo;
 
+    private String type;
 
+    public GetDoctorsToHospital(String type) {
+        this.type = type;
+    }
 
     public GetDoctorsToHospital() {
     }
@@ -95,6 +99,13 @@ public class GetDoctorsToHospital
     private String room;
 
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getRegion ()
     {
@@ -347,6 +358,7 @@ public class GetDoctorsToHospital
     }
 
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -434,4 +446,6 @@ public class GetDoctorsToHospital
     {
         return "ClassPojo [region = "+region+", streetAddress = "+streetAddress+", specialRem = "+specialRem+", docFname = "+docFname+", specDesc = "+specDesc+", hospRemarks = "+hospRemarks+", doctorCode = "+doctorCode+", docMname = "+docMname+", vat = "+vat+", wtax = "+wtax+", remarks = "+remarks+", city = "+city+", gracePeriod = "+gracePeriod+", phoneNo = "+phoneNo+", specCode = "+specCode+", schedule = "+schedule+", faxno = "+faxno+", province = "+province+", hospitalName = "+hospitalName+", docLname = "+docLname+", hospitalCode = "+hospitalCode+", contactPerson = "+contactPerson+", roomBoard = "+roomBoard+", remarks2 = "+remarks2+", room = "+room+"]";
     }
+
+
 }

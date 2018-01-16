@@ -1,5 +1,7 @@
 package services;
 
+import java.util.ArrayList;
+
 import model.AddDepenceResponse;
 import model.AddDependence;
 import model.ChangePassword;
@@ -11,6 +13,7 @@ import model.DoctorNORoom;
 import model.Doctors;
 import model.Exclusions;
 import model.FAQsModel;
+import model.GetDoctorsToHospital;
 import model.GetUSER;
 import model.Hospital;
 import model.LogIn;
@@ -203,4 +206,11 @@ public interface AppInterface {
                                                         @Query("requestCode") String requestCode);
     @GET("/membership/getDentalBenefits/")
     Call<DentalBenefitsResponse> getDentalBenefitByMemberCode(@Query("memberCode") String memberCode);
+
+
+    @GET("/v2/listing/getDoctorsToHospitalPaginated/")
+    Call<Doctors> getDoctorsToHospitalPaginated(@Query("hospitalCode") String hospitalCode,
+                                                                       @Query("count") String count,
+                                                                       @Query("offset") String offset,
+                                                                       @Query("searchString") String searchString);
 }

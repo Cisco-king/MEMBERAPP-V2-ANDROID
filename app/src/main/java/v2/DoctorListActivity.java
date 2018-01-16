@@ -67,6 +67,8 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
 
     @BindView(R.id.btn_proceed)
     Button btn_proceed;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @BindView(R.id.ll_no_doctor_found)
     LinearLayout ll_no_doctor_found;
@@ -100,7 +102,6 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         context = this;
         callback = this;
@@ -125,7 +126,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
         rv_doctor.setLayoutManager(llm);
         rv_doctor.setAdapter(doctorAdapter);
 
-        getSearchDoctor(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context),doctorAdapter,"", selectedSpec, sort_by, "");
+        getSearchDoctor(SharedPref.getStringValue(SharedPref.USER, SharedPref.HOSPITAL_CODE, context), doctorAdapter, "", selectedSpec, sort_by, "");
 
         alertDialogCustom.showMe(
                 context,
@@ -200,7 +201,7 @@ public class DoctorListActivity extends AppCompatActivity implements OnClicklist
     private void getSearchDoctor(String hospcode, DoctorAdapter doctorAdapter, String editable, ArrayList<SpecsAdapter> selectedSpec, String sort_by, String room_number) {
 
         array.clear();
-        array.addAll(databaseHandler.retrieveDoctor(hospcode,selectedCity,selectedProvince,String.valueOf(editable), selectedSpec, implement.testSort(sort_by), room_number));
+        array.addAll(databaseHandler.retrieveDoctor(hospcode, selectedCity, selectedProvince, String.valueOf(editable), selectedSpec, implement.testSort(sort_by), room_number));
 
 //        // get only the unique value from the set
 //        Timber.d("original size with duplicate %s", array.size());

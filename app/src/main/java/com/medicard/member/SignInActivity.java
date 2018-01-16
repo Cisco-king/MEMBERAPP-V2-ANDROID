@@ -367,7 +367,7 @@ public class SignInActivity extends AppCompatActivity
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onCompleted() {
-                        Timber.d("doctor load complete");
+                        Timber.d("doctor loadFirst complete");
                     }
 
                     @Override
