@@ -83,15 +83,12 @@ public class MockUpDocList extends AppCompatActivity implements SwipeRefreshLayo
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 if (s.length() != 0) {
                     search_string = String.valueOf(s);
                     offset = 0;
                     array.clear();
+                    mAdapter.setMoreDataAvailable(true);
+                    mAdapter.setIsLoading(false);
                     load();
                 }else if (s.length() == 0){
                     search_string = "";
@@ -101,6 +98,11 @@ public class MockUpDocList extends AppCompatActivity implements SwipeRefreshLayo
                     mAdapter.setIsLoading(false);
                     load();
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
 
             }
         });
